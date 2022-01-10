@@ -1,0 +1,260 @@
+<%@page contentType="text/html; charset=UTF-8"%> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%> 
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+<c:import url="/include/head.jsp" />	
+</head>
+<!-- END HEAD -->
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+	<div class="page-wrapper">
+		<c:import url="/include/header.jsp" />
+		<!-- BEGIN CONTAINER -->
+		<div class="page-container">
+			<c:import url="/include/nav.jsp" />
+			<!-- BEGIN CONTENT -->
+			<div class="page-content-wrapper">
+				<div class="page-content">
+					<div class="mtouch-container">
+						 <!-- BEGIN PAGE BAR -->
+						<div class="page-bar">
+							<ul class="page-breadcrumb">
+									<li><a href="/">Home</a><i class="fa fa-circle"></i></li>
+									<li><span>거래관리</span><i class="fa fa-circle"></i></li>
+                  					<li><span>매입삭제</span></li>
+							</ul>
+							<div class="page-toolbar">
+									<div class="btn-group btn-theme-panel">
+										<a class="btn float-window"><i class="icon-size-fullscreen"></i></a>
+										<a href="javascript:;" class="btn dropdown-toggle" data-toggle="dropdown">
+											<i class="icon-settings"></i>
+										</a>
+										<div class="dropdown-menu theme-panel pull-right dropdown-custom hold-on-click panel-warning">
+											<div class="panel-heading">도움말</div>
+											<div class="panel-body">
+											</div>
+										</div>
+									</div>
+							</div>
+						</div>
+						<!-- END PAGE BAR -->
+						<!-- BEGIN PAGE CONTENT - MARU - INNER -->
+								<div class="page-content-inner" id="search-container">
+									<!-- 검색 폼 시작 -->
+									<div class="portlet light portlet-form">
+										<div class="portlet-body form light">
+											<form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/trx/capdel/list" method="post">
+												<input type="hidden" data-reg="false" name="reason" value="매입거래내역">
+												<c:if test="${CP_SESSION.grade == '본사'}">
+												<input type="hidden" data-reg="false" name="thead" value="regDay:거래일,regTime:거래시간,authCd:승인번호,capId:매입번호,trxId:거래번호,mchtId:가맹점ID,name:가맹점명,distName:대행사,agencyName:에이전시,trackId:주문번호,tmnId:터미널,capType:매입/취소,rfdType:취소구분,rootTrxId:취소 원거래번호,rootTrxDay:취소 원거래일자,amount:매입금액,bin:BIN,last4:LAST4,stlStatus:정산상태,payOutDay:실지급일,issuer:발급사,acquirer:매입사,risk:리스크,installment:할부,stlDay:정산예정일,van:밴사,stlType:정산유형,stlRate:수수료율,stlFee:수수료,stlFeeVat:수수료VAT,stlId:정산ID,stlDistFee:대행사수수료,stlDistRate:대행사수수료율,stlDistId:대행사정산ID,stlAgencyFee:에이전시수수료,stlAgencyRate:에이전시수수료율,stlAgencyId:에이전시정산ID,vanId:CPID,vanTrxId:VAN거래번호,vanStatus:입금상태,stlVanFee:입금수수료,stlVanRate:입금수수료율,stlVanDay:실입급일,benefit:수익,taxId:TAX,distId:대행사ID,agencyId:에이전시ID">
+												</c:if>
+												<c:if test="${CP_SESSION.grade == '대행사'}">
+												<input type="hidden" data-reg="false" name="thead" value="regDay:거래일,regTime:거래시간,authCd:승인번호,capId:매입번호,trxId:거래번호,mchtId:가맹점ID,name:가맹점명,distName:대행사,agencyName:에이전시,trackId:주문번호,tmnId:터미널,capType:매입/취소,rfdType:취소구분,rootTrxId:취소 원거래번호,rootTrxDay:취소 원거래일자,amount:매입금액,bin:BIN,last4:LAST4,stlStatus:정산상태,payOutDay:실지급일,issuer:발급사,acquirer:매입사,risk:리스크,installment:할부,stlDay:정산예정일,van:밴사,stlType:정산유형,stlRate:수수료율,stlFee:수수료,stlFeeVat:수수료VAT,stlId:정산ID,taxId:TAX,distId:대행사ID,agencyId:에이전시ID">
+												</c:if>
+												<div class="form-body">
+													<div class="row">
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">승인번호</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm" name="authCd" data-oper="lk" placeholder="승인번호" data-search="test">
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">매입번호</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm" name="capId" data-oper="eq" placeholder="매입번호">
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">거래번호</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm" name="trxId" data-oper="eq" placeholder="거래번호">
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">거래일자</label>
+															<div class=" col-lg-8">
+																<input type="text" class="form-control" name="regDay" value="${TODAY }" data-oper="eq">
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">지급일</label>
+															<div class=" col-lg-8">
+																<div class="input-group input-group-sm input-daterange" data-date-format="yyyy-mm-dd">
+																	<input type="text" class="form-control" name="payOutDay" value="" data-oper="ge">
+																	<span class="input-group-addon">~</span>
+																	<input type="text" class="form-control" name="payOutDay" value="" data-oper="le">
+																</div>
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">정산예정일</label>
+															<div class=" col-lg-8">
+																<div class="input-group input-group-sm input-daterange" data-date-format="yyyy-mm-dd">
+																	<input type="text" class="form-control" name="stlDay" value="" data-oper="ge">
+																	<span class="input-group-addon">~</span>
+																	<input type="text" class="form-control" name="stlDay" value="" data-oper="le">
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">승인금액</label>
+															<div class="col-lg-8">
+																<div class="input-group input-group-sm">
+																	<input type="text" class="form-control input-sm" name="amount" data-oper="ge">
+																	<span class="input-group-addon" style="border-left: 0;border-right: 0;">~</span>
+																	<input type="text" class="form-control input-sm" name="amount" data-oper="le">
+																</div>
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">카드 BIN</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm" maxlength="6" name="bin" data-oper="eq" placeholder="6자리">
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">카드뒤4자리</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm" maxlength="4" name="last4" data-oper="eq" placeholder="4자리">
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">매입구분</label>
+															<select class="selectpicker col-lg-8" name="capType" data-oper="eq">
+																<option value="">-- 전체 -- </option>
+																	<option value="매입">매입</option>
+																	<option value="매입취소">매입취소</option>
+															</select>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">정산상태</label>
+															<select class="selectpicker col-lg-8" name="stlStatus" data-oper="eq">
+																<option value="">-- 전체 -- </option>
+																	<option value="정산대기">정산대기</option>
+																	<option value="정산확정">정산확정</option>
+																	<option value="정산보류">정산보류</option>
+																	<option value="정산완료">정산완료</option>
+																</select>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">VAN</label>
+															<select class="selectpicker col-lg-8" name="van" data-oper="eq">
+																<option value="">-- 전체 -- </option>
+																<c:forEach items="${CP_SESSION.vanList }" var="list">
+																	<option value="${list.van}">${list.van}</option>
+																</c:forEach>
+															</select>
+														</div>
+													</div>
+													<div class="row">
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">가맹점명</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm typeahead mchtName" name="name" data-oper="lk" placeholder="가맹점명" data-search="mchtName">
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">일시불/할부</label>
+															<select class="selectpicker col-lg-8" name="installment" data-oper="in">
+																<option value="">-- 전체 -- </option>
+																<option value="'00'">일시불</option>
+																<option value="'01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','36','48','60'">할부</option>
+															</select>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">터미널 번호</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm" name="tmnId" data-oper="lk" placeholder="터미널번호">
+															</div>
+														</div>
+													</div>
+													<div class="row search-opt">
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">매입일자</label>
+															
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">취소구분</label>
+															<select class="selectpicker col-lg-8" name="capType" data-oper="eq">
+																<option value="">-- 전체 -- </option>
+																<option value="전체">전체</option>
+																<option value="부분">부분</option>
+															</select>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">취소원거래번호</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm" name="rootTrxId" data-oper="eq" placeholder="취소원거래번호">
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">리스크</label>
+															<select class="selectpicker col-lg-8" name="risk" data-oper="eq">
+																<option value="">-- 전체 -- </option>
+																<option value="건한도">건한도</option>
+																<option value="중복">중복</option>
+																<option value="고액">고액</option>
+																<option value="최소금액">최소금액</option>
+																<option value="야간할부">야간할부</option>
+																<option value="위험">위험</option>
+																<option value="관리자 설정">관리자 설정</option>
+															</select>
+														</div>
+														<c:import url="/common/selectGrade.jsp" />
+														<input type="hidden" id="grade_search" name="parentId" data-oper="eq" value=""/>
+													</div>
+												</div>
+												<div class="form-actions nobg right">
+													<div class="btn folding-search-btn icon-arrow-down"></div>
+													<div class="">
+														<button type="button" class="btn btn-sm blue-dark" id="SearchClear">
+															<i class="fa fa-eraser" aria-hidden="true"></i> RESET&nbsp;
+														</button>
+														<button type="button" class="btn btn-sm green" id="searchSubmit" onClick="searchForList()">
+															<i class="fa fa-search" aria-hidden="true"></i> SEARCH
+														</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+									<!-- 검색 폼 종료 -->
+									<!-- 내용 폼 시작 -->
+									<div class="portlet light portlet-form" id="searchResult">
+										
+									</div>
+									<!-- 내용 폼 종료 -->
+								</div>
+								<!-- END PAGE CONTENT INNER -->
+							</div>
+						</div>
+				</div>
+				<!-- BEGIN CONTAINER -->
+		</div>
+		<c:import url="/include/footer.jsp" />
+	</div>
+	<c:import url="/include/javascript.jsp" />
+	<script type="text/javascript">
+		gradeSelector('searchForm', '${CP_SESSION.grade}');
+		setTimeout(function(){ searchForList(); }, 100); //검색 실행
+		$('#nav-trx').addClass('active');
+	</script>
+	<!-- 모달 생성을 위한 베이스 -->
+	<div id="pgmate-modal" class="modal fade container" data-backdrop="static" data-keyboard="false" tabindex="-1"></div>
+</body>
+
+</html>

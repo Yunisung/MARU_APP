@@ -1,0 +1,205 @@
+@font-face {
+  font-family: 'Noto Sans Regular';
+  font-weight: 400;
+  src: local('Noto Sans Regular'),
+  url('../fonts/NotoSansKR-WEB/NotoSansKR-Regular.otf') format('opentype');
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100vh;
+}
+
+table {
+    background-color: #f2f2f2;
+}
+
+td {
+    text-align: center;
+}
+
+/*
+table.loginbox td:nth-last-child(1) {
+    padding: 5%;
+}*/
+
+.image {
+	background: url(../img/login/login_store.png?V=1.0) no-repeat  center center;
+	width: 355px;
+  	height: 440px;
+  	background-size: cover;
+}
+
+div.logo {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+div.logo img {
+    width: 44.9px;
+  	height: 74.1px;
+}
+
+div.input-wrapper input {
+	font-family: 'Noto Sans Regular';
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #707070;
+    border-left: 0;
+    border-top: 0;
+    border-right: 0;
+    padding: 2.3%;
+    outline: none;
+}
+
+div.id input:focus,
+div.pw input:focus {
+	border-bottom: 1px solid #234471;
+	transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease;
+}
+
+
+input::placeholder {
+    color: #999;
+}
+
+.chk_box {
+    margin-top: 28px;
+    text-align: left;
+    margin-left: 48px;
+}
+
+input[type="checkbox"] {
+    position: relative;
+}
+
+label {
+    font-size: 14px;
+    color: #9d9d9d;
+    line-height: 1.43;
+  	letter-spacing: -0.35px;
+  	font-family: 'Noto Sans Regular';
+}
+
+input[type="checkbox"]:checked ~ label{
+	color: #666;
+	transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease;
+}
+
+.btn {
+	width: 83%;
+	margin: 18.5px 27px 29px 27px;
+}
+
+.btn button{
+	font-family: 'Noto Sans Regular';
+	width: 100%;
+	height: 40px;
+	line-height: 39px;
+	background-color: #234471;
+	color: #fff;
+	font-size: 14px;
+	text-align: center;
+	border: 0;
+	cursor: pointer;
+	outline: none;
+	border-radius: 4px;
+	letter-spacing: 1.4px;
+}
+
+.btn button:hover,
+.btn button:active {
+	background-color: #2852B7;
+	transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -o-transition: all .3s ease;
+}
+
+@media (min-width: 719px) {
+    table.loginbox {
+        width: 100%;
+        max-width: 710px;
+        margin: 0 auto;
+    }
+
+    table.loginbox td {
+        width: 50%;
+        max-width: 355px;
+        background-color: #fff;
+        box-shadow: 2px 2px 7px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    div.logo {
+        padding-bottom: 50px;
+    }
+
+}
+
+@media (max-width: 719px) {
+	
+	.image {
+		background: url(../img/login/login_store_m.png?V=1.0) no-repeat center center;
+		width: 100%;
+	  	height: 100%;
+	  	background-size: cover;
+	}
+	
+    table.loginbox {
+        width: 100%;
+        height: 100%;
+    }
+
+    table.loginbox td:nth-child(1) {
+        width: 100%;
+        background-color: #fff;
+        float: left;
+        position: relative;
+        height: calc(100% - 60%);
+        height: -webkit-calc(100% - 60%);
+        height: -moz-calc(100% - 60%);
+    }
+
+    table.loginbox td:nth-child(2) {
+        width: 100%;
+        background-color: #fff;
+        float: left;
+        position: relative;
+        height: calc(100% - 40%);
+        height: -webkit-calc(100% - 40%);
+        height: -moz-calc(100% - 40%);
+    }
+
+    div.logo {
+        padding-bottom: 50px;
+    }
+
+    td form{
+    	width: 100%;
+    	padding-bottom: 20px;
+    	position: absolute;
+    	top: 50%;
+    	left: 50%;
+    	transform: translate(-50%, -50%);
+    }
+
+
+}

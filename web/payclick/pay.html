@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MTOUCH</title>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.css">
+<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://svcapi.mtouch.com/js/clientside.js"></script>
+<style>
+	input[type="number"]::-webkit-outer-spin-button,
+	input[type="number"]::-webkit-inner-spin-button {
+    	-webkit-appearance: none;
+   		margin: 0;
+	}
+</style>
+</head>
+<body>
+		<script>
+			$.fn.serializeObject = function(){
+	
+			   var o = {};
+			   var a = this.serializeArray();
+	
+			   $.each(a, function() {
+			       if (o[this.name]) {
+			           if (!o[this.name].push) {
+			               o[this.name] = [o[this.name]];
+			           }
+			           o[this.name].push(this.value || '');
+			       } else {
+			           o[this.name] = this.value || '';
+			       }
+			   });
+			   return o;
+			};
+			
+			function fn_pay(){
+				
+				if(!$.trim($('#name').val())){
+					alert('구매상품명을 입력하세요.');
+					$('#name').focus();
+					return false;
+				}
+				if(!$.trim($('#amount').val())){
+					alert('결제금액을 입력하세요.');
+					$('#amount').focus();
+					return false;
+				}
+				
+				if(!$.trim($('#payerName').val())){
+					alert('고객 이름 입력은 필수입니다.');
+					$('#payerName').focus();
+					return false;
+				}
+				
+				if(!$.trim($('#payerTel').val())){
+					alert('고객 전화번호 입력은 필수입니다.');
+					$('#payerTel').focus();
+					return false;
+				}
+				
+				var products = new Array();
+				var product = {"name":$('#name').val(),"price":$('#amount').val(),"qty":"1","desc":"수기결제"};
+				products.push(product);
+				
+				Cyrexpay.pay({
+			        amount: $('#amount').val(),
+			        publicKey: $('#payKey').val(),
+			        products: products, // Array
+			        responseFunction: eventFnc, // Function
+			        payerName: $('#payerName').val(),
+			        payerEmail: $('#payerEmail').val(),
+			        payerTel: $('#payerTel').val(),
+			        mode: 'layer'
+				});
+			}
+			
+			function eventFnc(data) {
+				  console.log('eventFnc:', data);
+				}
+		</script>
+	
+		<div class="container" style="margin-bottom:10px;">
+			
+			<h2 class="text-center">수기결제</h2>
+			
+			<form id="form1" class="form-horizontal" autocomplete="off">
+				<input type="hidden" id="payKey" name="payKey" value="pk_b343-ac3a30-d3b-ef543"/>
+				<input type="hidden" id="products" name="products"/>
+			<div class="form-group">
+				<label for="name" class="col-sm-2 control-label">구매 상품명</label>
+				<div class="col-sm-10">
+					<input type="text" name="name" id="name" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="price" class="col-sm-2 control-label">결제금액</label>
+				<div class="col-sm-10">
+					<input type="number" name="amount" id="amount" class="form-control" pattern="[0-9]*" inputmode="numeric" min="0">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="payerName" class="col-sm-2 control-label">고객 이름</label>
+				<div class="col-sm-10">
+					<input type="text" name="payerName" id="payerName" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="payerTel" class="col-sm-2 control-label">고객 전화번호</label>
+				<div class="col-sm-10">
+					<input type="tel" name="payerTel" id="payerTel" class="form-control">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="payerEmail" class="col-sm-2 control-label">고객 이메일</label>
+				<div class="col-sm-10">
+					<input type="email" name="payerEmail" id="payerEmail" class="form-control">
+				</div>
+			</div>
+			</form>
+			<div class="row">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-10">
+					<button class="btn btn-sm btn-primary" onclick="javascript:fn_pay();">결제</button>
+				</div>
+			</div>
+		</div>
+</body>
+</html>

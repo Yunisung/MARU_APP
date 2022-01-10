@@ -1,0 +1,752 @@
+{
+  "DEFAULT": {
+    "range": 3,
+    "valid": true,
+    "amount": {
+      "name": "금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "거래구분"
+    },
+    "installment": {
+      "name": "할부"
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호",
+      "type": ""
+    },
+    "trxDay": {
+      "name": "거래일자",
+      "type": "date"
+    },
+    "trxTime": {
+      "name": "거래시간",
+      "type": "time"
+    },
+    "trackId": {
+      "name": "주문번호"
+    },
+    "vanTrxId": {
+      "name": "매입사거래번호"
+    },
+    "cardType": {
+      "name": "카드구분",
+      "type": ""
+    },
+    "rootTrxDay": {
+      "name": "원거래일자",
+      "type": "date"
+    }
+  },
+  "KCPOFF": {
+    "range": 0,
+    "valid": true,
+    "amount": {
+      "name": "합계",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "거래구분"
+    },
+    "installment": {
+      "name": "할부"
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호",
+      "type": ""
+    },
+    "trxDay": {
+      "name": "거래일시",
+      "type": "datetime to date"
+    },
+    "trxTime": {
+      "name": "거래일시",
+      "type": "datetime to time"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": ""
+    },
+    "cardType": {
+      "name": "카드구분"
+    },
+    "rootTrxDay": {
+      "name": "원거래일시",
+      "type": "datetime to date"
+    }
+  },
+  "NICEOFF": {
+    "range": -1,
+    "valid": true,
+    "amount": {
+      "name": "금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "구분"
+    },
+    "installment": {
+      "name": "할부"
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호",
+      "type": ""
+    },
+    "trxDay": {
+      "name": "거래일자",
+      "type": "date"
+    },
+    "trxTime": {
+      "name": "거래시간",
+      "type": "time"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": ""
+    },
+    "cardType": {
+      "name": "카드종류"
+    },
+    "rootTrxDay": {
+      "name": "원거래일자",
+      "type": "date"
+    }
+  },
+  "DAOUOFF": {
+    "range": 0,
+    "valid": true,
+    "amount": {
+      "name": "요청금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "구분"
+    },
+    "installment": {
+      "name": "할부"
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호"
+    },
+    "trxDay": {
+      "name": "거래일자",
+      "type": "date14"
+    },
+    "trxTime": {
+      "name": "거래시간",
+      "type": "time"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": ""
+    },
+    "cardType": {
+      "name": "카드구분",
+      "type": ""
+    },
+    "rootTrxDay": {
+      "name": "원거래일자"
+    }
+  },
+  "KSCOFF": {
+    "range": 3,
+    "valid": true,
+    "amount": {
+      "name": "승인금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "승인금액"
+    },
+    "installment": {
+      "name": ""
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호",
+      "type": ""
+    },
+    "trxDay": {
+      "name": "승인일",
+      "type": ""
+    },
+    "trxTime": {
+      "name": "승인시간"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": ""
+    },
+    "cardType": {
+      "name": "카드종류"
+    },
+    "rootTrxDay": {
+      "name": "원거래일",
+      "type": ""
+    }
+  },
+  "KISOFF": {
+    "range": 3,
+    "valid": true,
+    "amount": {
+      "name": "거래금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "거래유형"
+    },
+    "installment": {
+      "name": "할부",
+      "type": ""
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호",
+      "type": ""
+    },
+    "trxDay": {
+      "name": "거래일자",
+      "type": "date"
+    },
+    "trxTime": {
+      "name": "거래시간",
+      "type": "time"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": ""
+    },
+    "cardType": {
+      "name": "체크"
+    },
+    "rootTrxDay": {
+      "name": "원거래일자",
+      "type": "date"
+    },
+    "vanDay": {
+      "name": "입금예정일자",
+      "type": "date"
+    },
+    "vanStlFee": {
+      "name": "수수료",
+      "type": "number"
+    }
+  },
+  "KICCOFF": {
+    "range": 0,
+    "valid": true,
+    "amount": {
+      "name": "금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "승인구분"
+    },
+    "installment": {
+      "name": "할부개월"
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호",
+      "type": ""
+    },
+    "trxDay": {
+      "name": "거래일시▼",
+      "type": "datetime to date"
+    },
+    "trxTime": {
+      "name": "거래일시▼",
+      "type": "datetime to time"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": ""
+    },
+    "cardType": {
+      "name": "카드구분",
+      "type": ""
+    },
+    "rootTrxDay": {
+      "name": "원승인일자",
+      "type": "date"
+    }
+  },
+  "KOCESOFF": {
+    "range": 0,
+    "valid": true,
+    "amount": {
+      "name": "총승인금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "거래결과"
+    },
+    "installment": {
+      "name": "할부",
+      "type": ""
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호",
+      "type": ""
+    },
+    "trxDay": {
+      "name": "승인일시",
+      "type": "datetime to date"
+    },
+    "trxTime": {
+      "name": "승인일시",
+      "type": "datetime to time"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": ""
+    },
+    "cardType": {
+      "name": "카드종류"
+    },
+    "rootTrxDay": {
+      "name": "원거래일",
+      "type": "date"
+    }
+  },
+  "KSNET": {
+    "range": 0,
+    "valid": true,
+    "tmnId": {
+      "name": "상점ID",
+      "type": ""
+    },
+    "amount": {
+      "name": "금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "승인구분"
+    },
+    "installment": {
+      "name": "할부"
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호",
+      "type": ""
+    },
+    "trxDay": {
+      "name": "승인일자",
+      "type": "datetime to date"
+    },
+    "trxTime": {
+      "name": "승인일자",
+      "type": "datetime to time"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": "거래번호",
+      "type": ""
+    },
+    "cardType": {
+      "name": "카드구분"
+    },
+    "rootTrxDay": {
+      "name": "취소일자",
+      "type": "datetime to date"
+    }
+  },
+  "CFAOFF": {
+    "range": 2,
+    "valid": true,
+    "amount": {
+      "name": "승인금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "구분"
+    },
+    "installment": {
+      "name": "할부기간"
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호",
+      "type": ""
+    },
+    "trxDay": {
+      "name": "거래일자",
+      "type": "date"
+    },
+    "trxTime": {
+      "name": "거래시간",
+      "type": "time"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": ""
+    },
+    "rootTrxDay": {
+      "name": "거래일자",
+      "type": "date"
+    }
+  },
+  "SBANK": {
+    "range": 19,
+    "valid": true,
+    "amount": {
+      "name": "금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "거래상태"
+    },
+    "installment": {
+      "name": "할부기간",
+      "type": ""
+    },
+    "bin": {
+      "name": "카드/계좌/휴대폰번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드/계좌/휴대폰번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호"
+    },
+    "trxDay": {
+      "name": "거래일자"
+    },
+    "trxTime": {
+      "name": "거래시간"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": "거래번호",
+      "type": ""
+    },
+    "cardType": {
+      "name": "카드구분",
+      "type": ""
+    },
+    "rootTrxDay": {
+      "name": "거래일자"
+    },
+    "issuer": {
+      "name": "카드종류/은행/통신사",
+      "type": ""
+    },
+    "acquirer": {
+      "name": "매입사",
+      "type": ""
+    }
+  },
+  "IDM": {
+    "range": 39,
+    "valid": true,
+    "amount": {
+      "name": "금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "승인구분"
+    },
+    "installment": {
+      "name": ""
+    },
+    "bin": {
+      "name": "신용카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "신용카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호"
+    },
+    "trxDay": {
+      "name": "거래일시"
+    },
+    "trxTime": {
+      "name": "거래일시"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": "거래번호",
+      "type": ""
+    },
+    "cardType": {
+      "name": "",
+      "type": ""
+    },
+    "rootTrxDay": {
+      "name": "거래일시"
+    },
+    "issuer": {
+      "name": "카드발급사",
+      "type": ""
+    },
+    "acquirer": {
+      "name": "카드매입사",
+      "type": ""
+    }
+  },
+  "PAYNURIOFF": {
+    "range": 0,
+    "valid": true,
+    "amount": {
+      "name": "거래금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "승인구분"
+    },
+    "installment": {
+      "name": "할부"
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호",
+      "type": ""
+    },
+    "trxDay": {
+      "name": "거래일시",
+      "type": "datetime to date"
+    },
+    "trxTime": {
+      "name": "거래일시",
+      "type": "datetime to time"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": ""
+    },
+    "rootTrxDay": {
+      "name": "원거래일자",
+      "type": "date"
+    },
+    "cardType": {
+      "name": "카드유형"
+    },
+    "issuer": {
+      "name": "카드사"
+    },
+    "acquirer": {
+      "name": "매입사"
+    }
+  },
+  "PAYNURION": {
+    "range": 0,
+    "valid": true,
+    "amount": {
+      "name": "거래금액",
+      "type": "number"
+    },
+    "trnType": {
+      "name": "거래구분"
+    },
+    "installment": {
+      "name": "할부"
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호",
+      "type": ""
+    },
+    "trxDay": {
+      "name": "거래일자",
+      "type": "date"
+    },
+    "trxTime": {
+      "name": "거래시간",
+      "type": "time"
+    },
+    "trackId": {
+      "name": ""
+    },
+    "vanTrxId": {
+      "name": ""
+    },
+    "rootTrxDay": {
+      "name": "원거래일자",
+      "type": "date"
+    },
+    "cardType": {
+      "name": "",
+      "type": ""
+    },
+    "issuer": {
+      "name": "발급사"
+    },
+    "acquirer": {
+      "name": "매입사"
+    }
+  },
+  "WOORIPAY": {
+    "range": 1,
+    "valid": true,
+    "amount": {
+      "name": "결제금액"
+    },
+    "trnType": {
+      "name": "결제상태"
+    },
+    "installment": {
+      "name": "할부(무이자)"
+    },
+    "bin": {
+      "name": "카드번호",
+      "type": "left 6"
+    },
+    "last4": {
+      "name": "카드번호",
+      "type": "right 4"
+    },
+    "authCd": {
+      "name": "승인번호",
+      "type": ""
+    },
+    "trxDay": {
+      "name": "결제일시"
+    },
+    "trxTime": {
+      "name": "결제일시"
+    },
+    "trackId": {
+      "name": "주문번호",
+      "type": ""
+    },
+    "vanTrxId": {
+      "name": "거래번호",
+      "type": ""
+    },
+    "cardType": {
+      "name": "",
+      "type": ""
+    },
+    "rootTrxDay": {
+      "name": "결제일시"
+    },
+    "issuer": {
+      "name": "카드종류",
+      "type": ""
+    },
+    "acquirer": {
+      "name": "",
+      "type": ""
+    }
+  }
+}

@@ -1,0 +1,305 @@
+@charset "UTF-8";
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,textarea,p,blockquote,th,td,input,select,textarea,button {
+	font-family: 'Nanum Gothic', sans-serif;
+}
+body,div,dl,dt,dd,ul,ol,li,pre,code,form,fieldset,legend,textarea,p,blockquote,th,td,input,select,textarea,button,.filter-option {
+	font-size: 12px;
+}
+/* BOOTSTRAP-SELECT */
+.form-group .bootstrap-select.btn-group, .form-horizontal .bootstrap-select.btn-group, .form-inline .bootstrap-select.btn-group { padding: 0 15px; }
+.form-group .bootstrap-select.btn-group>button, .form-horizontal .bootstrap-select.btn-group>button, .form-inline .bootstrap-select.btn-group>button { border-radius: 3px; margin-top:0;}
+
+/* 메뉴 아이콘 오른쪽 공백 */
+.page-header .page-header-menu .hor-menu .navbar-nav>li .dropdown-menu li>a>i { margin-right:6px; }
+
+
+.input-group-addon>i {color: #797979; }
+
+/* 테이블에 삽입된 버튼 여백 줄이기 */
+table.pg-table>tbody>tr>td.btn-td { padding-top: 2px; padding-bottom: 2px; }
+
+fieldset,img {
+	border: 0 none
+}
+dl,ul,ol,menu,li {
+	list-style: none
+}
+
+blockquote,q {
+	quotes: none
+}
+
+.portlet-title>.nav-tabs>li.active {
+    background: 0 0;
+    border-bottom: 4px solid #36c6d3;
+    border-bottom-width: 4px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(54, 198, 211);
+    position: relative;
+}
+.form-horizontal .search-opt {margin-top: 8px;}
+.form-horizontal .pg-form-group {
+	margin-bottom: 3px;
+	position: relative;
+	min-height: 1px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.form-horizontal .pg-view-group {margin-bottom: 7px;}
+.form-horizontal .pg-view-group>div {max-height: 34px;}
+/* .form-horizontal .pg-form-group .input-group-sm {margin-top: 3px;} */
+.form-horizontal .pg-form-group .control-label {min-height: 21px;}
+.form-horizontal .pg-form-group .btn-sm {padding-top: 3px;}
+.form-horizontal .form-actions {padding-bottom: 5px;position: relative;}
+.folding-search-btn{position: absolute; color: #2ab4c0; right: -11px; top: -31px; font-size: 17px;}
+
+
+
+#searchForm #gradeSelector { margin-top:3px; }
+
+@media ( min-width: 768px) {
+	#searchForm .selectGrade-label { width: 100%; text-align:left;  }
+}
+
+@media ( min-width: 992px) {
+	.pg-form-group {
+		width: 50%;
+		float: left;
+	}
+	.pg-form-group-12 { padding-left: 15px; }
+	#searchForm .selectGrade-label { width: 100%; }
+}
+
+@media ( min-width: 1200px) {
+	.pg-form-group {
+		width: 33%;
+		float: left;
+	}
+	.pg-form-group-12 { padding-left: 9px; }
+	#searchForm .selectGrade-label { width: 128px; text-align:right; }
+}
+.portlet.light { padding:0 !important; }
+/* @media ( min-width: 1400px) {
+	.container {
+		width: 1400px;
+	}
+	.pg-form-group-12 { padding-left: 9px; }
+	#searchForm .selectGrade-label { width: 155px; }
+} */
+
+.pg-table.table>thead>tr>th { padding-top:11px; padding-bottom:11px; text-align: center;vertical-align: middle;font-size: 11px;}
+.pg-table.table>thead>tr:nth-child(1)>th, .pg-table.table>thead>tr:nth-child(2)>th, .pg-table.table>thead>tr:nth-child(3)>th { border-bottom-width:2px;border-bottom-style: solid;border-bottom-color: rgb(231, 236, 241); }
+.pg-table.table>thead>tr>th:first-child { width:25px;}
+.pg-table.table>tbody>tr>td { border-bottom: 0;text-align: center;vertical-align: middle;font-size: 11px; padding: 6px;}
+.pg-table.table>tbody>tr>td.left { border-bottom: 0;text-align: left;vertical-align: middle;font-size: 11px; padding: 6px;}
+.pg-table.table>tbody>tr>td.right { border-bottom: 0;text-align: right;vertical-align: middle;font-size: 11px; padding: 6px;}
+.pg-table.table>tbody>tr>td.link, .link_modal { font-weight:bold; cursor:pointer; }
+.pg-table.table>tbody>tr>td.link:hover, .link_modal:hover { color:blue; cursor:pointer; }
+.pg-table.table>tbody>tr.lightgray { background-color: lightgray; }
+
+.paging { position:relative; width:300px; min-height:30px; margin:0 auto; text-align:center; }
+.paging > span {display:inline-block;height:10px;padding:9px 0px;text-align:center;}
+.paging > span.paging_num { min-width:120px; font-weight:bold; color:#5e5e5e; padding:9px 0px; }
+.paging > span a { color:#5e5e5e; display:block; width:20px; height:20px; }
+.paging > span span { color:#00b1f5;}
+
+/* Add */
+#writeFrm .tooltip-inner { background-color:#444d58; }
+#writeFrm .tooltip.top .tooltip-arrow { border-top-color:#444d58; }
+.selecter-wrapper {padding-left: 0 !important; padding-right: 0 !important;}
+
+#writeFrm .form-subtitle>label { padding:13px;font-size:15px; } 
+/* View */
+.nav-tabs>li>a:hover {
+    border-color: #eee #eee #ddd;
+}
+.form-horizontal .form-group .form-control-static {
+    color: #1a4e7b;
+}
+
+/* 상단 알림 크기조절 */
+.page-header .page-header-top .top-menu .navbar-nav>li.dropdown-extended .dropdown-menu .dropdown-menu-list>li>a {
+	padding: 15px 13px 15px;
+}
+
+
+
+/* Dashboard */
+.todo-container .todo-tasks-container {
+    padding: 0px 20px !important;
+}
+
+.todo-container .todo-tasks-item>h4 {
+	font-size:14px !important;	
+}
+
+.todo-container .todo-projects-container, .todo-container .todo-tasks-container {
+	border: 0px solid white !important;	
+}
+.portlet.light.portlet-fit.bordered.calendar { min-height: 588px; }
+.dashboard-stat .details .number { font-size: 31px; }
+.dashboard-stat .details .number2 { font-size: 24px; }
+
+#uploaded-files thead th, tbody td {
+	font-size: 14px;
+	padding:5px;
+}
+
+/* small desktop */
+@media all and (max-width: 1200px) {
+    .portlet.light {
+    	padding: 12px 20px 15px;
+	}
+	.container {
+		margin-right: auto;
+		margin-left: auto;
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}
+
+/* tablet */
+@media all and (max-width: 1024px) {
+    .portlet.light {
+    	padding: 15px 10px 05px;
+	}
+	.container {
+		margin-right: auto;
+		margin-left: auto;
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}
+
+/* mobile phone */
+@media all and (max-width: 768px) {
+    .portlet.light {
+    	padding: 2px 2px 2px;
+	}
+	.container {
+		margin-right: auto;
+		margin-left: auto;
+		padding-left: 2px;
+		padding-right: 2px;
+	}
+	.page-head { 
+		display: none;
+	}
+}
+
+.container:before,
+.container:after {
+	content: " ";
+	display: table;
+}
+
+.container:after {
+	clear: both;
+}
+
+.task-list li .date {
+    padding: 4px 9px 5px 4px;
+    text-align: right;
+    font-style: italic;
+    color: #c1cbd0;
+    display: inline-block;
+    float: right;
+}
+
+.tasks-widget .task-list>li>.task-title {
+    color: #838FA1;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.tasks-widget .task-list>li>.task-user {
+    color: #838FA1;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.chat-form .btn-cont {
+    margin-top: -7px;
+}
+
+
+.chat-form .input-cont {
+     display: inline-block;
+     min-width:75%;
+     float:right;
+}
+@media all and (max-width: 807px) {
+	.chat-form .input-cont {
+		min-width:60%;
+	}
+}
+@media all and (max-width: 489px) {
+	.chat-form .input-cont {
+		min-width:50%;
+	}
+}
+.chat-form .input-target {
+    display: inline-block;
+    max-width:100px;
+    
+}
+
+input[type=checkbox] {  
+    display: none;  
+}
+
+input[type=checkbox] + label{
+    display: inline-block;  
+    cursor: pointer;  
+    position: relative;
+	margin-right: 22px;
+    margin-left: 8px;
+    font-size: 12px;
+	margin-bottom: 0;
+}
+
+input[type=checkbox]+ label:before {     
+    content: "";  
+    display: inline-block;  
+    width: 15px;  
+    height: 15px;  
+  
+    margin-right: 10px;  
+    position: absolute;  
+    left: 0;  
+    bottom: -5px;  
+    border-radius: 2px;
+	border: 1px solid #d9d9d9;
+}
+input[type=checkbox]:checked + label:before { 
+    content: "\2713";  /* 체크모양 */
+    font-size: 11px;
+    font-family: monospace;
+    font-weight: 900;
+    color: #888;
+    text-align: center;
+    line-height: 16px;
+}
+input[type=checkbox]:disabled + label:before { 
+    content: "\2716";  /* 체크모양 */
+	font-size: 10px;
+    font-family: monospace;
+    font-weight: 500;
+    color: #d9d9d9;
+    text-align: center;
+    line-height: 15px;
+
+} 
+
+.form-horizontal .form-body .form-group select {
+    margin-bottom: -3px;
+}
+
+.form-horizontal .form-body .form-group .input-sm {
+    margin-top: 0;
+}
+
+.dashboard-stat {
+   border-radius: 2px;
+}
