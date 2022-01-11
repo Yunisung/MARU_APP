@@ -63,7 +63,7 @@ public class CollectController {
 //						+ "SUM(IF(risk != '' AND capType = '매입', 0, A.amount)) as amount,"
 //						+ "SUM(IF(risk != '' AND capType = '매입', 0, A.stlVanFee)) as stlVanFee,"
 //						+ "SUM(A.amount-A.stlVanFee) as collectAmt,"
-//						+ "SUM(IF(risk != '' AND capType = '매입', 0, A.amount-A.stlVanFee)) AS MARUAmt,"
+//						+ "SUM(IF(risk != '' AND capType = '매입', 0, A.amount-A.stlVanFee)) AS kwonAmt,"
 //						+ "IF(B.amount IS NOT NULL , 'TRUE', 'FALSE') as isSaved," 
 //						+ "B.amount as savedAmount, B.stlVanFee as savedStlVanFee, B.calcAmount as savedCalcAmount, B.collectAmount as savedCollectAmount, B.deductAmount as savedDeductAmount, B.summary");
 //		logger.debug("COLLECT TEST collectId {}", collectId);
@@ -87,10 +87,10 @@ public class CollectController {
 		StringBuilder sb = new StringBuilder();
 		sb.append("select A.*, IF(B.amount IS NOT NULL , 'TRUE', 'FALSE') as isSaved, B.amount as savedAmount, B.stlVanFee as savedStlVanFee, B.calcAmount as savedCalcAmount, B.collectAmount as savedCollectAmount, B.deductAmount as savedDeductAmount, B.summary ");
 		sb.append("from (select stlVanDay,van,vanId,mchtId,name,MAX(tmnId) as tmnId, distId,agencyId,salesId, ");
-		sb.append("SUM(amount) as amount, ");
-		sb.append("SUM(stlVanFee) as stlVanFee, ");
+		sb.append("SUM(IF(risk != '' AND capType = '매입', 0, amount)) as amount, ");
+		sb.append("SUM(IF(risk != '' AND capType = '매입', 0, stlVanFee)) as stlVanFee, ");
 		sb.append("SUM(amount-stlVanFee) as collectAmt, ");
-		sb.append("SUM(amount-stlVanFee) AS MARUAmt from VW_TRX_CAP ");
+		sb.append("SUM(IF(risk != '' AND capType = '매입', 0, amount-stlVanFee)) AS kwonAmt from VW_TRX_CAP ");
 		sb.append("WHERE stlVanDay = '"+collectDay+"' ");
 		sb.append("AND vanStatus = '입금대기' ");
 		
@@ -277,8 +277,7 @@ public class CollectController {
 			SharedMap<String,Object> sharedMap = collectGroupDAO.getByColgId(eachMap.getString("colgId")).getRowFirst();
 			CPDAO cpDAO = new CPDAO();
 			StringBuilder sb = new StringBuilder();
-//			sb.append("SELECT SUM(IF(risk != '' AND capType = '매입', 0, amount-stlVanFee)) AS MARUAmt FROM VW_TRX_CAP ");
-			sb.append("SELECT SUM(amount-stlVanFee) AS MARUAmt FROM VW_TRX_CAP ");
+			sb.append("SELECT SUM(IF(risk != '' AND capType = '매입', 0, amount-stlVanFee)) AS kwonAmt FROM VW_TRX_CAP ");
 			sb.append("WHERE stlVanDay = '"+eachMap.getString("collectDay")+"' ");
 			sb.append("AND vanStatus = '입금대기' ");
 
