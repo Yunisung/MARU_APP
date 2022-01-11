@@ -159,6 +159,7 @@ public class CommonController {
 			dao.addWhere("mchtId",session.getParentId(),DAO.eq);
 		}
 		
+		// KBR : 검색 키워드에 들어가는(like) 이름 또는 가맹점Id 모두 들고옴
 		RecordSet rset = dao.search();
 		while(rset.next()) {
 			resultArray.add(rset.getString("resKey"));
