@@ -34,29 +34,35 @@ import com.pgmate.lib.util.map.SharedMap;
 public class MemberSalesController {
 	
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.ctl.MemberSalesController.class );
-	
+	//KJM : 멤버관리 > 지사조회 페이지 이동
 	@RequestMapping(value = {"/member/sales/form"})
     public ModelAndView form(HttpServletRequest request) {
+		//KJM : 소속 에이전시 select box의 option값(=에이전시 리스트) 보내줌
 		request.setAttribute("SELECT_AGENCY", new AgencyDAO().getSelectOption());
         return new ModelAndView("/member/sales/form");
     }
 	
+	//KJM : 멤버관리 > 지사 등록 페이지 이동
 	@RequestMapping(value = {"/member/sales/add"})
     public ModelAndView add(HttpServletRequest request) {
 		return new ModelAndView("/member/sales/add");
     }
 	
+	//KJM : 멤버관리 > 지사조회 리스트
 	@RequestMapping(value = "/member/sales/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView list(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
 		MemberSalesDAO salesDAO = new MemberSalesDAO();
+		//KJM : 로그인 중인 계정 소속 구분
 		SessionUtil.setSearchGrade(request, cpRequest);
+		//KJM : 입력 조건에 상태값 안줬을 경우 "상태!=폐기" 세팅
 		if(CommonUtil.isNullOrSpace(cpRequest.getKeyValue("status"))){
 			cpRequest.setData("status", "폐기", "ne", "", true);
 		}
-		
+		//KJM : 지사 리스트 가져온 뒤 url에 보내줌
 		RecordSet rset = salesDAO.list(cpRequest.data,cpRequest.page);
 		return new CPRUtil(cpRequest).dataList(rset,salesDAO).setView(request,"/member/sales/list","");
 	}
+	
 	@RequestMapping(value = "/member/sales/idList", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView idList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
 		MemberSalesDAO salesDAO = new MemberSalesDAO();
@@ -69,6 +75,7 @@ public class MemberSalesController {
 		return new CPRUtil(cpRequest).dataList(rset,salesDAO).setView(request,"/member/sales/idList","");
 	}
 	
+	//KJM : 멤버관리 > 지사 페이지
 	@RequestMapping(value = "/member/sales/view/{salesId}", method = RequestMethod.GET)
     public ModelAndView view(HttpServletRequest request, @PathVariable String salesId) throws Exception {
 		request.setAttribute("DATAMAP", new MemberSalesDAO().getById(salesId).getRowFirst());
@@ -77,36 +84,47 @@ public class MemberSalesController {
         return new ModelAndView("/member/sales/view");
     }
 	
+	//KJM : 멤버관리 > 지사 정보 수정 페이지 이동
     @RequestMapping(value = "/member/sales/modify/{salesId}", method = RequestMethod.GET)
     public ModelAndView modify(HttpServletRequest request, @PathVariable String salesId) {
         return new ModelAndView("/member/sales/modify","DATAMAP",new MemberSalesDAO().getById(salesId).getRowFirst());
     }
 	
+    //KJM : 멤버관리 > 지사 등록
 	@RequestMapping(value = {"/member/sales/insert"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody CPResponse insert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		
 		CPDAO cpDAO = new CPDAO();
+		//KJM : 사업자번호, 주민번호 쿼리문에 넣기 전 암호화 된 값으로 바꿔준다
 		cpRequest.replaceValue("identity",cpDAO.getAESEnc(cpRequest.getValue("identity")));
 		cpRequest.replaceValue("ceoIdentity",cpDAO.getAESEnc(cpRequest.getValue("ceoIdentity")));
 		
+		//KJM : 새로운 지사 아이디 번호 부여
 		cpRequest.setData("salesId", cpDAO.getFunction("FN_GET_SALES_ID"));
+		//KJM : insert 쿼리문 수행
 		if(cpDAO.insert("PG_MAM_SALES", SessionUtil.getUserId(request), cpRequest.data)){
 			return new CPRUtil(cpRequest)
+					//KJM : "등록 성공하였습니다" 메시지 전달
 					.resultOK(CPUtil.RESULT_DATA_INSERTED).redirect(cpRequest.redirect)
 	        		.cpResponse();
 		}else{
+			//KJM : "등록 실패하였습니다" 메시지 전달
 			return new CPRUtil(cpRequest)
 	        		.resultNOK(CPUtil.RESULT_DATA_INFAIL,cpDAO.getError())
 	        		.cpResponse();
 		}
     }
 	
+	//KJM : 멤버관리 > 지사 정보 수정
 	@RequestMapping(value = {"/member/sales/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody CPResponse update(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
+		//KJM : 사업자번호, 주민번호 암호화 실행후 값 바꿔준다
 		cpRequest.replaceValue("identity",cpDAO.getAESEnc(cpRequest.getValue("identity")));
 		cpRequest.replaceValue("ceoIdentity",cpDAO.getAESEnc(cpRequest.getValue("ceoIdentity")));
 		
+		
+		//KJM : update 쿼리문 수행
 		if(cpDAO.updateAndBack("PG_MAM_SALES", SessionUtil.getUserId(request), cpRequest.data)){
 			return new CPRUtil(cpRequest)
 	        		.resultOK("사용자 정보가 변경되었습니다.")
@@ -127,22 +145,33 @@ public class MemberSalesController {
 	}
     
     // ======================================================= 관리정보
+    //KJM : 멤버관리 > 지사 지불정산정보 등록 페이지 이동
     @RequestMapping(value = {"/member/sales/mng/add/{salesId}"})
     public ModelAndView distMngAdd(HttpServletRequest request, @PathVariable String salesId) {
+    	
+    	//KJM : 해당 지사 정보 가져옴
     	SharedMap<String,Object> result = new MemberSalesDAO().getById(salesId).getRowFirst();
+    	
+    	//pys : PG_MAM_SALES_MNG 복호화
+//    	KSignUtil.getInstance().Decrypt(result, "account", "member/sales/mng/add");
+    	
+    	//KJM : 은행리스트, 해당 지사 지불정산 정보 넣어줌
     	request.setAttribute("DATADISTMNGMAP", new AgencyMngDAO().getById(result.getString("agencyId")).getRowFirst());
     	request.setAttribute("BANK_OPTION", new CodeDAO().getBank().getRows());
 		return new ModelAndView("/member/sales/mng/add", "DATAMAP", result);
     }
     
+    //KJM : 멤버관리 > 지사 지불정산정보 수정 페이지 이동
     @RequestMapping(value = "/member/sales/mng/modify/{salesId}", method = RequestMethod.GET)
     public ModelAndView mngModify(HttpServletRequest request, @PathVariable String salesId) {
+    	//KJM : 해당 지사 정보 가져옴
     	SharedMap<String,Object> result = new MemberSalesDAO().getById(salesId).getRowFirst();
     	request.setAttribute("DATADISTMNGMAP", new AgencyMngDAO().getById(result.getString("agencyId")).getRowFirst());
     	request.setAttribute("BANK_OPTION", new CodeDAO().getBank().getRows());
         return new ModelAndView("/member/sales/mng/modify", "DATAMAP", new MemberSalesMngDAO().getById(salesId).getRowFirst());
     }
-	
+    
+    //KJM : 멤버관리 > 지사 지불정산정보 등록
 	@RequestMapping(value = {"/member/sales/mng/insert"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody CPResponse mngInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
@@ -158,6 +187,7 @@ public class MemberSalesController {
 		}
     }
 	
+	//KJM : 멤버관리 > 지사 지불정산정보 수정
 	@RequestMapping(value = {"/member/sales/mng/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody CPResponse mngUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
