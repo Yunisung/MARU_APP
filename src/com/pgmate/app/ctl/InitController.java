@@ -29,24 +29,53 @@ import com.pgmate.lib.util.map.SharedMap;
  * @author Administrator
  *
  */
+
 @Controller
 public class InitController {
 
 	private static Logger logger = LoggerFactory.getLogger(com.pgmate.app.ctl.InitController.class);
-
-	@RequestMapping(value = { "/init" })
+	private static int PortCheck = 0 ;
+	
+	
+	@RequestMapping(value = {"/init" })
 	@SessionExclude
 	public ModelAndView init(HttpServletRequest request) {
+		
 		if (!SessionUtil.isLive(request)) {
-			return new ModelAndView("/sso/websso");
+//			SessionUtil.addLoginRequest(request.getRemoteAddr(), request);
+			PortCheck = request.getServerPort();
+			return new ModelAndView("/sso/websso","port", PortCheck);			
 		} else {
+			
+//			if(SessionUtil.checkLoginPort(request.getRemoteAddr(), request) == false) {
+//				SessionUtil.destroyById(userId, request);
+//				return new ModelAndView("/sso/websso","port", PortCheck);
+//			}
+			
+//			request.getSession().setAttribute(userId, cpSession);
+//			int localPort = request.getServerPort();
+			
+			
+			// KBR : portCheck 코드 추가
+//			if(request.getServerPort() != PortCheck) {
+//				SessionUtil.destroy(request);
+//			}
+			
+//			if(!SessionUtil.addLoginRequest(request.getRemoteAddr(), request)) {
+//				SessionUtil.destroy(SessionUtil.getLoginRequest(request.getRemoteAddr()));
+//			}
+		
 			CPSession cpSession = SessionUtil.get(request);
+			String userId = cpSession.getUserId();
 			
 			/*
 			if (cpSession.getUserId() == "jhryu") {
 				CPUtil.CP_DEBUG = true;
 			} */
 			
+			if (request.getServerName().indexOf("cp.cyrexpay.com") > -1 || cpSession.getUserId() == "yhbae" || cpSession.getUserId() == "ginaida") {
+				CPUtil.CP_DEBUG = true;
+			} 
 			if (cpSession.getGrade().equals("본사")){
 				initAdmin(request, cpSession);
 				return new ModelAndView("/main/admin");
