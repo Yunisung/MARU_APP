@@ -21,6 +21,7 @@ import com.pgmate.lib.util.map.SharedMap;
  * @author Administrator
  *
  */
+// KBR : excel sheet 만드는것 같은데...
 public class Template {
 
 	private static Logger logger 	= LoggerFactory.getLogger( com.pgmate.app.export.Template.class );
@@ -49,8 +50,11 @@ public class Template {
 	}
 	
 	public String export(LinkedHashMap <String,String> thead,RecordSet rset,String contentType)throws Exception{
+		
 		int column = 0;
+		
 		StringBuilder sb =new StringBuilder();
+		
 		if(thead != null){
 			sb.append(getFirst(CommonUtil.toString(thead.size()/4)));
 		}else{
@@ -62,7 +66,9 @@ public class Template {
 		sb.append("<tr align='center'>\n");
 		
 		if(thead != null && thead.size() !=0){
+			
 			List<String> keys = new ArrayList<String>();
+			
 			for (Entry<String, String> entry : thead.entrySet()) {
 				keys.add(entry.getKey());
 				sb.append("<td>"+entry.getValue()+"</td>\n");
@@ -77,7 +83,9 @@ public class Template {
 			for(SharedMap<String,Object> datas : rset.getRows()){
 				sb.append("<tr>\n");
 				for(String key : keys){
+					
 					Object data = datas.get(key);
+					
 					if(data instanceof java.lang.Integer){
 						sb.append("<td align='right' class='long'>"+CommonUtil.makeMoneyType(CommonUtil.parseInt(data), ",")+"</td>\n");
 					}else if(data instanceof java.lang.Long){
@@ -128,8 +136,9 @@ public class Template {
 				
 			}
 		}
-		
+		// html 형식으로 생성 
 		sb.append(getLast());
+		
 		
 		TplExport export = new TplExport();
 		String fileLink = "";
@@ -144,7 +153,6 @@ public class Template {
 		}else if(contentType.equals(CPUtil.CP_TYPE_FILE_EXL)){
 			fileLink = export.textToExl(sb.toString());
 		}
-		
 		
 		return fileLink;
 	}
