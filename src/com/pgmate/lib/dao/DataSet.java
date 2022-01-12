@@ -18,14 +18,14 @@ import com.pgmate.lib.util.map.SharedMap;
 public class DataSet implements Serializable {
 
 	private List<SharedMap<String,Object>> rows	= null;
-	private int idx				= -1;
+	private int idx				= -1; // while문 사용 시 0번째에 값을 셋팅해 주기 위해 -1부터 시작 
 	public String[] columns 	= null;
 	
 	public DataSet() {
 		this.rows = new ArrayList<SharedMap<String,Object>>();
 	}
 	
-	
+
 	public int size(){
 		if(rows == null){
 			return 0;
@@ -34,11 +34,14 @@ public class DataSet implements Serializable {
 	}
 	
 	public boolean next(){
+		//   검색 된 row가 없을경우
 		if(rows == null || rows.size() <= (idx + 1)){
 			return false;
 		}
+		
 		idx = idx + 1;
 		return true;
+		
 	}
 	
 	public void move(int idx) {
@@ -48,8 +51,10 @@ public class DataSet implements Serializable {
 	public int getIdx() {
 		return idx;
 	}
-
+	
+	// 공간 생성 후 0번째부터 순서대로 값을 넣기위해 idx값 설정
 	public int addRow() {
+		
 		rows.add(new SharedMap<String,Object>());
 		idx++;
 		return idx;
@@ -70,7 +75,7 @@ public class DataSet implements Serializable {
 			return true;
 		}
 	}
-
+	// idx 값 초기화 
 	public boolean first() {
 		idx = -1;
 		return true;
@@ -79,24 +84,31 @@ public class DataSet implements Serializable {
 	public void put(String name, int i) {
 		this.put(name, CommonUtil.toString(i));
 	}
-
+	
+	
+	//   맵(column:value) 형태로 값 맵핑 메소드 
 	public void put(String name, Object value) {
 		if(value == null){
 			value = "";
 		}
+		//  row라는 map에 해당 순서의 컬럼 정보 넣음
 		SharedMap<String,Object> row = (SharedMap<String, Object>)rows.get(idx);
+		//  name은 공백 제거 후, 데이터가 문자형일 때 바로 값 넣음
 		if(value instanceof String) {
-			row.put(name.trim(), value);	
+			row.put(name.trim(), value);
+			
+		//  데이터가 문자형이 아닐 때 문자형으로 변환시켜서 넣어줌 => ""+value
 		} else {
 			row.put(name.trim(), ""+value);
 		}
-		
 	}
 	
+	//   리스트 전체 값 리턴 
 	public List<SharedMap<String,Object>> getRows(){
 		return rows;
 	}
 	
+	// 넘어온 idx번째 열 
 	public SharedMap<String,Object> getRow(){
 		if(idx > -1) {
 			return (SharedMap<String,Object>)rows.get(idx);
@@ -104,7 +116,7 @@ public class DataSet implements Serializable {
 			return null;
 		}
 	}
-	
+	// 지정한 idx번째 열 
 	public SharedMap<String,Object> getRow(int idxx){
 		if(rows.size() > idxx) {
 			return (SharedMap<String,Object>)rows.get(idxx);
@@ -113,6 +125,7 @@ public class DataSet implements Serializable {
 		}
 	}
 	
+	// 단일값 조회 시 사용 
 	public SharedMap<String,Object> getRowFirst(){
 		if(rows.size() > 0) {
 			return (SharedMap<String,Object>)rows.get(0);
@@ -127,7 +140,8 @@ public class DataSet implements Serializable {
 		Object value = null;
 		try {
 			SharedMap<String,Object> row = (SharedMap<String, Object>)rows.get(idx);
-			value =row.get(name.trim());
+			//  pw 값 들고옴
+			value =row.get(name.trim()); 
 		} catch(Exception e) {}
 
 		return value;
