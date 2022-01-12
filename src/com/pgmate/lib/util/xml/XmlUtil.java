@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
  * @author Administrator
  *
  */
+// KBR : java Object를 XML형식으로 Marshaller 또는 XML을 java Object로 Unmarshaller 하는 클래스 
 public class XmlUtil {
 
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.lib.util.xml.XmlUtil.class );
@@ -36,6 +37,7 @@ public class XmlUtil {
             JAXBContext context = JAXBContext.newInstance(xml.getClass());
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, pretty);
+            
             if(CommonUtil.isNullOrSpace(charSet)){
             	m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
             }else{
