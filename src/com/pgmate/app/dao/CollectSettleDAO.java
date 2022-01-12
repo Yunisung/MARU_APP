@@ -13,6 +13,7 @@ import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.lang.CommonUtil;
 
 /**
+ * 210812_PYS : 입금정산
  * @author Administrator
  *
  */
@@ -27,11 +28,24 @@ public class CollectSettleDAO extends DAO{
 		super.setOrderBy("collectDay desc, name asc");
 	}
 	
+	/**
+	 * 210812_PYS : collectID로 데이터조회
+	 * <pre>
+	 * SELECT * FROM VW_COLLECT_SETTLE WHERE collectId = 'collectId' ORDER BY collectDay desc, name asc
+	 * </pre>
+	 * @param collectId
+	 * @return
+	 */
 	public RecordSet getById(String collectId){
 		addWhere("collectId",collectId,eq);
 		return search();
 	}
 	
+	/** 
+	 * 210812_PYS : Data클래스로 조회
+	 * @param datas
+	 * @return
+	 */
 	public RecordSet search(List<Data> datas){	
 		CPUtil.setDAO(this, datas);			//DATA to CONDITION 
 		return super.search();				//단일 검색

@@ -13,6 +13,10 @@ import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.map.SharedMap;
 
 /**
+ * 210812_PYS : PG_COLLECT_SETTLE_DTL, PG_COLLECT_SETTLE, VW_MCHT_NOT_DEPOIT 사용
+ * <pre>
+ * 입금정산
+ * </pre>
  * @author Administrator
  *
  */
