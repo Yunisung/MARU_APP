@@ -15,6 +15,7 @@ import com.pgmate.lib.dao.RecordSet;
  * @author Administrator
  *
  */
+//KJM : 정산 지급보류 관리 기능 DAO
 public class SettleHoldDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.SettleHoldDAO.class );
 	private static final String TABLE = "VW_SETTLE_HOLD";
@@ -35,6 +36,7 @@ public class SettleHoldDAO extends DAO{
 		return super.search();				//단일 검색
 	}
 	
+	//KJM : 지급보류 리스트 조회
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 

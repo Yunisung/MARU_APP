@@ -15,6 +15,7 @@ import com.pgmate.lib.dao.RecordSet;
  * @author Administrator
  *
  */
+//KJM : 대표가맹점 정산 기능 관련 DAO
 public class SettleSubDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.SettleSubDAO.class );
 	private static final String TABLE = "VW_SETTLE_SUB";

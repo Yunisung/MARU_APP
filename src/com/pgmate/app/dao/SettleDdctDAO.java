@@ -15,6 +15,7 @@ import com.pgmate.lib.dao.RecordSet;
  * @author Administrator
  *
  */
+//KJM : 차감정산 관련 DAO
 public class SettleDdctDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.SettleDdctDAO.class );
 	private static final String TABLE = "VW_SETTLE_DDCT";
@@ -47,6 +48,7 @@ public class SettleDdctDAO extends DAO{
 		return super.search();				//단일 검색
 	}
 	
+	//KJM : 차감정산 리스트 조회
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
