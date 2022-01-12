@@ -45,22 +45,26 @@ public class TrxOperController {
 		return new ModelAndView("/trxoper/new/form");
 	}
 	
-	
+	//KJM : ONLINE 거래생성 submit
 	@RequestMapping(value = "/trxoper/new/insert", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody CPResponse insert(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
 		
+		//KJM : 거래생성 정보 넣기위한 변수 선언
 		SharedMap<String,Object> load = new SharedMap<String,Object>();
 		load.put("mchtId", cpRequest.getValue("mchtId"));
 		load.put("tmnId" , cpRequest.getValue("tmnId"));
+		//KJM : 승인구분이 승인일 때 금액 그대로 넣어줌
 		if(cpRequest.getValue("trnType").equals("승인")) {
 			load.put("amount", cpRequest.getLongValue("amount"));
+		//KJM : 승인 취소일 때
 		} else {
+			//KJM : 금액이 양수의 값일 때 음수로 바꿔줌
 			if(cpRequest.getLongValue("amount") > 0) {
 				load.put("amount", -cpRequest.getLongValue("amount"));
+			//KJM : 음수일 땐 음수 그대로 넣어줌
 			} else {
 				load.put("amount", cpRequest.getLongValue("amount"));
 			}
-			
 		}
 		
 		load.put("cnt", 1);
@@ -71,22 +75,28 @@ public class TrxOperController {
 		
 		
 		DAO dao = new DAO();
+		//KJM : SELECT A.van,B.vanId FROM PG_MCHT_TMN A, PG_VAN B WHERE A.vanIdx = B.idx AND A.status='사용' AND tmnId='tmnId' ORDER BY A.van asc
+		//KJM : 터미널 정보와 van 정보 테이블을 이용하여 해당 터미널아이디에서 사용중인 van과 vanid 조회
 		dao.setTable("PG_MCHT_TMN A, PG_VAN B ");
 		dao.setColumns("A.van,B.vanId");
-		dao.setWhere("A.vanIdx = B.idx");
+		dao.setWhere("A.vanIdx = B.idx AND A.status = '사용'");
 		dao.addWhere("tmnId", load.getString("tmnId"), DAO.eq);
 		dao.setOrderBy("A.van asc");
+		//KJM : select 쿼리문 수행
 		RecordSet rset = dao.search(); 
 		dao.initRecord();
+		//KJM : recordset형식의 컬럼들을 map형식으로 변환
 		SharedMap<String,Object> tmnMap = rset.getRowFirst();
+		
 		load.put("van",tmnMap.getString("van") );
 		load.put("vanId",tmnMap.getString("vanId") );
 		load.put("rootTrxId", cpRequest.getValue("rootTrxId"));
 		
-
+		//KJM : insert 쿼리 수행할 데이터 변수 선언
 		SharedMap<String,Object> data = new SharedMap<String,Object>();
 		RecordSet rootCap = null;
 		
+		//KJM : 승인 구분이 승인일 때 금액 그대로, 승인취소일 때 음수의 금액으로 넣기
 		data.put("trnType", cpRequest.getValue("trnType"));
 		if(cpRequest.getValue("trnType").equals("승인")) {
 			data.put("amount", cpRequest.getLongValue("amount"));
@@ -99,6 +109,7 @@ public class TrxOperController {
 			rootCap = new TrxCapDAO().getByTrxId(cpRequest.getValue("rootTrxId"));
 		}
 		
+		//KJM : 할부기간 : 00패턴에 맞게 변환 후 넣어줌 (1->01, 10->10)
 		data.put("installment", CommonUtil.zerofill(cpRequest.getLongValue("installment"),2));
 		if(rootCap != null) {
 			data.put("bin", rootCap.getRowFirst().getString("bin"));
@@ -111,19 +122,25 @@ public class TrxOperController {
 			data.put("authCd", cpRequest.getValue("authCd"));
 			data.put("rootTrxDay", "");
 		}
-		
 		data.put("trxDay", cpRequest.getValue("trxDay"));
+		data.put("bin", cpRequest.getValue("bin"));
+		data.put("last4", cpRequest.getValue("last4"));			//KJM
+		data.put("authCd", cpRequest.getValue("authCd"));		//승인번호
+		data.put("trxDay", cpRequest.getValue("trxDay"));		//거래일자
 		data.put("trxTime", cpRequest.getValue("trxTime"));
-		data.put("trackId", cpRequest.getValue("trackId"));
-		data.put("vanTrxId", cpRequest.getValue("vanTrxId"));
-		data.put("vanDay", cpRequest.getValue("vanDay"));
-		data.put("vanStlFee", cpRequest.getLongValue("vanStlFee"));
-		data.put("exeStatus","");
-		data.put("regId", SessionUtil.getUserId(request));
+		data.put("rootTrxDay", cpRequest.getValue("rootTrxDay"));//취소시 원거래일자
+		data.put("trackId", cpRequest.getValue("trackId"));		//주문번호
+		data.put("vanTrxId", cpRequest.getValue("vanTrxId"));	//처리사 거래번호
+		data.put("vanDay", cpRequest.getValue("vanDay"));		//van 또는 카드사 정산 예정일
+		data.put("vanStlFee", cpRequest.getLongValue("vanStlFee"));//van 또는 카드사 수수료
+		data.put("exeStatus","");								//처리결과(완료, 실패)
+		data.put("regId", SessionUtil.getUserId(request));		//등록자아이디(기본값 : system)
 		data.put("regDay",CommonUtil.getCurrentDate("yyyyMMdd"));
 		
-
+		
 		DAO d = new DAO();
+		//KJM : where : 배치처리인덱스='인덱스', van='van', 처리사거래번호='vanTrxId', 처리결과='완료'
+		//KJM : 이미 거래 생성이 요청 된 거래 idx 조회
 		d.setTable("PG_TRX_LOAD_DTL A, PG_TRX_LOAD B");
 		d.setColumns("A.idx");
 		d.addWhere("A.batchIdx = B.idx");
@@ -131,31 +148,37 @@ public class TrxOperController {
 		d.addWhere("A.vanTrxId", data.getString("vanTrxId"));
 		d.addWhere("A.exeStatus", "완료", DAO.eq);
 		d.setOrderBy("A.regDate asc");
+		//KJM : select 쿼리 수행
 		RecordSet r = d.search();
+		//KJM : 쿼리 수행 값 있을 경우 (중복 거래 생성)
 		if(r.size() > 0){
+			//KJM : 에러메시지 생성, 봔환
 			return new CPRUtil(cpRequest)
 	        		.resultNOK("이미 거래 생성 요청된 거래입니다. VAN 거래번호 기준 ")
 	        		.cpResponse();
 		}
 		
-		
-		
 		TrxDAO trxDAO = new TrxDAO();
+		//KJM : 배치처리인덱스 값 할당 (insert 수행 후 추가된 인덱스 값)
 		long batchIdx = trxDAO.insertTrxLoad(load);
+		//KJM : idx가 0일 경우 insert 안된것
 		if(batchIdx == 0){
+			//KJM : 에러메시지 생성, 반환
 			return new CPRUtil(cpRequest)
 	        		.resultNOK("거래 데이터 생성 실패",trxDAO.getError())
 	        		.cpResponse();
 		}
+		//KJM : data에 batchIdx 값 할당
 		data.put("batchIdx", batchIdx);
 		
-		
+		//KJM : insert 정상 수행 시
 		if(trxDAO.insertTrxLoadDtl(data)){
-			
+			//KJM : 정상 수행 메시지 생성, 반환
 			return new CPRUtil(cpRequest)
 	        		.resultOK("거래데이터가 생성되었습니다. 처리 목록에서 실행하여 주시기 바랍니다.")
 	        		.cpResponse();
 		}else{
+			//KJM : 에러메시지 생성, 반환
 			trxDAO.deleteTrxLoad(batchIdx);
 			return new CPRUtil(cpRequest)
 	        		.resultNOK("거래 데이터 생성 실패",trxDAO.getError())
@@ -176,17 +199,20 @@ public class TrxOperController {
         return new ModelAndView("/trx/static/modal");
     } */
 	
+	//KJM : 거래관리 > 거래생성 조회 (리스트)
 	@RequestMapping(value = "/trxoper/load/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView loadList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
+		//KJM : 로그인중인 계정 소속 구분
 		SessionUtil.setSearchGrade(request, cpRequest);
 		
 		TotLoadDAO trxLoadDAO = new TotLoadDAO();
+		//KJM : 조회한 리스트를 해당 경로로 보내준다
 		RecordSet rset = trxLoadDAO.list(cpRequest.data,cpRequest.page);
+
+
 		return new CPRUtil(cpRequest).dataList(rset,trxLoadDAO).setView(request,"/trxoper/load/list","");
 	}
-	
-	
-	
+	// KBR : 거래관리 > 거래생성 요청 클릭 시 
 	@RequestMapping(value = "/trxoper/load/status/{idx}", method = RequestMethod.POST)
 	public @ResponseBody String capdelAction(HttpServletRequest request,@PathVariable long idx) {
 		if(idx == 0){
@@ -200,9 +226,11 @@ public class TrxOperController {
 		}	
 	}
 	
+	//KJM : 거래생성조회 > 상세내역
 	@RequestMapping(value = "/trxoper/load/dtl/{idx}", method = RequestMethod.GET)
 	public ModelAndView loadDtlForm(HttpServletRequest request, @PathVariable String idx) {
-		
+		//KJM : 해당 인덱스에 대한 상세내역 세팅
+		//KJM : form에 인덱스 제공용으로 보냄 > form -> search돌림(인덱스 이용) -> list
 		request.setAttribute("LOAD_MAP", new TotLoadDAO().getByIdx(idx).getRow(0));
 		return new ModelAndView("/trxoper/load/dtl/form");
 	}

@@ -1,15 +1,25 @@
 package com.pgmate.app.ctl;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +30,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.pgmate.app.dao.CPDAO;
 import com.pgmate.app.dao.ChargeSettleDAO;
+import com.pgmate.app.dao.DepositDAO;
+import com.pgmate.app.dao.MchtDdctDAO;
+import com.pgmate.app.dao.PispSettleDAO;
 import com.pgmate.app.dao.SettleDAO;
+import com.pgmate.app.dao.SettleDdctDAO;
+import com.pgmate.app.dao.SettleHoldDAO;
+import com.pgmate.app.dao.SettleMchtDAO;
 import com.pgmate.app.dao.SettleSubDAO;
 import com.pgmate.app.dao.TrxCapDAO;
+import com.pgmate.app.dao.TrxDAO;
 import com.pgmate.app.dao.VactSettleDAO;
 import com.pgmate.app.dao.VactSettleMchtDAO;
 import com.pgmate.app.export.CPDocument;
@@ -37,6 +54,8 @@ import com.pgmate.app.util.CPUtil;
 import com.pgmate.app.util.SessionUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
+import com.pgmate.lib.util.db.DBFactory;
+import com.pgmate.lib.util.db.DBManager;
 import com.pgmate.lib.util.gson.GsonUtil;
 import com.pgmate.lib.util.lang.CommonUtil;
 import com.pgmate.lib.util.map.SharedMap;
@@ -429,6 +448,7 @@ public class VactSettleController {
 		return new ModelAndView("/vactSettle/modal");
 	}
 
+	//TODO
 	@RequestMapping(value = "/vactSettle/status/{status}", method = RequestMethod.POST)
 	public @ResponseBody SharedMap<String, Object> settleStatus(HttpServletRequest request, @PathVariable String status, @RequestBody String stlId) {
 		SharedMap<String, Object> resultMap = new SharedMap<String, Object>();
@@ -677,7 +697,7 @@ public class VactSettleController {
 			senderMap.put("addr2", "54길 46 2층");
 			senderMap.put("bizCategory", "서비스");
 			senderMap.put("bizType", "전자금융업외");
-			senderMap.put("email", "help@mtouch.com");
+			senderMap.put("email", "bukook@bkwinners.com");
 
 			TaxExport taxExport = new TaxExport();
 

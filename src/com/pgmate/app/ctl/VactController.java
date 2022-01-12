@@ -34,6 +34,7 @@ import com.pgmate.lib.util.map.SharedMap;
 public class VactController {
   private static Logger logger = LoggerFactory.getLogger(com.pgmate.app.ctl.VactController.class);
 
+  //KJM : 거래관리 > 가상계좌관리 > 발행내역 조회 리스트
   @RequestMapping(value = "/vact/dtl/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
   public ModelAndView dtlList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 	SessionUtil.setSearchGrade(request, cpRequest);
@@ -48,10 +49,13 @@ public class VactController {
 	}
 	
     VactDtlDAO vactDtlDAO = new VactDtlDAO();
+    //KJM : select 쿼리 수행 후 가상계좌 발행 내역 가져옴
     RecordSet rset = vactDtlDAO.list(cpRequest.data, cpRequest.page);
+    //KJM : 가져온 데이터 view에 넘겨줌
     return new CPRUtil(cpRequest).dataList(rset, vactDtlDAO).setView(request, "/vact/dtl/list", "");
   }
   
+  //KJM : 거래관리 > 가상계좌 거래내역 조회 리스트
   @RequestMapping(value = "/vact/trx/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
   public ModelAndView trxList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
     SessionUtil.setSearchGrade(request, cpRequest);
@@ -65,7 +69,9 @@ public class VactController {
 		cpRequest.replaceKeyValue("mchtId",	map.getString("mchtId"));
     }
 	
+
     VactTrxDAO vactTrxDAO = new VactTrxDAO();
+    //KJM : 거래내역의 금액 총 합계 구해서 넘겨줌
     request.setAttribute("AMOUNT_SUM", new VactTrxDAO().trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
     RecordSet rset = vactTrxDAO.list(cpRequest.data, cpRequest.page);
     return new CPRUtil(cpRequest).dataList(rset, vactTrxDAO).setView(request, "/vact/trx/list", "");
@@ -82,7 +88,7 @@ public class VactController {
     SharedMap<String, Object> resMap = new SharedMap<String, Object>();
     resMap.put("result", "NOK");
     DAO dao = new DAO();
-    if (dao.update("UPDATE PG_VACT_TRX SET hookStatus='전송장애', hookRetry='1' WHERE vactId ='" + vactId + "'")) {
+    if (dao.update("UPDATE PG_VACT_TRX SET hookStatus='전송실패', hookRetry='1' WHERE vactId ='" + vactId + "'")) {
       resMap.put("result", "OK");
     } else {
       resMap.put("msg", "재전송에 실패했습니다. 관리자에게 문의해주세요.");
