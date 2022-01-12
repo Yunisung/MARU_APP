@@ -22,17 +22,37 @@ import com.pgmate.lib.util.map.SharedMap;
  * @author Administrator
  *
  */
+//KJM : 매입내역
 public class TrxCapDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.TrxCapDAO.class );
-	private static final String TABLE = "VW_TRX_CAP_LIST";
 	private static final String COLUMNS = "*";
-
+	
+	//KJM : 테이블명, 컬럼, 정렬기준 기본 세팅
 	public TrxCapDAO() {
 		super(TABLE,CPUtil.CP_DEBUG);
 		super.setColumns(TrxCapDAO.COLUMNS);
+		//KJM : 수신일자 , 수신시간
 		super.setOrderBy("regDay desc, regTime desc");
 	}
 	
+	/**
+	 * 21/12/30 추가
+	 * KBR : 취소된 모든 금액 검색 
+	 * @param trxId
+	 * @return
+	 */
+	public long getRfdAmtBytrxId(String trxId) {
+		
+		super.setTable("PG_TRX_RFD");
+		super.setColumns(" SUM(rfdAmount) as RDFAMT ");
+		super.addWhere("rootTrxId", trxId, eq);
+		super.addWhere("status", "완료", eq);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRow(0).getLong("RDFAMT");
+		
+	}
+
 
 	public RecordSet getByTrxId(String trxId){
 		addWhere("trxId",trxId,eq);
@@ -44,25 +64,35 @@ public class TrxCapDAO extends DAO{
 		return search();
 	}
 	
+	//KJM : 취소된 매입번호 리스트
 	public RecordSet getByRootCapId2(String capId){
+		//KJM : VW_TRX_CAP(매입내역) 테이블을 기준으로 PG_TRX_RFD(결제 취소 내역) 테이블을 합친다
 		super.setTable("VW_TRX_CAP A left join PG_TRX_RFD B on A.trxId = B.trxId");
+		//KJM : 매입내역 *
 		super.setColumns("A.*");
+		//KJM : 해당 매입거래번호와 결제취소내역 테이블의 거래번호가 일치하는 것만
 		super.addWhere("B.rootTrxId = (SELECT trxId FROM VW_TRX_CAP WHERE capId ='" + capId + "')");
+		//KJM : select 쿼리문 수행
 		RecordSet rset = super.search();
 		super.initRecord();
 		return rset;
 	}
-
+	
+	//KJM : 취소된 매입번호 정보
 	public RecordSet getByRootTrxId(String trxId){
+		//KJM : VW_TRX_CAP(매입내역) 테이블을 기준으로 PG_TRX_RFD(결제 취소 내역) 테이블을 합친다 (거래번호)
 		super.setTable("VW_TRX_CAP A left join PG_TRX_RFD B on A.trxId = B.trxId");
 		super.setColumns("A.*");
+		//KJM : 원거래번호가 거래번호와 같은 컬럼만
 		super.addWhere("B.rootTrxId",trxId,eq);
 		RecordSet rset = super.search();
 		super.initRecord();
 		return rset;
 	}
 	
+	//KJM : 해당 매입번호에 대한 매입내역 리스트
 	public RecordSet getByCapId(String capId){
+		//KJM : capId = 'capId'
 		addWhere("capId",capId,eq);
 		return search();
 	}
@@ -75,7 +105,6 @@ public class TrxCapDAO extends DAO{
 		return rset;
 	}
 
-	
 	// where 가맹점아이디, 터미널아이디, 주문번호, 승인번호, 금액, 거래일자가 일치하는 것
 	public RecordSet getBySix(String mchtId, String tmnId, String trackId, String authCd, String amount, String regDay){
 		super.setTable("PG_TRX_PAY");
@@ -163,7 +192,6 @@ public class TrxCapDAO extends DAO{
 		return rset;
 	}
 
-	
 	public RecordSet getByMchtId(String mchtId, long limit){
 		addWhere("mchtId",mchtId,eq);
 		setLimit(limit);
@@ -187,6 +215,15 @@ public class TrxCapDAO extends DAO{
 		return super.search();				//단일 검색
 	}
 	
+	/**
+	 * 210809_PYS : 월별 매입내역 조회
+	 * <pre>
+	 * 매입 시작일부터 현재까지의 개월을 리턴한다.
+	 * ex) 21년 1월부터 4월까지 매입이 잡혀있을경우 
+	 * {202101, 202102, 202103, 202104} 
+	 * </pre>
+	 * @return
+	 */
 	public List<String> salesMonthList(){
 		super.setColumns("SUBSTR(MIN(regDay),1,6) as trxMonth");
 		super.setTable("PG_TRX_CAP");
@@ -212,13 +249,13 @@ public class TrxCapDAO extends DAO{
 		return list;
 	}
 	
+	//KJM : 매입현황조회 리스트 가져옴
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
-		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		//KJM : exel, pdf 파일 요청의 경우 page.size = 100000
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
-	
-	
 	
 	public RecordSet calcPayList(List<Data> datas,Page page) {
 		super.setColumns("trxDay, taxId, stlDay, mchtId, name, SUM(amount) AS amount, SUM(vat) AS vat, " +
@@ -261,7 +298,9 @@ public class TrxCapDAO extends DAO{
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
 	
+	//KJM : 금액 총합계
 	public RecordSet trxSum(List<Data> datas,Page page) {
+		//KJM : (금액)amount의 합계 결과를 amount 컬럼명으로 받겠다
 		super.setColumns("SUM(amount) AS amount");
 		super.setOrderBy("");
 		super.setLimit(0);
@@ -303,6 +342,7 @@ public class TrxCapDAO extends DAO{
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
+	
 	
 
 	public RecordSet getByVanId(String vanId){
@@ -348,4 +388,6 @@ public class TrxCapDAO extends DAO{
 			return new SharedMap<String,Object>();
 		}
 	}
+
+
 }

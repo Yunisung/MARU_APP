@@ -17,6 +17,7 @@ import com.pgmate.lib.util.lang.CommonUtil;
  * @author Administrator
  *
  */
+//KJM : 관리자 취소내역(사이트를 통한 거래 취소 요청 정보)
 public class TrxAdminCancelDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.TrxAdminCancelDAO.class );
 	private static final String TABLE = "VW_TRX_ADMIN_RFD";
@@ -39,11 +40,14 @@ public class TrxAdminCancelDAO extends DAO{
 		return super.search();				//단일 검색
 	}
 	
+	//KJM : 관리자 취소내역에 대한 리스트
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
+	
+	//KJM : 조회 리스트들의 금액 총 합계
 	public RecordSet trxSum(List<Data> datas,Page page) {
 		super.setColumns("SUM(amount) AS amount");
 		page = CPUtil.correctPage(page);

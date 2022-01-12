@@ -17,6 +17,7 @@ import com.pgmate.lib.util.map.SharedMap;
  * @author Administrator
  *
  */
+//KJM : ONLINE 거래 생성 또는 OFLINE 거래 업로드용 테이블
 public class TotLoadDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.TotLoadDAO.class );
 	private static final String TABLE = "VW_TRX_LOAD";
@@ -26,6 +27,7 @@ public class TotLoadDAO extends DAO{
 		super.setColumns(TotLoadDAO.COLUMNS);
 	}
 	
+	//KJM : 해당 인덱스에 대한 거래생성 상세 조회
 	public RecordSet getByIdx(String idx){
 		addWhere("idx",idx,eq);
 		return search();
@@ -39,6 +41,7 @@ public class TotLoadDAO extends DAO{
 	
 	public RecordSet getByTrxIdx(String idx){
 		setTable("PG_TRX_LOAD");
+		//KJM : where idx 같은
 		addWhere("idx",idx,eq);
 		return search();
 	}
@@ -60,6 +63,7 @@ public class TotLoadDAO extends DAO{
 		return super.search();				//단일 검색
 	}
 	
+	//KJM : 거래생성 리스트 가져옴
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 

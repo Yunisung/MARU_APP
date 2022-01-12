@@ -17,10 +17,10 @@ import com.pgmate.lib.dao.RecordSet;
  */
 public class TotCapMonthlyDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.TotCapMonthlyDAO.class );
-	private static final String TABLE = "VW_TOT_CAP_MONTHLY";
+	private static final String TABLE = "VW_TOT_CAP_MONTHLY"; // 월별 매출관리 view
 	private static final String COLUMNS = "*";
 	private static final String SUM_COLUMNS = "capMonth,SUM(payAmt) as payAmt,SUM(payCnt) as payCnt,SUM(rfdAmt) as rfdAmt,SUM(rfdCnt) as rfdCnt,SUM(totalAmt) as totalAmt,SUM(totalCnt) as totalCnt,SUM(stlAmt) as stlAmt,SUM(stlFee) as stlFee,"
-			+ "SUM(stlDistFee) as stlDistFee,SUM(stlAgencyFee) as stlAgencyFee,SUM(stlSalesFee) as stlSalesFee,SUM(benefit) as benefit";
+			+ "SUM(stlDistFee) as stlDistFee,SUM(stlAgencyFee) as stlAgencyFee,SUM(stlSalesFee) as stlSalesFee,SUM(benefit) as benefit"; // 총 합 계산 쿼리
 												
 
 	public TotCapMonthlyDAO() {
@@ -45,7 +45,6 @@ public class TotCapMonthlyDAO extends DAO{
 		CPUtil.setDAO(this, datas);									//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
-	
 	public RecordSet salesMchtMonthlyList(List<Data> datas,Page page){
 		super.setColumns(COLUMNS);
 		super.setGroupBy("capMonth, mchtId");
