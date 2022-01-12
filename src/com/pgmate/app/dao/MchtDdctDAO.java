@@ -30,7 +30,7 @@ import com.pgmate.lib.util.map.SharedMap;
  */
 public class MchtDdctDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.MchtDdctDAO.class );
-	private static final String TABLE = "VW_MCHT_DDCT";
+	private static final String TABLE = "VW_MCHT_DDCT"; // KBR : 차강정산 정보 테이블
 	private static final String COLUMNS = "*";
 	
 	public MchtDdctDAO() {
@@ -58,7 +58,8 @@ public class MchtDdctDAO extends DAO{
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
-
+	
+	// KBR : PG_CODE테이블에 등록된 DDCT 코드 리스트 
 	public RecordSet getCode() {
 		super.setTable("PG_CODE");
 		super.setColumns("*");
@@ -69,21 +70,23 @@ public class MchtDdctDAO extends DAO{
 		return rset;
 	}
 
+	// KBR : 들어오는 매개변수가 휴일인지 체크하여 해당 날짜 리턴하는 메소드
 	public String getSettleDay(String today) {	
 		String q = "SELECT days FROM PG_CODE_HOLIDAY WHERE days >= '"+today+"' AND status ='no' limit 1";
 		RecordSet rset = super.query(q);
 		super.initRecord();
 		return rset.getRow(0).getString("days");
 	}
-
+	// KBR : 기존 index + 1 한 값으로 등록 할 idx값 셋팅  
 	public synchronized static String getDdctId() {
 		return "D" + getFunction("FN_NEXTVAL2", "DDCT");
 	}
-	
+	// KBR : 고유 식별번호 앞부분 설정 메소드
 	public synchronized static String getSettleSchId(int i) {
 		return "SC"+ CommonUtil.getCurrentDate("yyyyMMddHHmmss")+ CommonUtil.zerofill(i, 3);
 	}
 	
+	// KBR : 사용자 정의 함수 실행하여 해당 값 리턴 메소드 
 	public static String getFunction(String function, String value) {
 		String returnVal = "";
 		String query = "SELECT " + function + "(?) as val";
@@ -112,7 +115,7 @@ public class MchtDdctDAO extends DAO{
 		}
 		return returnVal;
 	}
-
+	// KBR : 차감정산 스케줄 테이블에서 ddctId로 조회된 모든 차감정산 정보
 	public RecordSet getSchedule(String ddctId) {
 		super.setTable("PG_SETTLE_DDCT");
 		super.setColumns("*");
@@ -122,7 +125,8 @@ public class MchtDdctDAO extends DAO{
 		super.initRecord();
 		return rset;
 	}
-
+	
+	// KBR : 차감정산 스케줄 테이블에서 차감정산 시작월 가져오는 쿼리 
 	public RecordSet getScheduleDate(String ddctId) {
 		super.setTable("PG_SETTLE_DDCT");
 		super.setColumns("MIN(stlDay) as startDate");
@@ -143,7 +147,8 @@ public class MchtDdctDAO extends DAO{
 		super.initRecord();
 		return rset.getRowFirst().getLong("amt");
 	}
-
+	
+	// KBR : 해당 아이디 차감정산 시작월 가져오기
 	public String getStartMonth(String ddctId) {
 		super.setTable("PG_SETTLE_DDCT");
 		super.setColumns("MIN(stlDay) as startDate");
@@ -173,7 +178,7 @@ public class MchtDdctDAO extends DAO{
 		
 		return startDate.substring(0, 6);
 	}
-
+	// KBR : 차감정산 항목 삭제 메소드
 	public boolean ddctDelete(String ddctId) {
 		super.setTable("PG_MCHT_DDCT");
 		super.addWhere("ddctId", ddctId);

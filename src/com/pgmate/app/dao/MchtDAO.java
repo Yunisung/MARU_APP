@@ -16,11 +16,22 @@ import com.pgmate.lib.util.map.SharedMap;
  * @author Administrator
  *
  */
+//KJM : 가맹점 정보
 public class MchtDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.MchtDAO.class );
-	private static final String TABLE = "VW_MCHT";
-	private static final String COLUMNS = "mchtId,name,nick,status,bizType,bizCategory,distId,agencyId,salesId,idType,FN_MASK_IDENTIFY(identity) as identity,tel1,tel2,fax,zip,addr1,addr2,lat,lng,ceoName,FN_MASK_IDENTIFY(ceoIdentity) as ceoIdentity,ceoPhone,ceoTel,ceoZip,ceoAddr1,ceoAddr2,managerName,managerPhone,deposit,regId,regDay,regDate,salesName,agencyName,distName,aggregator,FN_AES_DEC(identity) AS decIdentity";
-
+	private static final String TABLE = "VW_MCHT"; // 가맹점 정보 view
+	/**
+	 * 210809_PYS : VW_MCHT를 확인해보니 * 을 써도 동일한 결과가 나옴 ( KBR : 암호화 차이)
+	 */
+	private static final String COLUMNS = "mchtId,name,nick,status,bizType,bizCategory,"
+			+ "distId,agencyId,salesId,idType,FN_MASK_IDENTIFY(identity) as identity,tel1,"
+			+ "tel2,fax,zip,addr1,addr2,lat,lng,ceoName,FN_MASK_IDENTIFY(ceoIdentity) as "
+			+ "ceoIdentity,ceoPhone,ceoTel,ceoZip,ceoAddr1,ceoAddr2,managerName,managerPhone,"
+			+ "deposit,regId,regDay,regDate,salesName,agencyName,"
+			+ "distName,aggregator,FN_AES_DEC(identity) AS decIdentity";
+	
+	
+	// KBR : 생성과 동시에 테이블,컬럼 셋팅
 	public MchtDAO() {
 		super(TABLE,CPUtil.CP_DEBUG);
 		super.setColumns(MchtDAO.COLUMNS);
@@ -45,9 +56,14 @@ public class MchtDAO extends DAO{
 	}
 	
 	public RecordSet list(List<Data> datas,Page page){
+		
+		// KBR : 페이지 값 예외처리
 		page = CPUtil.correctPage(page);
-		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
-		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
+		// KBR : sql 문 셋팅
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		
+		return super.searchList(page.current, page.size,page.hash);	//LIST AND PAGING 검색
+		
 	}
 	
 	/*public RecordSet nonTranList(List<Data> datas,Page page){
@@ -60,6 +76,7 @@ public class MchtDAO extends DAO{
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}*/
+	
 	public RecordSet nonTranList(List<Data> datas,Page page){
 		super.setDebug(true);
 		super.setTable("PG_TOT_CAP_CAPDAY A LEFT JOIN VW_MCHT_NOT_DEPOSIT B ON A.mchtId = B.mchtId");
@@ -71,23 +88,30 @@ public class MchtDAO extends DAO{
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
+	
 	public RecordSet accntSeachList(List<Data> datas,Page page){
 		super.setTable("PG_BANK_DATA");
 		super.setColumns("idx, sendDate, custName as name, custBirthDay as birthday, custMobileNo as mobileno, custAccntNo as accntno");
 		super.setOrderBy("idx desc");
+		
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
+	
+	// KBR : 리스트 갯수 조회  
 	public RecordSet exList(List<Data> datas,Page page){
-		super.setDebug(true);
-		super.setTable("( SELECT A.*, B.diffType, B.loanSettleStatus, B.settleType, B.rate, B.loanRate, B.payOutFee, B.distRate,B.agencyRate,B.salesRate,B.diff0DistRate, B.diff1DistRate, B.diff2DistRate, B.diff3DistRate, B.diff0CheckDistRate, B.diff1CheckDistRate, B.diff2CheckDistRate, B.diff3CheckDistRate, B.diff0AgencyRate, B.diff1AgencyRate, B.diff2AgencyRate, B.diff3AgencyRate, B.diff0CheckAgencyRate, B.diff1CheckAgencyRate, B.diff2CheckAgencyRate, B.diff3CheckAgencyRate, B.diff0SalesRate, B.diff1SalesRate, B.diff2SalesRate, B.diff3SalesRate, B.diff0CheckSalesRate, B.diff1CheckSalesRate, B.diff2CheckSalesRate, B.diff3CheckSalesRate,B.limitOnce, C.bankName, C.account, C.accntHolder, C.email, " +
-						"D.holderName, D.status as vactStatus,D.issueType,D.expireSet,D.startDay,IF(D.settleTarget = 'Y', '사용', IF(D.settleTarget = 'N', '중지', '')) AS settleTarget, IF(D.feeType = '0', '정액', IF(D.feeType = '1', '정률', ''))as feeType, D.settleType as vactSettleType,D.fee,D.rate as vactRate, D.distSettleType,D.distFee,D.distRate as vactDistRate,D.agencySettleType,D.agencyFee,D.agencyRate as vactAgencyRate,D.salesSettleType,D.salesFee,D.salesRate as vactSalesRate,D.hookType,D.hookAddr,D.payOutFee as vactPayOutFee,D.transferInterval		" +
-						"FROM VW_MCHT A LEFT JOIN PG_MCHT_MNG B ON A.mchtId = B.mchtId LEFT JOIN PG_MCHT_TAX C ON A.mchtId = C.mchtId AND C.taxStatus = '사용' LEFT JOIN PG_MCHT_MNG_VACT D ON A.mchtId = D.mchtId) T");
+		
+		// KBR : 상태가 사용인것 리스트 
+		super.setTable("(SELECT A.*, B.diffType,B.settleType, B.rate, B.loanRate, B.distRate,B.agencyRate,B.salesRate,B.limitOnce, C.bankName, C.account, C.accntHolder " + 
+						"FROM VW_MCHT A LEFT JOIN PG_MCHT_MNG B ON A.mchtId = B.mchtId LEFT JOIN PG_MCHT_TAX C ON A.mchtId = C.mchtId AND C.taxStatus = '사용') T");
 		super.setColumns("T.*, FN_MASK_IDENTIFY(T.identity) as maskidentity, FN_AES_DEC(T.identity) as decidentity,(T.rate + T.loanRate) as  sumRate");
+		// KBR : page값 조건에 맞게 셋팅
 		page = CPUtil.correctPage(page);
-		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
-		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
+		// KBR : sql문 완성 시키는 메소드
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
+		
 	}
 	
 	public void updateMchtPwRetry(String id,int retry,String pwStatus){

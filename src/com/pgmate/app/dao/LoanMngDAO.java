@@ -12,6 +12,7 @@ import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 
 /**
+ * pys : DB에 해당 테이블 없음
  * @author Administrator
  *
  */

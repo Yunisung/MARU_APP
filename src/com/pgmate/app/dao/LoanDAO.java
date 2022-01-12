@@ -19,6 +19,7 @@ import com.pgmate.lib.util.map.SharedMap;
  */
 public class LoanDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.LoanDAO.class );
+										// B : 해당 이름을 가진 테이블 DB 자체에 없음
 	private static final String TABLE = "VW_LOAN";
 	private static final String COLUMNS = "loanId,name,status,bizType,bizCategory,idType,FN_MASK_IDENTIFY(identity) as identity,email,tel1,tel2,fax,zip,addr1,addr2,lat,lng,ceoName,FN_MASK_IDENTIFY(ceoIdentity) as ceoIdentity,ceoPhone,ceoTel,ceoZip,ceoAddr1,ceoAddr2,managerName,managerPhone,regId,regDay,regDate";
 	
