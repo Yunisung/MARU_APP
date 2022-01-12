@@ -6,6 +6,7 @@ import java.io.File;
  * @author Administrator
  *
  */
+//KJM : 파일 관련 기능
 public class FileUtil {
 	
 	public FileUtil(){
@@ -24,6 +25,7 @@ public class FileUtil {
 		}
 	}
 	
+	//KJM : 해당 경로에 파일이 있는지 확인
 	public boolean existDirectory(String path){
 		try{
 			File file = new File(path);
@@ -51,6 +53,7 @@ public class FileUtil {
 		}
 	}
 	
+	//KJM : 해당 경로에 폴더 생성
 	public boolean createDirectory(String path){
 		try{
 			File file = new File(path);

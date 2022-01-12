@@ -122,7 +122,9 @@ public class FileIO {
 	 * @throws IOException
 	 */
 	public static byte[] getBytes(String fileName)throws IOException{
+		
 		File file = new File(fileName);
+		
 		if ( file.length() > Integer.MAX_VALUE ) {	throw new IOException("exceed integer max value");
 		}
 		
@@ -131,20 +133,21 @@ public class FileIO {
 		
 		try {
 			byte[] buffer = new byte[4096];
-			ous = new ByteArrayOutputStream();
+			ous = new ByteArrayOutputStream(); // KBR 기본 용량이 32 인 새 ByteArrayOutputStream을 생성합니다.
 			ios = new FileInputStream(file);
 			int read = 0;
 		    while ( (read = ios.read(buffer)) != -1 ) {
-		    	ous.write(buffer, 0, read);
+		    	ous.write(buffer, 0, read); // KBR 오프셋 위치에서 지정된 길이까지 지정된 바이트 배열을 씁니다.
 		    }
 		    
 		}catch(IOException e){
 			logger.debug("error : {}",CommonUtil.getExceptionMessage(e));
 			throw new IOException(e);
 		}finally {
-			close(ous);
+			close(ous); // KBR ByteArrayOutputStream을 닫습니다.
 		    close(ios);
 		}
+		
 		return ous.toByteArray();
 	}
 	
