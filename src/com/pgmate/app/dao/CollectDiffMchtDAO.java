@@ -13,6 +13,7 @@ import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.map.SharedMap;
 
 /**
+ * 210812_PYS : DB에 데이터없음
  * @author Administrator
  *
  */

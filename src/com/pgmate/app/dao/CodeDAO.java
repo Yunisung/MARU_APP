@@ -8,9 +8,14 @@ import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.map.SharedMap;
 
+/**
+ * 210812_PYS : 은행코드조회
+ * @author pys
+ *
+ */
 public class CodeDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.CodeDAO.class );
-	private static final String TABLE = "PG_CODE";
+	private static final String TABLE = "PG_CODE"; // CODE 정의 테이블
 	private static final String COLUMNS = "`idx`, `alias`, `code`, `codeName`";
 	
 	public CodeDAO() {
@@ -18,17 +23,36 @@ public class CodeDAO extends DAO{
 		super.setColumns(CodeDAO.COLUMNS);
 	}
 	
+	/**
+	 * 210812_PYS : idx값으로 은행 코드 조회
+	 * <pre>
+	 * SELECT * FROM PG_CODE WHERE idx = 'idx'
+	 * </pre>
+	 * @param idx
+	 * @return
+	 */
 	public RecordSet getById(String idx){
 		addWhere("lower(idx)",idx.toLowerCase(),eq);
 		return search();
 	}
 	
+	/**
+	 * 210812_PYS : 별칭이 은행인것만 조회
+	 * <pre>
+	 * SELECT * FROM PG_CODE WHERE alias = 'BANK'
+	 * </pre>
+	 * @return
+	 */
 	public RecordSet getBank(){
 		addWhere("alias", "BANK", eq);
 		setOrderBy("");
 		return search();
 	}
 	
+	/**
+	 * 210812_PYS : 사용안함, DB에도 데이터 없음, 테이블정의서에도 설명이 없음
+	 * @return
+	 */
 	public String getInfoBankSmsKey() {
 		String smsKey = "";
 		super.setTable("PG_SMS_TOKEN");

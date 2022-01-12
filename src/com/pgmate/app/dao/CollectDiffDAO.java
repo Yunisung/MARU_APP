@@ -12,6 +12,10 @@ import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 
 /**
+ * 210812_PYS : 영중소 차액 입금 정산
+ * <pre>
+ * DB에 데이터가 없어서 정확한 파악 불가능
+ * </pre>
  * @author Administrator
  *
  */
@@ -26,6 +30,14 @@ public class CollectDiffDAO extends DAO{
 		super.setOrderBy("collectDay desc, name asc");
 	}
 	
+	/**
+	 * 210812_PYS : 아이디로 조회
+	 * <pre>
+	 * SELECT * FROM VW_COLLECT_DIFF WHERE collectId = 'collectId'
+	 * </pre>
+	 * @param collectId
+	 * @return
+	 */
 	public RecordSet getById(String collectId){
 		addWhere("collectId",collectId,eq);
 		return search();
