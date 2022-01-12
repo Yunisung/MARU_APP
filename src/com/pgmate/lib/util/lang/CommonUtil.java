@@ -33,11 +33,14 @@ import org.slf4j.LoggerFactory;
  * @author Administrator
  *
  */
+
+// KBR : 공통적으로 쓰이는 메서드를 모아둔곳 (?)
+//KJM : 문자열, 날짜 제어 기능 클래스
 public class CommonUtil {
 
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.lib.util.lang.CommonUtil.class );
 	/**
-	 * Object 를 String 형으로 변환할때 사용되면 Timestamp 는 yyyyMMddHHmmss 포맷으로 반환한다.
+	 * Object 를 String 형으로 변환할 때 사용되면 Timestamp 는 yyyyMMddHHmmss 포맷으로 반환한다.
 	 * @param obj
 	 * @return
 	 */
@@ -46,40 +49,64 @@ public class CommonUtil {
 			return "";
 		}else{
 			if(obj instanceof String){
+				
 				return (String)obj;
+				
 			}else if(obj instanceof Integer){
+				
 				Integer i = (Integer)obj;
 				return i.toString();
+				
 			}else if(obj instanceof Long){
 				Long l = (Long)obj;
 				return l.toString();
+				
 			}else if(obj instanceof Double){
+				
 				Double d = (Double)obj;
 				return d.toString();
+				
 			}else if(obj instanceof Byte){
+				
 				Byte b = (Byte)obj;
 				return b.toString();
+				
 			}else if(obj instanceof byte[]){
+				
 				byte[] b = (byte[])obj;
 				return new String(b);
+				
 			}else if(obj instanceof Character){
+				
 				Character c = (Character)obj;
 				return String.valueOf(c);
+				
 			}else if(obj instanceof char[]){
+				
 				char[] c = (char[])obj;
 				return String.valueOf(c);
+				
 			}else if(obj instanceof BigInteger){
+				
 				BigInteger b =  (BigInteger)obj;
 				return b.toString();
+				
 			}else if(obj instanceof BigDecimal){
+				
 				BigDecimal b =  (BigDecimal)obj;
 				return b.toString();
+				
 			}else if(obj instanceof Boolean){
+				
 				Boolean b =  (Boolean)obj;
 				return b.toString();
+				
 			}else if(obj instanceof Timestamp){
+				
 				return timestampToString((Timestamp)obj,"yyyy/MM/dd HH:mm:ss.S");
+				
 			}else if(obj instanceof String[]){
+				//KJM : 문자배열의 경우 => 문자열,문자열,문자열,...
 				String[] s = (String[])obj;
 				StringBuilder ret = new StringBuilder();
 				for(int i=0;i<s.length;i++){
@@ -89,11 +116,10 @@ public class CommonUtil {
 					}
 				}
 				return ret.toString();
+				
 			}else{
 				return "";
 			}
-			
-			
 		}
 	}
 	
@@ -188,6 +214,7 @@ public class CommonUtil {
 		if(isNull(str)){
 			return true;
 		}
+		//KJM : 양쪽 공백 제거 후 길이 비교
 		if(str.trim().length() == 0){
 			return true;
 		}
@@ -199,7 +226,7 @@ public class CommonUtil {
 	}
 	
 	/**
-	 * String object 가 null 이면 "" 로 반환하여 NullPointException  을 제거한다.
+	 * String object 가 null 이면 "" 로 반환하여 NullPointException을 제거한다.
 	 * @param str
 	 * @return
 	 */
@@ -268,6 +295,7 @@ public class CommonUtil {
 	 * @return
 	 */
 	public static String[] split(String str, String delim, boolean space) {
+		
 		if(space){
 			return str.split("["+delim+"]",-1);
 		}else{
@@ -352,11 +380,16 @@ public class CommonUtil {
 	 * @param size
 	 * @return
 	 */
+	//KJM : 정수,실수 구분 후 변환 / 패턴에 맞게 문자열 반환
 	public static String zerofill(Number num, int size) {
+		//KJM : size가 2일 경우 str = "00" / 반환될 문자열 패턴 정의
 		String str = set("0",size);
+		//KJM : 금액이 실수형일 때
 		if(num instanceof Double){
+			//KJM : 소수자리 제외한 정수부분만 반환
 			return zerofillDouble(toString(num.doubleValue()),size);
 		}else{
+			//KJM : 정의된 패턴으로 문자열 반환
 			DecimalFormat df = new DecimalFormat(str);
 			return df.format(num);
 		}
@@ -368,10 +401,14 @@ public class CommonUtil {
 	 * @param size
 	 * @return
 	 */
+	//KJM : 실수형 값의 소수자리 제외 정수부분 반환
 	public static String zerofillDouble(String str,int size){
+		//KJM : 소수 이하 포함 시 len = 음수 (size:2, {str:3.1, size.length:3} / 2-3=-1)
 		int len = size - str.length();
+		//KJM : 소수 이하 미포함 시 형식에 맞게 문자열 반환 (2 -> 02)
 		if(len > 0){
 			return set("0",len)+str;
+		//KJM : 소수 이하 포함 시 정수부분만 반환 (2.12 -> 02)
 		}else{
 			return str.substring(0,size);
 		}
@@ -383,8 +420,10 @@ public class CommonUtil {
 	 * @param size
 	 * @return
 	 */
+	//KJM : 패턴 정의
 	public static String set(String str,int size){
 		StringBuilder sb = new StringBuilder();
+		//KJM : {str : 0, size : 2} => "00" 반환
 		for(int i=0 ; i < size ; i++){
 			sb.append(str);
 		}
@@ -553,7 +592,9 @@ public class CommonUtil {
 		return sb.toString();
 	}
 	
+	//KJM : SQL 쿼리문 수행 중 발생한 Exception의 메시지 반환
 	public static String getSQLExceptionMessage(Exception e){
+		//KJM : Exception 메시지 반환해주기 위한 변수 선언
 		StringBuilder sb = new StringBuilder();
 		if(e instanceof SQLException){
 			SQLException sql = (SQLException)e;
@@ -561,12 +602,15 @@ public class CommonUtil {
 			String msg = sql.getMessage();
 			int stx = msg.indexOf("CAS INFO");
 			
+			//KJM : 에러 메시지 추출
 			if(stx > 0){
 				msg = msg.substring(0, stx-1) ;
 			}
+			//KJM : 에러코드와 에러메시지 변수에 넣어줌
 			sb.append("ErrorCode:   " + sql.getErrorCode ());
 			sb.append(",Message:  " + msg+"\n");
 			StackTraceElement[] trace = e.getStackTrace();
+			
 			int depth = 5;
 			if(trace.length < 5){
 				depth = trace.length;
@@ -590,6 +634,7 @@ public class CommonUtil {
 	 * @param charset
 	 * @return
 	 */
+	// KBR : 쿼리스트링이 여러개 일 경우 처리
 	public static Map<String,String> parseQueryString(String str,String charset){
 		Map<String,String> map = new HashMap<String,String>();
 		String[] array = str.split("[&]");
@@ -648,8 +693,12 @@ public class CommonUtil {
 	 * @param charset
 	 * @return
 	 */
+	// KBR : 디코딩하여 식별할 수 있는  값으로 변환
 	public static String decode(String str,String charset){
+		
+		// 널 체크 
 		str = nToB(str);
+		// charset 이  null 이면 utf-8로 셋팅 
 		charset = nToB(charset,"utf-8");
 		
 		try{
@@ -662,9 +711,6 @@ public class CommonUtil {
 	}
 	
 
-
-	
-	
 
 	/**
 	* 날짜를 받아 Timestamp 로 변환한다
@@ -1015,6 +1061,7 @@ public class CommonUtil {
 			locale = new Locale("KOREAN","KOREA");
 		}
 		SimpleDateFormat sdf = new java.text.SimpleDateFormat(format,locale);
+		
 		return sdf.format(date);
 	}
 	
@@ -1141,6 +1188,7 @@ public class CommonUtil {
 	 * @return
 	 */
 	public static String getOpDate(int field,int amount,String date){
+		
 		GregorianCalendar gCal = getGregorianCalendar(date);
 
 		if(field == Calendar.YEAR){
@@ -1224,12 +1272,15 @@ public class CommonUtil {
 		return sb.toString();
 	}
 	
-	
+	//KJM : str 길이 조절
 	public static String cut(String str,int i){
 		byte[] buf = str.getBytes();
+		//KJM : buf가 지정된 버퍼의 크기보다 클 경우 
 		if(buf.length >= i){
+			//KJM : 지정된 크기까지 자른 후 string 변환
 			return new String(buf,0,i);
 		}else{
+			//KJM : 아닐 경우 str 그대로 반환
 			return str;
 		}
 	}
@@ -1256,15 +1307,26 @@ public class CommonUtil {
 		return str;
 	}
 	
+	// KBR : 시작 월 ~ 종료 월 리스트화하는 메소드
 	public static List<String> getMonthList(String startMonth, String endMonth) {
+		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM");
+		
 		List<String> list= new ArrayList<String>();
 		list.add(startMonth);
+		
 		Calendar cal = Calendar.getInstance();
 		cal.set(Integer.parseInt(startMonth.substring(0,4)), Integer.parseInt(startMonth.substring(4,6))-1, 1);
+		
+		// 시작부터 ~ 종료월까지 + 1 로 list에 담기
 		while(!startMonth.equals(endMonth)) {
+			/* KBR 
+			 * Calender.MONTH의 값은 0 ~ 11 로 이루어짐 ( 1월 ~ 12월 표현)
+			 * 당월 표현 시 + 1 값으로 표현가능 
+			 * ex) cal.add(Calendar.MONTH, 1);
+			 * */  
 			cal.add(Calendar.MONTH, 1);
-			startMonth = dateFormat.format(cal.getTime());
+			startMonth = dateFormat.format(cal.getTime()); // cal.getTime = Fri Oct 01 14:11:49 KST 2021
 			list.add(startMonth);
 		}
 		

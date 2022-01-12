@@ -179,23 +179,32 @@ public class ByteUtil {
 	 * @throws NumberFormatException
 	 */
 	public static byte[] toBytes(String digits, int radix) throws IllegalArgumentException, NumberFormatException {
+		//KJM : 진수가 설정 되어있지 않으면 null 반환
 		if (digits == null) {
 			return null;
 		}
+		//KJM : 설정된 진수가 8, 10, 16이 아니면 에러 전달
 		if (radix != 16 && radix != 10 && radix != 8) {
 			throw new IllegalArgumentException("For input radix: \"" + radix + "\"");
 		}
+		//KJM : divLen = 문자열이 진수로 인해서 byte로 바뀔수 있는지 확인하기 위해 진수들에 맞는 값으로 세팅
 		int divLen = (radix == 16) ? 2 : 3;
     	int length = digits.length();
+    	//KJM : 문자길이 % divLen이 1일 경우 문자열이 적정 길이보다 길거나 짧은 경우이다
     	if (length % divLen == 1) {
+    		//KJM : 에러 전달
     		throw new IllegalArgumentException("For input string: \"" + digits + "\"");
     	}
     	length = length / divLen;
+    	//KJM : 변환 된 문자열의 byte 담기위한 배열 생성
     	byte[] bytes = new byte[length];
     	for (int i = 0; i < length; i++) {
+    		//KJM : 16진수의 경우 문자열 시작 자리 2자리씩 증가(0, 2, 4,...)
     		int index = i * divLen;
+    		//KJM : bytes[0]="16진수 변환 byte"
     		bytes[i] = (byte)(Short.parseShort(digits.substring(index, index+divLen), radix));
     	}
+    	//KJM : byte로 변환된 문자열 배열 반환
     	return bytes;
 	}
 	
