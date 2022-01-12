@@ -26,26 +26,52 @@ public class AgencyDAO extends DAO{
 		super.setColumns(AgencyDAO.COLUMNS);
 	}
 	
+	/**
+	 * 210812_PYS : VW_MAM_AGENCY에서 해당 ID 같은 에이전시의 정보를 조회
+	 * @param agencyId 
+	 * @return
+	 */
 	public RecordSet getById(String agencyId){
 		addWhere("lower(agencyId)",agencyId.toLowerCase(),eq);
 		return search();
 	}
 	
+	/**
+	 * 210812_PYS : 사용안함
+	 * @param datas
+	 * @return
+	 */
 	public RecordSet search(List<Data> datas){
 		CPUtil.setDAO(this, datas);			//DATA to CONDITION 
 		return super.search();				//단일 검색
 	}
 	
+	/**
+	 * 210812_PYS : Data클래스와 Page클래스를 이용하여 검색, 페이징 용도로 사용
+	 * 추가 설명은 해당 클래스 안에 설명
+	 * @param datas
+	 * @param page
+	 * @return
+	 */
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
 	
+	/**
+	 * 210812_PYS : 에이전시 id와 이름 조회
+	 * @return
+	 */
 	public List<SharedMap<String,Object>> getSelectOption(){
 		String q = "SELECT agencyId as id ,name FROM VW_MAM_AGENCY ORDER BY name asc" ;
 		return super.query(q).getRows();
 	}
+	
+	/**
+	 * 210812_PYS : 사용중인 에이전시 id와 이름 조회
+	 * @return
+	 */
 	public List<SharedMap<String,Object>> getActiveSelectOption(){
 		String q = "SELECT agencyId as id ,name FROM VW_MAM_AGENCY WHERE status='사용' ORDER BY name asc" ;
 		return super.query(q).getRows();
