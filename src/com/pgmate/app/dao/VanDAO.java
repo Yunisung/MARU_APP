@@ -17,6 +17,7 @@ import com.pgmate.lib.key.GenKey;
  * @author Administrator
  *
  */
+//KJM : VAN 정보
 public class VanDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.VanDAO.class );
 	private static final String TABLE = "PG_VAN";
@@ -43,6 +44,7 @@ public class VanDAO extends DAO{
 	}
 	
 	public RecordSet list(List<Data> datas,Page page){
+		
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
@@ -63,6 +65,7 @@ public class VanDAO extends DAO{
 		return search();
 	}
 	
+	// KBR : van이 danal일 경우 쿼리 만들기
 	public RecordSet danalVanId() {
 		setColumns("idx, name,vanId,status");
 		addWhere("van", "DANAL", eq);
@@ -70,10 +73,11 @@ public class VanDAO extends DAO{
 		return search();
 	}
 	
-	
+	//KJM : 해당 van에 대한 VAN ID 가져오기
 	public RecordSet getVan(String van) {
 		setColumns("idx, name,vanId,status");
 		addWhere("van", van, eq);
+		//KJM : idx를 기준으로 오름차순 정렬
 		setOrderBy("idx asc");
 		return search();
 	}
@@ -85,6 +89,7 @@ public class VanDAO extends DAO{
 		return search();
 	}
 	
+	// KBR : van이 nice일 경우 쿼리
 	public RecordSet niceVanId() {
 		setColumns("idx, name,vanId,status");
 		addWhere("van", "NICE", eq);
@@ -93,11 +98,15 @@ public class VanDAO extends DAO{
 		return search();
 	}
 	
+	// KBR : VAN ID 상태값 변경
 	public boolean updateUsed(String vanIdx) {
+		
 		String query = "UPDATE PG_VAN SET status = '사용' WHERE idx = '"+vanIdx+ "'";
 		String query2 = "UPDATE PG_VAN SET status = '예비' WHERE status = '사용' AND idx NOT IN (SELECT DISTINCT vanIdx FROM PG_MCHT_TMN)";
+		
 		boolean res = new CPDAO().update(query);
 		res = new CPDAO().update(query2);
+		
 		return res;
 	}
 }

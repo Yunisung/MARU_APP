@@ -17,6 +17,7 @@ import com.pgmate.lib.util.lang.CommonUtil;
  * @author Administrator
  *
  */
+//KJM : 거래 서버 통신 이력
 public class TrxIODAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.TrxIODAO.class );
 	private static final String TABLE = "PG_TRX_IO";
@@ -27,7 +28,7 @@ public class TrxIODAO extends DAO{
 		super.setColumns(TrxIODAO.COLUMNS);
 	}
 	
-
+	//KJM : 해당 거래번호의 IO 정보
 	public RecordSet getByTrxId(String trxId) {
 		setColumns("*");
 		addWhere("trxId",trxId,eq);
@@ -39,7 +40,8 @@ public class TrxIODAO extends DAO{
 		CPUtil.setDAO(this, datas);			//DATA to CONDITION 
 		return super.search();				//단일 검색
 	}
-		
+	
+	//KJM : 거래 IO 리스트 조회
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 

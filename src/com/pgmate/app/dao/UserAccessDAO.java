@@ -15,6 +15,7 @@ import com.pgmate.lib.dao.RecordSet;
  * @author Administrator
  *
  */
+//KJM : 유저의 주소, 접속 정보
 public class UserAccessDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.UserAccessDAO.class );
 	private static final String TABLE = "VW_USER_ACCESS";
@@ -32,7 +33,7 @@ public class UserAccessDAO extends DAO{
 		return search();
 	}
 	
-	
+	//KJM : 해당하는 아이디의 접속정보 size수만큼 조회
 	public RecordSet getById(String memberId,long size){
 		addWhere("id",memberId,eq);
 		return searchList(1, size, "");

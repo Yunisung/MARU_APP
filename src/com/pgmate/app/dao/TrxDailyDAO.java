@@ -40,6 +40,7 @@ public class TrxDailyDAO extends DAO {
 	
 	//정산일기준 일마감 통계  dailysByStlDay
 	public RecordSet dailysByStlDay(List<Data> datas, Page page) {
+		
 		super.initRecord();
 		super.setTable("PG_TOT_CAP_STLDAY");
 		
@@ -48,9 +49,13 @@ public class TrxDailyDAO extends DAO {
 				+ "SUM(totalAmt) AS totalAmt, SUM(stlVanFee) AS stlVanFee, SUM(stlVanAmt + stlDiffVanAmt) AS stlVanAmt, SUM(stlFee + stlFeeVat) AS stlFee, "
 				+ "SUM(stlAmt) AS stlAmt, SUM(profit) AS profit, SUM(stlDistFee + stlDiffDistFee) AS stlDistFee, SUM(stlAgencyFee + stlDiffAgencyFee) AS stlAgencyFee, "
 				+ "SUM(stlSalesFee + stlDiffSalesFee) AS stlSalesFee, SUM(stlDistFee + stlDiffDistFee + stlAgencyFee + stlDiffAgencyFee+ stlSalesFee + stlDiffSalesFee) AS totSalesFee, "
-				+ "SUM(stlDiffAmt) AS stlDiffAmt, SUM(benefit) AS benefit");		
+				+ "SUM(stlDiffAmt) AS stlDiffAmt, SUM(benefit) AS benefit");
+		
+		// B: 컬럼 셋팅 
 		super.setColumns(sb.toString());
+		// B: 하루 총 매출금액 추출위해 그룹으로 묶기
 		super.setGroupBy("stlDay");
+		// B: 날짜 내림차순
 		super.setOrderBy("stlDay desc");
 
 		page = CPUtil.correctPage(page);
@@ -78,7 +83,6 @@ public class TrxDailyDAO extends DAO {
 		return rset.getRows();
 	}
 	//정산일기준 일마감 통계  dailysByStlDay
-	
 	
 	//승인일기준 일마감 통계  listByCapDay
 	public RecordSet listByCapDay(List<Data> datas,Page page){

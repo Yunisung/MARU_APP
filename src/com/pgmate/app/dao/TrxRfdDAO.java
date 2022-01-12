@@ -17,6 +17,7 @@ import com.pgmate.lib.util.lang.CommonUtil;
  * @author Administrator
  *
  */
+//KJM : 결제 취소
 public class TrxRfdDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.TrxRfdDAO.class );
 	private static final String TABLE = "VW_TRX_RFD_LIST";
@@ -27,6 +28,7 @@ public class TrxRfdDAO extends DAO{
 		super.setColumns(TrxRfdDAO.COLUMNS);
 	}
 	
+	//KJM : 거래번호에 따른 결제 취소 정보
 	public RecordSet getByTrxId(String trxId){
 		addWhere("trxId",trxId,eq);
 		return search();
@@ -42,6 +44,7 @@ public class TrxRfdDAO extends DAO{
 		return super.search();				//단일 검색
 	}
 	
+	//KJM : 승인 취소된 내역 리스트 가져옴
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 

@@ -17,6 +17,7 @@ import com.pgmate.lib.util.map.SharedMap;
  * @author Administrator
  *
  */
+//KJM : 매입 상담이력
 public class TrxIqrDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.TrxIqrDAO.class );
 	private static final String TABLE = "VW_TRX_IQR";
@@ -27,8 +28,10 @@ public class TrxIqrDAO extends DAO{
 		super.setColumns(TrxIqrDAO.COLUMNS);
 	}
 	
+	//KJM : 매입거래번호에 대한 매입상담이력 리스트 
 	public RecordSet getByCapId(String capId){
 		addWhere("capId",capId,eq);
+		//KJM : 인덱스 기준 내림차순
 		super.setOrderBy("idx desc");
 		return search();
 	}
@@ -52,6 +55,8 @@ public class TrxIqrDAO extends DAO{
 		}else{
 			super.setRecord("iqrType", "일반문의");
 		}
+		
+		
 		super.setRecord("telNo", map.getString("telNo"));
 		super.setRecord("summary", CommonUtil.cut(map.getString("summary"),4096));
 		super.setRecord("regId", map.getString("regId"));
@@ -60,7 +65,7 @@ public class TrxIqrDAO extends DAO{
 		return inserted;
 	}
 	
-	
+	//KJM : 매입내역 상세정보에서 직접/정산일 변경 상담이력 추가
 	public boolean insertNormal(String capId,String summary,String telNo,String regId){
 		super.setTable("PG_TRX_IQR");
 		super.setRecord("capId", capId);
@@ -69,18 +74,21 @@ public class TrxIqrDAO extends DAO{
 		super.setRecord("summary", CommonUtil.cut(summary,4096));
 		super.setRecord("regId", regId);
 		super.setRecord("regDay", CommonUtil.getCurrentDate("yyyyMMdd"));
+		//KJM : insert 쿼리문 수행
 		boolean inserted = super.insert();
 		return inserted;
 	}
 	
+	//KJM : 리스크 해제/변경시 매입 상담이력 히스토리 추가
 	public boolean insertRisk(String capId,String summary,String regId){
 		super.setTable("PG_TRX_IQR");
 		super.setRecord("capId", capId);
 		super.setRecord("iqrType", "리스크");
-		super.setRecord("telNo", "");
+		super.setRecord("telNo", "");	//KJM : 고객전화번호
 		super.setRecord("summary", summary);
 		super.setRecord("regId", regId);
 		super.setRecord("regDay", CommonUtil.getCurrentDate("yyyyMMdd"));
+		//KJM : insert 쿼리문 수행
 		boolean inserted = super.insert();
 		super.initRecord();
 		return inserted;

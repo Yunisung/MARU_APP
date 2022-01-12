@@ -17,6 +17,7 @@ import com.pgmate.lib.util.lang.CommonUtil;
  * @author Administrator
  *
  */
+//KJM : 승인실패내역
 public class TrxErrDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.TrxErrDAO.class );
 	private static final String TABLE = "VW_TRX_ERR";
@@ -27,7 +28,7 @@ public class TrxErrDAO extends DAO{
 		super.setColumns(TrxErrDAO.COLUMNS);
 	}
 	
-
+	//KJM : 거래번호에 대한 승인실패내역 조회
 	public RecordSet getByTrxId(String trxId){
 		addWhere("trxId",trxId,eq);
 		return search();
@@ -40,7 +41,7 @@ public class TrxErrDAO extends DAO{
 	}
 	
 	
-	
+	//KJM : 승인실패내역 리스트 조회
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 

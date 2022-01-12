@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
  * @author Administrator
  *
  */
+//KJM : 가상계좌 발행이력
 public class VactDtlDAO extends DAO {
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.VactDtlDAO.class );
 	private static final String TABLE = "VW_VACT_DTL";
@@ -46,6 +47,7 @@ public class VactDtlDAO extends DAO {
 		return super.search();
 	}
 	
+	//KJM : 가상계좌 발행 내역 리스트 조회
 	public RecordSet list(List<Data> datas, Page page) {
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas); //DATA to CONDITION

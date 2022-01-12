@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
  * @author Administrator
  *
  */
+//KJM : 가상계좌 거래내역
 public class VactTrxDAO extends DAO {
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.VactTrxDAO.class );
 	private static final String TABLE = "VW_VACT_TRX";
@@ -48,13 +49,13 @@ public class VactTrxDAO extends DAO {
 		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
 	}
 
+	//KJM : 가상계좌 거래내역들의 금액 총 합계
 	public RecordSet trxSum(List<Data> datas,Page page) {
 		super.setColumns("SUM(amount) AS amount");
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.search();	//LIST PAGING 검색 
 	}
-	
 	/**
 	 * 블랙리스트 조회
 	 * @param datas
