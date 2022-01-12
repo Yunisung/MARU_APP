@@ -64,6 +64,7 @@ public class VertXMessage {
 			boolean flash = !VertXUtil.getHeader(rc,"AuthFlash").equals("");
 			
 			if(flash){
+				System.out.println("[1str]" + str);
 				rc.response()
 				.putHeader(HttpHeaders.CONTENT_TYPE, CONTENT_JSON)
 				.putHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"*")
@@ -79,8 +80,9 @@ public class VertXMessage {
 				.putHeader(HttpHeaders.SERVER, "CyrexPay")
 				 .write(str)
 				 .end();
+				
 			}else{
-			
+				System.out.println("[2str]" + str);
 		        rc.response()
 				.putHeader(HttpHeaders.CONTENT_TYPE, CONTENT_JSON)
 				.putHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,"*")
@@ -150,10 +152,14 @@ public class VertXMessage {
 	
 	
 	public static void setResponse(RoutingContext rc,int code,String statusMessage,String message){
+
+		
 		try{
 			String resStr = "";
 			String contentsType = VertXUtil.getContentType(rc);
+			
 			if(contentsType.equals("")){ contentsType = CONTENT_HTML;}
+
 			
 			HttpErrorBean error = new HttpErrorBean();
 			error.code 	= code;
@@ -173,6 +179,7 @@ public class VertXMessage {
 			.putHeader(HttpHeaders.CONTENT_TYPE, contentsType)
 			.end(resStr);
 			logger.info("res : [{}],[{}]\n",resStr,contentsType);
+			
 		}catch(Exception e){}
 		
 	}

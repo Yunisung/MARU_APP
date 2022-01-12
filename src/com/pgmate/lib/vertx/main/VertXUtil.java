@@ -25,15 +25,22 @@ public class VertXUtil {
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	// KBR
 	public static String getBodyAsString(RoutingContext rc){
-		String body = CommonUtil.toString(rc.getBodyAsString());
+		//KJM : body에는 결제 관련 모든 정보 들어가 있음
+		String body = CommonUtil.toString(rc.getBodyAsString()); // Json값으로 전달받은 모든 값 
+		
 		if(body.startsWith("=")){
 			try{
+			// 식별 가능한 문자로 변환하여 리턴 
 			body = URLDecoder.decode(body.substring(1),"utf-8");
+			System.out.println("");
 			}catch(Exception e){}
 		}
 		
 		logger.info("req : [{}],[{}]",body,rc.getBody().length());
+		
 		return body;
 		
 	}
@@ -72,8 +79,9 @@ public class VertXUtil {
 	public static HttpMethod getMethod(RoutingContext rc){
 		return rc.request().method();	
 	}
-	
+	// KBR : 데이터 전송 방식 체크 
 	public static boolean isMethod(RoutingContext rc,HttpMethod httpMethod){
+		// HTTPMathod 란 클라이언트와 서버 사이에 이루어지는 요청(Request)과 응답(Response) 데이터를 전송하는 방식.(GET,POST,PUT 등등..)
 		return rc.request().method() == httpMethod;	
 	}
 	
@@ -108,6 +116,7 @@ public class VertXUtil {
 		return CommonUtil.nToB(rc.request().getHeader(name)).trim();
 	}
 	
+	// KBR : 접속 호스트 이름 셋팅 ( 결제 화면창 띄울 때 실행 )
 	public static String getSchemeHost(RoutingContext rc){
 		return rc.request().scheme().toLowerCase()+"://"+rc.request().host().toLowerCase();
 	}
