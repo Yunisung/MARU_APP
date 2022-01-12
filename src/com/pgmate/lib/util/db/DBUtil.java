@@ -67,16 +67,21 @@ public class DBUtil {
 		}
 	}
 	
-	
+	// KJM : insert 시 PreparedStatement 객체 값 셋팅하는 메서드 
 	public void setValues(PreparedStatement ps,SharedMap<String,Object> record)throws SQLException{
 		
 		if(record != null){
 			Enumeration<Object> elements = record.elements();
 			for(int parameterIndex=1; elements.hasMoreElements(); parameterIndex++) {
+				
 				Object obj = elements.nextElement();
+				
 				if (obj instanceof java.lang.String) {
 					if (!CommonUtil.isNullOrSpace((String) obj)) {
+						// KBR : 특수문자 치환 후 값 셋팅
+//						ps.setString(parameterIndex, (String)obj);
 						ps.setString(parameterIndex, SQLInjectionUtil.xssChange((String) obj));
+//						ps.setString(parameterIndex, (String)obj);
 					} else {
 						ps.setString(parameterIndex, (String)obj);
 					}
@@ -85,6 +90,7 @@ public class DBUtil {
 					ps.setObject(parameterIndex, obj);
 				}
 			}
+			
 		}
 	}
 	
