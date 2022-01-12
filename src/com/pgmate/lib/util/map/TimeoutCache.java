@@ -20,6 +20,7 @@ public abstract class TimeoutCache {
 	private LoadingCache<String, SharedMap<String,Object>> cache = null;
 
 	public TimeoutCache(int expireInMinutes) {
+		System.out.println("[TimeoutCache] " + expireInMinutes);
 		init(expireInMinutes);
 	};
 	
@@ -27,7 +28,9 @@ public abstract class TimeoutCache {
 	 
 	private void init(int expireInMinutes) {
 		RemovalListener<String, SharedMap<String,Object>> removalListener = new RemovalListener<String, SharedMap<String,Object>>() {
+			
 			public void onRemoval(RemovalNotification<String, SharedMap<String,Object>> removal) {
+				System.out.println("[RemovalCause.EXPIRED] " + RemovalCause.EXPIRED);
 				if (removal.getCause() == RemovalCause.EXPIRED) {
 					processAfterExpire(removal.getKey(), removal.getValue());
 				} else if (removal.getCause() == RemovalCause.REPLACED) {
@@ -50,7 +53,9 @@ public abstract class TimeoutCache {
 	}
 	
 	public SharedMap<String,Object> getUnchecked(String key){
+		
 		SharedMap<String,Object> val = null;
+		
 		try{
 			val =cache.getUnchecked(key);
 		}catch(Exception e){}

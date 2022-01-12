@@ -27,16 +27,14 @@ public class SharedMap<K, V> extends ConcurrentHashMap<K, V> {
 		super.putAll(new GsonBuilder().create().fromJson(json, ConcurrentHashMap.class));
 	}
 	
-	
-	
 	public String toJson(){
 		return new GsonBuilder().setPrettyPrinting().create().toJson(this);
 	}
 	
+	//KJM : key값이 일치하는 컬럼명의 값 가져옴
 	public String getString(String key){
 		return CommonUtil.toString(super.get(key));
 	}
-	
 	
 	public int getInt(String key) {
 		return CommonUtil.parseInt(get(key));
@@ -51,7 +49,7 @@ public class SharedMap<K, V> extends ConcurrentHashMap<K, V> {
 	}
 	
 	public Date getDate(String key) {
-		return (Date)get(key);
+		return (Date)get(key); 
 	}
 	
 	public Timestamp getTimestamp(String key){
@@ -72,14 +70,13 @@ public class SharedMap<K, V> extends ConcurrentHashMap<K, V> {
 	}
 	
 	
-	
+	//KJM : key값과 일치하는 컬럼명의 값이 value로 시작하면 true, 아니면 false
 	public boolean startsWith(String key,String value){
 		return getString(key).startsWith(value);
 	}
 	
-	
-	
 	public boolean isEquals(String key,Object value){
+		
 		if(containsKey(key)){
 			if(value instanceof java.lang.String){
 				return getString(key).equals(CommonUtil.toString(value));
@@ -123,7 +120,7 @@ public class SharedMap<K, V> extends ConcurrentHashMap<K, V> {
 		return sb.toString();
 	}
 	
-	
+	// KBR : key에 value값이 존재 시 true
 	public boolean like(String key,String value){
 		if(getString(key).indexOf(value) > -1){
 			return true;
