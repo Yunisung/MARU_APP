@@ -17,7 +17,9 @@ import com.pgmate.lib.key.GenKey;
  * @author Administrator
  *
  */
+//KJM : 가맹점 터미널 정보
 public class MchtTmnDAO extends DAO{
+	
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.MchtTmnDAO.class );
 	private static final String TABLE = "VW_MCHT_TMN";
 	private static final String COLUMNS = "*";
@@ -27,6 +29,7 @@ public class MchtTmnDAO extends DAO{
 		super.setColumns(MchtTmnDAO.COLUMNS);
 	}
 	
+	//KJM : 단말기아이디에 대한 터미널 정보
 	public RecordSet getById(String tmnId){
 		addWhere("tmnId",tmnId.toLowerCase(),eq);
 		return search();
@@ -56,6 +59,14 @@ public class MchtTmnDAO extends DAO{
 		return new CPDAO().update(query); 
 	}
 	
+	/**
+	 * 터미널에서 웹결제창이 '사용'이고 터미널상태가 '사용'일때 결제키를 리턴
+	 * <pre>
+	 * SELECT * FROM VW_MCHT_TMN WHERE LOWER(mchtId) = '아이디' AND STATUS = '사용' AND webpay = '사용'
+	 * </pre>
+	 * @param mchtId
+	 * @return
+	 */
 	public String getWebPay(String mchtId){
 		addWhere("lower(mchtId)",mchtId.toLowerCase(),eq);
 		addWhere("status","사용",eq);
@@ -88,8 +99,9 @@ public class MchtTmnDAO extends DAO{
 		addWhere("lower(mchtId)", mchtId.toLowerCase(), eq);
 		return search();
 	}
-	
+	// KBR : 새로 새성될 터미널 ID
 	public String getNewId() {
+		//KBR : 왼쪽으로 0을 넣어서 총 6자리 수를 String으로 만들기
 		return "TMN" + String.format("%06d", Integer.parseInt(getFunction("FN_NEXTVAL", "TERMINAL")));
 	}
 }

@@ -1,16 +1,20 @@
 package com.pgmate.app.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.Data;
 import com.pgmate.app.model.ajax.Page;
 import com.pgmate.app.util.CPUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
+import com.pgmate.lib.util.db.DBFactory;
 import com.pgmate.lib.util.lang.CommonUtil;
 import com.pgmate.lib.util.map.SharedMap;
 
@@ -33,6 +37,13 @@ public class NoticeDAO extends DAO{
 		return search();
 	}
 	
+	/**
+	 * 210809_PYS : PB_NOTICE에서 생성된지 27일이 지나지 않은 공지사항들을 리턴한다
+	 * <pre>
+	 * SELECT * FROM PG_NOTICE WHERE STATUS = '개시' AND closeDay > '현재날짜' AND pubDay > '현재날짜-27일'
+	 * </pre>
+	 * @return
+	 */
 	public RecordSet getByNew(){
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -27);
@@ -52,7 +63,6 @@ public class NoticeDAO extends DAO{
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
-	
 	//공지사항 전송 =======================================================
 	/*
 	 * 개별 전송

@@ -19,7 +19,7 @@ import com.pgmate.lib.util.map.SharedMap;
  */
 public class OrgFeeDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.OrgFeeDAO.class );
-	private static final String TABLE = "PG_ORG_FEE";
+	private static final String TABLE = "PG_ORG_FEE"; // van사 입금 수수료율 테이블
 	private static final String COLUMNS = "*";
 	
 	public OrgFeeDAO() {
@@ -38,6 +38,10 @@ public class OrgFeeDAO extends DAO{
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
 	
+	/**
+	 * 210809_PYS : PG_ORG_FEE에 있는 van목록을 조회한다
+	 * @return
+	 */
 	public List<SharedMap<String, Object>> vanList(){
 		super.setColumns("van");
 		super.setTable("PG_ORG_FEE");

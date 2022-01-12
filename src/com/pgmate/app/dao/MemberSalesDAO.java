@@ -10,6 +10,8 @@ import com.pgmate.app.model.ajax.Page;
 import com.pgmate.app.util.CPUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
+import com.pgmate.lib.key.CPKEY;
+import com.pgmate.lib.key.GenKey;
 import com.pgmate.lib.util.map.SharedMap;
 
 /**
@@ -17,10 +19,12 @@ import com.pgmate.lib.util.map.SharedMap;
  *
  */
 public class MemberSalesDAO extends DAO{
+	
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.MemberSalesDAO.class );
-	private static final String TABLE = "VW_MAM_SALES";
+	private static final String TABLE = "VW_MAM_SALES"; // 지사 상세 정보와 상위 업체 이름  
 	private static final String COLUMNS = "salesId, agencyId, name, bizType, bizCategory, idType, FN_MASK_IDENTIFY(identity) as identity, status, email, tel1, tel2, fax, zip, addr1, addr2, lat, lng, ceoName, FN_MASK_IDENTIFY(ceoIdentity) as ceoIdentity, ceoPhone, ceoTel, ceoZip, ceoAddr1, ceoAddr2, managerName, managerPhone, regId, regDay, regDate, payStatus, agencyName, bankCd, bankName, account, accntHolder";
 	
+	//KJM : 지사 정보 뷰 생성
 	public MemberSalesDAO() {
 		super(TABLE,CPUtil.CP_DEBUG);
 		super.setColumns(MemberSalesDAO.COLUMNS);
@@ -47,11 +51,16 @@ public class MemberSalesDAO extends DAO{
 		return super.query(q).getRows();
 	}
 	
+	// 상위 업체 ID 값 받아오는 메소드
 	public SharedMap<String, Object> getParentsId(String salesId) {
 		String q = "SELECT B.distId, A.agencyId, A.salesId FROM PG_MAM_SALES as A, PG_MAM_AGENCY as B WHERE A.agencyId = B.agencyId AND salesId = '"+salesId+"'";
 		return super.query(q).getRowFirst();
 	}
 	
+	/*
+	 * KJM : 에이전시에 대한 기본 지사 생성(insert)
+	 * @param : agencyId
+	 */
 	public boolean insertDefault(String agencyId) {
 		String query = "INSERT INTO PG_MAM_SALES (`salesId`,`agencyId`,`name`,`status`,`email`,`tel1`,`tel2`,`regId`,`regDay`,`regDate`) "
 					 + "SELECT FN_GET_SALES_ID(), agencyId, '기본', status, email, tel1, tel2, regId, regDay, regDate "
