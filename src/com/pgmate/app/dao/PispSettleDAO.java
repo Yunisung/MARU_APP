@@ -17,6 +17,7 @@ import com.pgmate.lib.key.GenKey;
  * @author Administrator
  *
  */
+//KJM : 지급대행 관련 DAO
 public class PispSettleDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.PispSettleDAO.class );
 	private static final String TABLE = "VW_TRX_PISP_SETTLE";

@@ -15,6 +15,7 @@ import com.pgmate.lib.dao.RecordSet;
  * @author Administrator
  *
  */
+//가맹점 정산
 public class SettleDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.SettleDAO.class );
 	private static final String TABLE = "VW_SETTLE";

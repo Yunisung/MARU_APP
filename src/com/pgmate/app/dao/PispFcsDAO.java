@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
  * @author Administrator
  *
  */
+//KJM : 지급대행 서비스 내역
 public class PispFcsDAO extends DAO {
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.PispFcsDAO.class );
 	private static final String TABLE = "VW_TRX_PISP_FCS";

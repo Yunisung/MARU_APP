@@ -42,6 +42,7 @@ public class ReserveRateDAO extends DAO{
 		return super.search();				//단일 검색
 	}
 	
+	//KJM : 가맹점 수수료 변경 예약 리스트
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
