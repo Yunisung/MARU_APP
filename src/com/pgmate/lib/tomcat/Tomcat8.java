@@ -43,16 +43,15 @@ public class Tomcat8 {
 			
 			Tomcat tomcat = new Tomcat();
 			
-			
 	        tomcat.setBaseDir(contextDir+File.separator+"web"+File.separator+"WEB-INF"+File.separator+"classes");
 	        tomcat.setHostname(tomcatConfig.getHost());
 	        
-	       
 	        Service service = tomcat.getService();
 	        
+	        // KBR : AJP 설정하는 구간 
 	        setDefaultConnector(tomcat.getConnector());
-	        service.addConnector(getAJPConnector());
-	        
+	        service.addConnector(getAJPConnector(8090));
+//	        service.addConnector(getAJPConnector(10023));
 	        
 	        if(tomcatConfig.getSsl().isSsl()){
 	        	service.addConnector(getSSLConnector());
@@ -101,16 +100,20 @@ public class Tomcat8 {
 	    
 	}
 	
-	private Connector getAJPConnector(){
+	
+	private Connector getAJPConnector(int port){
+		
 		Connector connector = new Connector();
 
-		int port = 8090;
-		if(tomcatConfig.getPort() < 8080){
-		}else if(tomcatConfig.getPort() == 8080){
-			port = 8091;
-		}else{
-			port = 8101+(tomcatConfig.getPort()-8080);
-		}
+//		KBR : 원 코드 주석 
+//		port = 10022;
+//		if(tomcatConfig.getPort() < 8080){
+//		}else if(tomcatConfig.getPort() == 8080){
+//			port = 8091;
+//		}else{
+//			port = 8101+(tomcatConfig.getPort()-8080);
+//		}
+		
 		connector.setPort(port);
 		connector.setAttribute("address", tomcatConfig.getHost());
 	    connector.setAttribute("protocol", "AJP/1.3");
@@ -120,10 +123,13 @@ public class Tomcat8 {
 	    
 	    return connector;   
 	}
+
 	
-	
+	// kBR : X 
 	private Connector getSSLConnector(){
+		
 		Connector connector = new Connector();
+		
 	    connector.setPort(tomcatConfig.getSsl().getPort());
 	    connector.setSecure(true);
 	    connector.setScheme("https");
@@ -147,6 +153,7 @@ public class Tomcat8 {
 	}
 	
 	public static void main(String[] args){
+		
 		Tomcat8 tomcat = new Tomcat8();
 		try{
 			tomcat.start();
