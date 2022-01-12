@@ -173,9 +173,6 @@ public class LoginController {
 		}
 		// KBR : 해당 로그인 아이디의 정보 모두 가져오기  (key : value 형식)
 		
-		
-		SharedMap<String, Object> memberMap = rset.getRow(0);
-		
 		//210809_PYS : 로그인 ID 'status'가 "사용"이고 비밀번호가 틀렸을때
 		// KBR : 비밀번호 틀린 횟수 카운트하기위한 조건문
 		if(!memberMap.isEquals("pw", inputPw) && memberMap.isEquals("status", "사용")){

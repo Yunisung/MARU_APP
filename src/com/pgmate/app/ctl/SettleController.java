@@ -5,19 +5,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentHashMap.KeySetView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,18 +28,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.itextpdf.text.log.SysoCounter;
 import com.pgmate.app.dao.CPDAO;
-import com.pgmate.app.dao.ChargeSettleDAO;
 import com.pgmate.app.dao.DepositDAO;
-import com.pgmate.app.dao.LoanSettleDAO;
 import com.pgmate.app.dao.MchtDdctDAO;
 import com.pgmate.app.dao.PispSettleDAO;
 import com.pgmate.app.dao.SettleDAO;
 import com.pgmate.app.dao.SettleDdctDAO;
 import com.pgmate.app.dao.SettleHoldDAO;
 import com.pgmate.app.dao.SettleMchtDAO;
-import com.pgmate.app.dao.SettlePhoneDAO;
 import com.pgmate.app.dao.SettleSubDAO;
 import com.pgmate.app.dao.TrxCapDAO;
 import com.pgmate.app.dao.TrxDAO;
@@ -55,12 +44,10 @@ import com.pgmate.app.export.TaxExport;
 import com.pgmate.app.export.XlsExport;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.CPResponse;
-import com.pgmate.app.model.ajax.Data;
 import com.pgmate.app.model.ajax.Files;
 import com.pgmate.app.session.CPSession;
 import com.pgmate.app.util.CPRUtil;
 import com.pgmate.app.util.CPUtil;
-import com.pgmate.app.util.KSignUtil;
 import com.pgmate.app.util.SessionUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
@@ -246,13 +233,6 @@ public class SettleController {
 			insertMchtSettleTemp(rset.getRows(), request);
 		}
 		
-		//가맹점 정산생성 - 계좌정보 복호화
-		SharedMap<String, Object> result = rset.getRow();
-		KSignUtil.getInstance().Decrypt(rset.getRows(), "account");
-		//KJM : 가맹점대표자명 복호화
-		KSignUtil.getInstance().Decrypt(rset.getRows(), "ceoName");
-		KSignUtil.getInstance().Decrypt(rset.getRows(), "bankName");
-		
 		//KJM : 조회된 리스트를 지정된 url에 보내준다
 		return new CPRUtil(cpRequest).dataList(rset, dao).setView(request, "/settle/make/list", "");
 	}
@@ -268,7 +248,6 @@ public class SettleController {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
-		String keyList[] = {"bankCd", "bankName", "account", "accntHolder"};
 
 		try {
 			db = DBFactory.getInstance();
@@ -280,16 +259,6 @@ public class SettleController {
 			int count = 0;
 			
 			for (SharedMap<String, Object> map : mchtSettleTempList) {
-				
-				//KJM : list<sharedmap<>> 형식 암호화
-			    for(int i = 0 ; i < keyList.length ; i++) {
-		               CPRequest list = new CPRequest();
-		               String data = map.getString(keyList[i]);
-		               list.setData(keyList[i], data);
-		               KSignUtil.getInstance().Encrypt(list, keyList[i]);
-		               Data tmp = list.getData(keyList[i]);
-		               map.replace(tmp.name, tmp.val);
-	            }
 				
 				int i = 1;
 				pstmt.setString(i++, map.getString("idx"));

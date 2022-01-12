@@ -164,9 +164,6 @@ public class UserController {
 		 *	insert 쿼리문이 제대로 실행 되었으면 true 반환
 		 */
 		
-		// KBR : PG_USER (번호 암호화)
-		KSignUtil.getInstance().Encrypt(cpRequest, "phone");
-		
 		if(cpDAO.insert("PG_USER", SessionUtil.getUserId(request), cpRequest.data)){
 			//KJM : 로그인 세션 초기화
 			SessionUtil.initSessionData(request);
@@ -189,9 +186,6 @@ public class UserController {
 				
 		
 		CPDAO cpDAO = new CPDAO();
-		
-		// KBR : PG_USER 사용자 전화번호 암호화
-		KSignUtil.getInstance().Encrypt(cpRequest, "phone");
 		
 		if(cpDAO.updateAndBack("PG_USER", SessionUtil.getUserId(request), cpRequest.data)){
 			//KJM : 업데이트 성공 시

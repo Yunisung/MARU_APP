@@ -23,13 +23,14 @@ import com.pgmate.lib.util.map.SharedMap;
  *
  */
 //KJM : 매입내역
+@SuppressWarnings("serial")
 public class TrxCapDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.TrxCapDAO.class );
 	private static final String COLUMNS = "*";
 	
 	//KJM : 테이블명, 컬럼, 정렬기준 기본 세팅
 	public TrxCapDAO() {
-		super(TABLE,CPUtil.CP_DEBUG);
+//		super(table,CPUtil.CP_DEBUG);
 		super.setColumns(TrxCapDAO.COLUMNS);
 		//KJM : 수신일자 , 수신시간
 		super.setOrderBy("regDay desc, regTime desc");

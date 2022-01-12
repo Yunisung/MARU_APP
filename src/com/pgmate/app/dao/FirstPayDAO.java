@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.pgmate.app.model.ajax.CPRequest;
-import com.pgmate.app.util.KSignUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.db.DBFactory;
@@ -371,24 +370,6 @@ public class FirstPayDAO extends DAO {
 		
 		CPRequest cp = new CPRequest();
 		
-		List<String> keyList = new ArrayList<>();
-		keyList.add("payerEmail"); // 주문자이메일
-		keyList.add("payerName"); // 주문자명
-		keyList.add("payerTel"); //주문자전화번호
-		
-		for(int  i = 0 ;  i < sharedMap.keySet().size() ; i++) {
-			// KBR : 리스트랑 맵이랑 key값 같으면 
-			if(keyList.get(i).equals(sharedMap.keySet())) {
-				System.out.println(" keyList.get(i): " + keyList.get(i));
-				System.out.println("sharedMap.keySet() : " + sharedMap.keySet());
-				System.out.println(" sharedMap.entrySet() :  " + sharedMap.entrySet()); 
-				cp.setData(keyList.get(i),sharedMap.entrySet());
-				
-			}
-		}
-		
-		KSignUtil.getInstance().Encrypt(cp, keyList);
-		
 		// KBR : PG_TRX_ERR 에서 insert 시 PG_TRX_REQ 테이블 참조하여 insert
 		super.setTable("PG_TRX_REQ");
 		super.setRecord("trxId", sharedMap.getString("trxId"));
@@ -498,41 +479,6 @@ public class FirstPayDAO extends DAO {
 	}
 	
 	//WH
-		public void insertTrxRFD(SharedMap<String, Object> sharedMap, SharedMap<String, Object> trxMap) {
-			super.setTable("PG_TRX_RFD");
-			long vat = new Double(sharedMap.getLong("amount") *10 /110).longValue();
-			super.setRecord("trxId", sharedMap.getString("trxId"));
-			super.setRecord("mchtId", trxMap.getString("mchtId"));
-			super.setRecord("tmnId", sharedMap.getString("tmnId"));
-			if(sharedMap.isNullOrSpace("trackId")){
-				super.setRecord("trackId", trxMap.getString("trackId"));
-			}else{
-				super.setRecord("trackId", sharedMap.getString("trackId"));
-			}
-			super.setRecord("status", "접수");
-			super.setRecord("rfdType", sharedMap.getString("rfdType"));
-			super.setRecord("rfdAll", sharedMap.getString("rfdAll"));
-			super.setRecord("rfdAmount", -sharedMap.getLong("amount"));
-			super.setRecord("rfdVat", -vat);
-			super.setRecord("cardId", trxMap.getString("cardId"));
-			super.setRecord("bin", trxMap.getString("bin"));
-			super.setRecord("issuer", trxMap.getString("issuer"));
-			super.setRecord("acquirer", trxMap.getString("acquirer"));
-			super.setRecord("last4", trxMap.getString("last4"));
-			super.setRecord("rootTrnDay", trxMap.getString("regDay"));
-			super.setRecord("rootTrxId", trxMap.getString("trxId"));
-			super.setRecord("rootTrackId", trxMap.getString("trackId"));
-			super.setRecord("rootAmount", trxMap.getLong("amount"));
-			super.setRecord("rootVat", trxMap.getLong("vat"));
-			super.setRecord("authCd", trxMap.getString("authCd"));
-			super.setRecord("reqDay", sharedMap.getString("regDate").substring(0, 8));
-			super.setRecord("reqTime", sharedMap.getString("regDate").substring(8));
-	 
-			super.setRecord("regDay", sharedMap.getString("regDate").substring(0, 8));
-			super.setRecord("regTime", sharedMap.getString("regDate").substring(8));
-			super.setRecord("regDate", sharedMap.getString("regDate"));
-			logger.info("set TRX_RFD : {}", super.insert());
-			super.initRecord();
 	/**
 	 * pys : 결제취소원장 추가
 	 * <pre>
@@ -600,7 +546,25 @@ public class FirstPayDAO extends DAO {
 		super.initRecord();
 	}
 
-		//WH
+
+	//WH
+	/**
+	 * pys : 결제취소내역 수정
+	 * <pre>
+	 * UPDATE PG_TRX_RFD
+	 * SET (....)
+	 * WHERE trxId = 'trxId'
+	 * </pre>
+	 * @param vanResultCd : 처리사응답코드
+	 * @param status : 처리결과, 접수, 완료, 실패
+	 * @param vanResultMsg : 처리사응답메세지
+	 * @param van : 거래처리사
+	 * @param vanId : 거래처리사 ID
+	 * @param vanTrxId : 처리사 거래번호
+	 * @param regDay : 수신일자
+	 * @param regTime : 수신시간
+	 * @param trxId : 거래번호
+	 */
 		public void updateTrxRFD(SharedMap<String, Object> sharedMap) {
 			super.setTable("PG_TRX_RFD");
 			if (sharedMap.getString("vanResultCd").equals("0000")) {
@@ -621,73 +585,29 @@ public class FirstPayDAO extends DAO {
 			super.addWhere("trxId", sharedMap.getString("trxId"));
 			logger.info("set TRX_RFD : {}", super.update());
 			super.initRecord();
-	/**
-	 * pys : 결제취소내역 수정
-	 * <pre>
-	 * UPDATE PG_TRX_RFD
-	 * SET (....)
-	 * WHERE trxId = 'trxId'
-	 * </pre>
-	 * @param vanResultCd : 처리사응답코드
-	 * @param status : 처리결과, 접수, 완료, 실패
-	 * @param vanResultMsg : 처리사응답메세지
-	 * @param van : 거래처리사
-	 * @param vanId : 거래처리사 ID
-	 * @param vanTrxId : 처리사 거래번호
-	 * @param regDay : 수신일자
-	 * @param regTime : 수신시간
-	 * @param trxId : 거래번호
-	 */
-	public void updateTrxRFD(SharedMap<String, Object> sharedMap) {
-		super.setTable("PG_TRX_RFD");
-		if (sharedMap.getString("vanResultCd").equals("0000")) {
-			super.setRecord("status", "완료");
-		} else {
-			super.setRecord("status", "실패");
-		}
-		super.setRecord("resultCd", sharedMap.getString("vanResultCd"));
-		super.setRecord("resultMsg", sharedMap.getString("vanResultMsg"));
-		super.setRecord("van", sharedMap.getString("van"));
-		//KJM : PG_TRX_RFD 암호화
-		String enData = KSignUtil.getInstance().Encrypt(sharedMap.getString("vanId"), "vanId");
-		super.setRecord("vanId", enData);
-		super.setRecord("vanTrxId", sharedMap.getString("vanTrxId"));
-		super.setRecord("vanResultCd", sharedMap.getString("vanResultCd"));
-		super.setRecord("vanResultMsg", sharedMap.getString("vanResultMsg"));
-		super.setRecord("regDay", sharedMap.getString("regDate").substring(0, 8));
-		super.setRecord("regTime", sharedMap.getString("regDate").substring(8));
-		super.setRecord("regDate", sharedMap.getString("regDate"));
-		super.addWhere("trxId", sharedMap.getString("trxId"));
-		logger.info("set TRX_RFD : {}", super.update());
-		super.initRecord();
+
 	}
+		
+		/**
+		 * pys : 승인거래내역 취소로 변경
+		 * <pre>
+		 * UPDATE PG_TRX_PAY
+		 * SET status = '승인취소'
+		 * WHERE trxId = 'trxId'
+		 * </pre>
+		 * @param trxId : 거래번호
+		 */
 
 		public void updateTrxPay(String trxId) {
 
 			super.setTable("PG_TRX_PAY");
-	/**
-	 * pys : 승인거래내역 취소로 변경
-	 * <pre>
-	 * UPDATE PG_TRX_PAY
-	 * SET status = '승인취소'
-	 * WHERE trxId = 'trxId'
-	 * </pre>
-	 * @param trxId : 거래번호
-	 */
 
 			super.setRecord("status", "승인취소");
 			super.addWhere("trxId", trxId);
 			logger.info("set TRX_PAY : {}", super.update());
 			super.initRecord();
 		}
-		super.setTable("PG_TRX_PAY");
 
-		super.setRecord("status", "승인취소");
-		super.addWhere("trxId", trxId);
-		logger.info("set TRX_PAY : {}", super.update());
-		super.initRecord();
-	}
-	
 	/**
 	 * pys : 사이트를 통한 거래취소요청 정보 조회
 	 * <pre>

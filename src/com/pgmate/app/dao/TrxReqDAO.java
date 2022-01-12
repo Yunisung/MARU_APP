@@ -1,6 +1,5 @@
 package com.pgmate.app.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import com.pgmate.app.model.ajax.Data;
 import com.pgmate.app.model.ajax.Page;
 import com.pgmate.app.util.CPUtil;
-import com.pgmate.app.util.KSignUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.map.SharedMap;
@@ -71,13 +69,6 @@ public class TrxReqDAO extends DAO{
 		q += "(select B.trxId from VW_TRX_CAP A left join VW_TRX_CAP B on A.rootTrxId = B.capId where A.capId = '"+capId+"') ";
 		RecordSet rset = super.query(q);
 		
-		// KBR : PG_TRX_REQ 암호화 
-		List<String> keyList = new ArrayList<>();
-		keyList.add("payerName"); // 주문자전화번호
-		keyList.add("payerTel"); //이메일계정
-		keyList.add("payerEmail"); //사용 vanID
-
-		KSignUtil.getInstance().Decrypt(rset.getRows(), keyList);
 		super.initRecord();
 		return rset.getRow(0);
 	}

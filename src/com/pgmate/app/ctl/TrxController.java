@@ -205,16 +205,16 @@ public class TrxController {
 		
 		request.setAttribute("IQR_MAP", new TrxIqrDAO().getByCapId(capId).getRows());
         return new ModelAndView("/trx/cap/modal");
-    }	
-		
-		//KJM : 매입 상담이력 리스트
-		request.setAttribute("IQR_MAP", IQR_MAP);
-		
-		// KBR : 취소가능 금액 (21/12/31 추가)
-		long rfdMnt =  Integer.parseInt(res.getString("amount")) + new TrxCapDAO().getRfdAmtBytrxId(res.getString("trxId")) ;
-		request.setAttribute("DATAREFMNT", rfdMnt ); 
-		
-		return new ModelAndView("/trx/cap/modal");
+//    }	
+//		
+//		//KJM : 매입 상담이력 리스트
+//		request.setAttribute("IQR_MAP", IQR_MAP);
+//		
+//		// KBR : 취소가능 금액 (21/12/31 추가)
+//		long rfdMnt =  Integer.parseInt(res.getString("amount")) + new TrxCapDAO().getRfdAmtBytrxId(res.getString("trxId")) ;
+//		request.setAttribute("DATAREFMNT", rfdMnt ); 
+//		
+//		return new ModelAndView("/trx/cap/modal");
 	}	
 	
 	//KJM : 거래관리 > 승인IO조회
@@ -600,11 +600,6 @@ public class TrxController {
 		String summary = CommonUtil.nToB(request.getParameter("summary"));
 		String telNo = CommonUtil.nToB(request.getParameter("telNo"));
 		
-		// KBR  : PG_TRX_IQR (telNo)암호화 
-		if(!telNo.equals("")) {
-			telNo = KSignUtil.getInstance().Encrypt(telNo, "telNo");
-		}
-		
 		TrxIqrDAO iqrDAO = new TrxIqrDAO();
 		
 		//KJM : 정상적으로 insert 되었으면 OK | 아니면 NOK 반환
@@ -847,8 +842,6 @@ public class TrxController {
 		keyList.add("ceoName"); //대표자이름
 		keyList.add("managerName"); //대표자이름
 		
-		KSignUtil.getInstance().Decrypt(mchtMap, keyList);
-		
 		if(cardType.equals(newCardType)){
 			return "카드타입 변경 실패 (같은 유형의 카드 타입입니다.)";
 		}else if(rootMap == null || rootMap.size() == 0){
@@ -1003,15 +996,6 @@ public class TrxController {
 
 				SharedMap<String, Object> res = new TrxCapDAO().getByTrxId2(trxId).getRow(0);
 				
-				//KJM : trx_pay 복호화
-				List<String> keyList = new ArrayList<>();
-				keyList.add("payerName");	//주문자명
-				keyList.add("payerTel");	//주문자휴대폰
-				keyList.add("payerEmail");	//주문자이메일
-				keyList.add("vanId");		//vanId
-				
-				KSignUtil.getInstance().Decrypt(res, keyList);
-
 				// 올앳 영수증 조회용 거래번호
 				if(res.startsWith("van", "ALLAT")){
 					AllatUtil allatUtil = new AllatUtil();
@@ -1059,15 +1043,6 @@ public class TrxController {
 					}
 				}
 				
-				//KJM : trx_pay 복호화
-				List<String> keyList = new ArrayList<>();
-				keyList.add("payerName");	//주문자명
-				keyList.add("payerTel");	//주문자휴대폰
-				keyList.add("payerEmail");	//주문자이메일
-				keyList.add("vanId");		//vanId
-				
-				KSignUtil.getInstance().Decrypt(res, keyList);
-
 				// 올앳 영수증 조회용 거래번호
 				if(res.startsWith("van", "ALLAT")){
 					AllatUtil allatUtil = new AllatUtil();
