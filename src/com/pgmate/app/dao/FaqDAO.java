@@ -12,6 +12,7 @@ import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 
 /**
+ * 210812_PYS : FAQ 관련
  * @author Administrator
  *
  */

@@ -12,6 +12,7 @@ import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 
 /**
+ * 210812_PYS : 펌뱅킹 이체거래 관리
  * @author Administrator
  *
  */
@@ -55,4 +56,5 @@ public class FirmTrxDAO extends DAO{
 		super.initRecord();
 		return rset;	//LIST PAGING 검색 
 	}
+
 }

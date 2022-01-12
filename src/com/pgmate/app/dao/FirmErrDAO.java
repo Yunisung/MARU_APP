@@ -12,6 +12,7 @@ import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 
 /**
+ * 210812_PYS : 펌뱅킹 오류 거래 내역
  * @author Administrator
  *
  */
