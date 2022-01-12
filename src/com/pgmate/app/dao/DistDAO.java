@@ -14,6 +14,7 @@ import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.map.SharedMap;
 
 /**
+ * 210812_PYS : 대행사 정보, 지불, 정산 조회
  * @author Administrator
  *
  */
@@ -27,16 +28,35 @@ public class DistDAO extends DAO{
 		super.setColumns(DistDAO.COLUMNS);
 	}
 	
+	/**
+	 * 210812_PYS : 대행사ID로 조회
+	 * <pre>
+	 * SELECT * FROM VW_MAM_DIST 
+	 * </pre>
+	 * @param distId : 대행사ID
+	 * @return
+	 */
 	public RecordSet getById(String distId){
+		//KJM : lower(distId) = 'distId'
 		addWhere("lower(distId)",distId.toLowerCase(),eq);
 		return search();
-	}	
+	}
 	
+	/** 
+	 * 210812_PYS : Data클래스로 조회
+	 * @param datas
+	 * @return
+	 */
 	public RecordSet search(List<Data> datas){
 		CPUtil.setDAO(this, datas);			//DATA to CONDITION 
 		return super.search();				//단일 검색
 	}
 	
+	/** 
+	 * 210812_PYS : Data클래스로 조회 (페이징)
+	 * @param datas
+	 * @return
+	 */
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
@@ -48,6 +68,11 @@ public class DistDAO extends DAO{
 		return super.query(q).getRows();
 	}
 	
+	/**
+	 * 210812_PYS : 총판 수수료 조회
+	 * @param distId : 대행사ID
+	 * @return
+	 */
 	public List<SharedMap<String,Object>> getRateOption(String distId){
 		String q = "SELECT rate FROM PG_MAM_DIST_MNG WHERE distId = '"+ distId +"' ORDER BY rate asc";
 		SharedMap<String,Object> res = super.query(q).getRow(0);
@@ -72,5 +97,4 @@ public class DistDAO extends DAO{
 		super.initRecord();
 		return rset.getRow(0).getString("distId");
 	}
-	
 }

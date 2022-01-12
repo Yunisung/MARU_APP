@@ -12,6 +12,7 @@ import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 
 /**
+ * 210812_PYS : 대행사 지불 및 정산조회
  * @author Administrator
  *
  */
@@ -25,6 +26,11 @@ public class DistMngDAO extends DAO{
 		super.setColumns(DistMngDAO.COLUMNS);
 	}
 	
+	/**
+	 * 210812_PYS : 대행사 ID로 조회
+	 * @param distId : 대행사ID
+	 * @return
+	 */
 	public RecordSet getById(String distId){
 		addWhere("lower(distId)",distId.toLowerCase(),eq);
 		return search();

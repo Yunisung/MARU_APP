@@ -44,10 +44,25 @@ public class CollectTempDAO extends DAO{
 		return super.search();				//단일 검색
 	}*/
 	
+	/**
+	 * 210812_PYS : 매입내역중 정산대기중인 터미널 조회
+	 * <pre>
+	 * SELECT A.*,D.name,D.ceoName,D.distId,D.agencyId,D.salesId,E.name as vanName 
+FROM 
+(SELECT C.stlVanDay, C.van, C.vanId, B.mchtId, MAX(B.tmnId) as tmnId, SUM(B.amount) as amount, SUM(C.stlVanFee) as stlVanFee, SUM(B.amount-C.stlVanFee) as collectAmount, 
+						 SUM(IF(C.risk != '' AND B.capType = '매입', 0, B.amount - C.stlVanFee)) AS kwonAmount 
+						 FROM PG_TRX_CAP B join PG_TRX_CAP_DTL C on B.capId = C.capId 
+						 WHERE C.vanStatus = '입금대기' 
+						 GROUP BY C.stlVanDay, C.van, C.vanId, B.mchtId 
+						 ) A JOIN PG_VAN E ON A.vanId = E.vanId AND A.van = E.van
+						 join PG_MCHT D on A.mchtId = D.mchtId
+	 * </pre>
+	 * @param datas
+	 * @return
+	 */
 	public RecordSet makeSearch(List<Data> datas){
 		super.setTable("(SELECT C.stlVanDay, C.van, C.vanId, B.mchtId, MAX(B.tmnId) as tmnId, SUM(B.amount) as amount, SUM(C.stlVanFee) as stlVanFee, SUM(B.amount-C.stlVanFee) as collectAmount, "
-//						+" SUM(IF(C.risk != '' AND B.capType = '매입', 0, B.amount - C.stlVanFee)) AS MARUAmount "
-						+" SUM(B.amount - C.stlVanFee) AS MARUAmount "
+						+" SUM(IF(C.risk != '' AND B.capType = '매입', 0, B.amount - C.stlVanFee)) AS kwonAmount "
 						+" FROM PG_TRX_CAP B join PG_TRX_CAP_DTL C on B.capId = C.capId "
 						+" WHERE C.vanStatus = '입금대기' "
 						+" GROUP BY C.stlVanDay, C.van, C.vanId, B.mchtId "
