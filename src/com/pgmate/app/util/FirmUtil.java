@@ -4,13 +4,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.pgmate.lib.util.gson.GsonUtil;
 import com.pgmate.lib.util.map.SharedMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FirmUtil {
   private static Logger logger = LoggerFactory.getLogger(com.pgmate.app.util.FirmUtil.class);
@@ -38,6 +39,8 @@ public class FirmUtil {
 	  return comm(firmBean);
   }
   
+
+	
 	/**
 	 * 은행통한 예금주조회
 	 * @param bankCd
@@ -290,6 +293,7 @@ public class FirmUtil {
 		return firmBean;
 	}
 
+	
 	public static String accountFormat(String bankCd,String account){
 		account = account.replaceAll("[-]","").trim();
 		int len = account.length();
@@ -624,6 +628,7 @@ public class FirmUtil {
 			return account;  
 		}
 
+	
 	
 	public static void main(String[] args){  
 		String bankCd = "292";

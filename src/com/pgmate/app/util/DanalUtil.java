@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.pgmate.app.dao.CPDAO;
+import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.Data;
 import com.pgmate.lib.util.comm.UrlClient;
 import com.pgmate.lib.util.lang.CommonUtil;
@@ -87,7 +88,6 @@ public class DanalUtil {
 		resMap.put("regId", 			sharedMap.getString("regId"));
 		resMap.put("regDay", 			CommonUtil.getCurrentDate("yyyyMMdd"));
 		
-		
 		CPDAO dao = new CPDAO();
 		List<Data> resList = new ArrayList<Data>();
 		for(Entry<String, Object> each : resMap.entrySet()) {
@@ -96,6 +96,7 @@ public class DanalUtil {
 			data.val = each.getValue();
 			resList.add(data);
 		}
+		
 		logger.debug("INSERT PG_TRX_ADMIN_RFD : {}", dao.insert("PG_TRX_ADMIN_RFD", resList));
 		
 		return sharedMap.toJson();
@@ -161,6 +162,11 @@ public class DanalUtil {
 		} else if(van.startsWith("SPC")){
 			paymentUrl += "/api/webhooks/spc";
 		}
+		} else if(van.equalsIgnoreCase("ALLAT2")){
+			paymentUrl += "/api/webhooks/allat";
+		} else if(van.equalsIgnoreCase("ALLAT3")){
+			paymentUrl += "/api/webhooks/allat";
+	}
 		
 		logger.info("REQ RETRY URL : {}" + paymentUrl);
 		

@@ -1,5 +1,6 @@
 package com.pgmate.app.util;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -261,6 +262,8 @@ public class FirstPayUtil {
 		} else {
 			String bin = requestMap.getString("cardNo").substring(0, 6);
 			trxMap = trxDAO.getTrxByOriTrxId(mchtTmnMap.getString("van"),requestMap.getString("terminalId"),requestMap.getString("authCd"),requestMap.getString("authDate"),bin);
+			
+			
 			if(trxMap == null || trxMap.isEmpty()) {
 				trxMap = trxDAO.getTrxByOriTrxId(mchtTmnMap.getString("van"),requestMap.getString("terminalId"),requestMap.getString("authCd"),requestMap.getString("authDate"),bin);
 				if(trxMap == null || trxMap.isEmpty()) {

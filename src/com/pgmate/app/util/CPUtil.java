@@ -63,17 +63,18 @@ public class CPUtil {
 	public static final String RESULT_DATA_INFAIL		= "등록 실패하였습니다.";
 	public static final String RESULT_DATA_UPFAIL	 	= "업데이트 실패하였습니다.";
 	public static final String RESULT_DATA_DELFAIL	 	= "delete failure";
-	
+	 
 	public static final String CP_SESSION			= "CP_SESSION";	//Session Attribute NAME
-	public static final int CP_SESSION_TIMEOUT		= 30*60;		//30 minutes
-	public static final int CP_SESSION_TIMEOUT_MARU	= 60*60;		//60 minutes -- 본사용
+	public static final int CP_SESSION_TIMEOUT		= 30*160;		//30 minutes
+	public static final int CP_SESSION_TIMEOUT_KWON	= 30*160;		//30 minutes -- 본사용
 	
-	public static boolean CP_DEBUG					= false;
+	public static boolean CP_DEBUG					= true;
 	public static boolean CP_DEV_SESSION			= false;
 	
 	public static final String CP_UPLOAD_DIR		= "/upload";
 	public static final String CP_TEMPLATE_DIR		= "template";
 	
+	//KJM : 사용하는 운영체제에 맞는 파일 경로 지정
 	public static String getUploadDir() {
 		String path = "";
 		switch (System.getProperty("os.name")) {
@@ -87,56 +88,89 @@ public class CPUtil {
 		return path;
 	}
 	
+	/* KJM : page.current 값 설정에서 page.size 값 설정으로 코드 수정 함
+	 * if(page.size == 0) { page.current = 10; }
+	 */
+	
 	public static Page correctPage(Page page){
+		
 		if(page == null){
 			page = new Page();
 		}
 		if(page.current == 0){
 			page.current = 1;
 		}
+		/* KJM : page.size가 0일 때 코드 수정
+		 * if(page.size == 0) { page.current = 10; }
+		 */
 		if(page.size == 0){
-			page.current = 10;
+			page.size = 20;
 		}
-		
 		return page;
-		
-		
 	}
 	
-	
+	/**
+	 * 210812_PYS : Data클래스를 이용해서 SQL검색
+	 * @param dao
+	 * @param datas
+	 */
+	// 쿼리문에 들어갈 where ~ orderBy 절 세팅
 	public static void setDAO(DAO dao,List<Data> datas){
+		//데이터가 없을 때 setDAO 함수 종료
 		if(datas == null){
 			return;
 		}
-		StringBuilder orderBy = new StringBuilder(); 
-		for(Data data:datas){
+		
+		//orderBy = 정렬
+		StringBuilder orderBy = new StringBuilder();
+
+		//데이터 수만큼 반복
+		for(Data data:datas){ 
 			if(data.key){
+				//value가 존재 하면 
 				if(!CommonUtil.toString(data.val).equals("")) {
+					// value값 분석하여 String값으로 치환
 					String str = CommonUtil.toString(data.val);
+					// str 문장의 특수문자 제거
+					// changeValue = 매개변수값이 SQL 명령문 중 하나인지 체크하며, 특수문자 치환 메소드
 					String convaerted = SQLInjectionUtil.changeValue(str);
+					// 치환이 이뤄졌다면
 					if(!str.equalsIgnoreCase(convaerted)) {
+						// 치환 된 값으로 벨류값 셋팅
 						data.val = convaerted;
-						logger.warn("==== SQL INJECTION C HECK : {} => {}", str, convaerted);
+						logger.warn("==== SQL INJECTION CHECK : {} => {}", str, convaerted);
 					}
 				}
+				// 조건문 생성
 				dao.addWhere(data.name,data.val,data.oper);
+//				dao.sysTest("할당");
 			}else{
+				//값 직접 지정 시
 				dao.setRecord(data.name, data.val);
 			}
-			if(!data.order.equals("")){
+			
+			// 정렬값 있을  때
+			if(!data.order.equals("")){ 
 				if(orderBy.length() !=0){
 					orderBy.append(",");
 				}
+				/*	
+				 *  StringBuilder를 이용해 orderBy에 문자열 붙임 
+				 *  orderBy = "data.name data.order,data.name data.order, ..."
+				 */
 				orderBy.append(data.name);
 				orderBy.append(" ");
 				orderBy.append(data.order);
-			}
-		}
+			} 
+			
+		} // for end
+		
+		//orderBy의 길이가 2이상일 때 = 정렬 값 있을 때
 		if(orderBy.toString().trim().length() > 1){
 			dao.setOrderBy(orderBy.toString());
 		}
-	}
-	
+		
+	} 
 	
 	
 	public static void setRedisDAO(DAO dao,List<Data> datas){
@@ -180,11 +214,17 @@ public class CPUtil {
 	
 	public static void setTemplateDirectory(String directory){
 		FileUtil fileUtil = new FileUtil();
+		//파일 path에 현재 날짜 더함
 		String path = directory+CommonUtil.getCurrentDate("yyyyMMdd");
+		
+		//해당 경로(날짜없는)에 파일이 없을 경우
 		if(!fileUtil.existDirectory(directory)){
+			//폴더 생성
 			fileUtil.createDirectory(directory);
 		}
+		//해당 경로(날짜있는)에 파일이 없을 경우
 		if(!fileUtil.existDirectory(path)){
+			//폴더 생성
 			fileUtil.createDirectory(path);
 		}
 	}
@@ -207,10 +247,7 @@ public class CPUtil {
 		return newRecord;
 	}
 	
-	
-	
-	
-	public static String getCanonicalPath(){
+		public static String getCanonicalPath(){
 		String path = "";
 		try{
 			path = new File("../").getCanonicalPath();
@@ -218,9 +255,11 @@ public class CPUtil {
 		return path;
 	}
 	
+	//엑셀 파일 연결 경로 설정
 	public static String getCanonicalWebPath(){
 		String path = "";
 		try{
+			//0916기준으로 C:\git\creditop\web
 			path = new File("../web").getCanonicalPath();
 		}catch(Exception e){}
 		return path;
