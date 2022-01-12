@@ -748,6 +748,8 @@ public class BCrypt {
 	 * @return	true if the passwords match, false otherwise
 	 */
 	public static boolean checkpw(String plaintext, String hashed) {
+		// kbr : compareTo = 문자열 비교 메소드 같을경우 양수 , 같지 않을 경우 음수 , 대소문자 구분 함 
+		// kbr : 대소문자 구분 불필요시 compareToIgnoreCase() 메소드를 사용
 		return (hashed.compareTo(hashpw(plaintext, hashed)) == 0);
 	}
 	
