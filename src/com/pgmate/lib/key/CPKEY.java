@@ -137,6 +137,7 @@ public enum CPKEY {
 			return "cap_";
 		}
 	},
+	//KJM : 취소_
 	REFUND {
 		@Override
 		public String toString(){
