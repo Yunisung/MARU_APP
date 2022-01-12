@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.pgmate.lib.util.map.SharedMap;
 
-
+// KBR : 얘는뭘까...?
 public class Interest {
 	
 	public String mchtId = "";

@@ -11,12 +11,14 @@ import com.pgmate.lib.util.map.SharedMap;
  * @author Administrator
  *
  */
+//view단으로 보내주는 데이터에 대한 정보들 담는 객체
 @XmlRootElement(name = "response")
 public class CPResponse implements java.io.Serializable{
-
+	//KJM : 기능 수행 결과 정보
 	@XmlElement(name = "result")
 	public Result result	= null;
 	
+	//KJM : list, excel, pdf
 	@XmlElement(name = "type")
 	public String type		= "";
 	
@@ -25,13 +27,12 @@ public class CPResponse implements java.io.Serializable{
 	
 	@XmlElement(name = "page")
 	public Page page		= null;
-	
+	// ex) 엑셀일 경우 파일 다운로드 시 나오는 테이블의 컬럼 값이다.
 	@XmlElement(name = "thead")
 	public String thead		= null;
 	
 	@XmlElement(name = "data")
 	public List<SharedMap<String,Object>> data	= null;
-	
 	@XmlElement(name = "sum")
 	public SharedMap<String,Object> sum	= null;
 	
