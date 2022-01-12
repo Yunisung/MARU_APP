@@ -10,6 +10,7 @@ import com.pgmate.lib.util.map.SharedMap;
  * @author Administrator
  *
  */
+
 public class CPSession implements java.io.Serializable{
 
 	
@@ -33,12 +34,14 @@ public class CPSession implements java.io.Serializable{
 	private String eformStatus 	= "N";
 	private String loanSettleStatus 	= "N";
 
+	
 
 	private List<SharedMap<String,Object>> childList = null;
 	private List<String> salesMonthList	= null;
 	private List<SharedMap<String,Object>> newNoticeList = null;
 	private List<SharedMap<String,Object>> vanList = null;
 	
+
 	public List<SharedMap<String,Object>> getVanList() {
 		return vanList;
 	}
@@ -310,4 +313,5 @@ public class CPSession implements java.io.Serializable{
 	public void setLoanSettleStatus(String loanSettleStatus) {
 		this.loanSettleStatus = loanSettleStatus;
 	}
+	
 }
