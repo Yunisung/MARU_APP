@@ -141,6 +141,7 @@ public class UrlClient {
 		URL url 	= null;
 		HttpURLConnection conn	= null;
 		try{
+			//KJM : 통신 수행
 			url = new URL(host);
 			conn = (HttpURLConnection)url.openConnection();
 			conn.setRequestMethod(method);
@@ -158,7 +159,6 @@ public class UrlClient {
 			}
 			HTTP_CODE = conn.getResponseCode();
 			
-			
 			if(input){
 				response = response(conn);
 			}
@@ -172,7 +172,6 @@ public class UrlClient {
 			conn.disconnect();
 		}
 		return response;
-		
 	}
 	
 	
