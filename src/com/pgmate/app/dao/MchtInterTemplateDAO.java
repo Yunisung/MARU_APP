@@ -17,7 +17,7 @@ import com.pgmate.lib.dao.RecordSet;
  */
 public class MchtInterTemplateDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.MchtInterTemplateDAO.class );
-	private static final String TABLE = "PG_MCHT_INTER_TEMPLATE";
+	private static final String TABLE = "PG_MCHT_INTER_TEMPLATE"; // 상점부담 무이자 수수료 템플릿
 	private static final String COLUMNS = "*";
 	
 	public MchtInterTemplateDAO() {

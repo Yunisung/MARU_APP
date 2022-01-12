@@ -18,7 +18,7 @@ import com.pgmate.lib.util.map.SharedMap;
  */
 public class MchtSvcDAO extends DAO {
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.MchtSvcDAO.class );
-	private static final String TABLE = "PG_MCHT_SVC";
+	private static final String TABLE = "PG_MCHT_SVC"; // 가맹점 서비스 정보 테이블
 	private static final String COLUMNS = "*";
 	/**
 	 * 

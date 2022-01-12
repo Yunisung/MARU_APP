@@ -15,9 +15,10 @@ import com.pgmate.lib.dao.RecordSet;
  * @author Administrator
  *
  */
+
 public class MchtMngDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.MchtMngDAO.class );
-	private static final String TABLE = "PG_MCHT_MNG";
+	private static final String TABLE = "PG_MCHT_MNG"; // 가맹점 지불 및 정산
 	private static final String COLUMNS = "*";
 	
 	public MchtMngDAO() {
@@ -27,6 +28,7 @@ public class MchtMngDAO extends DAO{
 	
 	public RecordSet getById(String mchtId){
 		addWhere("lower(mchtId)",mchtId.toLowerCase(),eq);
+		
 		return search();
 	}
 	
@@ -42,6 +44,7 @@ public class MchtMngDAO extends DAO{
 	}
 	
 	public RecordSet getHtById(String mchtId){
+		// KBR : 가맹점 지불 및 정산 히스토리 테이블
 		setTable("HT_MCHT_MNG");
 		setColumns("*");
 		addWhere("lower(mchtId)",mchtId.toLowerCase(),eq);

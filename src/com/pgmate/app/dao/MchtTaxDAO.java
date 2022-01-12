@@ -20,7 +20,7 @@ import com.pgmate.lib.util.map.SharedMap;
  */
 public class MchtTaxDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.MchtTaxDAO.class );
-	private static final String TABLE = "PG_MCHT_TAX";
+	private static final String TABLE = "PG_MCHT_TAX"; // tax 정보 테이블
 	private static final String COLUMNS = "taxId, mchtId, name, compName, ceoName, idType, FN_MASK_IDENTIFY(identity) as identity, taxStatus, taxLimit, bankCd, bankName, account, accntHolder, accntCheck, accntDate, zip, addr1, addr2, email,regId, regDay, regDate";
 	
 	public MchtTaxDAO() {
@@ -48,7 +48,7 @@ public class MchtTaxDAO extends DAO{
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
-	
+	// KBR :  taxID 와  taxName 정보 들고옴 
 	public List<SharedMap<String,Object>> getSelectOption(String mchtId){
 		String q = "SELECT taxId as id ,name FROM PG_MCHT_TAX WHERE mchtId = '" + mchtId + "' ORDER BY name asc" ;
 		return super.query(q).getRows();
@@ -71,9 +71,9 @@ public class MchtTaxDAO extends DAO{
 		super.setOrderBy("regDate DESC, taxStatus DESC");
 		return super.search();
 	}
-	
+	// 택스 
 	public RecordSet getWithUsedLimit2(String mchtId){
-		super.setTable("PG_MCHT_TAX");
+		super.setTable("PG_MCHT_TAX"); // 가맹점 TAX 정보 
 		super.setColumns("*");
 		super.addWhere("mchtId", mchtId, DAO.eq);
 		super.setOrderBy("regDate DESC, taxStatus DESC");

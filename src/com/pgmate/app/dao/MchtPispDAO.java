@@ -19,7 +19,7 @@ import com.pgmate.lib.util.map.SharedMap;
  */
 public class MchtPispDAO extends DAO {
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.MchtPispDAO.class );
-	private static final String TABLE = "PG_MCHT_MNG_PISP";
+	private static final String TABLE = "PG_MCHT_MNG_PISP"; // 가맹점 지급대행 서비스
 	private static final String COLUMNS = "*";
 	/**
 	 * 

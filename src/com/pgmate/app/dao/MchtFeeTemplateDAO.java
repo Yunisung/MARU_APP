@@ -1,5 +1,6 @@
 package com.pgmate.app.dao;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ import com.pgmate.lib.dao.RecordSet;
  */
 public class MchtFeeTemplateDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.MchtFeeTemplateDAO.class );
-	private static final String TABLE = "PG_MCHT_FEE_TEMPLATE";
+	private static final String TABLE = "PG_MCHT_FEE_TEMPLATE"; // 가맴점 수수료 TEMPLATE 테이블
 	private static final String COLUMNS = "*";
 	
 	public MchtFeeTemplateDAO() {
@@ -31,11 +32,13 @@ public class MchtFeeTemplateDAO extends DAO{
 	}
 	
 	public RecordSet list(List<Data> datas,Page page){
+		
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
 	
+	// KBR : 가맹점 수수료 템플릿 정보 쿼리 
 	public RecordSet getFeeTemplate(String idx) {
 		super.setTable("PG_MCHT_FEE_TEMPLATE");
 		super.setColumns("*");

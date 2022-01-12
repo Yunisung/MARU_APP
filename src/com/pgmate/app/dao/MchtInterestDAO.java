@@ -20,13 +20,13 @@ import com.pgmate.lib.util.map.SharedMap;
  */
 public class MchtInterestDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.MchtInterestDAO.class );
-	private static final String TABLE = "VW_MCHT_INTEREST";
+	private static final String TABLE = "VW_MCHT_INTEREST"; // 상점 무담 무이자 모든 리스트  
 	private static final String COLUMNS = "*";
 	
 	public MchtInterestDAO() {
 		super(TABLE,CPUtil.CP_DEBUG);
 		super.setColumns(MchtInterestDAO.COLUMNS);
-		super.setOrderBy("acqName asc");
+		super.setOrderBy("acqName asc"); // 매입사 오름차순
 	}
 	
 	public RecordSet getById(String taxId){
