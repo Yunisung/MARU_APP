@@ -51,8 +51,8 @@ public class GsonUtil {
 		}else{
 			gsonBuilder.setDateFormat(DEFAULT_DATE_PATTERN);
 		}
-		return gsonBuilder.create().toJson(obj);
-//		return gsonBuilder.serializeSpecialFloatingPointValues().create().toJson(obj);
+//		return gsonBuilder.create().toJson(obj);
+		return gsonBuilder.serializeSpecialFloatingPointValues().create().toJson(obj);
 	}
 	
 	
