@@ -2,3 +2,5 @@ classes/
 web/WEB-INF/classes/
 lib/MARU_lib.jar
 lib/MARU_v1.jar
+logs/
+conf/service.json
