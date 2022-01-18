@@ -165,9 +165,6 @@ public class DistController {
 			cpRequest.setData("distId",result);
 		}
 		
-		
-		
-		
 		if (cpDAO.insert("PG_MAM_DIST", SessionUtil.getUserId(request), cpRequest.data)) {
 			SessionUtil.initSessionData(request);
 			return new CPRUtil(cpRequest).resultOK(CPUtil.RESULT_DATA_INSERTED).redirect(cpRequest.redirect)
@@ -175,6 +172,7 @@ public class DistController {
 		} else {
 			return new CPRUtil(cpRequest).resultNOK(CPUtil.RESULT_DATA_INFAIL, cpDAO.getError()).cpResponse();
 		}
+		
 	}
 
 	@RequestMapping(value = {

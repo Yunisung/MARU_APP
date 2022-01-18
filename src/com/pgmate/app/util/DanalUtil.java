@@ -161,7 +161,6 @@ public class DanalUtil {
 			paymentUrl += "/api/webhooks/kicc";
 		} else if(van.startsWith("SPC")){
 			paymentUrl += "/api/webhooks/spc";
-		}
 		} else if(van.equalsIgnoreCase("ALLAT2")){
 			paymentUrl += "/api/webhooks/allat";
 		} else if(van.equalsIgnoreCase("ALLAT3")){

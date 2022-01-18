@@ -259,12 +259,6 @@ public class XlsExport {
 				contentCellStyle.setBorderTop(CellStyle.BORDER_NONE);
 				contentCellStyle.setAlignment(CellStyle.ALIGN_LEFT);
 				contentCellStyle.setAlignment(CellStyle.VERTICAL_CENTER);
-				percentCellStyle.setBorderBottom(CellStyle.BORDER_THIN);
-				percentCellStyle.setBorderLeft(CellStyle.BORDER_NONE);
-				percentCellStyle.setBorderRight(CellStyle.BORDER_NONE);
-				percentCellStyle.setBorderTop(CellStyle.BORDER_NONE);
-				percentCellStyle.setAlignment(CellStyle.ALIGN_LEFT);
-				percentCellStyle.setAlignment(CellStyle.VERTICAL_CENTER);
 			}
 		}
 
@@ -285,10 +279,6 @@ public class XlsExport {
 				if(numberArray.indexOf(key) > -1) {
 					cell.setCellValue(CommonUtil.parseLong(data));
 				} else if (doubleArray.indexOf(key) > -1) {
-					cell.setCellValue(CommonUtil.parseDouble(data));
-				} else if (percentArray.indexOf(key) > -1) {
-					percentCellStyle.setDataFormat(workbook.createDataFormat().getFormat("0.000%"));
-					cell.setCellStyle(percentCellStyle);
 					cell.setCellValue(CommonUtil.parseDouble(data));
 				} else if (data instanceof java.lang.Integer) {
 					cell.setCellValue(CommonUtil.parseInt(data));
