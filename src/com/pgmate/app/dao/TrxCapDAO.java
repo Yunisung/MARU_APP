@@ -26,6 +26,7 @@ import com.pgmate.lib.util.map.SharedMap;
 @SuppressWarnings("serial")
 public class TrxCapDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.TrxCapDAO.class );
+	private static final String TABLE = "VW_TRX_CAP_LIST";
 	private static final String COLUMNS = "*";
 	
 	//KJM : 테이블명, 컬럼, 정렬기준 기본 세팅
