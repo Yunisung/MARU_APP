@@ -7,6 +7,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,50 +25,59 @@ import com.pgmate.lib.util.map.SharedMap;
 public class InfoBankSMS{
 
 	private static Logger logger 				= LoggerFactory.getLogger( com.pgmate.app.util.InfoBankSMS.class );
-	private final String SMS_URL = "https://sms.supersms.co:7020/sms/v3/multiple-destinations"; 
+	//private final String SMS_URL = "https://sms.supersms.co:7020/sms/v3/multiple-destinations"; 	
+	public static final String SMS_URL = "http://link.smsceo.co.kr/sendsms_utf8.php"; //일반문자 (한글45자)
+	public static final String LMS_URL = "http://link.smsceo.co.kr/sendlms_utf8.php"; //장문문자 (한글1000자)
+	public static final String MMS_URL = "http://link.smsceo.co.kr/sendmms_utf8.php"; //그림문자 (한글1000자)
 	
 	public InfoBankSMS() {
 		
 	}
 	
 	
-	public void sendSms(String phone, String msg){
+	public void sendSms(String sendUrl, String phone, String msg){
 		
-		SharedMap<String, Object> jsonMap = new SharedMap<String, Object>();
-		List<SharedMap<String, Object>> list = new ArrayList<SharedMap<String,Object>>();
-		SharedMap<String, Object> map2 = new SharedMap<String, Object>();
+		String userKey = "VG8HMwo6Bz1VY1E2Ai0AMAQ6AXMDPARlA2xdbwh+UHFWIA==";
+		String userId = "bkwinners";
+		String callBack = "0517516422";
+		String SendPhoneNum = phone.replaceAll("-", "");
+		String sendMsg = msg;
 		
-		map2.put("to", "82"+phone.substring(1).replaceAll("-", ""));
-		list.add(map2);
-		jsonMap.put("destinations", list);
-		jsonMap.put("from","18551838");
-		jsonMap.put("ttl","0");
-				
-		jsonMap.put("text",msg);
-		String json = jsonMap.toJson();
+		SharedMap<String, String> jsonMap = new SharedMap<String, String>();
+
+		jsonMap.put("userkey", userKey);
+		jsonMap.put("userid", userId);
+		jsonMap.put("phone", SendPhoneNum);
+		jsonMap.put("callback", callBack);
+		jsonMap.put("msg", sendMsg);
+		StringJoiner sj = new StringJoiner("&");
 		
-		System.out.println(json);
+		for(Map.Entry<String, String> entry : jsonMap.entrySet()) {
+			sj.add(entry.getKey() + "=" + entry.getValue());
+		}
+		
+		String parameter = sj.toString();
+		
+		logger.debug("parameter [{}]", parameter);
+		
 		
 		try {
-			URL url = new URL(SMS_URL);
+			URL url = new URL(sendUrl);
+			
 			HttpURLConnection con = (HttpURLConnection)url.openConnection();
 			con.setConnectTimeout(10000);
 			con.setReadTimeout(10000);
-			
-			String authKey = new CodeDAO().getInfoBankSmsKey();
-			
-			con.addRequestProperty("Accept", "application/json");
-			con.addRequestProperty("Authorization", authKey);
-			con.setRequestMethod("POST");
-			con.setRequestProperty("Content-Type", "application/json");
 
+			con.setRequestMethod("POST");
+			con.setRequestProperty("content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+			
 			con.setDoInput(true);
 			con.setDoOutput(true);
 			con.setUseCaches(false);
 			con.setDefaultUseCaches(false);
 			
 			OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
-			wr.write(json);
+			wr.write(parameter);
 			wr.flush();
 			
 			String resData = "";

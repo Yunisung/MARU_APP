@@ -232,15 +232,15 @@ public class LoginController {
 			logger.debug("SEND SMS!");
 	
 			InfoBankSMS infoBankSMS = new InfoBankSMS();
-			String msgBody = "[MTOUCH] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
-			infoBankSMS.sendSms(userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+			String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
+			infoBankSMS.sendSms(infoBankSMS.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
 		}else {
 			SharedMap<String, Object> userMap = new MchtTmnDAO().getById(userId).getRow(0);
 			logger.debug("SEND SMS!");
 	
 			InfoBankSMS infoBankSMS = new InfoBankSMS();
-			String msgBody = "[MTOUCH] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
-			infoBankSMS.sendSms(userMap.getString("ceoPhone").replaceAll("\\[^0-9]+", ""), msgBody);
+			String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
+			infoBankSMS.sendSms(infoBankSMS.SMS_URL, userMap.getString("ceoPhone").replaceAll("\\[^0-9]+", ""), msgBody);
 		}
 		
 		return "OK";
