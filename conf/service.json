@@ -4,7 +4,7 @@
     "poolName": "MARU_APP",
     "driver": "org.mariadb.jdbc.Driver",
     //"jdbcUrl": "jdbc:mariadb://203.245.13.52:5021/CP_MARU", 
-    "jdbcUrl": "jdbc:mariadb://192.0.0.1/CP_MARU_TEST",
+    "jdbcUrl": "jdbc:mariadb://127.0.0.1:3306/CP_MARU_TEST",
     "userName": "root",
     "passWord": "1234",
     "maxConnection": 20,
