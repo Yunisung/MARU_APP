@@ -19,7 +19,7 @@
     "maxThreads": 150,
     "ssl": {
       "ssl": false,
-      "port": 10001,
+      "port": 8080,
       "sslProtocol": "TLS",
       "keystoreFile": "",
       "keystorePass": "",
