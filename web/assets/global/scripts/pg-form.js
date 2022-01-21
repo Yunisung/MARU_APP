@@ -373,7 +373,9 @@ var gradeSelector = function(submitForm, userGrade, targetGrade, targetInput, de
 }
 
 function postCode($this, zip, addr1, addr2, lat, lng) {
-	var geocoder = new daum.maps.services.Geocoder();
+	
+//	var geocoder = new daum.maps.services.Geocoder();
+	
 	new daum.Postcode({
         oncomplete: function(data) {
         	// 각 주소의 노출 규칙에 따라 주소를 조합한다.
@@ -408,15 +410,16 @@ function postCode($this, zip, addr1, addr2, lat, lng) {
             addr1.val(fullAddr);
             if(addr2) addr2.val(extraAddr);
             
-            geocoder.addressSearch(data.address, function(results, status) {
-                // 정상적으로 검색이 완료됐으면
-                if (status === daum.maps.services.Status.OK) {
-
-                    var result = results[0]; //첫번째 결과의 값을 활용
-                    if(lat) lat.val(result.y); // latitude 위도
-                	if(lng) lng.val(result.x); // longitude  경도
-                }
-            });
+//            geocoder.addressSearch(data.address, function(results, status) {
+//                // 정상적으로 검색이 완료됐으면
+//                if (status === daum.maps.services.Status.OK) {
+//
+//                    var result = results[0]; //첫번째 결과의 값을 활용
+//                    if(lat) lat.val(result.y); // latitude 위도
+//                	if(lng) lng.val(result.x); // longitude  경도
+//                }
+//            });
+            
             // 커서를 상세주소 필드로 이동한다.
             addr2.focus();
         }
