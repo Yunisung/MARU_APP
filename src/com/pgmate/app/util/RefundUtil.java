@@ -143,7 +143,8 @@ public class RefundUtil {
 	
 	public String comm(String request,String payKey){
 		//String paymentUrl = "https://svcapidev.mtouch.com/api/refund";
-		String paymentUrl = "http://pgwas1:10002/api/refund";
+		//String paymentUrl = "http://pgwas1:10002/api/refund";
+		String paymentUrl = "http://127.0.0.1:10002/api/refund";
 		StringBuilder result = new StringBuilder();
 		URL url = null;
 		HttpURLConnection conn = null;
@@ -255,7 +256,8 @@ public class RefundUtil {
 		//개발
 		//String paymentUrl = "https://svcapidev.mtouch.com/api/phone/refund";
 		//운영
-		String paymentUrl = "http://pgwas1:10002/api/phone/refund";
+		//String paymentUrl = "http://pgwas1:10002/api/phone/refund";
+		String paymentUrl = "http://127.0.0.1:10002/api/phone/refund";
 		
 		StringBuilder result = new StringBuilder();
 		URL url = null;

@@ -86,7 +86,7 @@
 													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">웹사이트URL</label>
 														<div class="col-sm-6">
-															<input type="text" class="form-control input-sm" maxlength="80" name="mchtUrl" placeholder="" value="https://www.mtouch.com">
+															<input type="text" class="form-control input-sm" maxlength="80" name="mchtUrl" placeholder="" value="https://www.bkwinners.com">
 														</div>
 													</div>
 													<div class="form-group col-sm-6">

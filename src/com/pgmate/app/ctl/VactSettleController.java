@@ -670,14 +670,14 @@ public class VactSettleController {
 		if (rset.size() > 0) {
 			List<SharedMap<String, Object>> targetList = rset.getRows();
 			SharedMap<String, Object> senderMap = new SharedMap<String, Object>();
-			senderMap.put("identity", "4198800046");
-			senderMap.put("compName", "㈜광원");
-			senderMap.put("ceoName", "강승구");
-			senderMap.put("addr1", "서울특별시 서초구 서초대로");
-			senderMap.put("addr2", "54길 46 2층");
+			senderMap.put("identity", "6758600152");
+			senderMap.put("compName", "㈜부국위너스");
+			senderMap.put("ceoName", "권규미");
+			senderMap.put("addr1", "부산광역시 해운대구 센텀중앙로97");
+			senderMap.put("addr2", "A동 2510호");
 			senderMap.put("bizCategory", "서비스");
 			senderMap.put("bizType", "전자금융업외");
-			senderMap.put("email", "help@mtouch.com");
+			senderMap.put("email", "bukook@bkwinners.com");
 
 			TaxExport taxExport = new TaxExport();
 
