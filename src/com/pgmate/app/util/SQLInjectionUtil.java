@@ -70,14 +70,15 @@ public class SQLInjectionUtil {
 		orgVal = evilChars.matcher(orgVal).replaceAll("");
 		
 		// 특수 문자 필터링
-		orgVal = orgVal.replaceAll("'", "&#39;");
-		orgVal = orgVal.replaceAll("\"", "&#34;");
+		//210121 KJM : db 들어가는 json 값 치환 주석처리
+//		orgVal = orgVal.replaceAll("'", "&#39;");
+//		orgVal = orgVal.replaceAll("\"", "&#34;");
 		// orgVal = orgVal.replaceAll("-", "&#45;");
 		// orgVal = orgVal.replaceAll("(", "&#40;");
 		// orgVal = orgVal.replaceAll(")", "&#41;");
 		orgVal = orgVal.replaceAll("<", "&#60;");
-		orgVal = orgVal.replaceAll("=", "&#61;");
-		orgVal = orgVal.replaceAll(">", "&#62;");
+//		orgVal = orgVal.replaceAll("=", "&#61;");
+		orgVal = orgVal.replaceAll(">", "&#62;"); 
 		//orgVal = orgVal.replaceAll("@", "&#64;");
 
 		// 특수 구문 필터링
