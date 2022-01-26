@@ -1,43 +1,32 @@
-package com.pgmate.app.util;
+package com.pgmate.lib.sms;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.pgmate.app.dao.CodeDAO;
 import com.pgmate.lib.util.map.SharedMap;
 
-//사용안함
-//lib.sms.smsutil로 이동 by 박윤성
+public class SmsUtil {
 
+	private static Logger logger 				= LoggerFactory.getLogger( com.pgmate.lib.sms.SmsUtil.class);
 
-/**
- * @author Administrator
- *
- */
-public class InfoBankSMS{
-
-	private static Logger logger 				= LoggerFactory.getLogger( com.pgmate.app.util.InfoBankSMS.class );
-	//private final String SMS_URL = "https://sms.supersms.co:7020/sms/v3/multiple-destinations"; 	
 	public static final String SMS_URL = "http://link.smsceo.co.kr/sendsms_utf8.php"; //일반문자 (한글45자)
 	public static final String LMS_URL = "http://link.smsceo.co.kr/sendlms_utf8.php"; //장문문자 (한글1000자)
 	public static final String MMS_URL = "http://link.smsceo.co.kr/sendmms_utf8.php"; //그림문자 (한글1000자)
 	
-	public InfoBankSMS() {
+	public SmsUtil() {
 		
 	}
 	
 	
-	public void sendSms(String sendUrl, String phone, String msg){
+	public static void sendSms(String sendUrl, String phone, String msg){
 		
 		String userKey = "VG8HMwo6Bz1VY1E2Ai0AMAQ6AXMDPARlA2xdbwh+UHFWIA==";
 		String userId = "bkwinners";
@@ -101,13 +90,11 @@ public class InfoBankSMS{
 				
 			}
 			
-			
-			
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			logger.debug("lib.sms.SmsUtil Error");
 		}
 	}
-	
 
 }

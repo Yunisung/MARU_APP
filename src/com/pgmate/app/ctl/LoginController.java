@@ -32,6 +32,7 @@ import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.gson.GsonUtil;
 import com.pgmate.lib.util.lang.CommonUtil;
 import com.pgmate.lib.util.map.SharedMap;
+import com.pgmate.lib.sms.SmsUtil;
 
 /**
  * @author Administrator
@@ -229,18 +230,18 @@ public class LoginController {
 		
 		if(memberType.equals("MEMBER")) {
 			SharedMap<String, Object> userMap = new UserDAO().getById(userId).getRow(0);
-			logger.debug("SEND SMS!");
-	
+
 			InfoBankSMS infoBankSMS = new InfoBankSMS();
 			String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
-			infoBankSMS.sendSms(InfoBankSMS.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+			//infoBankSMS.sendSms(InfoBankSMS.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+			SmsUtil.sendSms(SmsUtil.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
 		}else {
 			SharedMap<String, Object> userMap = new MchtTmnDAO().getById(userId).getRow(0);
-			logger.debug("SEND SMS!");
-	
+
 			InfoBankSMS infoBankSMS = new InfoBankSMS();
 			String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
-			infoBankSMS.sendSms(InfoBankSMS.SMS_URL, userMap.getString("ceoPhone").replaceAll("\\[^0-9]+", ""), msgBody);
+			//infoBankSMS.sendSms(InfoBankSMS.SMS_URL, userMap.getString("ceoPhone").replaceAll("\\[^0-9]+", ""), msgBody);
+			SmsUtil.sendSms(SmsUtil.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
 		}
 		
 		return "OK";
