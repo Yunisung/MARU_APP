@@ -20,6 +20,7 @@ WebFontConfig = {
   })(); 
 
 var historyPage ='/';
+
 var PGmate = function() {
 		
     // Handle  Settings
@@ -87,6 +88,7 @@ var PGmate = function() {
 				bootbox.alert("예외가 발생했습니다. 관리자에게 문의하세요. (" + jqxhr.status + ")" );
 			}
 		});
+		
 		$(window).ajaxStart(function(){
     		$('.loading-btn').button('loading');
     		$('body').modalmanager('loading');
@@ -110,8 +112,10 @@ var PGmate = function() {
 		});
 		
 		//정산 확정 checkbox
+		//KJM : 대표가맹점 정산 조회 > 정산 확정
 		$(document).on('click', '.settle-pay-out-check', function(){
 			var stlId = '';
+			//KJM : 선택한 리스트 확인
 			$('table.pg-table>tbody>tr').each( function(i, e){
 				if($(e).find('input[type="checkbox"]').is(':checked')) {
 					stlId += "'" + $(e).attr('data-stlId') + "',";
@@ -122,12 +126,16 @@ var PGmate = function() {
 				bootbox.alert("정산 확정할 대상을 체크하세요.");
 			} else {
 				stlId = stlId.substring(0, stlId.length -1);
+				//KJM : hasClass : 클래스명이 일치하는 것이 있을 경우 true 반환
+				//KJM : is-sub : 대표가맹점 구분용
 				settleStatusUpdate("확정", stlId, $(this).hasClass('is-sub'));
 			}
 		});
 		//정산 지급 완료 처리
+		//KJM : 대표가맹점 정산 조회 > 정산 지급 완료
 		$(document).on('click', '.settle-pay-complete', function(){
 			var stlId = '';
+			//KJM : 선택한 리스트 확인
 			$('table.pg-table>tbody>tr').each( function(i, e){
 				if($(e).find('input[type="checkbox"]').is(':checked')) {
 					stlId += "'" + $(e).attr('data-stlId') + "',";
@@ -142,7 +150,9 @@ var PGmate = function() {
 			}
 		});
 		//정산 대상거래 조회
+		//KJM : 정산 대상거래 엑셀파일 다운로드
 		$(document).on('click', '.settle-detail', function(){
+			//KJM : 정산번호, stlId
 			var stlId = $(this).closest('tr').attr('data-stlId');
 			var gradeId = $(this).attr('data-grade');
 			settleDetailDownload(gradeId, stlId, $(this).hasClass('is-sub'));
@@ -195,31 +205,38 @@ var PGmate = function() {
 			vactSettleDetailDownload(gradeId, stlId, $(this).hasClass('is-sub'));
 		});
 		
+		//KJM : 가맹점 정산 생성 > 정산 확정 버튼 클릭
 		$(document).on('click', '.settle-mcht-decide', function(){
 			var stlId = '';
+			//KJM : 정산 리스트표에서 체크된 거래건의 인덱스 가져옴(인덱스1, 인덱스2,...)
 			$('table.pg-table>tbody>tr').each( function(i, e){
 				if($(e).find('input[type="checkbox"]').is(':checked')) {
 					stlId += "'" + $(e).attr('data-stlId') + "',";
 				}
 			});
-		
+			
+			//KJM : 가져온 인덱스의 길이가 1이하일 때
 			if(stlId.length < 1) {
 				bootbox.alert("정산 확정할 대상을 체크하세요.");
+			//KJM : ','제외한 인덱스를 mchtSettleDecide 메소드에 넣어줌
 			} else {
 				stlId = stlId.substring(0, stlId.length -1);
 				mchtSettleDecide("확정", stlId);
 			}
 		});
+		
 		// 가맹점 정산 - 지급보류 상태 변경
 		$(document).on('click', '.settle-hold-status', function(){
 			var stlId = '';
 			var status = $(this).data('status');
+			//KJM : 사용자가 체크한 리스트의 정산번호 값 가져옴
 			$('table.pg-table>tbody>tr').each( function(i, e){
 				if($(e).find('input[type="checkbox"]').is(':checked')) {
 					stlId += "'" + $(e).attr('data-stlId') + "',";
 				}
 			});
-		
+			
+			//KJM : 체크한 리스트가 없을 경우 알림창 띄워주고, 있을 경우 상태 변경 메소드 실행
 			if(stlId.length < 1) {
 				bootbox.alert("대상을 체크하세요.");
 			} else {
@@ -230,24 +247,33 @@ var PGmate = function() {
 		
 		// 정산 상태(리스크) 변경
 		$(document).on('click', '.trx-stl-status-change', function() {
+			//KJM : 리스크 변경 시 선택한 리스크 종류 가져옴
+			//KJM : 리스크 해제(""), 건한도, 중복, 고액, 최소금액, 야간할부, 1일중복, 주간할부, 야간건한도, 위험, 관리자 설정
 			var stlStatus = $(this).attr("data-status");
+			//KJM : 선택한 매입건의 매입번호
 			var capId = '';
+			//KJM : 매입건 리스트들 중에서 
 			$('table.pg-table>tbody>tr').each(function(i, e) {
+				//KJM : 체크된 매입건의 매입번호 저장
 				if ($(e).find('input[type="checkbox"]').is(':checked')) {
 					capId += "'" + $(e).attr('data-capId') + "',";
 				}
 			});
-
+			
+			//KJM : 선택한 매입건이 없을 경우
 			if (capId.length < 1) {
 				bootbox.alert("대상을 체크하세요.");
+			//KJM : 선택한 매입건이 있을 경우
 			} else {
 				bootbox.prompt({
 				    title: "변경 사유를 입력하세요.",
 				    inputType: 'textarea',
 				    callback: function (summary) {
+						//KJM : 변경 사유 미입력 시 알림창 띄워줌
 				    	if(summary === null) {
 				    	} else if(summary.length < 1) {
 				    		bootbox.alert("변경 사유를 반드시 입력해야 합니다.");
+						//KJM : 변경 사유 입력 시 리스크 변경 수행
 				    	} else {
 				    		capId = capId.substring(0, capId.length - 1);
 							trxStlStatusChange(stlStatus, capId, summary);
@@ -258,9 +284,11 @@ var PGmate = function() {
 		});
 		
 		// 정산 지급 상태 변경
+		//KJM : 가맹점 정산 조회 > 정산상태 변경
 		$(document).on('click', '.settle-mcht-payout', function() {
 			var status = $(this).attr("data-status");
 			var stlId = '';
+			//KJM : 체크된 정산번호만 가져오기
 			$('table.pg-table>tbody>tr').each(function(i, e) {
 				if ($(e).find('input[type="checkbox"]').is(':checked')) {
 					stlId += "'" + $(e).attr('data-stlId') + "',";
@@ -275,30 +303,39 @@ var PGmate = function() {
 			}
 		});
 		
-		
-		
 		// 정산 상태(리스크) 변경
+		//KJM : 거래삭제 클릭 시
 		$(document).on('click', '.trx-cap-delete', function() {
 			
 			var capId = '';
+			//KJM : 컬럼명 제외한 리스트 가져옴
 			$('table.pg-table>tbody>tr').each(function(i, e) {
+				//KJM : 체크 된 매입거래의 경우
 				if ($(e).find('input[type="checkbox"]').is(':checked')) {
+					//KJM : capId = '매입거래번호','매입거래번호',...
 					capId += "'" + $(e).attr('data-capId') + "',";
 				}
 			});
-
+			
+			//KJM : 체크된 매입거래가 없을 경우
 			if (capId.length < 1) {
 				bootbox.alert("대상을 체크하세요.");
+			//KJM : 체크된 매입거래 있을 경우
 			} else {
 				bootbox.prompt({
 				    title: "거래가 삭제됩니다. 변경 사유를 입력하세요.",
 				    inputType: 'textarea',
 				    callback: function (summary) {
+						//KJM : 변경 사유 입력 안했을 때 경고창 보여줌
 				    	if(summary === null) {
 				    	} else if(summary.length < 1) {
 				    		bootbox.alert("변경 사유를 반드시 입력해야 합니다.");
+						//KJM : 변경 사유 입력 시
 				    	} else {
+							//KJM : 매입번호 
 				    		capId = capId.substring(0, capId.length - 1);
+							//KJM : pg-common.js > trxCapDelete() 메소드 실행
+							//KJM : ajax 통신으로 매입삭제 수행
 							trxCapDelete(capId, summary);
 				    	}
 				    }
@@ -497,7 +534,7 @@ function textMask(){
 var searchNotification = function(){
 	
 }
-
+// KBR 헤더부분 디버그 작동 유무 
 function cpDebug(){
 	
 	$.ajax({
