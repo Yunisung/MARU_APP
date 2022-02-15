@@ -4,9 +4,9 @@
     "poolName": "MARU_APP",
     "driver": "org.mariadb.jdbc.Driver",
     //"jdbcUrl": "jdbc:mariadb://203.245.13.52:5021/CP_MARU", 
-    "jdbcUrl": "jdbc:mariadb://127.0.0.1:3306/CP_MARU",
+    "jdbcUrl": "jdbc:mariadb://pgdb1:3306/CP_MARU",
     "userName": "bkwinners",
-    "passWord": "2021bk07&*(db2",
+    "passWord": "2021bk05&*(db2",
     "maxConnection": 20,
     "minConnection": 10,
     "partitionCount": 1
@@ -14,7 +14,7 @@
   "tomcat": {
     "serverName": "MARU_APP",
     "port": 10001,
-    "host": "127.0.0.1",
+    "host": "pgwas2",
     "minThreads": 20,
     "maxThreads": 150,
     "ssl": {
