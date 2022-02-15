@@ -221,7 +221,7 @@ public class LoginController {
 		return "/common/redirectParent";
 	}
 	
-	@RequestMapping(value = "/login/send/{userId}/{memberType}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/login/send/{userId}/{memberType}", method = RequestMethod.POST)
 	@SessionExclude
 	public @ResponseBody String sendSMS(HttpServletRequest request, @PathVariable String userId, @PathVariable String memberType) throws IOException {
 		WebCache wc = new WebCache();
