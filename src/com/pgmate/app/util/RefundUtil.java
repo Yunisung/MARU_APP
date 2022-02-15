@@ -158,8 +158,9 @@ public class RefundUtil {
 	
 	//KJM : POST 방식의 데이터 전송 세팅
 	public String comm(String request,String payKey){
-		//KJM : refund 확인필 / update문도 확인...
-		String paymentUrl = "http://127.0.0.1:10002/api/refund";
+		//String paymentUrl = "https://api.bkwinners.kr/api/refund";
+		String paymentUrl = "http://pgwas1:10002/api/refund";
+		//String paymentUrl = "http://127.0.0.1:10002/api/refund";
 		StringBuilder result = new StringBuilder();
 		URL url = null;
 		//KJM : http 프로토콜 사용 connection
