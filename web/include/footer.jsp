@@ -4,8 +4,8 @@
 <div class="page-footer">
     
 		<!-- END PRE-FOOTER -->
-		<div class="page-footer-inner">© 2021 Copyright BKwinners,Inc.
-        <a target="_blank" href="https://www.bkwinners.com">Creditop</a> 
+		<div class="page-footer-inner">© 2022 Copyright BKWinners,Inc.
+        <a target="_blank" href="http://www.bkwinners.com">BKWinners</a> 
     </div>
     <div class="scroll-to-top">
         <i class="icon-arrow-up"></i>
