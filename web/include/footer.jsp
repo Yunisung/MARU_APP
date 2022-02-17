@@ -4,8 +4,8 @@
 <div class="page-footer">
     
 		<!-- END PRE-FOOTER -->
-		<div class="page-footer-inner">© 2019 Copyright Mtouch,Inc.
-        <a target="_blank" href="https://www.mtouch.com">MTOUCH</a> 
+		<div class="page-footer-inner">© 2022 Copyright BKWinners,Inc.
+        <a target="_blank" href="http://www.bkwinners.com">BKWinners</a> 
     </div>
     <div class="scroll-to-top">
         <i class="icon-arrow-up"></i>
