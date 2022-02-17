@@ -31,7 +31,7 @@ public class TrxCapDAO extends DAO{
 	
 	//KJM : 테이블명, 컬럼, 정렬기준 기본 세팅
 	public TrxCapDAO() {
-//		super(table,CPUtil.CP_DEBUG);
+		super(TABLE,CPUtil.CP_DEBUG);
 		super.setColumns(TrxCapDAO.COLUMNS);
 		//KJM : 수신일자 , 수신시간
 		super.setOrderBy("regDay desc, regTime desc");

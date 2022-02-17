@@ -26,6 +26,7 @@ import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.map.SharedMap;
 
 @Controller
+// KBR : 대출 정산 
 public class LoanSettleController {
 	
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.ctl.LoanSettleController.class );

@@ -16,6 +16,9 @@ import com.pgmate.lib.util.map.SharedMap;
  * @author Administrator
  *
  */
+
+
+// KBR 해당 클래스 사용안한다함 (테이블도 삭제요청)
 public class SettlePresidentDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.SettlePresidentDAO.class );
 	private static final String TABLE = "PG_SETTLE_PRESIDENT";

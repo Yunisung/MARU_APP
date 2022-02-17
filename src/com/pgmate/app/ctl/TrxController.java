@@ -125,7 +125,6 @@ public class TrxController {
 		TrxCapDAO trxCapDAO = new TrxCapDAO();
 //		cpRequest.setData("capId", "", "", "desc", false);
 		RecordSet rset = trxCapDAO.list(cpRequest.data,cpRequest.page);
-		System.out.println("rset : " + rset );
 		return new CPRUtil(cpRequest).dataList(rset,trxCapDAO).setView(request,"/trx/cap/list","");
 	}
 

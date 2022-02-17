@@ -1520,6 +1520,7 @@ public class MchtController {
 	
 	
 	
+	
 	@RequestMapping(value = {"/mcht/vact/row/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody SharedMap<String, Object> vactRowUpdate(HttpServletRequest request, @RequestBody SharedMap<String, String> requestMap) {
 		SharedMap<String, Object> resMap = new SharedMap<>();
@@ -2629,6 +2630,88 @@ public class MchtController {
 		}
 		
 		return new CPRUtil(cpRequest).dataList(rset, mchtDAO).setView(request, "/mcht/accntSearch/list", "");
+	}
+	
+	@RequestMapping(value = "/mcht/chargeMng/add/{mchtId}", method = RequestMethod.GET)
+	public ModelAndView chargeMngfAdd(HttpServletRequest request, @PathVariable String mchtId) {
+		request.setAttribute("MCHTMAP", new MchtDAO().getById(mchtId).getRowFirst());
+		return new ModelAndView("/mcht/chargeMng/add");
+	}
+	
+	@RequestMapping(value = {"/mcht/chargeMng/insert"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse chargeMngInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+		//identity 입력시 암호화하여 넣어야함.
+		if (cpDAO.insert("PG_MCHT_CHARGE_MNG", SessionUtil.getUserId(request), cpRequest.data)) {
+			return new CPRUtil(cpRequest).resultOK("가맹점 충전정산 정보가 등록되었습니다.").cpResponse();
+		} else {
+			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 정보 등록에 실패하였습니다.",cpDAO.getError() )
+					.cpResponse();
+		}
+	}
+	
+	@RequestMapping(value = "/mcht/chargeMng/modify/{mchtId}", method = RequestMethod.GET)
+	public ModelAndView chargeMngModify(HttpServletRequest request, @PathVariable String mchtId) {
+		request.setAttribute("MCHTMAP", new MchtDAO().getById(mchtId).getRowFirst());
+		request.setAttribute("DATAMAP", new MchtChargeSettleDAO().getById(mchtId).getRowFirst());
+		return new ModelAndView("/mcht/chargeMng/modify");
+	}
+	
+	@RequestMapping(value = {"/mcht/chargeMng/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse chargeMngUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+		//identity 입력시 암호화하여 넣어야함.
+		if (cpDAO.update("PG_MCHT_CHARGE_MNG", SessionUtil.getUserId(request), cpRequest.data)) {
+			return new CPRUtil(cpRequest).resultOK("가맹점 충전정산 정보가 수정되었습니다.").cpResponse();
+		} else {
+			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 정보 수정에 실패하였습니다.",cpDAO.getError() )
+					.cpResponse();
+		}
+	}
+	
+	@RequestMapping(value = "/mcht/balance/modify/{mchtId}", method = RequestMethod.GET)
+	public ModelAndView modifyBalance(HttpServletRequest request, @PathVariable String mchtId) {
+		request.setAttribute("MCHTMAP", new MchtDAO().getById(mchtId).getRowFirst());
+		request.setAttribute("DATAMAP", new MchtChargeSettleDAO().getBalance(mchtId));
+		return new ModelAndView("/mcht/balance/modify");
+	}
+	
+	@RequestMapping(value = {"/mcht/balance/insert"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse modifyBalanceInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPSession session = SessionUtil.get(request);
+		if(!session.getGrade().equals("본사") || !session.getRole().equals("마스터")) {
+			logger.debug("권한 없음 실패");
+			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 수기등록 권한이 없습니다.")
+					.cpResponse();
+		}
+		ChargeSettleDAO chargeSettleDAO = new ChargeSettleDAO();
+		SharedMap<String, Object> settleMap = new SharedMap<String,Object>();
+		settleMap.put("trxId", chargeSettleDAO.getChargeSettleTrxId());
+		settleMap.put("mchtId", cpRequest.getValue("mchtId"));
+		settleMap.put("trxType", cpRequest.getValue("trxType"));
+		settleMap.put("trxUnit", "수기등록");
+		String regDate = CommonUtil.getCurrentDate("yyyyMMddHHmmss");
+		settleMap.put("trxDay", regDate.substring(0, 8));
+		settleMap.put("trxTime", regDate.substring(8));
+		settleMap.put("trackId", settleMap.getString("trxId"));
+		settleMap.put("refId", "");
+		settleMap.put("amount", cpRequest.getLongValue("amount"));
+		settleMap.put("netAmount", cpRequest.getLongValue("amount"));
+		if(settleMap.isEquals("trxType", "입금")) {
+			settleMap.put("balance", chargeSettleDAO.getMchtBalance(settleMap.getString("mchtId")).getLong("balance")+settleMap.getLong("netAmount"));
+		}else {
+			settleMap.put("balance", chargeSettleDAO.getMchtBalance(settleMap.getString("mchtId")).getLong("balance")-settleMap.getLong("netAmount"));
+		}
+		settleMap.put("summary", cpRequest.getValue("comment"));
+		settleMap.put("regId", SessionUtil.getUserId(request));
+		settleMap.put("regDay", regDate.substring(0, 8));
+		
+		if(chargeSettleDAO.insertChargeSettle(settleMap)) {
+			return new CPRUtil(cpRequest).resultOK("가맹점 충전정산 수기등록이 완료되었습니다.").cpResponse();
+		} else {
+			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 수기등록에 실패하였습니다.")
+					.cpResponse();
+		}
 	}
 
 

@@ -20,6 +20,7 @@ public class CheckController {
 	
 	@RequestMapping(value = "/check", method = RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody String check(HttpServletRequest request) {
+		
 		logger.info("===================CheckController" );
 		String check = "FAIL";
 		
