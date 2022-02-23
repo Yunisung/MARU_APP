@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_311"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/blobstore.jar"/>
 	<classpathentry kind="lib" path="lib/bonecp-0.8.0.RELEASE.jar"/>
@@ -72,6 +72,7 @@
 	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/xmlbeans-3.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/xmlrpc.jar"/>
+	<classpathentry kind="lib" path="lib/MARU_lib.jar"/>
 	<classpathentry kind="lib" path="lib/AES256(keyStr)_v.2.0.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
