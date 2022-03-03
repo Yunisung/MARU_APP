@@ -30,7 +30,7 @@ public class SmsUtil {
 		
 		String userKey = "VG8HMwo6Bz1VY1E2Ai0AMAQ6AXMDPARlA2xdbwh+UHFWIA==";
 		String userId = "bkwinners";
-		String callBack = "0517516422";
+		String callBack = "16441109";
 		String SendPhoneNum = phone.replaceAll("-", "");
 		String sendMsg = msg;
 		
