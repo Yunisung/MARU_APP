@@ -66,7 +66,8 @@
 			</ul>
 		</div>
 		</c:if>
-		<a class="btn btn-circle btn-icon-only btn-default" href="javascript:searchForExcel();">
+		<a class="btn btn-circle btn-default" id="excel-click" href="" style="display:none;">Excel Download</a>
+		<a class="btn btn-circle btn-icon-only btn-default" id="excel-export" href="javascript:fnExcelReport('sortTable', '매입현황조회내역');">
 			<i class="fa fa-file-excel-o" aria-hidden="true"></i>
 		</a>
 		<a class="btn btn-circle btn-icon-only btn-default" href="javascript:searchForPDF();">
