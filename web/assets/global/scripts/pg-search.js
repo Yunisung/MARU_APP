@@ -331,6 +331,7 @@ function searchAjax(searchData, action, type, callbackFnc) {
 		success : function(json, textStatus) {
 			if (type == 'excel' || type == 'pdf') {
 				var jsData = $.parseJSON(json);
+				console.log(jsData);
 				if(jsData.result.code == '601') {
 					bootbox.alert(jsData.result.message);
 				}else {
