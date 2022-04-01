@@ -329,6 +329,7 @@ function searchAjax(searchData, action, type, callbackFnc) {
 		},
 		data : searchData,
 		success : function(json, textStatus) {
+			console.log(json);
 			if (type == 'excel' || type == 'pdf') {
 				var jsData = $.parseJSON(json);
 				console.log(jsData);
