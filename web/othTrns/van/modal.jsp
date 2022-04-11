@@ -1230,6 +1230,11 @@
 						웰컴페이먼츠 영수증 조회
 			</button>
 		</c:if>
+		<c:if test = "${fn:startsWith(DATAMAP.van, 'GALAXIA')}">
+			<button class="btn btn-sm btn-default" onClick="window.open('https://cpadmin.billgate.net/billgate/common/authCardReceipt.jsp?mid=${DATAMAP.GalaxiaMID}&transNm=${DATAMAP.vanTrxId}&currTp=0000','popupIssue','width=400,height=750');">
+						Billgate 영수증 조회
+			</button>
+		</c:if>
 		<button type="button" data-dismiss="modal" class="btn btn-sm">Close</button>
 	</div>
 </body>
