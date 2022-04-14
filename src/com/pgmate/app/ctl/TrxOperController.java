@@ -1,21 +1,32 @@
 package com.pgmate.app.ctl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.itextpdf.text.log.SysoCounter;
 import com.pgmate.app.dao.AgencyDAO;
 import com.pgmate.app.dao.CPDAO;
 import com.pgmate.app.dao.MchtTmnDAO;
@@ -185,6 +196,60 @@ public class TrxOperController {
 	        		.cpResponse();
 		}
 		
+	}
+	
+	//KJM : csv 파일 업로드 거래 재생성
+	@ResponseBody
+	@RequestMapping(value="/trxoper/uploadFile", method=RequestMethod.POST)
+	//ajax로 보내준 파일을 multipartFile로 받아서 사용
+	public String uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest req) throws IOException, ServletException {
+		//컬럼명은 처리하지 않기 위한 플래그 선언
+		boolean flag = false;
+		String line;
+		//EUC-KR로 인코딩 해주어야 한글이 안깨짐
+		BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream(), "EUC-KR"));
+		//파일 한줄씩 읽어서 처리
+		while((line=br.readLine()) != null) {
+			//,를 기준으로 잘라 배열에 넣어준다
+			String coll[] = line.split(",");
+			CPRequest map = new CPRequest();
+			//해당라인이 컬럼명일때 flag=false
+			if(flag) {
+				//터미널 아이디로 가맹점 아이디 조회하여 사용
+				
+				SharedMap<String, Object> dtlMap = tmnIdCheck(coll[13]);
+				map.setData("mchtId", dtlMap.getString("mchtId"));
+				System.out.println("mchtId : " + map.getValue("mchtId"));
+				map.setData("tmnId", coll[13]);
+				map.setData("trnType", coll[2]);
+				map.setData("amount", coll[6]);
+				map.setData("installment", coll[8]);
+				if(map.getValue("trnType")=="승인") {
+					map.setData("bin", coll[5].substring(0, 6));
+					map.setData("last4", coll[5].substring(12));
+					map.setData("authCd", coll[7]);
+					map.setData("trxDay", coll[9].substring(0,8));
+					map.setData("trxTime", coll[9].substring(9));
+				}else {
+					map.setData("trxDay", coll[10].substring(0,8));
+					map.setData("trxTime", coll[10].substring(9));
+					map.setData("rootTrxDay", coll[9].substring(0,8));
+				}
+				map.setData("vanTrxId", coll[3]);
+				map.setData("trackId", coll[17]);
+				
+				insert(req, map);
+			}
+			flag = true;
+		}
+		return "ok";
+		
+	}
+	
+	//KJM : 터미널아이디로 가맹점 아이디 조회
+	public SharedMap<String, Object> tmnIdCheck(String tmnId) {
+		SharedMap<String, Object> map = new TrxDAO().getByTmnId(tmnId).getRowFirst();
+		return map;
 	}
 	
 	

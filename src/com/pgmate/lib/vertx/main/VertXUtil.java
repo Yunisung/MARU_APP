@@ -34,8 +34,7 @@ public class VertXUtil {
 		if(body.startsWith("=")){
 			try{
 			// 식별 가능한 문자로 변환하여 리턴 
-			body = URLDecoder.decode(body.substring(1),"utf-8");
-			System.out.println("");
+			body = URLDecoder.decode(body.substring(1),"euc-kr");
 			}catch(Exception e){}
 		}
 		

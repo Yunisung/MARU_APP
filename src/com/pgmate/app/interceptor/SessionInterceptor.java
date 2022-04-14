@@ -49,6 +49,9 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 		
 		if(!"/check".equals(request.getRequestURI())) {
 			if(exclude == null){
+				if(request.getServletPath().equals("/test/trxInsert/notitest")) {
+					return true;
+				}
 				String contentType = CommonUtil.nToB(request.getContentType()).toLowerCase();
 				if(!SessionUtil.isLive(request)){
 					logger.debug("SESSION IS NULL : {}",contentType);

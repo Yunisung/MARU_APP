@@ -84,12 +84,16 @@
 														<div class="form-actions nobg right">
 															<div class="btn folding-search-btn icon-arrow-down"></div>
 															<div class="">
-																<button type="button" class="btn btn-sm green-dark" onclick="location.href='/trxoper/factoring/form.jsp'">
+																<button type="button" class="btn btn-sm green-dark" onclick="location.href='/test/trxInsert/form.jsp'">
+																	<i class="fa fa-reorder" aria-hidden="true"></i> TEST 거래생성&nbsp;
+																</button>
+																<!-- 미사용 기능으로 주석처리 -->
+																<!-- <button type="button" class="btn btn-sm green-dark" onclick="location.href='/trxoper/factoring/form.jsp'">
 																	<i class="fa fa-reorder" aria-hidden="true"></i> FACTORING 거래생성&nbsp;
 																</button>
 																<button type="button" class="btn btn-sm blue" onclick="location.href='/trxoper/offline/form.jsp'">
 																	<i class="fa fa-reorder" aria-hidden="true"></i> OFFLINE 거래생성&nbsp;
-																</button>
+																</button> -->
 																<button type="button" class="btn btn-sm purple" onclick="location.href='/trxoper/new/form'">
 																	<i class="fa fa-reorder" aria-hidden="true"></i> ONLINE 거래생성&nbsp;
 																</button>

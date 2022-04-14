@@ -537,4 +537,5 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return rset;
 	}
+	
 }

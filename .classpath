@@ -72,7 +72,7 @@
 	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/xmlbeans-3.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/xmlrpc.jar"/>
-	<classpathentry kind="lib" path="lib/MARU_lib.jar"/>
 	<classpathentry kind="lib" path="lib/AES256(keyStr)_v.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/MARUGIT/MARU_APP/lib/MARU_lib.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
