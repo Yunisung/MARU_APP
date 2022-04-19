@@ -254,9 +254,10 @@ public class RefundUtil {
 	
 	public String phoneRef(String request,String payKey){
 		//개발
-		//String paymentUrl = "https://svcapidev.mtouch.com/api/phone/refund";
+		String paymentUrl = "https://devapi.bkwinners.kr/api/phone/refund";
 		//운영
-		String paymentUrl = "http://api.bkwinners.kr/api/phone/refund";
+//		String paymentUrl = "https://api.bkwinners.kr/api/phone/refund";
+		//로컬
 		//String paymentUrl = "http://127.0.0.1:10002/api/phone/refund";
 		
 		StringBuilder result = new StringBuilder();
