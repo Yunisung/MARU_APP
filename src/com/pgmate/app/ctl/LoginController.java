@@ -164,26 +164,29 @@ public class LoginController {
 				return "INVALIDKEY||인증번호가 올바르지 않습니다.||MEMBER";
 			}
 		} else {
-			UserIpDAO userIpDAO = new UserIpDAO();
-			/* 인증된 아이피인지 확인 */
-			rset = userIpDAO.getByActiveIp(memberId);
-			if (rset.size() < 1) {
-				logger.info("----- loing/in IP ADD -----"); 
-				return "UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER";
-			}
-			boolean authorized = false;
-			List<SharedMap<String, Object>> ipList = rset.getRows();
-			for (SharedMap<String, Object> eachMap : ipList) {
-				if (eachMap.getString("ipAddr").equals(ip)) {
-					authorized = true;
-					logger.debug("EXPIREDAY UPDATE : {}", userIpDAO.updateExpireDay(memberId, ip));
-					break;
-				}
-			}
+
+			return "UNAUTHORIZED||SMS 인증이 필요합니다.||MEMBER";
 			
-			if (!authorized) {
-				return "UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER";
-			}
+			//PYS_0421 : 로그인마다 sms인증 하도록 변경
+//			UserIpDAO userIpDAO = new UserIpDAO();
+//			/* 인증된 아이피인지 확인 */
+//			rset = userIpDAO.getByActiveIp(memberId);
+//			if (rset.size() < 1) {
+//				return "UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER";
+//			}
+//			boolean authorized = false;
+//			List<SharedMap<String, Object>> ipList = rset.getRows();
+//			for (SharedMap<String, Object> eachMap : ipList) {
+//				if (eachMap.getString("ipAddr").equals(ip)) {
+//					authorized = true;
+//					logger.debug("EXPIREDAY UPDATE : {}", userIpDAO.updateExpireDay(memberId, ip));
+//					break;
+//				}
+//			}
+//			
+//			if (!authorized) {
+//				return "UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER";
+//			}
 		}
 		
 		
