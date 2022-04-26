@@ -9,7 +9,7 @@
 <!-- BEGIN HEAD -->
 <head>
     <meta charset="utf-8"/>
-    <title>Mtouch</title>
+    <title>CREDITOP</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/assets/global/css/login.css?V=1.0">
     <link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
