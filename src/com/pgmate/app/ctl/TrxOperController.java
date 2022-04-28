@@ -1,5 +1,7 @@
 package com.pgmate.app.ctl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +15,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pgmate.app.dao.AgencyDAO;
 import com.pgmate.app.dao.CPDAO;
 import com.pgmate.app.dao.MchtTmnDAO;
+import com.pgmate.app.dao.NotiExcelUploadDAO;
 import com.pgmate.app.dao.TotLoadDAO;
 import com.pgmate.app.dao.TotLoadDtlDAO;
 import com.pgmate.app.dao.TrxCapDAO;
@@ -28,6 +33,7 @@ import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.CPResponse;
 import com.pgmate.app.model.ajax.Files;
 import com.pgmate.app.util.CPRUtil;
+import com.pgmate.app.util.CPUtil;
 import com.pgmate.app.util.SessionUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
@@ -163,6 +169,40 @@ public class TrxOperController {
 		}
 		
 	}
+	
+	
+	// 22.03 cvs 파일로 일괄 업로드 개발
+	@ResponseBody
+	@RequestMapping(value = "/KsnetExcelUpload" ,method = RequestMethod.POST )
+	public String KsnetExUpload  (@RequestParam("fileUpload") MultipartFile file  ,HttpServletRequest req) throws IOException {
+		
+		// 파일 업로드 경로 지정
+		String FILE_SERVER_PATH = CPUtil.getCanonicalWebPath() + File.separator + "notiFileUpload" ;
+		// 파일 생성 
+		file.transferTo(new File(FILE_SERVER_PATH, file.getOriginalFilename()));
+		logger.info("[FILE_SERVER_PATH] : " + FILE_SERVER_PATH);
+		
+		NotiExcelUploadDAO addNoti = new NotiExcelUploadDAO();
+		addNoti.KsnetNotiUpload(FILE_SERVER_PATH + File.separator + file.getOriginalFilename() ,req);
+		return "거래데이터가 생성되었습니다. 처리 목록에서 실행하여 주시기 바랍니다.";
+	}
+	
+	// 22.04 cvs 파일로 일괄 업로드 개발
+	@ResponseBody
+	@RequestMapping(value = "/GalaxExcelUpload" ,method = RequestMethod.POST )
+	public String GalaxExUpload  (@RequestParam("fileUpload") MultipartFile file  ,HttpServletRequest req) throws IOException {
+		
+		// 파일 업로드 경로 지정
+		String FILE_SERVER_PATH = CPUtil.getCanonicalWebPath() + File.separator + "notiFileUpload"+ File.separator ;
+		// 파일 생성 
+		file.transferTo(new File(FILE_SERVER_PATH, file.getOriginalFilename()));
+		logger.info("[FILE_SERVER_PATH] 지정경로 파일 생성 완료 =>" + FILE_SERVER_PATH);
+		
+		NotiExcelUploadDAO addNoti = new NotiExcelUploadDAO();
+		addNoti.KsnetNotiUpload(FILE_SERVER_PATH + File.separator + file.getOriginalFilename() ,req);
+		return "거래데이터가 생성되었습니다. 처리 목록에서 실행하여 주시기 바랍니다.";
+	}
+
 	
 	
 	/*@RequestMapping(value = "    ", method = RequestMethod.GET)

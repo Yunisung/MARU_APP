@@ -53,6 +53,7 @@ public class LoginController {
 	@SessionExclude
 	public @ResponseBody String in(HttpServletRequest request,@RequestParam(value="memberId") String memberId,
 					@RequestParam(value="memberPw") String memberPw, @RequestParam(value="smsKey", required=false) String smsKey){
+		logger.info("----- login/in START -----");
 		UserDAO userDAO = new UserDAO();
 		
 		String ip = request.getHeader("X-FORWARDED-FOR");
@@ -67,6 +68,7 @@ public class LoginController {
 		RecordSet rset = userDAO.getById(memberId);
 		//존재하지 않는 아이디
 		if (rset.size() < 1) {
+			logger.info("----- login/in notFind ID -----");
 			// 로그인 아이디가 아닌 터미널로 접속했는지 확인
 			RecordSet rset2 = new MchtTmnDAO().getById(memberId);
 			if(rset2.size() > 0) {
@@ -120,6 +122,7 @@ public class LoginController {
 			}
 		}
 		
+		logger.info("----- login/in find ID -----"); 
 		SharedMap<String, Object> memberMap = rset.getRow(0);
 		
 		if(!memberMap.isEquals("pw", inputPw) && memberMap.isEquals("status", "사용")){
@@ -134,6 +137,8 @@ public class LoginController {
 			return "NOK||등록되지 않은 아이디이거나, 아이디 또는 비밀번호를 잘못 입력하셨습니다.";
 		}
 		
+		
+		
 		if(memberMap.isEquals("pwStatus", "만료")){
 			return "NOK||등록되지 않은 아이디이거나, 아이디 또는 비밀번호를 잘못 입력하셨습니다.";
 		}
@@ -146,10 +151,13 @@ public class LoginController {
 			return "NOK||등록되지 않은 아이디이거나, 아이디 또는 비밀번호를 잘못 입력하셨습니다.";
 		}
 		
+		logger.info("----- login/in pw Check End -----"); 
+		
 		if(!smsKey.isEmpty()) {
 			/* 현재 IP를 인증된 IP로 등록 */
 			WebCache wc = new WebCache();
 			String cSMSKey = wc.getSMSKey(memberId);
+			logger.info("----- loing/in IP Check -----"); 
 			if(smsKey.equals(cSMSKey)) {
 				new UserIpDAO().insertIp(memberId, ip, request.getHeader("User-Agent"));
 			} else {
@@ -160,6 +168,7 @@ public class LoginController {
 			/* 인증된 아이피인지 확인 */
 			rset = userIpDAO.getByActiveIp(memberId);
 			if (rset.size() < 1) {
+				logger.info("----- loing/in IP ADD -----"); 
 				return "UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER";
 			}
 			boolean authorized = false;
@@ -203,6 +212,7 @@ public class LoginController {
 		}
 		
 		//ACCESS 기록 추가 
+		logger.info("----- loing/in ID Access -----"); 
 		userDAO.insertUserAcess(memberMap.getString("id"),ip,request.getHeader("User-Agent"));
 		
 		//Session  생성

@@ -84,15 +84,28 @@
 														<div class="form-actions nobg right">
 															<div class="btn folding-search-btn icon-arrow-down"></div>
 															<div class="">
-																<button type="button" class="btn btn-sm green-dark" onclick="location.href='/trxoper/factoring/form.jsp'">
-																	<i class="fa fa-reorder" aria-hidden="true"></i> FACTORING 거래생성&nbsp;
-																</button>
-																<button type="button" class="btn btn-sm blue" onclick="location.href='/trxoper/offline/form.jsp'">
-																	<i class="fa fa-reorder" aria-hidden="true"></i> OFFLINE 거래생성&nbsp;
-																</button>
+																	<!-- KBR 사용안하는 버튼 주석 처리 -->
+<!-- 																<button type="button" class="btn btn-sm green-dark" onclick="location.href='/trxoper/factoring/form.jsp'"> -->
+<!-- 																	<i class="fa fa-reorder" aria-hidden="true"></i> FACTORING 거래생성&nbsp; -->
+<!-- 																</button> -->
+<!-- 																<button type="button" class="btn btn-sm blue" onclick="location.href='/trxoper/offline/form.jsp'"> -->
+<!-- 																	<i class="fa fa-reorder" aria-hidden="true"></i> OFFLINE 거래생성&nbsp; -->
+<!-- 																</button> -->
 																<button type="button" class="btn btn-sm purple" onclick="location.href='/trxoper/new/form'">
 																	<i class="fa fa-reorder" aria-hidden="true"></i> ONLINE 거래생성&nbsp;
 																</button>
+																
+																<!--KBR 버튼 추가  -->
+																<button type="" class="btn btn-sm purple">
+																	<input type="file" id="KsnetExcelUpload" >
+																	<i class="fa fa-reorder" aria-hidden="true"></i> KSNET 일괄 거래생성(cvs)&nbsp;
+																</button>
+																<!--KBR 버튼 추가  -->
+																<button type="" class="btn btn-sm purple">
+																	<input type="file" id="GalaxExcelUpload" >
+																	<i class="fa fa-reorder" aria-hidden="true"></i> GALAXIA 일괄 거래생성(cvs)&nbsp;
+																</button>
+
 																<button type="button" class="btn btn-sm blue-dark" id="SearchClear">
 																	<i class="fa fa-eraser" aria-hidden="true"></i> RESET&nbsp;
 																</button>
@@ -166,6 +179,43 @@
 					});
 				}
 				
+			</script>
+			
+			<script type="text/javascript">
+				
+				$('#KsnetExcelUpload').change(function(e){
+					fn_submit('KsnetExcelUpload');
+				})
+				$('#GalaxExcelUpload').change(function(e){
+					fn_submit('GalaxExcelUpload');
+				})
+				
+				//파일 업로드
+				function fn_submit(name){
+					
+				        var form = new FormData();
+				        form.append( "fileUpload", $("#"+name)[0].files[0]);
+
+				        $.ajax({
+				            type: "POST",
+				            enctype: 'multipart/form-data',
+				            url: "/" + name,
+				            data: form,
+				            processData: false,
+				        	contentType: false,
+				            success: function(res) 
+				            {
+				            	alert(res);
+				            	location.reload();
+				            },
+				            error: function(xhr, ajaxOptions, thrownError)
+				            {
+				            	console.log(thrownError);
+				            },
+				            async: false
+				        });
+				}
+			
 			</script>
 			<!-- 모달 생성을 위한 베이스 -->
 			<div id="pgmate-modal" class="modal fade container" data-backdrop="static" data-keyboard="false" tabindex="-1"></div>
