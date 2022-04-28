@@ -52,7 +52,7 @@
 						<td>${entry.tmnId}</td>
 						<td>${entry.status}</td>
 						<td>${entry.message}</td>
-						<td>${entry.reqDay} &nbsp;${entry.reqTime}~${entry.resTime}</td>
+						<td>${entry.regDay} &nbsp;${entry.regTime}~${entry.resTime}</td>
 						<td class="link_modal" data-url="/trx/io/view/${entry.trxId }">전문확인</td>
 					</tr>
 				</c:forEach>
