@@ -60,7 +60,7 @@
 					<th style="min-width: 100px;" rowspan="3">대상거래 기간</th>
 					<th colspan="13">매출정보</th>
 					<th rowspan="3">대출정산차감금액</th>
-					<th rowspan="3">예수금<br>(미출금)</th>
+					<th rowspan="3">차감 금액</th>
 					<th rowspan="3">실지급액</th>
 					<th colspan="2" rowspan="2">지급정보</th>
 				</tr>
@@ -84,7 +84,7 @@
 					<th>대행사수수료</th>
 					<th>수익</th>
 					<th>지급예정</th>
-					<th>차감 금액</th>
+					<th>예수금<br>(미출금)</th>
 					<th style="min-width: 140px;">계좌정보</th>
 					<th>정산수수료율</th>
 				</tr>
