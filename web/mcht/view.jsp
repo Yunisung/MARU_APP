@@ -2278,14 +2278,14 @@
 																			</div>
 																		</div>
 																		<!--/span-->
-																		<div class="col-md-6">
+																		<%-- <div class="col-md-6">
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">차액정산 VAN</label>
 																				<div class="col-md-9">
 																					<p class="form-control-static">${DATADIFFMAP.vanName}</p>
 																				</div>
 																			</div>
-																		</div>
+																		</div> --%>
 																	</div>
 																	<c:choose>
 																		<c:when test="${empty DATADIFFMAP}">

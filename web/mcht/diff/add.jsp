@@ -132,13 +132,13 @@
 		                                                    <input type="text" class="form-control input-sm addr2" maxlength="50" name="addr2" placeholder="" value="${DATAMAP.addr2 }">
 		                                                </div>
 		                                            </div>
-		                                            <div class="form-group col-sm-6">
+		                                           <!--  <div class="form-group col-sm-6">
 	                                                	<label class="control-label input-sm col-sm-4 req-label">차액정산 VAN</label>
 	                                                	<select name="vanName" class="selectpicker col-sm-6">
 															<option value="KSNET" selected>KSNET</option>
 															<option value="KCP">KCP</option>
 														</select>
-													</div>
+													</div> -->
 												</div>
 												<div class="alert alert-danger display-hide"></div>
 												<div class="form-actions right">

@@ -599,7 +599,7 @@ public class CashReceiptContoller {
     		//테스트
     		//String propFile = "/home/KWON/KWON_APP/conf/cashReceipt.properties"";
     		//로컬
-    		String propFile = "C:/01/KWON_APP/conf/cashReceipt.properties";
+    		String propFile = "C:/01/MARU_APP/conf/cashReceipt.properties";
     		 
             // 프로퍼티 객체 생성
             Properties props = new Properties();

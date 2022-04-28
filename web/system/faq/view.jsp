@@ -59,7 +59,7 @@
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <i class="fa fa-circle"></i>
+                                                                    <!-- <i class="fa fa-circle"></i> -->
                                                                     <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#general_${status.count}" aria-expanded="false"> ${entry.title}</a>
                                                                 </h4>
                                                             </div>
