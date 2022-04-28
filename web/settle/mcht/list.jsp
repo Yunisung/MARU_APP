@@ -107,7 +107,7 @@
 		</c:when>
 		</c:choose>
 					<th rowspan="3">대출정산차감금액</th>
-					<th rowspan="3">예수금<br>(미출금)</th>
+					<th rowspan="3">차감 금액</th>
 					<th rowspan="3">실지급액</th>
 					<th colspan="4" rowspan="2">지급정보</th>
 				</tr>
@@ -141,7 +141,7 @@
 					<th>수익</th>
 		</c:if>
 					<th>지급예정</th>
-					<th>차감 금액</th>
+					<th>예수금<br>(미출금)</th>
 					<th style="min-width: 200px;" colspan="3">계좌정보</th>
 					<th>정산수수료율</th>
 				</tr>
