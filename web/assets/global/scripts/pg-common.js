@@ -89,7 +89,7 @@ function settlePayOutExport(bankCd, stlId, isSub, grade) {
 	$('#excel_export_form').append('<input type="hidden" name="stlId" value="'+stlId+'">');
 	$('#excel_export_form').append('<input type="hidden" name="bankCd" value="'+bankCd+'">');
 	$('#excel_export_form').append('<input type="hidden" name="grade" value="'+grade+'">');
-	//$('#excel_export_form').submit();
+	$('#excel_export_form').submit();
 	
 	$.ajax({
 		url : '/settle' + (isSub ? '/sub/export' : '/export'),

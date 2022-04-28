@@ -143,7 +143,7 @@ public class RefundUtil {
 	
 	public String comm(String request,String payKey){
 		//String paymentUrl = "https://api.bkwinners.kr/api/refund";
-//		String paymentUrl = "http://pgwas1:10002/api/refund";
+		//String paymentUrl = "http://pgwas1:10002/api/refund";
 		String paymentUrl = "http://10.100.200.10:10002/api/refund";
 		StringBuilder result = new StringBuilder();
 		URL url = null;
