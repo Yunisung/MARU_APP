@@ -46,7 +46,7 @@
 							</div>
 						</div>
 						<!-- END PAGE BAR -->
-						<!-- BEGIN PAGE CONTENT - MARU - INNER -->
+						<!-- BEGIN PAGE CONTENT - KWON - INNER -->
 						<div class="page-content-inner">
 							<div class="portlet light">
 								<div class="portlet-title">
@@ -56,8 +56,7 @@
 									</div>
 								</div>
 								<div class="portlet-body form">
-									<form class="form-horizontal form-bordered" role="form" data-form="true" id="writeFrm" name="form" action="/mcht/vact/"
-									 method="post">
+									<form class="form-horizontal form-bordered" role="form" data-form="true" id="writeFrm" name="form" action="/mcht/vact/" method="post">
 										<input type="hidden" name="action_type" value="update" data-reg="false" />
 										<div class="form-body row">
 											<div class="form-group col-sm-6">
@@ -67,7 +66,6 @@
 													 readonly>
 												</div>
 											</div>
-
 											<div class="form-group col-sm-6">
 												<label class="control-label input-sm col-sm-4 req-label">기본 예금주명</label>
 												<div class="col-sm-6">
@@ -94,7 +92,6 @@
 													document.forms.writeFrm.issueType.value = '${DATAMAP.issueType}'
 												</script>
 											</div>
-
 											<div class="form-group col-sm-6">
 												<label class="control-label col-sm-4 req-label">만료일 지정</label>
 												<div class="col-sm-6">
@@ -103,158 +100,30 @@
 												</div>
 											</div>
 											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">거래시작일</label>
+												<label class="control-label col-sm-4 req-label">거래시작일</label>
 												<div class="col-sm-6">
 													<input type="text" class="form-control input-sm" name="startDay" value="${DATAMAP.startDay}" readonly>
 												</div>
 											</div>
 											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">정산대상여부</label>
+												<label class="control-label col-sm-4 req-label">정산대상여부</label>
 												<select name="settleTarget" class="selectpicker col-sm-6">
 													<option value="Y">Y</option>
 													<option value="N">N</option>
 												</select>
 											</div>
 											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">수수료유형</label>
+												<label class="control-label col-sm-4 req-label">수수료유형</label>
 												<select name="feeType" class="selectpicker col-sm-6">
 													<option value="0" selected>정액</option>
 													<option value="1">정률</option>
+													<option value="2">혼합</option>
 												</select>
 											</div>
 											<script type="text/javascript">
 												document.forms.writeFrm.feeType.value = '${DATAMAP.feeType}'
 											</script>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">가맹점정산유형</label>
-												<select name="settleType" class="selectpicker col-sm-6">
-													<c:if test="${DATASVCMAP.settle != '충전정산'}">
-														<option value="A+0">당일정산</option>
-														<option value="A+1">자동정산</option>
-														<option value="D+0">실시간정산</option>
-														<option value="D+1">1일 후 정산</option>
-														<option value="D+2">2일 후 정산</option>
-														<option value="D+3">3일 후 정산</option>
-														<option value="D+4">4일 후 정산</option>
-														<option value="D+5">5일 후 정산</option>
-													</c:if>
-													<c:if test="${DATASVCMAP.settle == '충전정산'}">
-														<option value="C+0">실시간 충전정산</option>
-														<option value="B+1">1일 후 자동충전정산</option>
-														<option value="C+1">1일 후 충전정산</option>
-														<option value="C+2">2일 후 충전정산</option>
-														<option value="C+3">3일 후 충전정산</option>
-														<option value="C+4">4일 후 충전정산</option>
-														<option value="C+5">5일 후 충전정산</option>
-													</c:if>
-												</select>
-												<script type="text/javascript">
-													document.forms.writeFrm.settleType.value = '${DATAMAP.settleType}'
-												</script>
-											</div>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">정산수수료(VAT별도)</label>
-												<div class="col-sm-6">
-													<div class="input-group input-group-sm">
-														<input type="text" class="form-control input-sm fee" maxlength="20" name="fee" placeholder="" value="${DATAMAP.fee}">
-														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
-													</div>
-												</div>
-											</div>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">정산수수료율</label>
-												<div class="col-sm-6">
-													<div class="input-group input-group-sm">
-														<input type="text" class="form-control input-sm rate2" maxlength="9" name="rate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="" data-reg="false">
-														<input type="hidden" class="form-control rate" maxlength="9" name="rate" placeholder="" value="${DATAMAP.rate}"> 
-														<span class="input-group-addon"> % (VAT 별도)</span>
-													</div>
-												</div>
-											</div>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">대행사정산유형</label>
-												<select name="distSettleType" class="selectpicker col-sm-6">
-													<option value="M+25" selected>M+25</option>
-												</select>
-												<script type="text/javascript">
-													document.forms.writeFrm.distSettleType.value = '${DATAMAP.distSettleType}'
-												</script>
-											</div>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">대행사수수료(VAT별도)</label>
-												<div class="col-sm-6">
-													<div class="input-group input-group-sm">
-														<input type="text" class="form-control input-sm distFee" maxlength="20" name="distFee" placeholder="" value="${DATAMAP.distFee}">
-														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
-													</div>
-												</div>
-											</div>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">대행사수수료율</label> 
-												<div class="col-sm-8">
-													<div class="input-group input-group-sm">
-														<input type="text" class="form-control input-sm distRate2" maxlength="9" name="distRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="" data-reg="false">
-														<input type="hidden" class="form-control input-sm distRate" maxlength="9" name="distRate" placeholder="" value="${DATAMAP.distRate}">
-														<span class="input-group-addon"> % (VAT 별도)</span>
-													</div>
-												</div>
-											</div>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">에이전시정산유형</label>
-												<select name="agencySettleType" class="selectpicker col-sm-6">
-													<option value="M+25" selected>M+25</option>
-												</select>
-												<script type="text/javascript">
-													document.forms.writeFrm.agencySettleType.value = '${DATAMAP.agencySettleType}'
-												</script>
-											</div>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">에이전시수수료(VAT별도)</label>
-												<div class="col-sm-6">
-													<div class="input-group input-group-sm">
-														<input type="text" class="form-control input-sm agencyFee" maxlength="20" name="agencyFee" placeholder="" value="${DATAMAP.agencyFee}">
-														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
-													</div>
-												</div>
-											</div>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">에이전시수수료율</label>
-												<div class="col-sm-8">
-													<div class="input-group input-group-sm">
-														<input type="text" class="form-control input-sm agencyRate2" maxlength="9" name="agencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="" data-reg="false">
-														<input type="hidden" class="form-control input-sm agencyRate" maxlength="9" name="agencyRate" placeholder="" value="${DATAMAP.agencyRate}">
-														<span class="input-group-addon"> % (VAT 별도)</span>
-													</div>
-												</div>
-											</div>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">지사정산유형</label>
-												<select name="salesSettleType" class="selectpicker col-sm-6">
-													<option value="M+25" selected>M+25</option>
-												</select>
-												<script type="text/javascript">
-													document.forms.writeFrm.salesSettleType.value = '${DATAMAP.salesSettleType}'
-												</script>
-											</div>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">지사수수료(VAT별도)</label>
-												<div class="col-sm-6">
-													<div class="input-group input-group-sm">
-														<input type="text" class="form-control input-sm salesFee" maxlength="20" name="salesFee" placeholder="" value="${DATAMAP.salesFee}">
-														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
-													</div>
-												</div>
-											</div>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">지사수수료율</label>
-												<div class="col-sm-8">
-													<div class="input-group input-group-sm">
-														<input type="text" class="form-control input-sm salesRate2" maxlength="9" name="salesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="" data-reg="false">
-														<input type="hidden" class="form-control input-sm salesRate" maxlength="9" name="salesRate" placeholder="" value="${DATAMAP.salesRate}">
-														<span class="input-group-addon"> % (VAT 별도)</span>
-													</div>
-												</div>
-											</div>
+											
 											<div class="form-group col-sm-6">
 												<label class="control-label col-sm-4">거래전달 프로토콜</label>
 												<select name="hookType" class="selectpicker col-sm-6">
@@ -277,10 +146,8 @@
 												<label class="control-label col-sm-4 req-label">1회한도</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
-														<input type="text"
-															class="form-control currency limitOnce" maxlength="10"
-															name="limitOnce" placeholder="" value="${DATAMAP.limitOnce}"> <span
-															class="input-group-addon"><i class="fa fa-krw"></i></span>
+														<input type="text" class="form-control limitOnce comma" data-oper="comma" maxlength="10" name="limitOnce" placeholder="" value="${DATAMAP.limitOnce }">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
 													</div>
 												</div>
 											</div>
@@ -288,32 +155,311 @@
 												<label class="control-label col-sm-4 req-label">1일한도</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
-														<input type="text"
-															class="form-control currency limitDay" maxlength="10"
-															name="limitDay" placeholder="" value="${DATAMAP.limitDay}"> <span
-															class="input-group-addon"><i class="fa fa-krw"></i></span>
-													</div>
-												</div>
-											</div>
-											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4 req-label">실시간정산<br>출금 수수료</label>
-												<div class="col-sm-6">
-													<div class="input-group input-group-sm">
-														<input type="text" class="form-control currency payOutFee" maxlength="9" name="payOutFee" placeholder="" value="${DATAMAP.payOutFee}">
+														<input type="text" class="form-control limitDay comma" data-oper="comma" maxlength="14" name="limitDay" placeholder="" value="${DATAMAP.limitDay }">
 														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
 													</div>
 												</div>
 											</div>
 											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4 req-label">실시간정산<br>전송간격</label>
+												<label class="control-label col-sm-4 req-label">가상계좌별<br>1일입금 제한횟수</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
-														<input type="text" class="form-control currency transferInterval" maxlength="3" name="transferInterval" placeholder="" value="${DATAMAP.transferInterval}"> 
-														<span class="input-group-addon">분</span>
+														<input type="text" class="form-control currency limitDayCnt" maxlength="3" name="limitDayCnt" placeholder="" value="${DATAMAP.limitDayCnt}"> 
+														<span class="input-group-addon">회</span>
 													</div>
 												</div>
 											</div>
+											<div class="form-group col-sm-6">
+												<div style="padding-top:45px; border-left:none;"></div>
+											</div>
+											<div class="form-group col-sm-12 form-subtitle">
+												<label><i class="fa fa-reorder"></i> 가맹점 정보 입력</label>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">가맹점 정산유형</label>
+												<select name="settleType" class="selectpicker col-sm-6">
+													<c:if test="${DATASVCMAP.settle != '충전정산'}">
+														<option value="A+0">당일정산(영업일)</option>
+														<option value="A+2">당일정산(365)</option>
+														<option value="A+1">자동정산</option>
+														<option value="D+0">실시간정산</option>
+														<option value="D+1">1일 후 정산</option>
+														<option value="D+2">2일 후 정산</option>
+														<option value="D+3">3일 후 정산</option>
+														<option value="D+4">4일 후 정산</option>
+														<option value="D+5">5일 후 정산</option>
+													</c:if>
+													<c:if test="${DATASVCMAP.settle == '충전정산'}">
+														<option value="C+0">실시간 충전정산</option>
+														<option value="B+1">1일 후 자동충전정산</option>
+														<option value="C+1">1일 후 충전정산</option>
+														<option value="C+2">2일 후 충전정산</option>
+														<option value="C+3">3일 후 충전정산</option>
+														<option value="C+4">4일 후 충전정산</option>
+														<option value="C+5">5일 후 충전정산</option>
+													</c:if>
+												</select>
+												<script type="text/javascript">
+													document.forms.writeFrm.settleType.value = '${DATAMAP.settleType}'
+												</script>
+											</div>
+											<div class="form-group col-sm-6 noneDiv">
+												<div style="padding-top:45px; border-left:none;"></div>
+											</div>
+											<div class="form-group col-sm-6" id="feeDiv">
+												<label class="control-label col-sm-4">가맹점 정산수수료(VAT별도)</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control fee comma" data-oper="comma" maxlength="20" name="fee" placeholder="" value="${DATAMAP.fee }">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6" id="rateDiv">
+												<label class="control-label col-sm-4">가맹점 정산수수료율</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control rate percent" data-oper="percent" maxlength="9" name="rate" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="${DATAMAP.rate }">
+														<span class="input-group-addon"> % (VAT 별도)</span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-12 form-subtitle">
+												<label><i class="fa fa-reorder"></i> 대행사 정보 입력</label>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label input-sm col-sm-4">대행사 정산유형</label> 
+												<select name="distNum" class="selectpicker col-sm-6" id="distType">
+													<c:forEach items="${DISTMNGTYPE }" var="entry">
+														<option value="${entry.distNum}">${entry.distSettleName} (${entry.distPayStatus})</option>
+													</c:forEach>
+												</select>
+												<script type="text/javascript">document.forms.writeFrm.distNum.value = '${DATAMAP.distNum}'</script>
+												<input type="hidden" name="distSettleType" value="${DATAMAP.distSettleType}">
+												<span class="distSettleType"></span>
+											</div>
+											<div class="form-group col-sm-6 noneDiv">
+												<div style="padding-top:45px; border-left:none;"></div>
+											</div>
+											<div class="form-group col-sm-6" id="distFeeDiv">
+												<label class="control-label col-sm-4">대행사수수료(VAT별도)</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control distFee comma" data-oper="comma" maxlength="20" name="distFee" placeholder="" value="${DATAMAP.distFee }">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6" id="distRateDiv">
+												<label class="control-label col-sm-4">대행사수수료율</label> 
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control distRate percent" data-oper="percent" maxlength="9" name="distRate" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="${DATAMAP.distRate }">
+														<span class="input-group-addon"> % (VAT 별도)</span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-12 form-subtitle">
+												<label><i class="fa fa-reorder"></i> 에이전시 정보 입력</label>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label input-sm col-sm-4">에이전시 정산유형</label> 
+												<select name="agencyNum" class="selectpicker col-sm-6" id="agencyType">
+													<c:forEach items="${AGENCYMNGTYPE }" var="entry">
+														<option value="${entry.agencyNum}">${entry.agencySettleName} (${entry.agencyPayStatus})</option>
+													</c:forEach>
+												</select>
+												<script type="text/javascript">document.forms.writeFrm.agencyNum.value = '${DATAMAP.agencyNum}'</script>
+												<input type="hidden" name="agencySettleType" value="${DATAMAP.agencySettleType}">
+												<span class="agencySettleType"></span>
+											</div>
+											<div class="form-group col-sm-6 noneDiv">
+												<div style="padding-top:45px; border-left:none;"></div>
+											</div>
+											<div class="form-group col-sm-6" id="agencyFeeDiv">
+												<label class="control-label col-sm-4">에이전시수수료(VAT별도)</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control agencyFee comma" data-oper="comma" maxlength="20" name="agencyFee" placeholder="" value="${DATAMAP.agencyFee }">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6" id="agencyRateDiv">
+												<label class="control-label col-sm-4">에이전시수수료율</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control agencyRate percent" data-oper="percent" maxlength="9" name="agencyRate" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="${DATAMAP.agencyRate }">
+														<span class="input-group-addon"> % (VAT 별도)</span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-12 form-subtitle">
+												<label><i class="fa fa-reorder"></i> 지사 정보 입력</label>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label input-sm col-sm-4">지사 정산유형</label> 
+												<select name="salesNum" class="selectpicker col-sm-6" id="salesType">
+													<c:forEach items="${SALESMNGTYPE }" var="entry">
+														<option value="${entry.salesNum}">${entry.salesSettleName} (${entry.salesPayStatus})</option>
+													</c:forEach>
+												</select>
+												<script type="text/javascript">document.forms.writeFrm.salesNum.value = '${DATAMAP.salesNum}'</script>
+												<input type="hidden" name="salesSettleType" value="${DATAMAP.salesSettleType}">
+												<span class="salesSettleType"></span>
+											</div>
+											<div class="form-group col-sm-6 noneDiv">
+												<div style="padding-top:45px; border-left:none;"></div>
+											</div>
+											<div class="form-group col-sm-6" id="salesFeeDiv">
+												<label class="control-label col-sm-4">지사 수수료(VAT별도)</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control salesFee comma" data-oper="comma" maxlength="20" name="salesFee" placeholder="" value="${DATAMAP.salesFee }">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6" id="salesRateDiv">
+												<label class="control-label col-sm-4">지사 수수료율</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control salesRate percent" data-oper="percent" maxlength="9" name="salesRate" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="${DATAMAP.salesRate }">
+														<span class="input-group-addon"> % (VAT 별도)</span>
+													</div>
+												</div>
+											</div>
+											<div id="payOutFeeDiv">
+												<div class="form-group col-sm-12 form-subtitle">
+													<label><i class="fa fa-reorder"></i> 실시간 정산 정보 입력</label>
+												</div>
+												<div class="form-group col-sm-6">
+													<label class="control-label input-sm col-sm-4 req-label">실시간 정산<br>출금 수수료 납부자</label> 
+													<select name="payOutType" id="payOutType" class="selectpicker col-sm-6">
+														<option value="가맹점" selected>가맹점</option>
+														<option value="대행사">대행사</option>
+														<option value="에이전시">에이전시</option>
+														<option value="지사">지사</option>
+													</select>
+													<script type="text/javascript"> document.forms.writeFrm.payOutType.value = '${DATAMAP.payOutType}' </script>
+												</div>
+												<div class="form-group col-sm-6">
+													<label class="control-label col-sm-4 req-label">실시간정산<br>출금 수수료</label>
+													<div class="col-sm-6">
+														<div class="input-group input-group-sm">
+															<input type="text" class="form-control payOutFee comma" data-oper="comma" maxlength="9" name="payOutFee" placeholder="" value="${DATAMAP.payOutFee }">
+															<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+														</div>
+													</div>
+												</div>
+												<div class="form-group col-sm-6">
+													<label class="control-label col-sm-4 req-label">실시간정산<br>전송간격</label>
+													<div class="col-sm-6">
+														<div class="input-group input-group-sm">
+															<input type="text" class="form-control currency transferInterval" maxlength="3" name="transferInterval" placeholder="" value="${DATAMAP.transferInterval}"> 
+															<span class="input-group-addon">분</span>
+														</div>
+													</div>
+												</div>
+												<div class="form-group col-sm-6">
+													<div style="padding-top:45px; border-left:none;"></div>
+												</div>
+												<div id="payIn"> 
+													<div class="form-group col-sm-6">
+														<label class="control-label input-sm col-sm-4 req-label">실시간 정산<br>출금 수수료 분배</label> 
+														<select name="payInStatus" class="selectpicker col-sm-6">
+															<option value="중지" selected>중지</option>
+															<option value="사용">사용</option>
+														</select>
+														<script type="text/javascript"> document.forms.writeFrm.payInStatus.value = '${DATAMAP.payInStatus}' </script>
+													</div>
+													<div class="form-group col-sm-6">
+														<div style="padding-top:45px; border-left:none;"></div>
+													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">대행사 지급</label>
+														<div class="col-sm-6">
+															<div class="input-group input-group-sm">
+																<input type="text" class="form-control distPayInFee comma" data-oper="comma" maxlength="9" name="distPayInFee" placeholder="" value="${DATAMAP.distPayInFee }">
+																<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+															</div>
+														</div>
+													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">에이전시 지급</label>
+														<div class="col-sm-6">
+															<div class="input-group input-group-sm">
+																<input type="text" class="form-control agencyPayInFee comma" data-oper="comma" maxlength="9" name="agencyPayInFee" placeholder="" value="${DATAMAP.agencyPayInFee }">
+																<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+															</div>
+														</div>
+													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">지사 지급</label>
+														<div class="col-sm-6">
+															<div class="input-group input-group-sm">
+																<input type="text" class="form-control salesPayInFee comma" data-oper="comma" maxlength="9" name="salesPayInFee" placeholder="" value="${DATAMAP.salesPayInFee }">
+																<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group"></div>
 										</div>
+										<div class="form-group col-sm-12 form-subtitle">
+											<label><i class="fa fa-reorder"></i>가상계좌 인증 서비스 정보</label>
+										</div>
+										<div class="form-group col-sm-6">
+											<label class="control-label col-sm-4 req-label">인증유형</label>
+											<select name="authType" class="selectpicker col-sm-6">
+												<option value="0" selected>미사용</option>
+												<option value="1">API인증</option>
+											</select>
+										</div>
+										<script type="text/javascript">
+											document.forms.writeFrm.authType.value = '${DATAMAP.authType}'
+										</script>
+										<div class="form-group col-sm-6">
+											<label class="control-label col-sm-4 req-label">실명인증<br>수수료</label>
+											<div class="col-sm-6">
+												<div class="input-group input-group-sm">
+													<input type="text" class="form-control currency ownerAuthFee comma" data-oper="comma" maxlength="10" name="ownerAuthFee" placeholder="" value="${DATAMAP.ownerAuthFee }">
+													<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<label class="control-label col-sm-4 req-label">1원인증<br>수수료</label>
+											<div class="col-sm-6">
+												<div class="input-group input-group-sm">
+													<input type="text" class="form-control currency accountAuthFee comma" data-oper="comma" maxlength="10" name="accountAuthFee" placeholder="" value="${DATAMAP.accountAuthFee }">
+													<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+												</div>
+											</div>
+										</div>
+										<div class="form-group col-sm-6">
+											<label class="control-label col-sm-4 req-label">ARS인증<br>수수료</label>
+											<div class="col-sm-6">
+												<div class="input-group input-group-sm">
+													<input type="text" class="form-control currency arsAuthFee comma" data-oper="comma" maxlength="10" name="arsAuthFee" placeholder="" value="${DATAMAP.arsAuthFee }">
+													<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+												</div>
+											</div>
+										</div>
+										<div id="respiteCntDiv" class="form-group col-sm-6">
+											<label class="control-label col-sm-4 req-label">API인증<br>인증유예횟수</label>
+											<div class="col-sm-6">
+												<div class="input-group input-group-sm">
+													<input type="text" class="form-control currency respiteCnt" maxlength="3" name="respiteCnt" placeholder="" value="${DATAMAP.respiteCnt}">
+													<span class="input-group-addon">회</span>
+												</div>
+											</div>
+										</div>
+										<script type="text/javascript">
+											document.forms.writeFrm.authBankCd.value = '${DATAMAP.authBankCd}'
+										</script>
+										<div class="form-group"></div>
 										<div class="alert alert-danger display-hide"></div>
 										<div class="form-actions right">
 											<div class="">
@@ -356,8 +502,17 @@
 				expireSet : {
 					required : true
 				},
-				fee2 : {
+				fee : {
 					required : true
+				},
+				payOutFee: {
+					minMoney: function(element){
+						if($('#payOutType').find("option:selected").val() == '가맹점'){
+							return Number($("input[name='distPayInFee']").val().replace(/,/g, '')) + Number($("input[name='agencyPayInFee']").val().replace(/,/g, '')) + Number($("input[name='salesPayInFee']").val().replace(/,/g, '')) - 1;
+						}else {
+							return false;
+						}
+					}
 				}
 			},
 			invalidHandler: function (event, validator) { //display error alert on form submit              
@@ -368,17 +523,38 @@
 				App.scrollTo(error1, -200);
 			},
 			submitHandler: function (form) {
-				error1.hide();
-				bootbox.confirm("입력하신 정보로 ${MCHT_MAP.name} 가상계좌 정보를 수정 하시겠습니까?", function (result) {
-					if (result) {
-						ajaxFormSubmit(form, '/mcht/view/${MCHT_MAP.mchtId}/tab_virAccount'); //PAGE 이동		
+				if($('select[name="feeType"]').val()!='0'){
+					if(Number($('.distRate').val()) > Number($('.agencyRate').val())){
+	    				var error1Str = '<button class="close" data-close="alert"></button>';
+	                    error1Str += "대행사 수수료율이 에이전시 수수료율 보다 큽니다. 확인해 주시기 바랍니다.";
+	                    error1.html(error1Str);
+	                    error1.show();
+	                    App.scrollTo(error1, -200);
+	                    $('.agencyRate').focus();
+	    			} else if(Number($('.agencyRate').val()) > Number($('.rate').val())){
+	    				var error1Str = '<button class="close" data-close="alert"></button>';
+	                    error1Str += "에이전시 수수료율이 가맹점 수수료율 보다 큽니다. 확인해 주시기 바랍니다.";
+	                    error1.html(error1Str);
+	                    error1.show();
+	                    App.scrollTo(error1, -200);
+	    				$('.rate').focus();
+					} else {
+						error1.hide();
+						bootbox.confirm("입력하신 정보로 가상계좌를 설정하시겠습니까?", function(result) {
+							if (result) {
+								ajaxFormSubmit(form, '/mcht/view/'+ $('input[name="mchtId"]').val() + '/tab_virAccount'); //PAGE 이동
+							}
+						});
 					}
-				});
+				} else {
+					error1.hide();
+					bootbox.confirm("입력하신 정보로 가상계좌를 설정하시겠습니까?", function(result) {
+						if (result) {
+							ajaxFormSubmit(form, '/mcht/view/${MCHT_MAP.mchtId}/tab_virAccount'); //PAGE 이동
+						}
+					});
+				}
 			}
-		});
-
-		$(document).ready(function () {
-			onIssueType($('[name="issueType"]'));
 		});
 
 		$('[name="issueType"]').change(function (e) {
@@ -401,58 +577,267 @@
 			}
 		}
 		
-		$('.distRate2').val(($('.distRate').val()*100).toFixed(3));
-		$('.agencyRate2').val(($('.agencyRate').val()*100).toFixed(3));
-		$('.salesRate2').val(($('.salesRate').val()*100).toFixed(3));
-		$('.rate2').val(($('.rate').val()*100).toFixed(3));
-
-		$('.fee').val(addComma(String($('.fee').val()).replace(/[^0-9]/g,"")));
-		$('.distFee').val(addComma(String($('.distFee').val()).replace(/[^0-9]/g,"")));
-		$('.agencyFee').val(addComma(String($('.agencyFee').val()).replace(/[^0-9]/g,"")));
-		$('.salesFee').val(addComma(String($('.salesFee').val()).replace(/[^0-9]/g,"")));
-		$('.limitOnce').val(addComma(String($('.limitOnce').val()).replace(/[^0-9]/g,"")));
-		$('.limitDay').val(addComma(String($('.limitDay').val()).replace(/[^0-9]/g,"")));
-		$('.payOutFee').val(addComma(String($('.payOutFee').val()).replace(/[^0-9]/g,"")));
-	
-		$('.fee').keyup(function(){
-			$('.fee').val(addComma(String($('.fee').val()).replace(/,/g, '').replace(/[^(-?)0-9]/g,"")));
+		$('#distType').on('change', function() {
+			var selected = $(this).find("option:selected").val();
+			if(selected == '') return false;
+		  	$.ajax({
+		  		url:'/mcht/distRate/get/'+selected,
+		  		method: 'GET',
+		  		dataType: 'json',
+		  		success: function(data){
+	  				$('input[name="distFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
+	  				$('input[name="distRate"]').val((data.rate*100).toFixed(3));
+		  			$('.distSettleType').html(data.settleType);
+	  			}
+		  	})
 		});
-		$('.distFee').keyup(function(){
-			$('.distFee').val(addComma(String($('.distFee').val()).replace(/,/g, '').replace(/[^(-?)0-9]/g,"")));
+		
+		$('#agencyType').on('change', function() {
+			var selected = $(this).find("option:selected").val();
+			if(selected == '') return false;
+		  	$.ajax({
+		  		url:'/mcht/agencyRate/get/'+selected,
+		  		method: 'GET',
+		  		dataType: 'json',
+		  		success: function(data){
+	  				$('input[name="agencyFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
+	  				$('input[name="agencyRate"]').val((data.rate*100).toFixed(3));
+		  			$('.agencySettleType').html(data.settleType);
+	  			}
+		  	})
 		});
-		$('.agencyFee').keyup(function(){
-			$('.agencyFee').val(addComma(String($('.agencyFee').val()).replace(/,/g, '').replace(/[^(-?)0-9]/g,"")));
+		
+		$('#salesType').on('change', function() {
+			var selected = $(this).find("option:selected").val();
+			if(selected == '') return false;
+		  	$.ajax({
+		  		url:'/mcht/salesRate/get/'+selected,
+		  		method: 'GET',
+		  		dataType: 'json',
+		  		success: function(data){
+	  				$('input[name="salesFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
+	  				$('input[name="salesRate"]').val((data.rate*100).toFixed(3));
+		  			$('.salesSettleType').html(data.settleType);
+	  			}
+		  	})
 		});
-		$('.salesFee').keyup(function(){
-			$('.salesFee').val(addComma(String($('.salesFee').val()).replace(/,/g, '').replace(/[^(-?)0-9]/g,"")));
+		
+		$('#payOutType').on('change', function(){
+			var selected = $(this).find("option:selected").val();
+			if(selected == '') return false;
+			if(selected != '가맹점'){
+				$('select[name="payInStatus"]').val('중지');
+				$('input[name="distPayInFee"]').val('0');
+				$('input[name="agencyPayInFee"]').val('0');
+				$('input[name="salesPayInFee"]').val('0');
+				
+				$('select[name="payInStatus"]').attr("disabled", true);
+				$('input[name="distPayInFee"]').attr("disabled", true);
+				$('input[name="agencyPayInFee"]').attr("disabled", true);
+				$('input[name="salesPayInFee"]').attr("disabled", true);
+			} else {
+				$('select[name="payInStatus"]').attr("disabled", false);
+				$('input[name="distPayInFee"]').attr("disabled", false);
+				$('input[name="agencyPayInFee"]').attr("disabled", false);
+				$('input[name="salesPayInFee"]').attr("disabled", false);
+			}
 		});
-		$('.limitOnce').keyup(function(){
-			$('.limitOnce').val(addComma(String($('.limitOnce').val()).replace(/,/g, '').replace(/[^(-?)0-9]/g,"")));
+		
+		// 수수료 유형
+		$('select[name="feeType"]').on('change', function() {
+			var selected = $(this).find("option:selected").val();
+			
+			if(selected == '0'){
+				$('.rate').val('0');
+				$('#rateDiv').hide();
+				$('.distRate').val('0');
+				$('#distRateDiv').hide();
+				$('.agencyRate').val('0');
+				$('#agencyRateDiv').hide();
+				$('.salesRate').val('0');
+				$('#salesRateDiv').hide();
+				
+				$('#feeDiv').show();
+				$('#distFeeDiv').show();
+				$('#agencyFeeDiv').show();
+				$('#salesFeeDiv').show();
+				
+				$('.noneDiv').hide();
+			} else if(selected == '1'){
+				$('.fee').val('0');
+				$('#feeDiv').hide();
+				$('.distFee').val('0');
+				$('#distFeeDiv').hide();
+				$('.agencyFee').val('0');
+				$('#agencyFeeDiv').hide();
+				$('.salesFee').val('0');
+				$('#salesFeeDiv').hide();
+				
+				$('#rateDiv').show();
+				$('#distRateDiv').show();
+				$('#agencyRateDiv').show();
+				$('#salesRateDiv').show();
+				
+				$('.noneDiv').hide();
+			} else {
+				$('#feeDiv').show();
+				$('#distFeeDiv').show();
+				$('#agencyFeeDiv').show();
+				$('#salesFeeDiv').show();
+				$('#rateDiv').show();
+				$('#distRateDiv').show();
+				$('#agencyRateDiv').show();
+				$('#salesRateDiv').show();
+				
+				$('.noneDiv').show();
+			}
 		});
-		$('.limitDay').keyup(function(){
-			$('.limitDay').val(addComma(String($('.limitDay').val()).replace(/,/g, '').replace(/[^(-?)0-9]/g,"")));
+		
+		$('select[name="settleType"]').on('change', function() {
+			var selected = $(this).find("option:selected").val();
+			
+			if(selected == 'A+0' || selected == 'A+2' || selected == 'A+1' || selected == 'D+0'){
+				$('#payOutFeeDiv').show();
+			} else {
+				$('#payOutType').val('가맹점');
+				$('#payInStatus').val('중지');
+				$('.transferInterval').val('10');
+				$('.payOutFee').val('0');
+				$('.distPayInFee').val('0');
+				$('.agencyPayInFee').val('0');
+				$('.salesPayInFee').val('0');
+				$('#payOutFeeDiv').hide();
+			}
 		});
-		$('.payOutFee').keyup(function(){
-			$('.payOutFee').val(addComma(String($('.payOutFee').val()).replace(/,/g, '').replace(/[^(-?)0-9]/g,"")));
+		
+		$('select[name="authType"]').on('change', function() {
+			var selected = $(this).find("option:selected").val();
+			
+			if(selected == '0'){
+				$('#respiteCntDiv').hide();
+				$('#stateInitCntDiv').hide();
+				$('#authBankCdDiv').hide();
+			}else if(selected == '1'){
+				$('#respiteCntDiv').show();
+				$('#stateInitCntDiv').hide();
+				$('#authBankCdDiv').hide();
+			}else if(selected == '2'){
+				$('#respiteCntDiv').hide();
+				$('#stateInitCntDiv').show();
+				$('#authBankCdDiv').show();
+			}
 		});
-	
-		function addComma(data) {
-		    return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		}
-	   	
-		$(".loading-btn").click(function(){
-	    	$(".fee").val($(".fee").val().replace(/,/g, ''));
-	    	$(".distFee").val($(".distFee").val().replace(/,/g, ''));
-	    	$(".agencyFee").val($(".agencyFee").val().replace(/,/g, ''));
-	    	$(".salesFee").val($(".salesFee").val().replace(/,/g, ''));
-	    	$(".limitOnce").val($(".limitOnce").val().replace(/,/g, ''));
-	    	$(".limitDay").val($(".limitDay").val().replace(/,/g, ''));
-	    	$(".payOutFee").val($(".payOutFee").val().replace(/,/g, ''));
-	    	
-			$('.distRate').val(($('.distRate2').val()/100).toFixed(5));
-			$('.agencyRate').val(($('.agencyRate2').val()/100).toFixed(5));
-			$('.salesRate').val(($('.salesRate2').val()/100).toFixed(5));
-			$('.rate').val(($('.rate2').val()/100).toFixed(5));
+		
+		$(document).ready(function(){
+			
+			onIssueType($('[name="issueType"]'));
+			
+			var selected = $('#distType').find("option:selected").val();
+			
+			if(selected === undefined || selected == "" || selected === null ){
+				$('#distType').empty();
+				$('#distType').append('<option value="" id="distSelect" selected>--- 선택 (기본 M+15) ---</option>');
+				$('#distType').selectpicker('refresh');
+			} else {
+				$.ajax({
+			  		url:'/mcht/distRate/get/'+selected,
+			  		method: 'GET',
+			  		dataType: 'json',
+			  		success: function(data){
+			  			$('.distSettleType').html(data.settleType);
+		  			}
+			  	});	
+			}
+			
+			
+			var selected = $('#agencyType').find("option:selected").val();
+			if(selected === undefined || selected == "" || selected === null ){
+				$('#agencyType').empty();
+				$('#agencyType').append('<option value="" id="agencySelect" selected>--- 선택 (기본 M+15) ---</option>');
+				$('#agencyType').selectpicker('refresh');
+			} else {
+				$.ajax({
+			  		url:'/mcht/agencyRate/get/'+selected,
+			  		method: 'GET',
+			  		dataType: 'json',
+			  		success: function(data){
+			  			$('.agencySettleType').html(data.settleType);
+		  			}
+			  	});
+			}
+			
+			var selected = $('#salesType').find("option:selected").val();
+			if(selected === undefined || selected == "" || selected === null ){
+				$('#salesType').empty();
+				$('#salesType').append('<option value="" id="salesSelect" selected>--- 선택 (기본 M+15) ---</option>');
+				$('#salesType').selectpicker('refresh');
+			} else {
+				$.ajax({
+			  		url:'/mcht/salesRate/get/'+selected,
+			  		method: 'GET',
+			  		dataType: 'json',
+			  		success: function(data){
+			  			$('.salesSettleType').html(data.settleType);
+		  			}
+			  	});
+			}
+			
+			var selected = $('select[name="feeType"]').find("option:selected").val();
+			if(selected == '0'){
+				$('#rateDiv').hide();
+				$('#distRateDiv').hide();
+				$('#agencyRateDiv').hide();
+				$('#salesRateDiv').hide();
+				$('.noneDiv').hide();
+			} else if(selected == '1'){
+				$('#feeDiv').hide();
+				$('#distFeeDiv').hide();
+				$('#agencyFeeDiv').hide();
+				$('#salesFeeDiv').hide();
+				$('.noneDiv').hide();
+			}
+			
+			var selected = $('#payOutType').find("option:selected").val();
+			if(selected == '') return false;
+			if(selected != '가맹점'){
+				$('select[name="payInStatus"]').val('중지');
+				$('input[name="distPayInFee"]').val('0');
+				$('input[name="agencyPayInFee"]').val('0');
+				$('input[name="salesPayInFee"]').val('0');
+				
+				$('select[name="payInStatus"]').attr("disabled", true);
+				$('input[name="distPayInFee"]').attr("disabled", true);
+				$('input[name="agencyPayInFee"]').attr("disabled", true);
+				$('input[name="salesPayInFee"]').attr("disabled", true);
+			} else {
+				$('select[name="payInStatus"]').attr("disabled", false);
+				$('input[name="distPayInFee"]').attr("disabled", false);
+				$('input[name="agencyPayInFee"]').attr("disabled", false);
+				$('input[name="salesPayInFee"]').attr("disabled", false);
+			}
+			
+			var selected = $('select[name="settleType"]').find("option:selected").val();
+			if(selected == 'A+0' || selected == 'A+2' || selected == 'A+1' || selected == 'D+0'){
+				$('#payOutFeeDiv').show();
+			} else {
+				$('#payOutFeeDiv').hide();
+			}
+			
+			var selected = $('select[name="authType"]').find("option:selected").val();
+			
+			if(selected == '0'){
+				$('#respiteCntDiv').hide();
+				$('#stateInitCntDiv').hide();
+				$('#authBankCdDiv').hide();
+			}else if(selected == '1'){
+				$('#respiteCntDiv').show();
+				$('#stateInitCntDiv').hide();
+				$('#authBankCdDiv').hide();
+			}else if(selected == '2'){
+				$('#respiteCntDiv').hide();
+				$('#stateInitCntDiv').show();
+				$('#authBankCdDiv').show();
+			}
 		});
 	
 		$('#nav-mcht').addClass('active');
