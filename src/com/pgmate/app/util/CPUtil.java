@@ -137,7 +137,38 @@ public class CPUtil {
 		}
 	}
 	
-	
+	public static void setOperDAO(DAO dao,List<Data> datas){
+		if(datas == null){
+			return;
+		}
+		StringBuilder orderBy = new StringBuilder(); 
+		for(Data data:datas){
+			if(data.key){
+				if(!CommonUtil.toString(data.val).equals("")) {
+					String str = CommonUtil.toString(data.val);
+					String convaerted = SQLInjectionUtil.changeValue(str);
+					if(!str.equalsIgnoreCase(convaerted)) {
+						data.val = convaerted;
+						logger.warn("==== SQL INJECTION C HECK : {} => {}", str, convaerted);
+					}
+				}
+				dao.addWhere(data.name,data.val,data.oper);
+			}else{
+				dao.setRecord(data.name, data.val,data.oper);
+			}
+			if(!data.order.equals("")){
+				if(orderBy.length() !=0){
+					orderBy.append(",");
+				}
+				orderBy.append(data.name);
+				orderBy.append(" ");
+				orderBy.append(data.order);
+			}
+		}
+		if(orderBy.toString().trim().length() > 1){
+			dao.setOrderBy(orderBy.toString());
+		}
+	}
 	
 	public static void setRedisDAO(DAO dao,List<Data> datas){
 		if(datas == null){
