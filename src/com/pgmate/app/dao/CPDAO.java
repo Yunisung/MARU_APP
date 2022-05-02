@@ -48,6 +48,14 @@ public class CPDAO extends DAO{
 		this.setRecord("regDay", CommonUtil.getCurrentDate("yyyyMMdd"));
 		CPUtil.setDAO(this, datas);
 		return super.insert();
+	}
+	
+	public boolean insertByOper(String table, String regId, List<Data> datas){
+		this.setTable(table);
+		this.setRecord("regId", regId);
+		this.setRecord("regDay", CommonUtil.getCurrentDate("yyyyMMdd"));
+		CPUtil.setOperDAO(this, datas);
+		return super.insert();
 	}	
 	
 	public boolean update(String table, String regId, List<Data> datas){		
@@ -59,6 +67,14 @@ public class CPDAO extends DAO{
 		return super.update();
 	}
 	
+	public boolean updateByOper(String table, String regId, List<Data> datas){		
+		this.setTable(table);
+		this.setRecord("regId", regId);
+		this.setRecord("regDay", CommonUtil.getCurrentDate("yyyyMMdd"));
+		CPUtil.setOperDAO(this, datas);
+		return super.update();
+	}
+
 	public boolean updateAndBack(String table, String regId, List<Data> datas){
 		//summary 추출 및 제거 
 		String summary 	= "";
@@ -80,6 +96,47 @@ public class CPDAO extends DAO{
 		this.setRecord("regDay", CommonUtil.getCurrentDate("yyyyMMdd"));
 		this.setRecord("regDate", CommonUtil.getCurrentTimestamp());
 		CPUtil.setDAO(this, datas);
+		
+		q+=super.where.toString();
+		//기존 정보 BACKUP TABLE 로 이동
+		long lastIdx = -1;
+		if(super.where.length() > 3){
+			lastIdx = super.updateAndLastIdx(q,summary);
+		}
+		
+		//업데이트 실행 
+		boolean updated = super.update();
+		
+		//업데이터 실패하면 해당 레코드 삭제 
+		if(!updated && lastIdx  !=-1){
+			q = "DELETE FROM "+table.replace("PG_", "HT_") +" WHERE idx ="+lastIdx;
+			super.update(q);
+		}
+		
+		return updated;
+	}
+	
+	public boolean updateAndBackByOper(String table, String regId, List<Data> datas){
+		//summary 추출 및 제거 
+		String summary 	= "";
+		for(Data data : datas){
+			if(data.name.equals("summary")){
+				summary = CommonUtil.toString(data.val);
+				datas.remove(data);
+				break;
+			}
+		}
+		
+		//TABLE의 컬럼 정보 추출 
+		String columns =this.getColumns(table);
+		String q = "INSERT INTO "+table.replace("PG_", "HT_")+" ("+columns+",summary) SELECT "+columns+",? FROM "+table +" WHERE ";
+		
+		
+		this.setTable(table);
+		this.setRecord("regId", regId);
+		this.setRecord("regDay", CommonUtil.getCurrentDate("yyyyMMdd"));
+		this.setRecord("regDate", CommonUtil.getCurrentTimestamp());
+		CPUtil.setOperDAO(this, datas);
 		
 		q+=super.where.toString();
 		//기존 정보 BACKUP TABLE 로 이동

@@ -57,5 +57,16 @@ public class CodeDAO extends DAO{
 		
 		return bankCd;
 	}
+	
+	/**
+	 * 가상계좌 인증 원가 수수료 조회
+	 * @param bankNm
+	 * @return
+	 */
+	public RecordSet getOrgFee(String bankNm){
+		addWhere("alias", "ORGFEE", eq);
+		setOrderBy("");
+		return search();
+	}
 }
 
