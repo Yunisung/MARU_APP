@@ -1550,12 +1550,12 @@ public class MchtController {
 
 			dao.update();
 			
-			dao = new DAO();
-			dao.setTable("PG_VACT_AUTH_STATEINIT_INFO");
-			dao.setRecord("stateInitCnt", cpRequest.getData("stateInitCnt").val);
-			dao.addWhere("mchtId", cpRequest.getKeyValue("mchtId"), DAO.eq);
-
-			dao.update();
+//			dao = new DAO();
+//			dao.setTable("PG_VACT_AUTH_STATEINIT_INFO");
+//			dao.setRecord("stateInitCnt", cpRequest.getData("stateInitCnt").val);
+//			dao.addWhere("mchtId", cpRequest.getKeyValue("mchtId"), DAO.eq);
+//
+//			dao.update();
 			
 			return new CPRUtil(cpRequest).resultOK("가맹점 가상계좌 정보가 변경되었습니다.").cpResponse();
 		} else {
