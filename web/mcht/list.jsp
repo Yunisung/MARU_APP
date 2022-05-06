@@ -42,9 +42,10 @@
 					<th data-sort="string">정산주기</th>
 					<th data-sort="string">수수료</th>
 					<c:if test="${CP_SESSION.grade == '본사'}">
-						<th data-sort="string">선정산 수수료</th>
+						<%--<th data-sort="string">선정산 수수료</th> --%>
 						<th data-sort="string">대표가맹점</th>
 					</c:if>
+					<th data-sort="string">가상계좌 인증서비스</th>
 					<th data-sort="string">등록자</th>
 					<th data-sort="string">등록일시</th>
 				</tr>
@@ -73,12 +74,13 @@
 						<td>${entry.settleType}</td>
 						<c:if test="${CP_SESSION.grade == '본사'}">
 						<td><fmt:formatNumber value="${entry.rate * 100}" pattern="0.000"/> %</td>
-						<td><fmt:formatNumber value="${entry.loanRate * 100}" pattern="0.000"/> %</td>
+						<%--<td><fmt:formatNumber value="${entry.loanRate * 100}" pattern="0.000"/> %</td>--%>
 						<td>${entry.aggregator}</td>
 						</c:if>
 						<c:if test="${CP_SESSION.grade != '본사'}">
-							<td><fmt:formatNumber value="${entry.sumRate * 100}" pattern="0.000"/> %</td>
+							<td><fmt:formatNumber value="${entry.rate * 100}" pattern="0.000"/> %</td>
 						</c:if>
+						<td>${entry.authType}</td>
 						<td>${entry.regId}</td>
 						<td class="date">${entry.regDate}</td>
 					</tr>

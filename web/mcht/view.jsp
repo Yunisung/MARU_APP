@@ -44,7 +44,7 @@
 							</div>
 						</div>
 						<!-- END PAGE BAR -->
-						<!-- BEGIN PAGE CONTENT - MARU - INNER -->
+						<!-- BEGIN PAGE CONTENT - KWON - INNER -->
 								<div class="page-content-inner">
 									<div class="portlet light">
 										<div class="portlet-body light">
@@ -293,13 +293,14 @@
 																	</c:if>
 																</c:if>
 																</c:if>
-																<c:if test="${(CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '대행사' || CP_SESSION.grade eq '에이전시' || CP_SESSION.grade eq '지사') && CP_SESSION.role != '일반'}">
+																<c:if test="${CP_SESSION.grade eq '본사' && CP_SESSION.role != '일반'}">
 																	<c:if test="${fn:length(DATAMNGMAP) < 1 }">
 																		<button type="button" class="btn btn-sm red-haze" onclick="linkToMng('${DATAMAP.mchtId}', 'add');">
 																			<i class="fa fa-pencil"></i> 지불 및 정산정보 등록
 																		</button>
 																	</c:if>
-																	
+																</c:if>
+																<c:if test="${(CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '대행사' || CP_SESSION.grade eq '에이전시' || CP_SESSION.grade eq '지사') && CP_SESSION.role != '일반'}">
 																	<button type="button" class="btn btn-sm green" onclick="location.href='/mcht/modify/${DATAMAP.mchtId}';">
 																		<i class="fa fa-pencil"></i> 정보 수정
 																	</button>
@@ -409,12 +410,23 @@
 															<!-- BEGIN FORM-->
 															<form class="form-horizontal" role="form">
 																<div class="form-body">
+																	<div class="form-group col-sm-12 form-subtitle">
+																		<label><i class="fa fa-reorder"></i> 기본 정보</label>
+																	</div>
 																	<div class="row">
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">지불사용여부</label>
 																				<div class="col-md-9">
 																					<p class="form-control-static">${DATAMNGMAP.payStatus}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3"></label>
+																				<div class="col-md-9">
+																					<p class="form-control-static"></p>
 																				</div>
 																			</div>
 																		</div>
@@ -434,16 +446,6 @@
 																				<label class="control-label col-md-3">영중소구분</label>
 																				<div class="col-md-9">
 																					<p class="form-control-static">${DATAMNGMAP.diffType}</p>
-																				</div>
-																			</div>
-																		</div>
-																		<div class="col-md-6">
-																			<div class="form-group pg-view-group">
-																				<label class="control-label col-md-3">
-																					<c:if test="${DATAMAP.distId eq '00'}">입금</c:if>정산유형
-																				</label>
-																				<div class="col-md-9">
-																					<p class="form-control-static">${DATAMNGMAP.settleType}</p>
 																				</div>
 																			</div>
 																		</div>
@@ -474,6 +476,16 @@
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">
+																					가맹점 <c:if test="${DATAMAP.distId eq '00'}">입금</c:if>정산유형
+																				</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${DATAMNGMAP.settleType}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">
 																					<c:if test="${DATAMAP.distId eq '00'}">입금정산</c:if>
 																					<c:if test="${DATAMAP.distId ne '00'}">가맹점</c:if>
 																					 수수료</label>
@@ -483,11 +495,12 @@
 																						<a class="btn btn-sm" href="/member/rate/add/mcht/${DATAMAP.mchtId }">수수료 변경 예약</a>
 																					</c:if>
 																					<c:if test="${CP_SESSION.grade != '본사'}">
-																						<p class="form-control-static"><fmt:formatNumber value="${(DATAMNGMAP.rate + DATAMNGMAP.loanRate) * 100}" pattern="0.000"/> %</p>
+																						<p class="form-control-static"><fmt:formatNumber value="${DATAMNGMAP.rate * 100}" pattern="0.000"/> %</p>
 																					</c:if>
 																				</div>
 																			</div>
 																		</div>
+																		<%-- 
 																		<c:if test="${CP_SESSION.grade == '본사'}">
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
@@ -498,24 +511,59 @@
 																			</div>
 																		</div>
 																		</c:if>
-																		<!--/span-->
-																		<c:if test="${CP_SESSION.grade == '본사' || CP_SESSION.grade == '대행사' || CP_SESSION.grade == '에이전시'}">
-																		<div class="col-md-6">
-																			<div class="form-group pg-view-group">
-																				<label class="control-label col-md-3">에이전시 수수료</label>
-																				<div class="col-md-9">
-																					<p class="form-control-static agencyRate"><fmt:formatNumber value="${DATAMNGMAP.agencyRate * 100}" pattern="0.000"/> %</p>
-																				</div>
-																			</div>
-																		</div>
-																		</c:if>
+																		--%>
 																		<!--/span-->
 																		<c:if test="${CP_SESSION.grade == '본사' && DATAMAP.distId ne '00' || CP_SESSION.grade == '대행사'}">
 																			<div class="col-md-6">
 																				<div class="form-group pg-view-group">
-																					<label class="control-label col-md-3">대행사 수수료</label>
+																					<label class="control-label col-md-3">대행사 정산유형</label>
 																					<div class="col-md-9">
-																						<p class="form-control-static distRate"><fmt:formatNumber value="${DATAMNGMAP.distRate * 100}" pattern="0.000"/> %</p>
+																						<p class="form-control-static distNum">${DATADISTMAP.settleName} (${DATADISTMAP.payStatus})</p>
+																						<c:if test="${DATADISTMAP.settleType == 'M+25'}">
+																							<span>매월 25일</span>
+																						</c:if>
+																						<c:if test="${DATADISTMAP.settleType == 'M+15'}">
+																							<span>매월 15일</span>
+																						</c:if>
+																						<c:if test="${DATADISTMAP.settleType == 'W+3'}">
+																							<span>매주 수요일</span>
+																						</c:if>
+																					</div>
+																				</div>
+																			</div>
+																			<div class="col-md-6">
+																				<div class="form-group pg-view-group">
+																					<label class="control-label col-md-3">대행사 수수료율</label>
+																					<div class="col-md-9">
+																						<p class="form-control-static distRate"><fmt:formatNumber value="${DATAMNGMAP.distRate * 100}" pattern="0.000"/> % (VAT별도)</p>
+																					</div>
+																				</div>
+																			</div>
+																		</c:if>
+																		<!--/span-->
+																		<c:if test="${CP_SESSION.grade == '본사' || CP_SESSION.grade == '대행사' || CP_SESSION.grade == '에이전시'}">
+																			<div class="col-md-6">
+																				<div class="form-group pg-view-group">
+																					<label class="control-label col-md-3">에이전시 정산유형</label>
+																					<div class="col-md-9">
+																						<p class="form-control-static agencyNum">${DATAAGENCYMAP.settleName} (${DATAAGENCYMAP.payStatus})</p>
+																						<c:if test="${DATAAGENCYMAP.settleType == 'M+25'}">
+																							<span>매월 25일</span>
+																						</c:if>
+																						<c:if test="${DATAAGENCYMAP.settleType == 'M+15'}">
+																							<span>매월 15일</span>
+																						</c:if>
+																						<c:if test="${DATAAGENCYMAP.settleType == 'W+3'}">
+																							<span>매주 수요일</span>
+																						</c:if>
+																					</div>
+																				</div>
+																			</div>
+																			<div class="col-md-6">
+																				<div class="form-group pg-view-group">
+																					<label class="control-label col-md-3">에이전시 수수료율</label>
+																					<div class="col-md-9">
+																						<p class="form-control-static agencyRate"><fmt:formatNumber value="${DATAMNGMAP.agencyRate * 100}" pattern="0.000"/> % (VAT별도)</p>
 																					</div>
 																				</div>
 																			</div>
@@ -524,13 +572,31 @@
 																		<c:if test="${CP_SESSION.grade ne '가맹점'}">
 																			<div class="col-md-6">
 																				<div class="form-group pg-view-group">
-																					<label class="control-label col-md-3">지사 수수료</label>
+																					<label class="control-label col-md-3">지사 정산유형</label>
 																					<div class="col-md-9">
-																						<p class="form-control-static salesRate"><fmt:formatNumber value="${DATAMNGMAP.salesRate * 100}" pattern="0.000"/> %</p>
+																						<p class="form-control-static salesNum">${DATASALESMAP.settleName} (${DATASALESMAP.payStatus})</p>
+																						<c:if test="${DATASALESMAP.settleType == 'M+25'}">
+																							<span>매월 25일</span>
+																						</c:if>
+																						<c:if test="${DATASALESMAP.settleType == 'M+15'}">
+																							<span>매월 15일</span>
+																						</c:if>
+																						<c:if test="${DATASALESMAP.settleType == 'W+3'}">
+																							<span>매주 수요일</span>
+																						</c:if>
+																					</div>
+																				</div>
+																			</div>
+																			<div class="col-md-6">
+																				<div class="form-group pg-view-group">
+																					<label class="control-label col-md-3">지사 수수료율</label>
+																					<div class="col-md-9">
+																						<p class="form-control-static salesRate"><fmt:formatNumber value="${DATAMNGMAP.salesRate * 100}" pattern="0.000"/> % (VAT별도)</p>
 																					</div>
 																				</div>
 																			</div>
 																		</c:if>
+																		<%--
 																		<!--/span-->
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
@@ -541,6 +607,7 @@
 																				</div>
 																			</div>
 																		</div>
+																		 --%>
 																		<!--/span-->
 																	</div>
 																	<!--/row-->
@@ -549,7 +616,7 @@
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">1회한도</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static digits">${DATAMNGMAP.limitOnce}</p>
+																					<p class="form-control-static digits">${DATAMNGMAP.limitOnce}</p> 원
 																				</div>
 																			</div>
 																		</div>
@@ -558,7 +625,7 @@
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">1일한도</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static digits">${DATAMNGMAP.limitDay}</p>
+																					<p class="form-control-static digits">${DATAMNGMAP.limitDay}</p> 원
 																				</div>
 																			</div>
 																		</div>
@@ -570,7 +637,7 @@
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">1개월한도</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static digits">${DATAMNGMAP.limitMonth}</p>
+																					<p class="form-control-static digits">${DATAMNGMAP.limitMonth}</p> 원
 																				</div>
 																			</div>
 																		</div>
@@ -578,7 +645,7 @@
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">연한도</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static digits">${DATAMNGMAP.limitYear}</p>
+																					<p class="form-control-static digits">${DATAMNGMAP.limitYear}</p> 원
 																				</div>
 																			</div>
 																		</div>
@@ -595,17 +662,16 @@
 																			</div>
 																		</div>
 																		<!--/span-->
-																	</div>
 																	<c:if test="${CP_SESSION.grade == '본사'}">
-																	<div class="row">
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">고액거래 기준</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static digits">${DATAMNGMAP.largeAmount}</p>
+																					<p class="form-control-static digits">${DATAMNGMAP.largeAmount}</p> 원
 																				</div>
 																			</div>
 																		</div>
+																		<%--
 																		<!--/span-->
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
@@ -615,10 +681,10 @@
 																				</div>
 																			</div>
 																		</div>
+																		 --%>
 																		<!--/span-->
+																		</c:if>
 																	</div>
-																	</c:if>
-																	
 																	<c:if test="${(CP_SESSION.grade == '본사' || CP_SESSION.grade == '대행사') && DATAMAP.distId ne '00' }">
 																		<div class="row">
 																			<div class="col-md-6">
@@ -642,7 +708,7 @@
 																							<p class="form-control-static">
 																								가맹점:
 																								<span class="rate"><fmt:formatNumber value="${DATAMNGMAP.rate * 1.1 * 100}" pattern="0.000"/> %</span>
-																								(<span class="rate"><fmt:formatNumber value="${(DATAMNGMAP.rate + DATAMNGMAP.loanRate) * 1.1 * 100}" pattern="0.000"/> %</span>)
+																								(<span class="rate"><fmt:formatNumber value="${(DATAMNGMAP.rate) * 1.1 * 100}" pattern="0.000"/> %</span>)
 																								, 에이전시:
 																								<span class="rate"><fmt:formatNumber value="${(DATAMNGMAP.rate - DATAMNGMAP.agencyRate) * 1.1 * 100}" pattern="0.000"/> %</span>
 																								, 대행사:
@@ -656,20 +722,67 @@
 																	</c:if>
 																	<c:if test="${CP_SESSION.grade eq '본사'}">
 																		<c:if test="${DATASVCMAP.settle == '실시간정산' || DATASVCMAP.settle == '자동정산'}">
+																			<div class="form-group col-sm-12 form-subtitle">
+																				<label><i class="fa fa-reorder"></i> 실시간 정산 정보</label>
+																			</div>
 																			<div class="row">
 																				<div class="col-md-6">
 																					<div class="form-group pg-view-group">
-																						<label class="control-label col-md-3">실시간정산<br>출금수수료</label>
+																						<label class="control-label col-md-3">실시간 정산<br>출금 수수료 납부자</label>
 																						<div class="col-md-9">
-																							<p class="form-control-static digits">${DATAMNGMAP.payOutFee}</p>
+																							<p class="form-control-static">${DATAMNGMAP.payOutType}</p>
 																						</div>
 																					</div>
 																				</div>
 																				<div class="col-md-6">
 																					<div class="form-group pg-view-group">
-																						<label class="control-label col-md-3">실시간정산<br>전송간격</label>
+																						<label class="control-label col-md-3">실시간 정산<br>출금 수수료</label>
+																						<div class="col-md-9">
+																							<p class="form-control-static digits">${DATAMNGMAP.payOutFee}</p> 원
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-6">
+																					<div class="form-group pg-view-group">
+																						<label class="control-label col-md-3">실시간 정산<br>전산 전송 간격</label>
 																						<div class="col-md-9">
 																							<p class="form-control-static digits">${DATAMNGMAP.transferInterval}</p>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																			<div class="row">
+																				<div class="col-md-6">
+																					<div class="form-group pg-view-group">
+																						<label class="control-label col-md-3">실시간 정산 출금<br>수수료 분배</label>
+																						<div class="col-md-9">
+																							<p class="form-control-static">${DATAMNGMAP.payInStatus}</p>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																			<div class="row">
+																				<div class="col-md-6">
+																					<div class="form-group pg-view-group">
+																						<label class="control-label col-md-3">대행사 지급</label>
+																						<div class="col-md-9">
+																							<p class="form-control-static digits">${DATAMNGMAP.distPayInFee}</p> 원
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-6">
+																					<div class="form-group pg-view-group">
+																						<label class="control-label col-md-3">에이전시 지급</label>
+																						<div class="col-md-9">
+																							<p class="form-control-static digits">${DATAMNGMAP.agencyPayInFee}</p> 원
+																						</div>
+																					</div>
+																				</div>
+																				<div class="col-md-6">
+																					<div class="form-group pg-view-group">
+																						<label class="control-label col-md-3">지사 지급</label>
+																						<div class="col-md-9">
+																							<p class="form-control-static digits">${DATAMNGMAP.salesPayInFee}</p> 원
 																						</div>
 																					</div>
 																				</div>
@@ -679,18 +792,6 @@
 																</div>
 															</form>
 															<c:if test="${CP_SESSION.grade eq '본사' && CP_SESSION.role != '일반'}">
-															<div class="form-actions">
-																<div class="row">
-																	<div class="col-md-12">
-																		<button type="button" class="btn btn-sm green pull-right" onclick="linkToMng('${DATAMAP.mchtId}','modify');">
-																			<i class="fa fa-pencil"></i> 지불 및 정산정보 수정
-																		</button>
-																	</div>
-																	<div class="col-md-6"></div>
-																</div>
-															</div>
-															</c:if>
-															<c:if test="${(CP_SESSION.grade eq '대행사' || CP_SESSION.grade eq '에이전시' || CP_SESSION.grade eq '지사') && CP_SESSION.role != '일반' && DATAMAP.status eq '예비'}">
 															<div class="form-actions">
 																<div class="row">
 																	<div class="col-md-12">
@@ -1069,6 +1170,37 @@
 																			</tr>
 																		</thead>
 																		<tbody id="list">
+																			<tr>
+																				<td>${fn:length(HT_MAP) + 1}</td>
+																				<td>${PG_MAP.name}</td>
+																				<td>${PG_MAP.nick}</td>
+																				<td>${PG_MAP.status}</td>
+																				<td>${PG_MAP.bizType}</td>
+																				<td>${PG_MAP.bizCategory}</td>
+																				<td>${PG_MAP.distId}</td>
+																				<td>${PG_MAP.agencyId}</td>
+																				<td>${PG_MAP.salesId}</td>
+																				<td>${PG_MAP.idType}</td>
+																				<td>${PG_MAP.identity}</td>
+																				<td>${PG_MAP.tel1}</td>
+																				<td>${PG_MAP.tel2}</td>
+																				<td>${PG_MAP.fax}</td>
+																				<td>${PG_MAP.zip}</td>
+																				<td>${PG_MAP.addr1}</td>
+																				<td>${PG_MAP.addr2}</td>
+																				<td>${PG_MAP.ceoName}</td>
+																				<td>${PG_MAP.ceoIdentity}</td>
+																				<td>${PG_MAP.ceoPhone}</td>
+																				<td>${PG_MAP.ceoTel}</td>
+																				<td>${PG_MAP.ceoZip}</td>
+																				<td>${PG_MAP.ceoAddr1}</td>
+																				<td>${PG_MAP.ceoAddr2}</td>
+																				<td>${PG_MAP.managerName}</td>
+																				<td>${PG_MAP.managerPhone}</td>
+																				<td>${PG_MAP.summary}</td>
+																				<td>${PG_MAP.regId}</td>
+																				<td>${PG_MAP.regDate}</td>
+																			</tr>
 																			<c:forEach var="entry" items="${HT_MAP}" varStatus="status">
 																				<tr>
 																					<td>${fn:length(HT_MAP) - status.index}</td>
@@ -1125,7 +1257,7 @@
 																				<th data-sort="string">지불사용여부</th>
 																				<th data-sort="string">정산유형</th>
 																				<th data-sort="string">가맹점 수수료</th>
-																				<th data-sort="string">선정산 수수료</th>
+																				<%-- <th data-sort="string">선정산 수수료</th>--%>
 																				<th data-sort="string">대행사 수수료</th>
 																				<th data-sort="string">에이전시 수수료</th>
 																				<th data-sort="string">이체 건당 수수료</th>
@@ -1134,20 +1266,37 @@
 																				<th data-sort="string">1일한도</th>
 																				<th data-sort="string">1개월한도</th>
 																				<th data-sort="string">고액거래 기준</th>
-																				<th data-sort="string">선정산 한도</th>
+																				<%--<th data-sort="string">선정산 한도</th> --%>
 																				<th data-sort="string">summary</th>
 																				<th data-sort="string">변경자</th>
 																				<th data-sort="string">변경일시</th>
 																			</tr>
 																		</thead>
 																		<tbody id="list">
+																			<tr>
+																				<td>${fn:length(HT_MNG_MAP) + 1}</td>
+																				<td>${PG_MNG_MAP.payStatus}</td>
+																				<td>${PG_MNG_MAP.settleType}</td>
+																				<td><fmt:formatNumber value="${PG_MNG_MAP.rate * 100}" pattern="0.000"/> %</td>
+																				<td><fmt:formatNumber value="${PG_MNG_MAP.distRate * 100}" pattern="0.000"/> %</td>
+																				<td><fmt:formatNumber value="${PG_MNG_MAP.agencyRate * 100}" pattern="0.000"/> %</td>
+																				<td><fmt:formatNumber type="number" value="${PG_MNG_MAP.wireFee}" pattern="#,##0" /></td>
+																				<td><fmt:formatNumber type="number" value="${PG_MNG_MAP.manageFee}" pattern="#,##0" /></td>
+																				<td><fmt:formatNumber type="number" value="${PG_MNG_MAP.limitOnce}" pattern="#,##0" /></td>
+																				<td><fmt:formatNumber type="number" value="${PG_MNG_MAP.limitDay}" pattern="#,##0" /></td>
+																				<td><fmt:formatNumber type="number" value="${PG_MNG_MAP.limitMonth}" pattern="#,##0" /></td>
+																				<td><fmt:formatNumber type="number" value="${PG_MNG_MAP.largeAmount}" pattern="#,##0" /></td>
+																				<td>${PG_MNG_MAP.summary}</td>
+																				<td>${PG_MNG_MAP.regId}</td>
+																				<td>${PG_MNG_MAP.regDate}</td>
+																			</tr>
 																			<c:forEach var="entry" items="${HT_MNG_MAP}" varStatus="status">
 																				<tr>
 																					<td>${fn:length(HT_MNG_MAP) - status.index}</td>
 																					<td>${entry.payStatus}</td>
 																					<td>${entry.settleType}</td>
 																					<td><fmt:formatNumber value="${entry.rate * 100}" pattern="0.000"/> %</td>
-																					<td><fmt:formatNumber value="${entry.loanRate * 100}" pattern="0.000"/> %</td>
+																					<%--<td><fmt:formatNumber value="${entry.loanRate * 100}" pattern="0.000"/> %</td>--%>
 																					<td><fmt:formatNumber value="${entry.distRate * 100}" pattern="0.000"/> %</td>
 																					<td><fmt:formatNumber value="${entry.agencyRate * 100}" pattern="0.000"/> %</td>
 																					<td><fmt:formatNumber type="number" value="${entry.wireFee}" pattern="#,##0" /></td>
@@ -1156,7 +1305,7 @@
 																					<td><fmt:formatNumber type="number" value="${entry.limitDay}" pattern="#,##0" /></td>
 																					<td><fmt:formatNumber type="number" value="${entry.limitMonth}" pattern="#,##0" /></td>
 																					<td><fmt:formatNumber type="number" value="${entry.largeAmount}" pattern="#,##0" /></td>
-																					<td><fmt:formatNumber type="number" value="${entry.maxLoan}" pattern="#,##0" /></td>
+																					<%--<td><fmt:formatNumber type="number" value="${entry.maxLoan}" pattern="#,##0" /></td>--%>
 																					<td>${entry.summary}</td>
 																					<td>${entry.regId}</td>
 																					<td>${entry.regDate}</td>
@@ -1203,9 +1352,30 @@
 																			</tr>
 																		</thead>
 																		<tbody id="list">
+																			<tr>
+																				<td>${fn:length(HT_TAX_MAP) + 1}</td>
+																				<td>${PG_TAX_MAP.taxId}</td>
+																				<td>${PG_TAX_MAP.name}</td>
+																				<td>${PG_TAX_MAP.compName}</td>
+																				<td>${PG_TAX_MAP.ceoName}</td>
+																				<td>${PG_TAX_MAP.idType}</td>
+																				<td>${PG_TAX_MAP.identity}</td>
+																				<td>${PG_TAX_MAP.taxStatus}</td>
+																				<td><fmt:formatNumber type="number" value="${PG_TAX_MAP.taxLimit}" pattern="#,##0" /></td>
+																				<td>${PG_TAX_MAP.bankCd}</td>
+																				<td>${PG_TAX_MAP.bankName}</td>
+																				<td>${PG_TAX_MAP.account}</td>
+																				<td>${PG_TAX_MAP.accntHolder}</td>
+																				<td>${PG_TAX_MAP.zip}</td>
+																				<td>${PG_TAX_MAP.addr1}</td>
+																				<td>${PG_TAX_MAP.addr2}</td>
+																				<td>${PG_TAX_MAP.email}</td>
+																				<td>${PG_TAX_MAP.regId}</td>
+																				<td>${PG_TAX_MAP.regDate}</td>
+																			</tr>
 																			<c:forEach var="entry" items="${HT_TAX_MAP}" varStatus="status">
 																				<tr>
-																					<td>${fn:length(HT_MAP) - status.index}</td>
+																					<td>${fn:length(HT_TAX_MAP) - status.index}</td>
 																					<td>${entry.taxId}</td>
 																					<td>${entry.name}</td>
 																					<td>${entry.compName}</td>
@@ -1262,6 +1432,22 @@
 																			</tr>
 																		</thead>
 																		<tbody>
+																			<tr>
+																				<td>${fn:length(HT_TMN_MAP) + 1}</td>
+																				<td>${PG_TMN_MAP.tmnId}</td>
+																				<td>${PG_TMN_MAP.mchtId}</td>
+																				<td>${PG_TMN_MAP.taxId}</td>
+																				<td>${PG_TMN_MAP.status}</td>
+																				<td>${PG_TMN_MAP.serial}</td>
+																				<td>${PG_TMN_MAP.payKey}</td>
+																				<td>${PG_TMN_MAP.activeDate}</td>
+																				<td>${PG_TMN_MAP.van}</td>
+																				<td>${PG_TMN_MAP.vanIdx}</td>
+																				<td>${PG_TMN_MAP.description}</td>
+																				<td>${PG_TMN_MAP.summary}</td>
+																				<td>${PG_TMN_MAP.regId}</td>
+																				<td>${PG_TMN_MAP.regDate}</td>
+																			</tr>
 																			<c:forEach var="entry" items="${HT_TMN_MAP}" varStatus="status">
 																				<tr>
 																					<td>${fn:length(HT_TMN_MAP) - status.index}</td>
@@ -1745,32 +1931,38 @@
 																	</div>
 																</div>
 															</div>
-															<div class="form-actions">
-																<div class="row">
-																	<div class="col-md-12">
-																		<c:if test="${fn:length(DATAPHONEMAP) > 1 }">
-																			<button type="button" class="btn btn-sm green pull-right" onclick="location.href='/phone/mng/modify/${DATAMAP.mchtId}';">
-																				<i class="fa fa-pencil"></i> 휴대폰 결제 정보 수정
-																			</button>
-																		</c:if>
-																		&nbsp;&nbsp;&nbsp;
-																		<c:if test="${fn:length(DATAPHONEMAP) < 1 }">
-																			<button type="button" class="btn btn-sm red pull-right" onclick="location.href='/phone/mng/add/${DATAMAP.mchtId}';">
-																				<i class="fa fa-pencil"></i> 휴대폰 결제 정보 등록
-																			</button>
-																		</c:if>
+															<c:if test="${CP_SESSION.grade == '본사'}">
+																<div class="form-actions">
+																	<div class="row">
+																		<div class="col-md-12">
+																			<c:if test="${fn:length(DATAPHONEMAP) > 1 }">
+																				<button type="button" class="btn btn-sm green pull-right" onclick="location.href='/phone/mng/modify/${DATAMAP.mchtId}';">
+																					<i class="fa fa-pencil"></i> 휴대폰 결제 정보 수정
+																				</button>
+																			</c:if>
+																			&nbsp;&nbsp;&nbsp;
+																			<c:if test="${fn:length(DATAPHONEMAP) < 1 }">
+																				<button type="button" class="btn btn-sm red pull-right" onclick="location.href='/phone/mng/add/${DATAMAP.mchtId}';">
+																					<i class="fa fa-pencil"></i> 휴대폰 결제 정보 등록
+																				</button>
+																			</c:if>
+																		</div>
+																		<div class="col-md-6"></div>
 																	</div>
-																	<div class="col-md-6"></div>
 																</div>
-															</div>
+															</c:if>
 														</form>
 													</div>
 													<!-- 휴대폰 결제 끝 -->
-													
+													<!-- 가상계좌 정보 탭 시작 -->
 													<div class="tab-pane" id="tab_virAccount">
 														<form class="form-horizontal form" role="form">
 															<c:if test="${not empty VACT_MAP}">
-															<div class="form-body row">
+															<div class="form-body">
+																<div class="form-group col-sm-12 form-subtitle">
+																	<label><i class="fa fa-reorder"></i> 기본 정보</label>
+																</div>
+																<div class="row">
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
 																		<label class="control-label col-md-3">기본 예금주명</label>
@@ -1822,125 +2014,208 @@
 																		</div>
 																	</div>
 																</div>
+																</div>
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">수수료유형</label>
+																		<label class="control-label col-md-3">가맹점 수수료유형</label>
 																		<div class="col-md-9">
 																			<p class="form-control-static">
 																				<c:if test="${VACT_MAP.feeType == '0'}">정액</c:if>
 																				<c:if test="${VACT_MAP.feeType == '1'}">정률</c:if>
+																				<c:if test="${VACT_MAP.feeType == '2'}">혼합</c:if>
 																			</p>
 																		</div>
 																	</div>
 																</div>
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">정산유형</label>
+																		<label class="control-label col-md-3"></label>
+																		<div class="col-md-9">
+																			<p class="form-control-static"></p>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3">가맹점 정산유형</label>
 																		<div class="col-md-9">
 																			<p class="form-control-static">${VACT_MAP.settleType}</p>
 																		</div>
 																	</div>
 																</div>
-																<c:if test="${VACT_MAP.feeType == '0'}">
+																<c:if test="${VACT_MAP.feeType == '2'}">
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">정산수수료</label>
+																			<label class="control-label col-md-3"></label>
 																			<div class="col-md-9">
-																				<p class="form-control-static digits">${VACT_MAP.fee}원</p>
+																				<p class="form-control-static"></p>
 																			</div>
 																		</div>
 																	</div>
 																</c:if>
-																<c:if test="${VACT_MAP.feeType == '1'}">
+																<c:if test="${VACT_MAP.feeType == '0' || VACT_MAP.feeType == '2'}">
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">정산수수료률</label>
+																			<label class="control-label col-md-3">가맹점 정산수수료</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static"><fmt:formatNumber value="${VACT_MAP.rate * 100}" pattern="0.000"/> %</p>
+																				<p class="form-control-static digits">${VACT_MAP.fee}</p> 원
 																			</div>
 																		</div>
 																	</div>
 																</c:if>
-																<div class="col-md-6">
-																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">대행사정산유형</label>
-																		<div class="col-md-9">
-																			<p class="form-control-static">${VACT_MAP.distSettleType}</p>
-																		</div>
-																	</div>
-																</div>
-																<c:if test="${VACT_MAP.feeType == '0'}">
+																<c:if test="${VACT_MAP.feeType == '1' || VACT_MAP.feeType == '2'}">
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">대행사수수료</label>
+																			<label class="control-label col-md-3">가맹점 정산수수료율</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static digits">${VACT_MAP.distFee}원</p>
-																			</div>
-																		</div>
-																	</div>
-																</c:if>
-																<c:if test="${VACT_MAP.feeType == '1'}">
-																	<div class="col-md-6">
-																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">대행사수수료률</label>
-																			<div class="col-md-9">
-																				<p class="form-control-static distRate"><fmt:formatNumber value="${VACT_MAP.distRate * 100}" pattern="0.000"/> %</p>
+																				<p class="form-control-static"><fmt:formatNumber value="${VACT_MAP.rate * 100}" pattern="0.000"/> % (VAT별도)</p>
 																			</div>
 																		</div>
 																	</div>
 																</c:if>
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">에이전시정산유형</label>
+																		<label class="control-label col-md-3">대행사 정산유형명</label>
 																		<div class="col-md-9">
-																			<p class="form-control-static">${VACT_MAP.agencySettleType}</p>
+																			<c:if test="${VACTDISTMAP ne null }">
+																				<p class="form-control-static">${VACTDISTMAP.settleName} (${VACTDISTMAP.payStatus})</p>
+																			</c:if>
+																			<c:if test="${VACT_MAP.distSettleType == 'M+25'}">
+																				<span>매월 25일</span>
+																			</c:if>
+																			<c:if test="${VACT_MAP.distSettleType == 'M+15'}">
+																				<span>매월 15일</span>
+																			</c:if>
+																			<c:if test="${VACT_MAP.distSettleType == 'W+3'}">
+																				<span>매주 수요일</span>
+																			</c:if>
 																		</div>
 																	</div>
 																</div>
-																<c:if test="${VACT_MAP.feeType == '0'}">
+																<c:if test="${VACT_MAP.feeType == '2'}">
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">에이전시수수료</label>
+																			<label class="control-label col-md-3"></label>
 																			<div class="col-md-9">
-																				<p class="form-control-static digits">${VACT_MAP.agencyFee}원</p>
+																				<p class="form-control-static"></p>
 																			</div>
 																		</div>
 																	</div>
 																</c:if>
-																<c:if test="${VACT_MAP.feeType == '1'}">
+																<c:if test="${VACT_MAP.feeType == '0' || VACT_MAP.feeType == '2'}">
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">에이전시수수료률</label>
+																			<label class="control-label col-md-3">대행사 수수료</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static agencyRate"><fmt:formatNumber value="${VACT_MAP.agencyRate * 100}" pattern="0.000"/> %</p>
+																				<p class="form-control-static digits">${VACT_MAP.distFee}</p> 원
+																			</div>
+																		</div>
+																	</div>
+																</c:if>
+																<c:if test="${VACT_MAP.feeType == '1' || VACT_MAP.feeType == '2'}">
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">대행사 수수료율</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static distRate"><fmt:formatNumber value="${VACT_MAP.distRate * 100}" pattern="0.000"/> % (VAT별도)</p>
 																			</div>
 																		</div>
 																	</div>
 																</c:if>
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">지사정산유형</label>
+																		<label class="control-label col-md-3">에이전시 정산유형명</label>
 																		<div class="col-md-9">
-																			<p class="form-control-static">${VACT_MAP.salesSettleType}</p>
+																			<c:if test="${VACTAGENCYMAP ne null }">
+																				<p class="form-control-static">${VACTAGENCYMAP.settleName} (${VACTAGENCYMAP.payStatus})</p>
+																			</c:if>
+																			<c:if test="${VACT_MAP.agencySettleType == 'M+25'}">
+																				<span>매월 25일</span>
+																			</c:if>
+																			<c:if test="${VACT_MAP.agencySettleType == 'M+15'}">
+																				<span>매월 15일</span>
+																			</c:if>
+																			<c:if test="${VACT_MAP.agencySettleType == 'W+3'}">
+																				<span>매주 수요일</span>
+																			</c:if>
 																		</div>
 																	</div>
 																</div>
-																<c:if test="${VACT_MAP.feeType == '0'}">
+																<c:if test="${VACT_MAP.feeType == '2'}">
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">지사수수료</label>
+																			<label class="control-label col-md-3"></label>
 																			<div class="col-md-9">
-																				<p class="form-control-static digits">${VACT_MAP.salesFee}원</p>
+																				<p class="form-control-static"></p>
 																			</div>
 																		</div>
 																	</div>
 																</c:if>
-																<c:if test="${VACT_MAP.feeType == '1'}">
+																<c:if test="${VACT_MAP.feeType == '0' || VACT_MAP.feeType == '2'}">
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">지사수수료률</label>
+																			<label class="control-label col-md-3">에이전시 수수료</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static salesRate"><fmt:formatNumber value="${VACT_MAP.salesRate * 100}" pattern="0.000"/> %</p>
+																				<p class="form-control-static digits">${VACT_MAP.agencyFee}</p> 원
+																			</div>
+																		</div>
+																	</div>
+																</c:if>
+																<c:if test="${VACT_MAP.feeType == '1' || VACT_MAP.feeType == '2'}">
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">에이전시 수수료율</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static agencyRate"><fmt:formatNumber value="${VACT_MAP.agencyRate * 100}" pattern="0.000"/> % (VAT별도)</p>
+																			</div>
+																		</div>
+																	</div>
+																</c:if>
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3">지사 정산유형명</label>
+																		<div class="col-md-9">
+																			<c:if test="${VACTSALESMAP ne null }">
+																				<p class="form-control-static">${VACTSALESMAP.settleName} (${VACTSALESMAP.payStatus})</p>
+																			</c:if>	
+																			<c:if test="${VACT_MAP.salesSettleType == 'M+25'}">
+																				<span>매월 25일</span>
+																			</c:if>
+																			<c:if test="${VACT_MAP.salesSettleType == 'M+15'}">
+																				<span>매월 15일</span>
+																			</c:if>
+																			<c:if test="${VACT_MAP.salesSettleType == 'W+3'}">
+																				<span>매주 수요일</span>
+																			</c:if>
+																		</div>
+																	</div>
+																</div>
+																<c:if test="${VACT_MAP.feeType == '2'}">
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3"></label>
+																			<div class="col-md-9">
+																				<p class="form-control-static"></p>
+																			</div>
+																		</div>
+																	</div>
+																</c:if>
+																<c:if test="${VACT_MAP.feeType == '0' || VACT_MAP.feeType == '2'}">
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">지사 수수료</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${VACT_MAP.salesFee}</p> 원
+																			</div>
+																		</div>
+																	</div>
+																</c:if>
+																<c:if test="${VACT_MAP.feeType == '1' || VACT_MAP.feeType == '2'}">
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">지사 수수료율</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static salesRate"><fmt:formatNumber value="${VACT_MAP.salesRate * 100}" pattern="0.000"/> % (VAT별도)</p>
 																			</div>
 																		</div>
 																	</div>
@@ -1973,13 +2248,21 @@
 																			</div>
 																		</div>
 																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3"></label>
+																			<div class="col-md-9">
+																				<p class="form-control-static"></p>
+																			</div>
+																		</div>
+																	</div>
 																</c:if>
 																<div class="row">
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">1회한도</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static digits">${VACT_MAP.limitOnce}</p>
+																				<p class="form-control-static digits">${VACT_MAP.limitOnce}</p> 원
 																			</div>
 																		</div>
 																	</div>
@@ -1988,32 +2271,184 @@
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">1일한도</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static digits">${VACT_MAP.limitDay}</p>
+																				<p class="form-control-static digits">${VACT_MAP.limitDay}</p> 원
 																			</div>
 																		</div>
 																	</div>
 																	<!--/span-->
 																</div>
+																<div class="row">
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">가상계좌별<br>1일입금 제한횟수</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${VACT_MAP.limitDayCnt}</p>
+																			</div>
+																		</div>
+																	</div>
+																</div>
 																<c:if test="${CP_SESSION.grade eq '본사'}">
+																	<c:if test="${VACT_MAP.settleType eq 'D+0' || VACT_MAP.settleType eq 'A+0' || VACT_MAP.settleType eq 'A+1' || VACT_MAP.settleType eq 'A+2'}">
+																		<div class="form-group col-sm-12 form-subtitle">
+																			<label><i class="fa fa-reorder"></i> 실시간 정산 정보</label>
+																		</div>
+																		<div class="row">
+																			<div class="col-md-6">
+																				<div class="form-group pg-view-group">
+																					<label class="control-label col-md-3">실시간 정산<br>출금 수수료 납부자</label>
+																					<div class="col-md-9">
+																						<p class="form-control-static">${VACT_MAP.payOutType}</p>
+																					</div>
+																				</div>
+																			</div>
+																			<div class="col-md-6">
+																				<div class="form-group pg-view-group">
+																					<label class="control-label col-md-3">실시간 정산<br>출금 수수료</label>
+																					<div class="col-md-9">
+																						<p class="form-control-static digits">${VACT_MAP.payOutFee}</p> 원
+																					</div>
+																				</div>
+																			</div>
+																			<div class="col-md-6">
+																				<div class="form-group pg-view-group">
+																					<label class="control-label col-md-3">실시간 정산<br>전산 전송 간격</label>
+																					<div class="col-md-9">
+																						<p class="form-control-static digits">${VACT_MAP.transferInterval}</p>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="row">
+																			<div class="col-md-6">
+																				<div class="form-group pg-view-group">
+																					<label class="control-label col-md-3">실시간 정산 출금<br>수수료 분배</label>
+																					<div class="col-md-9">
+																						<p class="form-control-static">${VACT_MAP.payInStatus}</p>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="row">
+																			<div class="col-md-6">
+																				<div class="form-group pg-view-group">
+																					<label class="control-label col-md-3">대행사 지급</label>
+																					<div class="col-md-9">
+																						<p class="form-control-static digits">${VACT_MAP.distPayInFee}</p> 원
+																					</div>
+																				</div>
+																			</div>
+																			<div class="col-md-6">
+																				<div class="form-group pg-view-group">
+																					<label class="control-label col-md-3">에이전시 지급</label>
+																					<div class="col-md-9">
+																						<p class="form-control-static digits">${VACT_MAP.agencyPayInFee}</p> 원
+																					</div>
+																				</div>
+																			</div>
+																			<div class="col-md-6">
+																				<div class="form-group pg-view-group">
+																					<label class="control-label col-md-3">지사 지급</label>
+																					<div class="col-md-9">
+																						<p class="form-control-static digits">${VACT_MAP.salesPayInFee}</p> 원
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</c:if>
+																	<div class="form-group col-sm-12 form-subtitle">
+																		<label><i class="fa fa-reorder"></i>가상계좌 인증 서비스 정보</label>
+																	</div>
 																	<div class="row">
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
-																				<label class="control-label col-md-3">실시간정산<br>출금수수료</label>
+																				<label class="control-label col-md-3">인증유형</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static digits">${VACT_MAP.payOutFee}</p>
+																					<p id="authType" name="authType" class="form-control-static">
+																						<c:if test="${VACT_MAP.authType == '0'}">미사용</c:if>
+																						<c:if test="${VACT_MAP.authType == '1'}">API인증</c:if>
+																					</p>
 																				</div>
 																			</div>
 																		</div>
-																		<!--/span-->
+																	</div>
+																	
+																	<div class="row">
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
-																				<label class="control-label col-md-3">실시간정산<br>전송간격</label>
+																				<label class="control-label col-md-3">실명인증<br>원가수수료</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static digits">${VACT_MAP.transferInterval}</p>
+																					<c:forEach var="entry" items="${ORGFEEMAP}" varStatus="status">
+																						<c:if test="${entry['codeName'] == 'OWNER'}">
+																							<p class="form-control-static digits">${entry['code']}</p> 원
+																						</c:if>
+																					</c:forEach>
 																				</div>
 																			</div>
 																		</div>
-																		<!--/span-->
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">실명인증<br>수수료</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${VACT_MAP.ownerAuthFee}</p> 원
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	
+																	<div class="row">
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">1원인증<br>원가수수료</label>
+																				<div class="col-md-9">
+																					<c:forEach var="entry" items="${ORGFEEMAP}" varStatus="status">
+																						<c:if test="${entry['codeName'] == 'ACCOUNT'}">
+																							<p class="form-control-static digits">${entry['code']}</p> 원
+																						</c:if>
+																					</c:forEach>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">1원인증<br>수수료</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${VACT_MAP.accountAuthFee}</p> 원
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	
+																	<div class="row">
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">ARS인증<br>원가수수료</label>
+																				<div class="col-md-9">
+																					<c:forEach var="entry" items="${ORGFEEMAP}" varStatus="status">
+																						<c:if test="${entry['codeName'] == 'ARS'}">
+																							<p class="form-control-static digits">${entry['code']}</p> 원
+																						</c:if>
+																					</c:forEach>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">ARS인증<br>수수료</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${VACT_MAP.arsAuthFee}</p> 원
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="row">
+																		<div class="col-md-6">
+																			<div id="respiteCntDiv" class="form-group pg-view-group">
+																				<label class="control-label col-md-3">API인증<br>인증유예횟수</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${VACT_MAP.respiteCnt}</p> 회
+																				</div>
+																			</div>
+																		</div>
 																	</div>
 																</c:if>
 															</div>
@@ -2042,6 +2477,7 @@
 															</c:if>
 														</form>
 													</div>
+													<!-- 가상계좌 정보 끝 시작 -->
 													
 													<div class="tab-pane" id="tab_pisp">
 														<form class="form-horizontal form" role="form">
@@ -2278,14 +2714,14 @@
 																			</div>
 																		</div>
 																		<!--/span-->
-																		<%-- <div class="col-md-6">
+																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">차액정산 VAN</label>
 																				<div class="col-md-9">
 																					<p class="form-control-static">${DATADIFFMAP.vanName}</p>
 																				</div>
 																			</div>
-																		</div> --%>
+																		</div>
 																	</div>
 																	<c:choose>
 																		<c:when test="${empty DATADIFFMAP}">
@@ -2369,15 +2805,6 @@
 																		<!--/span-->
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
-																				<label class="control-label col-md-3">출금수수료(VAT별도)</label>
-																				<div class="col-md-9">
-																					<p class="form-control-static digits">${DATACHARGEMAP.withdrawFee}</p>
-																				</div>
-																			</div>
-																		</div>
-																		<!--/span-->
-																		<div class="col-md-6">
-																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">출금거래전달 주소(URL)</label>
 																				<div class="col-md-9">
 																					<p class="form-control-static digits">${DATACHARGEMAP.hookAddr}</p>
@@ -2393,6 +2820,62 @@
 																					<c:if test="${CP_SESSION.grade eq '본사' && CP_SESSION.role eq '마스터'}">
 																						&nbsp;&nbsp;<button type="button" class="btn btn-sm red" onclick="location.href='/mcht/balance/modify/${DATAMAP.mchtId}';">수기등록</button>
 																					</c:if>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">출금수수료 납부자</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${DATACHARGEMAP.payOutType}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">출금수수료(VAT별도)</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${DATACHARGEMAP.withdrawFee}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">출금수수료 분배</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${DATACHARGEMAP.payInStatus}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3"></label>
+																				<div class="col-md-9">
+																					<p class="form-control-static"></p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">대행사 지급</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${DATACHARGEMAP.distPayInFee}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">에이전시 지급</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${DATACHARGEMAP.agencyPayInFee}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">지사 지급</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${DATACHARGEMAP.salesPayInFee}</p>
 																				</div>
 																			</div>
 																		</div>
@@ -2440,6 +2923,20 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.nav-tabs').find('li.${TAB} a').tab('show');
+
+			if(${VACT_MAP.authType == '0'}){
+				$('#respiteCntDiv').hide();
+				$('#stateInitCntDiv').hide();
+				$('#authBankCdDiv').hide();
+			}else if(${VACT_MAP.authType == '1'}){
+				$('#respiteCntDiv').show();
+				$('#stateInitCntDiv').hide();
+				$('#authBankCdDiv').hide();
+			}else if(${VACT_MAP.authType == '2'}){
+				$('#respiteCntDiv').hide();
+				$('#stateInitCntDiv').show();
+				$('#authBankCdDiv').show();
+			}
 		});
 				
 		$('.nav-tabs a[href="#tab_map"]').click(function(){
@@ -2539,6 +3036,40 @@
 	    				}
 	    				
 	    				bootbox.alert(str + "'정산정보'를 입력하세요.");
+	    				return false;
+	    			}
+	    		},
+	    		error: function(xhr, textStatus, errorThrown){
+	    			bootbox.alert('Error ' + errorThrown);
+	    		}
+	        });
+		}
+		
+		function linkToVact(mchtId, type)  {
+			
+			var str = "";
+			
+			$.ajax({
+	            type: "POST",
+	            url: "/mcht/vact/check/" + mchtId,
+	            data: "mchtId=" + mchtId,
+	            success: function(res){
+	    			if(res.distRes == "OK" && res.agencyRes == "OK"){
+	    				if(type == 'add') {
+	    					location.href='/mcht/vact/add/' + mchtId;
+	    				} else {
+	    					location.href='/mcht/vact/modify/' + mchtId;
+	    				}
+	    			} else {
+	    				if(res.distRes == "NOK" && res.agencyRes == "NOK") {
+	    					str = res.agencyMsg + "와 " + res.distMsg;
+	    				} else if (res.distRes == "NOK") {
+	    					str = res.distMsg; 
+	    				} else {
+	    					str = res.agencyMsg;
+	    				}
+	    				
+	    				bootbox.alert(str + "'가상계좌 정산정보'를 입력하세요.");
 	    				return false;
 	    			}
 	    		},
