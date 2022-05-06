@@ -93,7 +93,7 @@ public class LoginController {
 		RecordSet rset = userDAO.getById(memberId);
 		
 		//210809_PYS : VW_USER_PW에서 해당 ID가 있는지 조회한다.
-		SharedMap<String, Object> memberMap = rset.getRow(0);
+//		SharedMap<String, Object> memberMap = rset.getRow(0);
 		
 		//KJM : 로그인 시도 아이디 조회 후 포트별, 소속별 로그인 차단
 		//KJM : 부포트 접속 시 접속 ip 확인

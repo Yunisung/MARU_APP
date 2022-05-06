@@ -12,8 +12,8 @@
   },
   "tomcat": {
     "serverName": "MARU_APP",
-    "port": 10001,
-    "host": "10.100.200.10",
+    "port": 8080,
+    "host": "127.0.0.1",
     "minThreads": 20,
     "maxThreads": 150,
     "ssl": {
