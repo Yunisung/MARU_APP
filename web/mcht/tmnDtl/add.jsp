@@ -375,12 +375,7 @@
 			    $(this).val(str);
 			}
 		});
-			
-// 		$('input[name=rctIdentity]').change(function(){
-// 			const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
-// 			var str = $(this).val().replace(regExp,"");
-// 			$(this).val()
-// 		});
+
 		
 	</script>
 	<!-- END FORM JAVASCRIPT -->
