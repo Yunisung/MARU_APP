@@ -64,17 +64,18 @@
 			</ul>
 		</div>
 		</c:if>
+		<%-- 
 		<a class="btn btn-circle btn-icon-only btn-default" href="javascript:searchForExcel();">
 			<i class="fa fa-file-excel-o" aria-hidden="true"></i>
 		</a>
 		<a class="btn btn-circle btn-icon-only btn-default" href="javascript:searchForPDF();">
 			<i class="fa fa-file-pdf-o" aria-hidden="true"></i>
 		</a>
-		<%-- 
+		--%>
 		<a class="btn btn-circle btn-default" id="excel-click" href="" style="display:none;">Excel Download</a>
 		<a class="btn btn-circle btn-icon-only btn-default" id="excel-export" href="javascript:fnExcelReport('sortTable', '가맹점 정산 내역');">
 			<i class="fa fa-file-excel-o" aria-hidden="true"></i>
-		</a>--%>
+		</a>
 		<a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
 	</div>
 </div>

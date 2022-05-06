@@ -9,8 +9,9 @@
 <!-- BEGIN HEAD -->
 <head>
     <meta charset="utf-8"/>
-    <title>Mtouch</title>
-    <link rel="shortcut icon" href="/favicon.ico" />
+    <title>CREDITOP</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/assets/global/css/login.css?V=1.0">
     <link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 	<link href="/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
@@ -151,7 +152,7 @@
                 $('input[name="memberPw"]').css('display', '');
                 $.ajax({
                     url: '/login/send/' + $('.login-form').find('input[name="memberId"]').val()+'/'+res[2],
-                    type: 'PUT',
+                    type: 'POST',
                     success: function(res) {
                         if( res != 'OK') {
                             bootbox.alert('인증번호 발송에 실패했습니다.<br>관리자에게 문의해주세요.');

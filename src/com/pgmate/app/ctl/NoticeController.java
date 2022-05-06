@@ -36,6 +36,7 @@ import com.pgmate.app.util.InfoBankSMS;
 import com.pgmate.app.util.SessionUtil;
 import com.pgmate.app.util.WebCache;
 import com.pgmate.lib.dao.RecordSet;
+import com.pgmate.lib.sms.SmsUtil;
 import com.pgmate.lib.util.lang.CommonUtil;
 import com.pgmate.lib.util.map.SharedMap;
 
@@ -317,10 +318,11 @@ public class NoticeController {
 		wc.setSMSKey(setTel, number);
 
 		InfoBankSMS infoBankSMS = new InfoBankSMS();
-		String msgBody = "[(주)케이원 피에스] " + msg + "";
+		String msgBody = "[(주)부국위너스] " + msg + "";
 
 		try {
-			infoBankSMS.sendSms(setTel.replaceAll("\\[^0-9]+", ""), msgBody);
+			//infoBankSMS.sendSms(InfoBankSMS.LMS_URL, setTel.replaceAll("\\[^0-9]+", ""), msgBody);
+			SmsUtil.sendSms(SmsUtil.LMS_URL, setTel.replaceAll("\\[^0-9]+", ""), msgBody);
 			logger.debug("NoticeSend SMS SEND");
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

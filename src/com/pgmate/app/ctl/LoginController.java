@@ -36,6 +36,7 @@ import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.gson.GsonUtil;
 import com.pgmate.lib.util.lang.CommonUtil;
 import com.pgmate.lib.util.map.SharedMap;
+import com.pgmate.lib.sms.SmsUtil;
 
 /**
  * @author Administrator
@@ -59,9 +60,9 @@ public class LoginController {
 	public @ResponseBody String in(HttpServletRequest request,@RequestParam(value="memberId") String memberId,
 					@RequestParam(value="memberPw") String memberPw, @RequestParam(value="smsKey", required=false) String smsKey){
 	
-		
 		//210809_PYS : DAO생성
 		// KBR :DAO 생성되면서 user
+		logger.info("----- login/in START -----");
 		UserDAO userDAO = new UserDAO();
 		
 		//210809_PYS : IP를 가져온다.
@@ -105,6 +106,7 @@ public class LoginController {
 			//210809_PYS : 터미널아이디는 TMN000000로 되어있는 ID
 			//210809_PYS : VW_MCNT_TMN에서 해당 ID가 있는지 조회한다.
 			//210809_PYS : SELECT * FROM VW_MCHT_TMN WHERE tmnid = 'memberId'
+			logger.info("----- login/in notFind ID -----");
 			// 로그인 아이디가 아닌 터미널로 접속했는지 확인
 			RecordSet rset2 = new MchtTmnDAO().getById(memberId);
 			
@@ -175,6 +177,9 @@ public class LoginController {
 		
 		//210809_PYS : 로그인 ID 'status'가 "사용"이고 비밀번호가 틀렸을때
 		// KBR : 비밀번호 틀린 횟수 카운트하기위한 조건문
+		logger.info("----- login/in find ID -----"); 
+		SharedMap<String, Object> memberMap = rset.getRow(0);
+		
 		if(!memberMap.isEquals("pw", inputPw) && memberMap.isEquals("status", "사용")){
 			int retry = memberMap.getInt("pwRetry")+1;
 			if(retry > 4){
@@ -187,6 +192,8 @@ public class LoginController {
 			
 			return "NOK||등록되지 않은 아이디이거나, 아이디 또는 비밀번호를 잘못 입력하셨습니다.";
 		}
+		
+		
 		
 		if(memberMap.isEquals("pwStatus", "만료")){
 			//210809_PYS : 이렇게 바꾸는게 더 좋아보이는데..
@@ -207,6 +214,40 @@ public class LoginController {
 //		if(!SessionUtil.CheckPort(memberMap.getString("grade"), request.getServerPort())) {
 //			return "NOK||접속 권한이 없습니다.";
 //		}
+		logger.info("----- login/in pw Check End -----"); 
+		
+		if(!smsKey.isEmpty()) {
+			/* 현재 IP를 인증된 IP로 등록 */
+			WebCache wc = new WebCache();
+			String cSMSKey = wc.getSMSKey(memberId);
+			logger.info("----- loing/in IP Check -----"); 
+			if(smsKey.equals(cSMSKey)) {
+				new UserIpDAO().insertIp(memberId, ip, request.getHeader("User-Agent"));
+			} else {
+				return "INVALIDKEY||인증번호가 올바르지 않습니다.||MEMBER";
+			}
+		} else {
+			UserIpDAO userIpDAO = new UserIpDAO();
+			/* 인증된 아이피인지 확인 */
+			rset = userIpDAO.getByActiveIp(memberId);
+			if (rset.size() < 1) {
+				logger.info("----- loing/in IP ADD -----"); 
+				return "UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER";
+			}
+			boolean authorized = false;
+			List<SharedMap<String, Object>> ipList = rset.getRows();
+			for (SharedMap<String, Object> eachMap : ipList) {
+				if (eachMap.getString("ipAddr").equals(ip)) {
+					authorized = true;
+					logger.debug("EXPIREDAY UPDATE : {}", userIpDAO.updateExpireDay(memberId, ip));
+					break;
+				}
+			}
+			
+			if (!authorized) {
+				return "UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER";
+			}
+		}
 		
 		// KBR : 본사의 경우 접속 ip 제한하기
 //		if(ip.length() >= 10) {
@@ -287,6 +328,7 @@ public class LoginController {
 		}
 		
 		//ACCESS 기록 추가 
+		logger.info("----- loing/in ID Access -----"); 
 		userDAO.insertUserAcess(memberMap.getString("id"),ip,request.getHeader("User-Agent"));
 		
 		//Session  생성
@@ -319,18 +361,19 @@ public class LoginController {
 		
 		if(memberType.equals("MEMBER")) {
 			SharedMap<String, Object> userMap = new UserDAO().getById(userId).getRow(0);
-			logger.debug("SEND SMS!");
-	
-			InfoBankSMS infoBankSMS = new InfoBankSMS();
-			String msgBody = "[MARU] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
-			infoBankSMS.sendSms(userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+			//InfoBankSMS infoBankSMS = new InfoBankSMS();
+			String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
+			//infoBankSMS.sendSms(InfoBankSMS.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+			SmsUtil smsUtil = new SmsUtil();
+			smsUtil.sendSms(smsUtil.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
 		}else {
 			SharedMap<String, Object> userMap = new MchtTmnDAO().getById(userId).getRow(0);
-			logger.debug("SEND SMS!");
-	
-			InfoBankSMS infoBankSMS = new InfoBankSMS();
-			String msgBody = "[MARU] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
-			infoBankSMS.sendSms(userMap.getString("ceoPhone").replaceAll("\\[^0-9]+", ""), msgBody);
+
+			//InfoBankSMS infoBankSMS = new InfoBankSMS();
+			String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
+			//infoBankSMS.sendSms(InfoBankSMS.SMS_URL, userMap.getString("ceoPhone").replaceAll("\\[^0-9]+", ""), msgBody);
+			SmsUtil smsUtil = new SmsUtil();
+			smsUtil.sendSms(smsUtil.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
 		}
 		
 		return "OK";

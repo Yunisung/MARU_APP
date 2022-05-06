@@ -195,7 +195,11 @@ public class TrxController {
 			}
 		}
 		
-		//KJM : 매입거래번호의 매입정보
+		//PYS : 갤럭시아 영수증 조회용
+		if(res.startsWith("van", "GALAXIA")) {
+			res.put("GalaxiaMID", res.getString("vanId"));
+		}
+		
 		request.setAttribute("DATAMAP", res);
 		//KJM : 취소된 거래번호의 매입내역 정보
 		request.setAttribute("DATAREFMAP", new TrxCapDAO().getByRootTrxId(res.getString("trxId")).getRow(0));

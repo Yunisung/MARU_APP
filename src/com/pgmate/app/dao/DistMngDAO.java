@@ -36,6 +36,11 @@ public class DistMngDAO extends DAO{
 		return search();
 	}
 	
+	public RecordSet getByNum(String index){
+		addWhere("num",index,eq);
+		return search();
+	}
+	
 	public RecordSet search(List<Data> datas){
 		CPUtil.setDAO(this, datas);			//DATA to CONDITION 
 		return super.search();				//단일 검색
@@ -45,5 +50,14 @@ public class DistMngDAO extends DAO{
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
+	}
+	
+	public RecordSet getDistMngByPayType(String distId, String payType){
+		setColumns("num as distNum, settleName as distSettleName, payStatus as distPayStatus");
+		addWhere("lower(distId)",distId.toLowerCase(),eq);
+		addWhere("payStatus","사용");
+		addWhere("payType",payType,eq);
+		setOrderBy("payStatus asc, settleName asc");
+		return search();
 	}
 }

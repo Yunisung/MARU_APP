@@ -353,9 +353,11 @@ function searchAjax(searchData, action, type, callbackFnc) {
 		// data가 컨트롤러에서 CPRequest 객체의 데이터로 들어간다
 		data : searchData, 
 		success : function(json, textStatus) {
+			console.log(json);
 			if (type == 'excel' || type == 'pdf') {
 
 				var jsData = $.parseJSON(json);
+				console.log(jsData);
 				if(jsData.result.code == '601') {
 					bootbox.alert(jsData.result.message);
 				}else {

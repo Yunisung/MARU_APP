@@ -82,16 +82,15 @@ public class SQLInjectionUtil {
 		//orgVal = evilChars.matcher(orgVal).replaceAll("");
 		
 		// 특수 문자 필터링
-		//KJM : 온라인결제시 db에 치환된 값으로 들어감 -> 주석처리
-		//orgVal = orgVal.replaceAll("'", "&#39;");
-		//orgVal = orgVal.replaceAll("\"", "&#34;");
+		//210121 KJM : db 들어가는 json 값 치환 주석처리
+//		orgVal = orgVal.replaceAll("'", "&#39;");
+//		orgVal = orgVal.replaceAll("\"", "&#34;");
 		// orgVal = orgVal.replaceAll("-", "&#45;");
 		// orgVal = orgVal.replaceAll("(", "&#40;");
 		// orgVal = orgVal.replaceAll(")", "&#41;");
 		orgVal = orgVal.replaceAll("<", "&#60;");
-		//pys : = 는 입력되게 변경(암호화이슈)
-		//orgVal = orgVal.replaceAll("=", "&#61;");
-		orgVal = orgVal.replaceAll(">", "&#62;");
+//		orgVal = orgVal.replaceAll("=", "&#61;");
+		orgVal = orgVal.replaceAll(">", "&#62;"); 
 		//orgVal = orgVal.replaceAll("@", "&#64;");
 		
 		//KJM : res 카맬 풀리는 문제로 주석처리

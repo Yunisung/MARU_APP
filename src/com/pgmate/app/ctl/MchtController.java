@@ -55,7 +55,7 @@ import com.pgmate.app.dao.MemberSalesMngDAO;
 import com.pgmate.app.dao.OrgFeeDAO;
 import com.pgmate.app.dao.OrgInterFeeDAO;
 import com.pgmate.app.dao.PhoneDAO;
-import com.pgmate.app.dao.SimpleDAO;
+//import com.pgmate.app.dao.SimpleDAO;
 import com.pgmate.app.dao.TotCapDAO;
 import com.pgmate.app.dao.TrxCapDAO;
 import com.pgmate.app.dao.UserDAO;
@@ -296,12 +296,12 @@ public class MchtController {
 		request.setAttribute("DATABALMAP", new MchtChargeSettleDAO().getBalance(mchtId));
 		
 		//가맹점 간편 결제 설정 
-		request.setAttribute("DATASIMPLEMAP", new SimpleDAO().getByMchtId(mchtId));
-		if(request.getAttribute("DATASIMPLEMAP") != null){
-			request.setAttribute("SIMPLE_DISTMAP", new DistMngDAO().getByNum(new SimpleDAO().getByMchtId(mchtId).getString("distNum")).getRowFirst());
-			request.setAttribute("SIMPLE_AGENCYMAP", new AgencyMngDAO().getByNum(new SimpleDAO().getByMchtId(mchtId).getString("agencyNum")).getRowFirst());
-			request.setAttribute("SIMPLE_SALESMAP", new MemberSalesMngDAO().getByNum(new SimpleDAO().getByMchtId(mchtId).getString("salesNum")).getRowFirst());
-		}
+//		request.setAttribute("DATASIMPLEMAP", new SimpleDAO().getByMchtId(mchtId));
+//		if(request.getAttribute("DATASIMPLEMAP") != null){
+//			request.setAttribute("SIMPLE_DISTMAP", new DistMngDAO().getByNum(new SimpleDAO().getByMchtId(mchtId).getString("distNum")).getRowFirst());
+//			request.setAttribute("SIMPLE_AGENCYMAP", new AgencyMngDAO().getByNum(new SimpleDAO().getByMchtId(mchtId).getString("agencyNum")).getRowFirst());
+//			request.setAttribute("SIMPLE_SALESMAP", new MemberSalesMngDAO().getByNum(new SimpleDAO().getByMchtId(mchtId).getString("salesNum")).getRowFirst());
+//		}
 		
 	//	long startTime2 = System.currentTimeMillis();
 	//	logger.info("SECOND TIME : {}", (startTime2 - startTime1));

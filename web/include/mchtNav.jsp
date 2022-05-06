@@ -7,10 +7,12 @@
                 <span class="title">Dashboard</span></a>
 </li>
 <c:if test="${CP_SESSION.webPay != ''}">
-<li class="nav-item start" id="nav-board">
-    <a href="/wtmn/form.jsp" class="nav-link nav-toggle"><i class="icon-home"></i>
-                <span class="title">웹결제</span></a>
-</li>
+
+<!-- KBR : 다중터미널 시 결제 혼동있을 수 있어 웹결제 창 닫음 -->
+<!-- <li class="nav-item start" id="nav-board"> -->
+<!--     <a href="/wtmn/form.jsp" class="nav-link nav-toggle"><i class="icon-home"></i> -->
+<!--                 <span class="title">웹결제</span></a> -->
+<!-- </li> -->
 </c:if>
 <!-- 거래 관리 시작 -->
 <li class="nav-item start " id="nav-trx">

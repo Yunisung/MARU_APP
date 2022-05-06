@@ -115,7 +115,7 @@ public class EformUtil {
     		//운영
             //String propFile = "/home/MARU/MARU_APP/conf/eform.properties"; 
     		//테스트
-    		String propFile = "/home/MARU/MARU_APP/conf/eform.properties";
+    		String propFile = "/home/bkwinners/MARU/MARU_APP/conf/eform.properties";
     		//로컬
     		//String propFile = "C:/01/MARU_APP/conf/eform.properties";
     		 
