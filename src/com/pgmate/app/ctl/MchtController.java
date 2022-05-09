@@ -258,9 +258,9 @@ public class MchtController {
 		request.setAttribute("DATALOANMAP", loanDAO.getById(mchtId).getRowFirst());
 		loanDAO.initRecord();
 		
-		request.setAttribute("DATADISTMAP", new DistMngDAO().getByNum(mchtMngDAO.getById(mchtId).getRowFirst().getString("distNum")).getRowFirst());
-		request.setAttribute("DATAAGENCYMAP", new AgencyMngDAO().getByNum(mchtMngDAO.getById(mchtId).getRowFirst().getString("agencyNum")).getRowFirst());
-		request.setAttribute("DATASALESMAP", new MemberSalesMngDAO().getByNum(mchtMngDAO.getById(mchtId).getRowFirst().getString("salesNum")).getRowFirst());
+		request.setAttribute("DATADISTMAP", new DistMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("distId")).getRowFirst());
+		request.setAttribute("DATAAGENCYMAP", new AgencyMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("agencyId")).getRowFirst());
+		request.setAttribute("DATASALESMAP", new MemberSalesMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("salesId")).getRowFirst());
 		
 		//long startTime1 = System.currentTimeMillis();
 		//logger.info("FIRST TIME : {}", (startTime1 - startTime));

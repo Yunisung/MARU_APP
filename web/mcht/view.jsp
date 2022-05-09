@@ -465,7 +465,7 @@
 																					<label class="control-label col-md-3">대출정산 사용여부</label>
 																					<div class="col-md-9">
 																						<p class="form-control-static">${DATAMNGMAP.loanSettleStatus}</p>
-																						(아이디 : ${DATALOANMAP.loanId})
+																						<c:if test="${DATAMNGMAP.loanSettleStatus ne '미사용'}">(아이디 : ${DATALOANMAP.loanId})</c:if>
 																					</div>
 																				</div>
 																			</div>
