@@ -730,7 +730,7 @@
 																					<div class="form-group pg-view-group">
 																						<label class="control-label col-md-3">실시간 정산<br>출금 수수료 납부자</label>
 																						<div class="col-md-9">
-																							<p class="form-control-static">${DATAMNGMAP.payOutType}</p>
+																							<p class="form-control-static">${VACT_MAP.payOutType}</p>
 																						</div>
 																					</div>
 																				</div>
@@ -738,7 +738,7 @@
 																					<div class="form-group pg-view-group">
 																						<label class="control-label col-md-3">실시간 정산<br>출금 수수료</label>
 																						<div class="col-md-9">
-																							<p class="form-control-static digits">${DATAMNGMAP.payOutFee}</p> 원
+																							<p class="form-control-static digits">${VACT_MAP.payOutFee}</p> 원
 																						</div>
 																					</div>
 																				</div>
@@ -746,7 +746,7 @@
 																					<div class="form-group pg-view-group">
 																						<label class="control-label col-md-3">실시간 정산<br>전산 전송 간격</label>
 																						<div class="col-md-9">
-																							<p class="form-control-static digits">${DATAMNGMAP.transferInterval}</p>
+																							<p class="form-control-static digits">${VACT_MAP.transferInterval}</p>
 																						</div>
 																					</div>
 																				</div>
@@ -756,7 +756,7 @@
 																					<div class="form-group pg-view-group">
 																						<label class="control-label col-md-3">실시간 정산 출금<br>수수료 분배</label>
 																						<div class="col-md-9">
-																							<p class="form-control-static">${DATAMNGMAP.payInStatus}</p>
+																							<p class="form-control-static">${VACT_MAP.payInStatus}</p>
 																						</div>
 																					</div>
 																				</div>
