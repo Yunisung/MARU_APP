@@ -47,12 +47,20 @@ public class MemberSalesMngDAO extends DAO{
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
 	
+//	public RecordSet getSalesMngByPayType(String salesId, String payType){
+//		setColumns("num as salesNum, settleName as salesSettleName, payStatus as salesPayStatus");
+//		addWhere("lower(salesId)",salesId.toLowerCase(),eq);
+//		addWhere("payStatus","사용");
+//		addWhere("payType", payType, eq);
+//		setOrderBy("payStatus asc, settleName asc");
+//		return search();
+//	}
 	public RecordSet getSalesMngByPayType(String salesId, String payType){
-		setColumns("num as salesNum, settleName as salesSettleName, payStatus as salesPayStatus");
+		setColumns("salesId as salesNum, settleType as salesSettleName, payStatus as salesPayStatus");
 		addWhere("lower(salesId)",salesId.toLowerCase(),eq);
 		addWhere("payStatus","사용");
 		addWhere("payType", payType, eq);
-		setOrderBy("payStatus asc, settleName asc");
+		setOrderBy("payStatus asc, settleType asc");
 		return search();
 	}
 }
