@@ -176,7 +176,7 @@
 													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">사업자번호</label>
 														<div class="col-sm-6">
-															<input type="text" class="form-control input-sm rctIdentity" maxlength="10" name="rctIdentity" placeholder="" value="">
+															<input type="text" class="form-control input-sm rctIdentity" maxlength="20" name="rctIdentity" placeholder="" value="">
 														</div>
 													</div>
 													<div class="form-group col-sm-6">
@@ -365,6 +365,18 @@
 		});
 		
 		$('#nav-mcht').addClass('active');
+		
+		
+		$('input[name=rctIdentity]').on("propertychange change paste input", function() {
+			const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+		    if(regExp.test($(this).val())){
+				alert('특수문자 입력이 불가능합니다.');
+			    var str = $(this).val().replace(regExp,"").trim();
+			    $(this).val(str);
+			}
+		});
+
+		
 	</script>
 	<!-- END FORM JAVASCRIPT -->
 	<!-- 모달 생성을 위한 베이스 -->
