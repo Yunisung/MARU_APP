@@ -63,12 +63,20 @@ public class AgencyMngDAO extends DAO{
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
 	
+//	public RecordSet getAgencyMngByPayType(String agencyId, String payType){
+//		setColumns("num as agencyNum, settleName as agencySettleName, payStatus as agencyPayStatus");
+//		addWhere("lower(agencyId)",agencyId.toLowerCase(),eq);
+//		addWhere("payStatus","사용");
+//		addWhere("payType", payType, eq);
+//		setOrderBy("payStatus asc, settleName asc");
+//		return search();
+//	}
 	public RecordSet getAgencyMngByPayType(String agencyId, String payType){
-		setColumns("num as agencyNum, settleName as agencySettleName, payStatus as agencyPayStatus");
+		setColumns("agencyId as agencyNum, settleType as agencySettleName, payStatus as agencyPayStatus");
 		addWhere("lower(agencyId)",agencyId.toLowerCase(),eq);
 		addWhere("payStatus","사용");
 		addWhere("payType", payType, eq);
-		setOrderBy("payStatus asc, settleName asc");
+		setOrderBy("payStatus asc, settleType asc");
 		return search();
 	}
 }
