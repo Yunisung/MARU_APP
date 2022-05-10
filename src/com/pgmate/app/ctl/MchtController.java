@@ -272,9 +272,9 @@ public class MchtController {
 		if (svcMap.getString("virAccount").equals("사용")) {
 			request.setAttribute("VACT_MAP", new MchtVactDAO().getByMchtId(mchtId));
 			if(request.getAttribute("VACT_MAP") != null){
-				request.setAttribute("VACTDISTMAP", new DistMngDAO().getByNum(new MchtVactDAO().getByMchtId(mchtId).getString("distNum")).getRowFirst());
-				request.setAttribute("VACTAGENCYMAP", new AgencyMngDAO().getByNum(new MchtVactDAO().getByMchtId(mchtId).getString("agencyNum")).getRowFirst());
-				request.setAttribute("VACTSALESMAP", new MemberSalesMngDAO().getByNum(new MchtVactDAO().getByMchtId(mchtId).getString("salesNum")).getRowFirst());
+				request.setAttribute("VACTDISTMAP", new DistMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("distId")).getRowFirst());
+				request.setAttribute("VACTAGENCYMAP", new AgencyMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("agencyId")).getRowFirst());
+				request.setAttribute("VACTSALESMAP", new MemberSalesMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("salesId")).getRowFirst());
 				request.setAttribute("ORGFEEMAP", new CodeDAO().getOrgFee("ORGFEE").getRows());
 			}
 		}
