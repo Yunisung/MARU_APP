@@ -216,38 +216,38 @@ public class LoginController {
 //		}
 		logger.info("----- login/in pw Check End -----"); 
 		
-		if(!smsKey.isEmpty()) {
-			/* 현재 IP를 인증된 IP로 등록 */
-			WebCache wc = new WebCache();
-			String cSMSKey = wc.getSMSKey(memberId);
-			logger.info("----- loing/in IP Check -----"); 
-			if(smsKey.equals(cSMSKey)) {
-				new UserIpDAO().insertIp(memberId, ip, request.getHeader("User-Agent"));
-			} else {
-				return "INVALIDKEY||인증번호가 올바르지 않습니다.||MEMBER";
-			}
-		} else {
-			UserIpDAO userIpDAO = new UserIpDAO();
-			/* 인증된 아이피인지 확인 */
-			rset = userIpDAO.getByActiveIp(memberId);
-			if (rset.size() < 1) {
-				logger.info("----- loing/in IP ADD -----"); 
-				return "UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER";
-			}
-			boolean authorized = false;
-			List<SharedMap<String, Object>> ipList = rset.getRows();
-			for (SharedMap<String, Object> eachMap : ipList) {
-				if (eachMap.getString("ipAddr").equals(ip)) {
-					authorized = true;
-					logger.debug("EXPIREDAY UPDATE : {}", userIpDAO.updateExpireDay(memberId, ip));
-					break;
-				}
-			}
-			
-			if (!authorized) {
-				return "UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER";
-			}
-		}
+//		if(!smsKey.isEmpty()) {
+//			/* 현재 IP를 인증된 IP로 등록 */
+//			WebCache wc = new WebCache();
+//			String cSMSKey = wc.getSMSKey(memberId);
+//			logger.info("----- loing/in IP Check -----"); 
+//			if(smsKey.equals(cSMSKey)) {
+//				new UserIpDAO().insertIp(memberId, ip, request.getHeader("User-Agent"));
+//			} else {
+//				return "INVALIDKEY||인증번호가 올바르지 않습니다.||MEMBER";
+//			}
+//		} else {
+//			UserIpDAO userIpDAO = new UserIpDAO();
+//			/* 인증된 아이피인지 확인 */
+//			rset = userIpDAO.getByActiveIp(memberId);
+//			if (rset.size() < 1) {
+//				logger.info("----- loing/in IP ADD -----"); 
+//				return "UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER";
+//			}
+//			boolean authorized = false;
+//			List<SharedMap<String, Object>> ipList = rset.getRows();
+//			for (SharedMap<String, Object> eachMap : ipList) {
+//				if (eachMap.getString("ipAddr").equals(ip)) {
+//					authorized = true;
+//					logger.debug("EXPIREDAY UPDATE : {}", userIpDAO.updateExpireDay(memberId, ip));
+//					break;
+//				}
+//			}
+//			
+//			if (!authorized) {
+//				return "UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER";
+//			}
+//		}
 		
 		// KBR : 본사의 경우 접속 ip 제한하기
 //		if(ip.length() >= 10) {
@@ -355,26 +355,26 @@ public class LoginController {
 	@SessionExclude
 	public @ResponseBody String sendSMS(HttpServletRequest request, @PathVariable String userId, @PathVariable String memberType) throws IOException {
 		
-		WebCache wc = new WebCache();
-		String number = String.format("%1$" + 6 + "s", ((int) (Math.random() * 999999) + 1)).replace(' ', '0');
-		wc.setSMSKey(userId, number);
-		
-		if(memberType.equals("MEMBER")) {
-			SharedMap<String, Object> userMap = new UserDAO().getById(userId).getRow(0);
-			//InfoBankSMS infoBankSMS = new InfoBankSMS();
-			String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
-			//infoBankSMS.sendSms(InfoBankSMS.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
-			SmsUtil smsUtil = new SmsUtil();
-			smsUtil.sendSms(smsUtil.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
-		}else {
-			SharedMap<String, Object> userMap = new MchtTmnDAO().getById(userId).getRow(0);
-
-			//InfoBankSMS infoBankSMS = new InfoBankSMS();
-			String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
-			//infoBankSMS.sendSms(InfoBankSMS.SMS_URL, userMap.getString("ceoPhone").replaceAll("\\[^0-9]+", ""), msgBody);
-			SmsUtil smsUtil = new SmsUtil();
-			smsUtil.sendSms(smsUtil.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
-		}
+//		WebCache wc = new WebCache();
+//		String number = String.format("%1$" + 6 + "s", ((int) (Math.random() * 999999) + 1)).replace(' ', '0');
+//		wc.setSMSKey(userId, number);
+//		
+//		if(memberType.equals("MEMBER")) {
+//			SharedMap<String, Object> userMap = new UserDAO().getById(userId).getRow(0);
+//			//InfoBankSMS infoBankSMS = new InfoBankSMS();
+//			String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
+//			//infoBankSMS.sendSms(InfoBankSMS.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+//			SmsUtil smsUtil = new SmsUtil();
+//			smsUtil.sendSms(smsUtil.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+//		}else {
+//			SharedMap<String, Object> userMap = new MchtTmnDAO().getById(userId).getRow(0);
+//
+//			//InfoBankSMS infoBankSMS = new InfoBankSMS();
+//			String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
+//			//infoBankSMS.sendSms(InfoBankSMS.SMS_URL, userMap.getString("ceoPhone").replaceAll("\\[^0-9]+", ""), msgBody);
+//			SmsUtil smsUtil = new SmsUtil();
+//			smsUtil.sendSms(smsUtil.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+//		}
 		
 		return "OK";
 	}
