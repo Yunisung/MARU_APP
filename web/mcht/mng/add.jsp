@@ -168,7 +168,7 @@
 													</c:if>
 													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">가맹점 수수료</label>
-														<div class="col-sm-6">
+														<div class="col-sm-8">
 															<div class="input-group input-group-sm">
 																<input type="text" class="form-control rate2" data-reg="false" maxlength="9" name="rate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
 																<input type="hidden" class="form-control rate" maxlength="9" name="rate" value="0.00000"> 
@@ -188,10 +188,7 @@
 														</div>
 													</div>
 													</c:if>
-													<c:if test="${CP_SESSION.grade != '본사'}">
-														<input type="text" class="form-control loanRate2" data-reg="false" maxlength="9" name="loanRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-														<input type="hidden" class="form-control input-sm loanRate" maxlength="9" name="loanRate" value="0.00000">
-													</c:if>
+													
 													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">이체 건당 수수료<br>(즉시결제시만 사용)
 														</label>
