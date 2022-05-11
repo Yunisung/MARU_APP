@@ -168,7 +168,7 @@
 													</c:if>
 													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">가맹점 수수료</label>
-														<div class="col-sm-6">
+														<div class="col-sm-8">
 															<div class="input-group input-group-sm">
 																<input type="text" class="form-control rate2" data-reg="false" maxlength="9" name="rate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
 																<input type="hidden" class="form-control rate" maxlength="9" name="rate" value="0.00000"> 
