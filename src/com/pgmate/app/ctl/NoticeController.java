@@ -338,15 +338,17 @@ public class NoticeController {
 	 */
 	public boolean sendEmail(String msg, String setEmail) throws AddressException, MessagingException {
 		logger.info("---NoticeSend Email START---");
-
-		String host = "outbound.daouoffice.com";
+		
+//		String host = "outbound.daouoffice.com";
+		String host = "smtp.gmail.com";
 		String port = "465";
+//		String port = "587";
 
-		String fromId = "MARUps@mtouch.com"; // 발신자
-		String fromPw = "mtouch1855!"; // 발신자 비밀번호
-		String fromName = "[(주)케이원 피에스]"; // 발신자 정보
+		String fromId = "kjm7943@bkwinners.com"; // 발신자
+		String fromPw = "wjdal9701"; // 발신자 비밀번호
+		String fromName = "[(주)부국위너스]"; // 발신자 정보
 		String to = setEmail; // 수신자
-		String subject = "[(주)케이원 피에스]공지사항 안내"; // 이메일 제목
+		String subject = "[(주)부국위너스]공지사항 안내"; // 이메일 제목
 
 		try {
 			Properties props = System.getProperties();
@@ -355,20 +357,30 @@ public class NoticeController {
 			props.put("mail.transport.protocol", "smtp");
 			props.put("mail.smtp.host", host);
 			props.put("mail.smtp.port", port);
+			props.put("mail.smtp.socketFactory.port", "465");
+	        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 			props.put("mail.smtp.auth", "true");
 
+			props.put("mail.smtp.starttls.enable", "true");
 			props.put("mail.smtp.ssl.enable", "true");
 			props.put("mail.smtp.ssl.trust", host);
 
 			// 발신자 메일 서버 인증
-			Authenticator auth = new Authenticator() {
-				public PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(fromId, fromPw);
-				}
-			};
+			Session session = Session.getInstance(props,
+	                new javax.mail.Authenticator() {
+	                    protected PasswordAuthentication getPasswordAuthentication() {
+	                        return new PasswordAuthentication(fromId, fromPw);
+	                    }
+	                });
+			
+//			Authenticator auth = new Authenticator() {
+//				public PasswordAuthentication getPasswordAuthentication() {
+//					return new PasswordAuthentication(fromId, fromPw);
+//				}
+//			};
 
 			// 메일 세션 생성
-			Session session = Session.getInstance(props, auth);
+			//Session session = Session.getInstance(props, auth);
 			session.setDebug(true);
 
 			// 메일 송/수신 옵션 설정
