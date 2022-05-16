@@ -799,6 +799,7 @@ public class SettleController {
 	/*
 	 * 가맹점 지급정산 - 리스크 여부와 상관없이 정상 가맹점 지급
 	 */
+	/*
 	@RequestMapping(value = "/settle/mcht/make/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView makeSettleList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		SessionUtil.setSearchGrade(request, cpRequest);
@@ -817,7 +818,7 @@ public class SettleController {
 		query.append(" SUM(IF(T6.capType ='매입',T6.amount,0)) as payAmt, SUM(IF(T6.capType ='매입',T6.stlFee,0)) as payFee, SUM(IF(T6.capType ='매입',T6.stlFeeVat,0)) as payVat, SUM(IF(T6.capType ='매입',1,0)) as payCnt, ");
 		query.append(" SUM(IF(T6.capType ='매입취소',T6.amount,0)) as rfdAmt, SUM(IF(T6.capType ='매입취소',T6.stlFee,0)) as rfdFee, SUM(IF(T6.capType ='매입취소',T6.stlFeeVat,0)) as rfdVat, SUM(IF(T6.capType ='매입취소',1,0)) rfdCnt, ");
 		query.append(" 0 as holdAmt, 0 AS holdFee, 0 as holdVat, 0 as holdCnt, 0 as loanDeductAmt,");
-
+		
 		query.append(" SUM(T6.stlDistFee) as distFee,");
 		query.append(" SUM(T6.stlAgencyFee) as agencyFee,");
 		query.append(" SUM(T6.stlVanFee) as vanFee,");
@@ -901,9 +902,10 @@ public class SettleController {
 
 		return new CPRUtil(cpRequest).dataList(rset, dao).setView(request, "/settle/make/list", "");
 	}
+	*/
 	
-	/*
-	 * 가맹점 지급정산 - 리스크 보류금액 설정
+	
+//	  가맹점 지급정산 - 리스크 보류금액 설정
 	
 	@RequestMapping(value = "/settle/mcht/make/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView makeSettleList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
@@ -973,7 +975,7 @@ public class SettleController {
 		
 		return new CPRUtil(cpRequest).dataList(rset, dao).setView(request, "/settle/make/list", "");
 	}
- */
+ 
 
 	public int insertMchtSettleTemp(List<SharedMap<String, Object>> mchtSettleTempList, HttpServletRequest request) {
 		int inserted = 0;
