@@ -816,8 +816,10 @@ public class SettleController {
 		query.append(" FROM (SELECT T6.mchtId, T6.name as mchtName, T6.ceoName,'지급대기' as `status` ,max(T6.stlDay) stlDay, min(T6.stlDay) stlStartDay , min(T6.trxDay) startDay ,max(T6.trxDay) endDay, T6.stlType,");
 		query.append(" SUM(IF(T6.capType ='매입',T6.amount,0)) as payAmt, SUM(IF(T6.capType ='매입',T6.stlFee,0)) as payFee, SUM(IF(T6.capType ='매입',T6.stlFeeVat,0)) as payVat, SUM(IF(T6.capType ='매입',1,0)) as payCnt, ");
 		query.append(" SUM(IF(T6.capType ='매입취소',T6.amount,0)) as rfdAmt, SUM(IF(T6.capType ='매입취소',T6.stlFee,0)) as rfdFee, SUM(IF(T6.capType ='매입취소',T6.stlFeeVat,0)) as rfdVat, SUM(IF(T6.capType ='매입취소',1,0)) rfdCnt, ");
-		query.append(" 0 as holdAmt, 0 AS holdFee, 0 as holdVat, 0 as holdCnt, 0 as loanDeductAmt,");
-
+		//22.05.16 리스크 있는 건 설정
+		query.append(" SUM(IF(T6.capType ='매입' and T6.risk !='',T6.amount,0)) as holdAmt, SUM(IF(T6.capType ='매입' and T6.risk !='',T6.stlFee,0)) as holdFee, SUM(IF(T6.capType ='매입' and T6.risk !='',T6.stlFeeVat,0)) as holdVat, SUM(IF(T6.capType ='매입' and T6.risk !='',1,0)) as holdCnt, ");
+//		query.append(" 0 as holdAmt, 0 AS holdFee, 0 as holdVat, 0 as holdCnt, 0 as loanDeductAmt,");
+		
 		query.append(" SUM(T6.stlDistFee) as distFee,");
 		query.append(" SUM(T6.stlAgencyFee) as agencyFee,");
 		query.append(" SUM(T6.stlVanFee) as vanFee,");
