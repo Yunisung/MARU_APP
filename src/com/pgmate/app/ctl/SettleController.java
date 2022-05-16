@@ -799,6 +799,7 @@ public class SettleController {
 	/*
 	 * 가맹점 지급정산 - 리스크 여부와 상관없이 정상 가맹점 지급
 	 */
+	/*
 	@RequestMapping(value = "/settle/mcht/make/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView makeSettleList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		SessionUtil.setSearchGrade(request, cpRequest);
@@ -816,27 +817,17 @@ public class SettleController {
 		query.append(" FROM (SELECT T6.mchtId, T6.name as mchtName, T6.ceoName,'지급대기' as `status` ,max(T6.stlDay) stlDay, min(T6.stlDay) stlStartDay , min(T6.trxDay) startDay ,max(T6.trxDay) endDay, T6.stlType,");
 		query.append(" SUM(IF(T6.capType ='매입',T6.amount,0)) as payAmt, SUM(IF(T6.capType ='매입',T6.stlFee,0)) as payFee, SUM(IF(T6.capType ='매입',T6.stlFeeVat,0)) as payVat, SUM(IF(T6.capType ='매입',1,0)) as payCnt, ");
 		query.append(" SUM(IF(T6.capType ='매입취소',T6.amount,0)) as rfdAmt, SUM(IF(T6.capType ='매입취소',T6.stlFee,0)) as rfdFee, SUM(IF(T6.capType ='매입취소',T6.stlFeeVat,0)) as rfdVat, SUM(IF(T6.capType ='매입취소',1,0)) rfdCnt, ");
-		//22.05.16 리스크 있는 건 설정
-		query.append(" SUM(IF(T6.capType ='매입' and T6.risk !='',T6.amount,0)) as holdAmt, SUM(IF(T6.capType ='매입' and T6.risk !='',T6.stlFee,0)) AS holdFee, SUM(IF(T6.capType ='매입' and T6.risk !='',T6.stlFeeVat,0)) as holdVat, SUM(IF(T6.capType ='매입' and T6.risk !='',1,0)) as holdCnt, ");
-//		query.append(" 0 as holdAmt, 0 AS holdFee, 0 as holdVat, 0 as holdCnt, 0 as loanDeductAmt,");
+		query.append(" 0 as holdAmt, 0 AS holdFee, 0 as holdVat, 0 as holdCnt, 0 as loanDeductAmt,");
 		
-//		query.append(" SUM(T6.stlDistFee) as distFee,");
-//		query.append(" SUM(T6.stlAgencyFee) as agencyFee,");
-//		query.append(" SUM(T6.stlVanFee) as vanFee,");
-//		query.append(" SUM(T6.stlDiffAmt) as diffAmt,");
-//		query.append(" SUM(T6.benefit) as benefit,");
-//		query.append(" MAX(T6.stlRate) as stlRate,");
-//		query.append(" MAX(T6.taxId) as taxId");
-		query.append(" SUM(IF(T6.risk ='',T6.stlDistFee,0)) as distFee,");
-		query.append(" SUM(IF(T6.risk ='',T6.stlAgencyFee,0)) as agencyFee,");
-		query.append(" SUM(IF(T6.risk ='',T6.stlVanFee,0)) as vanFee,");
-		query.append(" SUM(IF(T6.risk ='',T6.stlDiffAmt,0)) as diffAmt,");
-		query.append(" SUM(IF(T6.risk ='',T6.benefit,0)) as benefit,");
+		query.append(" SUM(T6.stlDistFee) as distFee,");
+		query.append(" SUM(T6.stlAgencyFee) as agencyFee,");
+		query.append(" SUM(T6.stlVanFee) as vanFee,");
+		query.append(" SUM(T6.stlDiffAmt) as diffAmt,");
+		query.append(" SUM(T6.benefit) as benefit,");
 		query.append(" MAX(T6.stlRate) as stlRate,");
 		query.append(" MAX(T6.taxId) as taxId");
 //		query.append(" FROM VW_TRX_CAP T6 left join PG_TRX_REALTIME_PAY T7 ON T6.trxId = T7.trxId WHERE T6.stlStatus='정산대기' AND T6.stlDay >='" + cpRequest.getKeyValue("stlStartDay") + "' AND T6.stlDay <='" + cpRequest.getKeyValue("stlEndDay") +"' AND T7.trxId IS null ");
-		query.append(" FROM VW_TRX_CAP T6 WHERE T6.stlStatus='정산대기' AND T6.stlType not like 'A%' AND stlType != 'D+0' AND T6.stlDay >='" + cpRequest.getKeyValue("stlStartDay") + "' AND T6.stlDay <='" + cpRequest.getKeyValue("stlEndDay") +"' ");
-//		query.append(" FROM VW_TRX_CAP T6 WHERE T6.stlStatus='정산대기' AND T6.stlType not like 'A%' AND stlType != 'D+0' AND stlType not like 'B%' AND T6.stlDay >='" + cpRequest.getKeyValue("stlStartDay") + "' AND T6.stlDay <='" + cpRequest.getKeyValue("stlEndDay") +"' ");
+		query.append(" FROM VW_TRX_CAP T6 WHERE T6.stlStatus='정산대기' AND T6.stlType not like 'A%' AND stlType != 'D+0' AND stlType not like 'B%' AND T6.stlDay >='" + cpRequest.getKeyValue("stlStartDay") + "' AND T6.stlDay <='" + cpRequest.getKeyValue("stlEndDay") +"' ");
 		if(!CommonUtil.isNullOrSpace(cpRequest.getKeyValue("stlType"))) {
 			query.append(" AND T6.stlType = '"+ cpRequest.getKeyValue("stlType")+"'");
 		}
@@ -911,9 +902,10 @@ public class SettleController {
 
 		return new CPRUtil(cpRequest).dataList(rset, dao).setView(request, "/settle/make/list", "");
 	}
+	*/
 	
-	/*
-	 * 가맹점 지급정산 - 리스크 보류금액 설정
+	
+//	  가맹점 지급정산 - 리스크 보류금액 설정
 	
 	@RequestMapping(value = "/settle/mcht/make/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView makeSettleList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
@@ -983,7 +975,7 @@ public class SettleController {
 		
 		return new CPRUtil(cpRequest).dataList(rset, dao).setView(request, "/settle/make/list", "");
 	}
- */
+ 
 
 	public int insertMchtSettleTemp(List<SharedMap<String, Object>> mchtSettleTempList, HttpServletRequest request) {
 		int inserted = 0;
