@@ -1328,8 +1328,8 @@ public class SettleController {
 				dao.setTable("VW_TRX_CAP");
 				
 				// 가맹점 지급정산 - 리스크 여부와 상관없이 정상 가맹점 지급
-//				dao.setColumns("'" + stlId + "' stlId, capId,capType,stlStatus,risk,IF(risk != '' AND stlStatus = '정산대기','A','') isHoldId ");
-				dao.setColumns("'" + stlId + "' stlId, capId,capType,stlStatus,risk,'' as isHoldId ");
+				dao.setColumns("'" + stlId + "' stlId, capId,capType,stlStatus,risk,IF(risk != '' AND stlStatus = '정산대기','A','') isHoldId ");
+//				dao.setColumns("'" + stlId + "' stlId, capId,capType,stlStatus,risk,'' as isHoldId ");
 				if(!eachMap.isNullOrSpace("stlType")) {
 					dao.setWhere(" (stlType = '" + eachMap.getString("stlType") + "' OR (capType ='매입' AND risk != '')) ");
 				}
