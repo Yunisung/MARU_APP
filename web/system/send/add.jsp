@@ -134,7 +134,7 @@ textarea {
 								</div>
 								<div class="form-group">
 									<div class="col-sm-12">
-										<input type="text" name="title" class="form-control input-sm" value="[(주)케이원 피에스]공지사항 안내" readOnly>
+										<input type="text" name="title" class="form-control input-sm" value="[(주)부국위너스]공지사항 안내" readOnly>
 									</div>
 								</div>
 								<div class="form-group">

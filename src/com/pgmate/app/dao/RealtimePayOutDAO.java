@@ -54,7 +54,7 @@ public class RealtimePayOutDAO extends DAO{
 		
 		super.setTable("(SELECT A.*, B.name FROM PG_REALTIME_PAYOUT A JOIN VW_MCHT B ON A.mchtId = B.mchtId) A ");
 		super.setColumns("A.trxId, A.mchtId,A.name,A.tmnId,A.trackId,A.trxDay,A.trxTime,IF(A.payType = 'C','카드','가상계좌') as payType,A.authCd,A.trxType,A.amount,A.stlFee,A.stlFeeVat,"
-				+ "A.stlAmount,A.payOutFee,A.payOutFeeVat,'99' as bankFee,A.payOutAmount,A.cancelAmount,A.bankCd,A.bankName,FN_MASK_IDENTIFY(A.account) as maskAccount, "
+				+ "A.stlAmount,A.payOutFee,A.payOutFeeVat,A.bankFee,A.payOutAmount,A.cancelAmount,A.bankCd,A.bankName,FN_MASK_IDENTIFY(A.account) as maskAccount, "
 				+ "FN_AES_DEC(A.account) AS account,FN_AES_DEC(A.accntHolder) AS accntHolder,A.payOutDay,A.payOutTime,A.resultCd,A.resultMsg,"
 				+ "A.sendCnt,A.sendCheck,A.cancelMemo,A.regId,A.regDate");
 		super.setOrderBy("concat(A.payOutDay,A.payOutTime) desc");
@@ -114,7 +114,8 @@ public class RealtimePayOutDAO extends DAO{
 		super.setTable("(SELECT A.*, B.name, B.distId, B.agencyId, B.salesId FROM PG_SETTLE_AUTO A JOIN VW_MCHT B ON A.mchtId = B.mchtId) A");
 		super.setColumns("sum(payAmt+rfdAmt) as amtSum, "
 				+ "SUM((payFee+payVat)+(rfdFee+rfdVat)) as vatSum, "
-				+ "SUM(IF((payAmt - payFee - payVat + (rfdAmt - rfdVat - rfdFee) - minusAmt + deductAmt) != 0,(payOutFee+payOutFeeVat),0)) as payOutVatSum, "
+				+ "SUM(IF(payAmt + rfdAmt - (authFee + authFeeVat) = 0, 0, payOutFee + payOutFeeVat)) as payOutVatSum, "
+				+ "SUM(IF(authFee + authFeeVat = 0, 0,authFee + authFeeVat)) as authFeeSum, "
 				+ "sum(deductAmt) as deductAmtSum, sum(minusAmt) as minusAmtSum, sum(payOutAmount) as payOutAmountSum");
 
 		Page page = new Page();
@@ -138,9 +139,10 @@ public class RealtimePayOutDAO extends DAO{
 				+ "A.rfdAmt, A.rfdFee, A.rfdVat, A.rfdCnt, A.payOutFee, A.payOutFeeVat, A.deductAmt, A.minusAmt, A.payOutAmount, "
 				+ "A.bankCd, A.bankName,FN_MASK_IDENTIFY(A.account) as maskAccount, FN_AES_DEC(A.account) AS account,FN_AES_DEC(A.accntHolder) AS accntHolder, "
 				+ "A.payCnt + A.rfdCnt as totCnt, A.payAmt + A.rfdAmt as totAmt, (A.payFee + A.payVat) + (A.rfdFee + A.rfdVat) as totalFee, "
-				+ "IF(A.payAmt + A.rfdAmt = 0, 0, 99) as bankFee, "
+				+ "IF(A.payAmt + A.rfdAmt = 0, 0, A.bankFee) as bankFee, "
+				+ "authFee + authFeeVat as authFee, "
 				+ "IF(A.payAmt + A.rfdAmt = 0, 0, A.payOutFee + A.payOutFeeVat) as totPayOutFee, "
-				+ "IF(A.payAmt + A.rfdAmt = 0, 0, 	(A.payAmt - A.payFee - A.payVat) + (A.rfdAmt - A.rfdVat - A.rfdFee) - (A.payOutFee + A.payOutFeeVat)) as stlAmount, "
+				+ "IF((A.payAmt - A.payFee - A.payVat) + (A.rfdAmt - A.rfdVat - A.rfdFee) - (A.authFee + A.authFeeVat) = 0, 0, 	(A.payAmt - A.payFee - A.payVat) + (A.rfdAmt - A.rfdVat - A.rfdFee) - (A.payOutFee + A.payOutFeeVat) - (A.authFee + A.authFeeVat)) as stlAmount, "
 				+ "A.stlRate, A.stlType, A.payOutDay, A.payOutTime, A.sendCnt, A.resultCd, A.resultMsg, A.minusAmtMemo, A.deductAmtMemo, DATE_FORMAT(now(), '%H%i%s') as nowTime");
 		super.setOrderBy("A.stlId desc");
 		

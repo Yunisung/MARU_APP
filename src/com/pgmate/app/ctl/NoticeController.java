@@ -338,15 +338,15 @@ public class NoticeController {
 	 */
 	public boolean sendEmail(String msg, String setEmail) throws AddressException, MessagingException {
 		logger.info("---NoticeSend Email START---");
-
-		String host = "outbound.daouoffice.com";
+		
+		String host = "smtp.gmail.com";
 		String port = "465";
 
-		String fromId = "MARUps@mtouch.com"; // 발신자
-		String fromPw = "mtouch1855!"; // 발신자 비밀번호
-		String fromName = "[(주)케이원 피에스]"; // 발신자 정보
+		String fromId = "bukook@bkwinners.com"; // 발신자
+		String fromPw = "bk2763!@#"; // 발신자 비밀번호
+		String fromName = "[(주)부국위너스]"; // 발신자 정보
 		String to = setEmail; // 수신자
-		String subject = "[(주)케이원 피에스]공지사항 안내"; // 이메일 제목
+		String subject = "[(주)부국위너스]공지사항 안내"; // 이메일 제목
 
 		try {
 			Properties props = System.getProperties();
@@ -366,7 +366,6 @@ public class NoticeController {
 					return new PasswordAuthentication(fromId, fromPw);
 				}
 			};
-
 			// 메일 세션 생성
 			Session session = Session.getInstance(props, auth);
 			session.setDebug(true);

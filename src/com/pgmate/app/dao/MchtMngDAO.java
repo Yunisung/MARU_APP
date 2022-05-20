@@ -53,4 +53,9 @@ public class MchtMngDAO extends DAO{
 		super.update(q);
 	}
 	
+	public void updateDiffType(String diffType, String mchtId){
+		String q = "UPDATE PG_MCHT_MNG SET diffType = '"+diffType+"' WHERE mchtId='"+mchtId+"'";
+		super.update(q);
+		super.setDebug(true);
+	}
 }
