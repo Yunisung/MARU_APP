@@ -35,7 +35,7 @@ public class DiffTempDAO extends DAO{
 		super.setTable("(SELECT C.stlDiffVanDay, C.van, C.vanId, B.mchtId, MAX(B.tmnId) as tmnId, SUM(B.amount) as amount, SUM(C.stlDiffAmt) as stlDiffAmt, SUM(C.stlDiffVanAmt) as stlDiffVanAmt "
 						+" FROM PG_TRX_CAP B join PG_TRX_CAP_DTL C on B.capId = C.capId "
 						+" WHERE C.stlDiffStatus = '입금대기' "
-						+" AND C.vanId IN ('2006500004','2006500007','2006500009') "
+						+" AND C.vanId IN ('2010000007','2010000008') "
 						+" GROUP BY C.stlDiffVanDay, C.van, C.vanId, B.mchtId "
 						+" ) A JOIN PG_VAN E ON A.vanId = E.vanId AND A.van = E.van "
 						+ " join PG_MCHT D on A.mchtId = D.mchtId");
