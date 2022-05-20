@@ -62,8 +62,8 @@
 												<div class="form-body row">
 													
 													<input type="hidden" name="mchtId" value="${DATAMAP.mchtId}" />
-													<input type="hidden" name="vanId" value="2006500004" />
-													<input type="hidden" name="compNo" value="4198800046" />
+													<input type="hidden" name="vanId" value="2010000007" />
+													<input type="hidden" name="compNo" value="6758600152" />
 													 
 													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">가맹점이름</label>
