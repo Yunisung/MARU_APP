@@ -2088,22 +2088,22 @@
 																		<div class="col-md-9">
 																			<c:choose>
 																				<c:when test="${empty VACTDISTMAP }">
-																					<p class="form-control-static">${VACTAGENCYMAP.settleName} (미사용)</p>
+																					<p class="form-control-static">${VACTDISTMAP.settleName} (미사용)</p>
 																				</c:when>
 																				<c:when test="${not empty VACTDISTMAP }">
 																					<p class="form-control-static">${VACTDISTMAP.settleName} (${VACTDISTMAP.payStatus})</p>
 																				</c:when>
 																			</c:choose>
-																			<c:if test="${VACT_MAP.distSettleType == 'M+10'}">
+																			<c:if test="${VACTDISTMAP.settleType == 'M+10'}">
 																				<span>매월 10일</span>
 																			</c:if>
-																			<c:if test="${VACT_MAP.distSettleType == 'M+25'}">
+																			<c:if test="${VACTDISTMAP.settleType == 'M+25'}">
 																				<span>매월 25일</span>
 																			</c:if>
-																			<c:if test="${VACT_MAP.distSettleType == 'M+15'}">
+																			<c:if test="${VACTDISTMAP.settleType == 'M+15'}">
 																				<span>매월 15일</span>
 																			</c:if>
-																			<c:if test="${VACT_MAP.distSettleType == 'W+3'}">
+																			<c:if test="${VACTDISTMAP.settleType == 'W+3'}">
 																				<span>매주 수요일</span>
 																			</c:if>
 																		</div>
@@ -2151,16 +2151,16 @@
 																					<p class="form-control-static">${VACTAGENCYMAP.settleName} (${VACTAGENCYMAP.payStatus})</p>
 																				</c:when>
 																			</c:choose>
-																			<c:if test="${VACT_MAP.agencySettleType == 'M+10'}">
+																			<c:if test="${VACTAGENCYMAP.settleType == 'M+10'}">
 																				<span>매월 10일</span>
 																			</c:if>
-																			<c:if test="${VACT_MAP.agencySettleType == 'M+25'}">
+																			<c:if test="${VACTAGENCYMAP.settleType == 'M+25'}">
 																				<span>매월 25일</span>
 																			</c:if>
-																			<c:if test="${VACT_MAP.agencySettleType == 'M+15'}">
+																			<c:if test="${VACTAGENCYMAP.settleType == 'M+15'}">
 																				<span>매월 15일</span>
 																			</c:if>
-																			<c:if test="${VACT_MAP.agencySettleType == 'W+3'}">
+																			<c:if test="${VACTAGENCYMAP.settleType == 'W+3'}">
 																				<span>매주 수요일</span>
 																			</c:if>
 																		</div>
@@ -2208,16 +2208,16 @@
 																					<p class="form-control-static">${VACTSALESMAP.settleName} (${VACTSALESMAP.payStatus})</p>
 																				</c:when>
 																			</c:choose>
-																			<c:if test="${VACT_MAP.salesSettleType == 'M+10'}">
+																			<c:if test="${VACTSALESMAP.settleType == 'M+10'}">
 																				<span>매월 10일</span>
 																			</c:if>
-																			<c:if test="${VACT_MAP.salesSettleType == 'M+25'}">
+																			<c:if test="${VACTSALESMAP.settleType == 'M+25'}">
 																				<span>매월 25일</span>
 																			</c:if>
-																			<c:if test="${VACT_MAP.salesSettleType == 'M+15'}">
+																			<c:if test="${VACTSALESMAP.settleType == 'M+15'}">
 																				<span>매월 15일</span>
 																			</c:if>
-																			<c:if test="${VACT_MAP.salesSettleType == 'W+3'}">
+																			<c:if test="${VACTSALESMAP.settleType == 'W+3'}">
 																				<span>매주 수요일</span>
 																			</c:if>
 																		</div>
