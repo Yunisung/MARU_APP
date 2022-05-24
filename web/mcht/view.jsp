@@ -2080,6 +2080,9 @@
 																			<c:if test="${VACTDISTMAP ne null }">
 																				<p class="form-control-static">${VACTDISTMAP.settleName} (${VACTDISTMAP.payStatus})</p>
 																			</c:if>
+																			<c:if test="${empty VACTDISTMAP}">
+																				<p class="form-control-static">${VACTDISTMAP.settleName} (${VACTDISTMAP.payStatus})</p>
+																			</c:if>
 																			<c:if test="${VACT_MAP.distSettleType == 'M+25'}">
 																				<span>매월 25일</span>
 																			</c:if>
@@ -2129,6 +2132,9 @@
 																			<c:if test="${VACTAGENCYMAP ne null }">
 																				<p class="form-control-static">${VACTAGENCYMAP.settleName} (${VACTAGENCYMAP.payStatus})</p>
 																			</c:if>
+																			<c:if test="${empty VACTAGENCYMAP}">
+																				<p class="form-control-static">${VACTAGENCYMAP.settleName} (미사용)</p>
+																			</c:if>
 																			<c:if test="${VACT_MAP.agencySettleType == 'M+25'}">
 																				<span>매월 25일</span>
 																			</c:if>
@@ -2177,6 +2183,9 @@
 																		<div class="col-md-9">
 																			<c:if test="${VACTSALESMAP ne null }">
 																				<p class="form-control-static">${VACTSALESMAP.settleName} (${VACTSALESMAP.payStatus})</p>
+																			</c:if>
+																			<c:if test="${empty VACTSALESMAP}">
+																				<p class="form-control-static">${VACTSALESMAP.settleName} (미사용)</p>
 																			</c:if>	
 																			<c:if test="${VACT_MAP.salesSettleType == 'M+25'}">
 																				<span>매월 25일</span>
