@@ -2086,9 +2086,14 @@
 																	<div class="form-group pg-view-group">
 																		<label class="control-label col-md-3">대행사 정산유형명</label>
 																		<div class="col-md-9">
-																			<c:if test="${VACTDISTMAP ne null }">
-																				<p class="form-control-static">${VACTDISTMAP.settleName} (${VACTDISTMAP.payStatus})</p>
-																			</c:if>
+																			<c:choose>
+																				<c:when test="${empty VACTDISTMAP }">
+																					<p class="form-control-static">${VACTAGENCYMAP.settleName} (미사용)</p>
+																				</c:when>
+																				<c:when test="${not empty VACTDISTMAP }">
+																					<p class="form-control-static">${VACTDISTMAP.settleName} (${VACTDISTMAP.payStatus})</p>
+																				</c:when>
+																			</c:choose>
 																			<c:if test="${VACT_MAP.distSettleType == 'M+10'}">
 																				<span>매월 10일</span>
 																			</c:if>
@@ -2138,9 +2143,14 @@
 																	<div class="form-group pg-view-group">
 																		<label class="control-label col-md-3">에이전시 정산유형명</label>
 																		<div class="col-md-9">
-																			<c:if test="${VACTAGENCYMAP ne null }">
-																				<p class="form-control-static">${VACTAGENCYMAP.settleName} (${VACTAGENCYMAP.payStatus})</p>
-																			</c:if>
+																			<c:choose>
+																				<c:when test="${empty VACTAGENCYMAP }">
+																					<p class="form-control-static">${VACTAGENCYMAP.settleName} (미사용)</p>
+																				</c:when>
+																				<c:when test="${not empty VACTAGENCYMAP }">
+																					<p class="form-control-static">${VACTAGENCYMAP.settleName} (${VACTAGENCYMAP.payStatus})</p>
+																				</c:when>
+																			</c:choose>
 																			<c:if test="${VACT_MAP.agencySettleType == 'M+10'}">
 																				<span>매월 10일</span>
 																			</c:if>
@@ -2190,9 +2200,14 @@
 																	<div class="form-group pg-view-group">
 																		<label class="control-label col-md-3">지사 정산유형명</label>
 																		<div class="col-md-9">
-																			<c:if test="${VACTSALESMAP ne null }">
-																				<p class="form-control-static">${VACTSALESMAP.settleName} (${VACTSALESMAP.payStatus})</p>
-																			</c:if>	
+																			<c:choose>
+																				<c:when test="${empty VACTSALESMAP }">
+																					<p class="form-control-static">${VACTSALESMAP.settleName} (미사용)</p>
+																				</c:when>
+																				<c:when test="${not empty VACTSALESMAP }">
+																					<p class="form-control-static">${VACTSALESMAP.settleName} (${VACTSALESMAP.payStatus})</p>
+																				</c:when>
+																			</c:choose>
 																			<c:if test="${VACT_MAP.salesSettleType == 'M+10'}">
 																				<span>매월 10일</span>
 																			</c:if>
