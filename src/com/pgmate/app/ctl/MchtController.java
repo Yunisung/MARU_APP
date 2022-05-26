@@ -272,9 +272,9 @@ public class MchtController {
 		if (svcMap.getString("virAccount").equals("사용")) {
 			request.setAttribute("VACT_MAP", new MchtVactDAO().getByMchtId(mchtId));
 			if(request.getAttribute("VACT_MAP") != null){
-				request.setAttribute("VACTDISTMAP", new DistMngDAO().getByNum(new MchtVactDAO().getByMchtId(mchtId).getString("distNum")).getRowFirst());
-				request.setAttribute("VACTAGENCYMAP", new AgencyMngDAO().getByNum(new MchtVactDAO().getByMchtId(mchtId).getString("agencyNum")).getRowFirst());
-				request.setAttribute("VACTSALESMAP", new MemberSalesMngDAO().getByNum(new MchtVactDAO().getByMchtId(mchtId).getString("salesNum")).getRowFirst());
+				request.setAttribute("VACTDISTMAP", new DistMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("distId")).getRowFirst());
+				request.setAttribute("VACTAGENCYMAP", new AgencyMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("agencyId")).getRowFirst());
+				request.setAttribute("VACTSALESMAP", new MemberSalesMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("salesId")).getRowFirst());
 				request.setAttribute("ORGFEEMAP", new CodeDAO().getOrgFee("ORGFEE").getRows());
 			}
 		}
@@ -1228,26 +1228,26 @@ public class MchtController {
 	@RequestMapping(value = {"/mcht/tax/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody CPResponse taxUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
-		MchtDAO mchtDao = new MchtDAO();
-		
-		String taxId = cpRequest.getKeyValue("taxId");
-		String account = cpRequest.getValue("account");
-		String bankCd = cpRequest.getValue("bankCd");
-		String accntHolder = cpRequest.getValue("accntHolder");
-		
-		logger.info("taxUpdate : [{}][{}][{}][{}]", taxId, account, bankCd, accntHolder);
-
-		SharedMap<String, Object> taxData = mchtDao.getTaxData(taxId).getRowFirst();
-		
-		if(!taxData.getString("account").equals(account) || 
-		   !taxData.getString("bankCd").equals(bankCd) ||
-		   !taxData.getString("accntHolder").equals(accntHolder)) {
-			logger.info("taxUpdate : [{}][{}][{}][{}]", taxId, taxData.getString("account"), taxData.getString("bankCd"), taxData.getString("accntHolder"));
-			
-			return new CPRUtil(cpRequest)
-	        		.resultNOK("은행정보는 변경할 수 없습니다. 관리자에게 문의해 주세요.",cpDAO.getError())
-	        		.cpResponse();
-		}
+//		MchtDAO mchtDao = new MchtDAO();
+//		
+//		String taxId = cpRequest.getKeyValue("taxId");
+//		String account = cpRequest.getValue("account");
+//		String bankCd = cpRequest.getValue("bankCd");
+//		String accntHolder = cpRequest.getValue("accntHolder");
+//		
+//		logger.info("taxUpdate : [{}][{}][{}][{}]", taxId, account, bankCd, accntHolder);
+//
+//		SharedMap<String, Object> taxData = mchtDao.getTaxData(taxId).getRowFirst();
+//		
+//		if(!taxData.getString("account").equals(account) || 
+//		   !taxData.getString("bankCd").equals(bankCd) ||
+//		   !taxData.getString("accntHolder").equals(accntHolder)) {
+//			logger.info("taxUpdate : [{}][{}][{}][{}]", taxId, taxData.getString("account"), taxData.getString("bankCd"), taxData.getString("accntHolder"));
+//			
+//			return new CPRUtil(cpRequest)
+//	        		.resultNOK("은행정보는 변경할 수 없습니다. 관리자에게 문의해 주세요.",cpDAO.getError())
+//	        		.cpResponse();
+//		}
 		
 		
 		

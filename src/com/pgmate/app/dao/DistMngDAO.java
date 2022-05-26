@@ -46,12 +46,20 @@ public class DistMngDAO extends DAO{
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
 	
+//	public RecordSet getDistMngByPayType(String distId, String payType){
+//		setColumns("num as distNum, settleName as distSettleName, payStatus as distPayStatus");
+//		addWhere("lower(distId)",distId.toLowerCase(),eq);
+//		addWhere("payStatus","사용");
+//		addWhere("payType",payType,eq);
+//		setOrderBy("payStatus asc, settleName asc");
+//		return search();
+//	}
 	public RecordSet getDistMngByPayType(String distId, String payType){
-		setColumns("num as distNum, settleName as distSettleName, payStatus as distPayStatus");
+		setColumns("distId as distNum, settleType as distSettleName, payStatus as distPayStatus");
 		addWhere("lower(distId)",distId.toLowerCase(),eq);
 		addWhere("payStatus","사용");
 		addWhere("payType",payType,eq);
-		setOrderBy("payStatus asc, settleName asc");
+		setOrderBy("payStatus asc, settleType asc");
 		return search();
 	}
 }
