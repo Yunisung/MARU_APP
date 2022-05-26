@@ -906,7 +906,6 @@ public class SettleController {
 	
 	
 //	  가맹점 지급정산 - 리스크 보류금액 설정
-	
 	@RequestMapping(value = "/settle/mcht/make/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView makeSettleList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		SessionUtil.setSearchGrade(request, cpRequest);

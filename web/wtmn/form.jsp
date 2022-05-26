@@ -123,7 +123,7 @@
 		<c:import url="/include/footer.jsp" />
 	</div>
 	<c:import url="/include/javascript.jsp" />
-	<script type="text/javascript" src="https://api.bkwinners.kr/js/clientside.js"></script>
+	<script type="text/javascript" src="http://127.0.0.1:10002/js/clientside.js"></script>
 	
 	<!-- BEGIN FORM JAVASCRIPT -->
 	<script type="text/javascript">
