@@ -3,7 +3,7 @@
     "dbType": "MYSQL",
     "poolName": "MARU_APP",
     "driver": "org.mariadb.jdbc.Driver",
-    "jdbcUrl": "jdbc:mariadb://127.0.0.1:3306/CP_MARU",
+    "jdbcUrl": "jdbc:mariadb://127.0.0.1:3306/KJM",
     "userName": "root",
     "passWord": "1234",
 
