@@ -188,6 +188,15 @@
 	<c:import url="/include/javascript.jsp" />
 	<!-- BEGIN FORM JAVASCRIPT -->
 	<script type="text/javascript">
+	
+		//은행 선택 셀렉트박스 크기 조절
+		$(document).ready(function() {
+			$('.dropdown-toggle').click(function() {
+				$('.dropdown-menu').css('max-height', '400px');
+			});
+			
+		});
+	
 		var form1 = $('#writeFrm');
 		var error1 = $('.alert-danger', form1);
 		form1.validate({
