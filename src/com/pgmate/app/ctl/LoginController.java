@@ -1,6 +1,9 @@
 package com.pgmate.app.ctl;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +45,7 @@ import com.pgmate.lib.sms.SmsUtil;
 public class LoginController {
 	
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.ctl.LoginController.class );
+	private SharedMap<String, Long> loginMap = new SharedMap<String, Long>();
 	
 	@RequestMapping(value = {"/login/form"})
 	@SessionExclude
@@ -164,8 +168,32 @@ public class LoginController {
 				return "INVALIDKEY||인증번호가 올바르지 않습니다.||MEMBER";
 			}
 		} else {
+			
+			//PYS : 중복로그인금지
+			if(!loginMap.containsKey(memberId)) {
+				Date date = new Date();
+				loginMap.put(memberId, date.getTime());
+				
+				return "UNAUTHORIZED||SMS 인증이 필요합니다.||MEMBER";
+			} else {
+				
+				long prevtime = loginMap.get(memberId);
+				Date date = new Date();
+				long curtime = date.getTime();
+				
+				long diff = curtime - prevtime;
+				logger.debug("loginMap diff : {}", diff);
+				
+				//PYS : 1초안에 같은 요청이 들어오면 무시
+				if(diff < 1000) {
+					return "";
+				} else {
+					return "UNAUTHORIZED||SMS 인증이 필요합니다.||MEMBER";
+				}
+				
+			}
 
-			return "UNAUTHORIZED||SMS 인증이 필요합니다.||MEMBER";
+			
 			
 			//PYS_0421 : 로그인마다 sms인증 하도록 변경
 //			UserIpDAO userIpDAO = new UserIpDAO();
@@ -188,6 +216,12 @@ public class LoginController {
 //				return "UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER";
 //			}
 		}
+		
+		if(loginMap.containsKey(memberId)) {
+			loginMap.remove(memberId);
+		}
+		
+		logger.debug("loginMap : {}", loginMap.toJson());
 		
 		
 		//접속 패스워드에 대한 재시도횟수 초기화
