@@ -119,7 +119,7 @@
 													</div>
 													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">은행이름</label>
-														<select name="bankCd" class="selectpicker col-sm-6 bankCd">
+														<select name="bankCd" class="selectpicker col-sm-6 bankCd" >
 															<option value="">은행 선택</option>
 															<c:forEach var="entryMap" items="${BANK_OPTION}">
 																<option value="${entryMap['code']}">${entryMap['codeName']}</option>
@@ -266,6 +266,15 @@
 	<script src="https://spi.maps.daum.net/imap/map_js_init/postcode.v2.js"></script><!-- BEGIN FORM JAVASCRIPT -->
 	<!-- BEGIN FORM JAVASCRIPT -->
 	<script type="text/javascript">
+	
+		//은행 선택 셀렉트박스 크기 조절
+		$(document).ready(function() {
+			$('.dropdown-toggle').click(function() {
+				$('.dropdown-menu').css('max-height', '400px');
+			});
+			
+		});
+		
 		var form1 = $('#writeFrm');
 		var error1 = $('.alert-danger', form1);
 		form1.validate({
@@ -381,6 +390,8 @@
 // 			var str = $(this).val().replace(regExp,"");
 // 			$(this).val()
 // 		});
+		
+		 
 		
 	</script>
 	<!-- END FORM JAVASCRIPT -->
