@@ -36,6 +36,12 @@
 			</c:if>
 		</c:when>
 		
+		<c:when test = "${fn:startsWith(DATAMAP.van, 'GALAXIA')}">
+			<script>
+					document.location="https://cpadmin.billgate.net/billgate/common/authCardReceipt.jsp?mid=${DATAMAP.vanId}&transNm=${DATAMAP.vanTrxId}&currTp=0000";
+			</script>
+		</c:when>
+		
 		
 		<c:when test = "${fn:startsWith(DATAMAP.van, 'ALLAT')}">
 			<script>
