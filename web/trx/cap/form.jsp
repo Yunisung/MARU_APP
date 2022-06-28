@@ -382,6 +382,14 @@
 	<c:import url="/include/javascript.jsp" />
 	<script type="text/javascript">
 	
+		//2022.06.27 현재년도 기준 5년 이전 년도 선택 불가 추가
+		var nowYear = new Date().getFullYear() - 5;
+		
+		$('.date-selector-target').datepicker({
+			format: 'yyyy-mm-dd',			// 날짜 포맷
+			startDate: new Date(nowYear.toString())		// 5년 이전 년도 선택 불가
+		});
+	
 		var rangeDate = 7; // set limit day
 		var sdate, edate;
 		
