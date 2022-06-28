@@ -370,6 +370,7 @@ public class UserController {
     public @ResponseBody String updatePassword(HttpServletRequest request, @PathVariable String userid) {
     	//KJM : 입력한 비밀번호가 null이면 공백처리 / 아니면 그대로
     	String passKey = CommonUtil.nToB(request.getParameter("pw"));
+    	
     	//KJM : 입력받은 값들 cprequest 객체에 넣어줌
     	CPRequest cpRequest = new CPRequest();
     	cpRequest.setData("id", userid, "eq", "", true);
@@ -379,28 +380,46 @@ public class UserController {
 		cpRequest.setData("pw", hashed);
 		
     	CPDAO cpDAO = new CPDAO();
-    	//KJM : 유저 정보 update한 후(id에 대한 pw)
-    	if(cpDAO.update("PG_USER", SessionUtil.getUserId(request), cpRequest.data)){
-    		cpDAO = new CPDAO();
-    		//KJM : 유저 비밀번호 정보 수정할 데이터 세팅
-    		CPRequest cpRequestPW = new CPRequest();
-    		cpRequestPW.setData("id", userid, "eq", "", true);
-    		cpRequestPW.setData("pwStatus", "사용");
-    		cpRequestPW.setData("pwYn", "예");	//비밀번호 변경 여부
-    		cpRequestPW.setData("pwRetry", 0);	//재시도 횟수
-    		cpRequestPW.setData("pwDate", CommonUtil.getCurrentTimestamp());	//최근 갱신일
-    		
-    		//KJM : 유저 비밀번호 정보 정상 수정 시 
-    		if(cpDAO.update("PG_USER_PW", cpRequestPW.data)){
-    			//KJM : 현재 로그인 중인 계정의 세션정보의 비밀번호 변경 여부도 "예" 바꿔주기
-    			SessionUtil.setPwYes(request);
-    			//KJM : "OK" 반환
-    			return "OK";
-    		}
+    	
+    	//과거에 사용했던 비밀번호 확인
+    	cpDAO.setTable("HT_USER_PW");
+    	cpDAO.setColumns("pw");
+    	cpDAO.addWhere("pw", hashed, DAO.eq);
+    	cpDAO.addWhere("regId", userid, DAO.eq);
+    	cpDAO.setOrderBy("");
+    	
+    	//과거에 사용했던 비밀번호 아닐 시 변경 진행
+    	if(cpDAO.search().size() <= 0) {
+	    	//유저 정보 update한 후(id에 대한 pw)
+	    	if(cpDAO.update("PG_USER", SessionUtil.getUserId(request), cpRequest.data)){
+	    		
+	    		//히스토리 테이블에 변경 전 비밀번호 저장
+    			cpDAO.insert("HT_USER_PW", cpRequest.data);
+    			
+	    		cpDAO = new CPDAO();
+	    		//유저 비밀번호 정보 수정할 데이터 세팅
+	    		CPRequest cpRequestPW = new CPRequest();
+	    		cpRequestPW.setData("id", userid, "eq", "", true);
+	    		cpRequestPW.setData("pwStatus", "사용");
+	    		cpRequestPW.setData("pwYn", "예");	//비밀번호 변경 여부
+	    		cpRequestPW.setData("pwRetry", 0);	//재시도 횟수
+	    		cpRequestPW.setData("pwDate", CommonUtil.getCurrentTimestamp());	//최근 갱신일
+	    		
+	    		//유저 비밀번호 정보 정상 수정 시 
+	    		if(cpDAO.update("PG_USER_PW", cpRequestPW.data)){
+	    			//KJM : 현재 로그인 중인 계정의 세션정보의 비밀번호 변경 여부도 "예" 바꿔주기
+	    			SessionUtil.setPwYes(request);
+	    			
+	    			//"OK" 반환
+	    			return "OK";
+	    		}
+	    	}
     	}
     	
-    	//KJM : 수정 실패 시 "NOK" 반환
-    	return "NOK:비밀번호 변경이 실패하였습니다.";
+    	//수정 실패 시 "NOK" 반환
+    	//22.06.28 NOK 반환 시 충돌 문제로 인해 NOK 삭제
+//    	return "NOK:비밀번호 변경이 실패하였습니다.";
+    	return "비밀번호 변경이 실패하였습니다.";
     }
     
     //KJM : 멤버관리 > 사용자 정보 > 임시 비밀번호 발급
