@@ -160,6 +160,15 @@ pre {
 	</div>
 	<c:import url="/include/javascript.jsp" />
 	<script type="text/javascript">
+		
+		//2022.06.27 현재년도 기준 5년 이전 년도 선택 불가 추가
+		var nowYear = new Date().getFullYear() - 5;
+		
+		$('.now-date').datepicker({
+			format: 'yyyy-mm-dd',			// 날짜 포맷
+			startDate: new Date(nowYear.toString())		// 5년 이전 년도 선택 불가
+		});
+	
 	setTimeout(function(){ searchForList(); }, 100); //검색 실행
 		
 		$('#nav-trx').addClass('active');
