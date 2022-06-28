@@ -692,7 +692,7 @@ public class MchtController {
     	sharedMap.put("salesPayInFee", CommonUtil.moneyFormat(sharedMap.getString("salesPayInFee")));
     	
 //    	sharedMap.put("salesRate", String.format("%.3f",sharedMap.getDouble("rate")));
-    	sharedMap.put("salesRate", sharedMap.getDouble("rate"));
+    	sharedMap.put("rate", sharedMap.getDouble("rate"));
     	sharedMap.put("salesRate", sharedMap.getDouble("salesRate"));
     	sharedMap.put("agencyRate", sharedMap.getDouble("agencyRate"));
     	sharedMap.put("distRate", sharedMap.getDouble("distRate"));
