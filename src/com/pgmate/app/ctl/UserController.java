@@ -299,11 +299,7 @@ public class UserController {
     public @ResponseBody String updatePassword(HttpServletRequest request, @PathVariable String userid) {
     	
     	String passKey = CommonUtil.nToB(request.getParameter("pw"));
-<<<<<<< HEAD
-=======
     	
-    	//KJM : 입력받은 값들 cprequest 객체에 넣어줌
->>>>>>> 177b2fb (비밀번호 변경 시 이전 비밀번호 사용 막기)
     	CPRequest cpRequest = new CPRequest();
     	cpRequest.setData("id", userid, "eq", "", true);
     	
@@ -311,24 +307,6 @@ public class UserController {
 		cpRequest.setData("pw", hashed);
 		
     	CPDAO cpDAO = new CPDAO();
-<<<<<<< HEAD
-    	if(cpDAO.update("PG_USER", SessionUtil.getUserId(request), cpRequest.data)){
-    		cpDAO = new CPDAO();
-    		CPRequest cpRequestPW = new CPRequest();
-    		cpRequestPW.setData("id", userid, "eq", "", true);
-    		cpRequestPW.setData("pwStatus", "사용");
-    		cpRequestPW.setData("pwYn", "예");
-    		cpRequestPW.setData("pwRetry", 0);
-    		cpRequestPW.setData("pwDate", CommonUtil.getCurrentTimestamp());
-    		
-    		if(cpDAO.update("PG_USER_PW", cpRequestPW.data)){
-    			SessionUtil.setPwYes(request);
-    			return "OK";
-    		}
-    	}
-    	
-    	return "NOK:비밀번호 변경이 실패하였습니다.";
-=======
     	
     	//과거에 사용했던 비밀번호 확인
     	cpDAO.setTable("HT_USER_PW");
@@ -369,7 +347,6 @@ public class UserController {
     	//22.06.28 NOK 반환 시 충돌 문제로 인해 NOK 삭제
 //    	return "NOK:비밀번호 변경이 실패하였습니다.";
     	return "비밀번호 변경이 실패하였습니다.";
->>>>>>> 177b2fb (비밀번호 변경 시 이전 비밀번호 사용 막기)
     }
     
     @RequestMapping(value = "/member/user/resetPassword/{userid}", method = RequestMethod.GET)
