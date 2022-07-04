@@ -197,7 +197,7 @@
 																<!--/span-->
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">사업장연락처2</label>
+																		<label class="control-label col-md-3">휴대폰번호</label>
 																		<div class="col-md-9">
 																			<p class="form-control-static">${DATAMAP.tel2}</p>
 																		</div>
