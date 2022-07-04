@@ -335,7 +335,7 @@
 			$('input[name="name"]').val('${MCHTMAP.name}');
 			$('input[name="ceoName"]').val('${MCHTMAP.ceoName}');
 			$('input[name="identity"]').val('${MCHTMAP.decIdentity}');
-			$('input[name="ceoPhone"]').val('${MCHTMAP.ceoPhone}');
+			$('input[name="ceoPhone"]').val('${MCHTMAP.tel2}');
 			$('input[name="tel"]').val('${MCHTMAP.tel1}');
 			$('input[name="email"]').val('${TAXMAP.email}');
 			$('select[name="bankCd"]').val('${TAXMAP.bankCd}');
