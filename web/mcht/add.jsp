@@ -412,6 +412,7 @@
             var addr2 = $('input[name="addr2"]').val();
             var identity = $('input[name="identity"]').val();
             var tel1 = $('input[name="tel1"]').val();
+            var tel2 = $('input[name="tel2"]').val();
 
             if (nameVal) $('input[name="ceoName"]').val(nameVal);
             if ($('input[name="idType"]').val() == '주민번호') {
@@ -420,7 +421,8 @@
             if (addr1) $('input[name="ceoAddr1"]').val(addr1);
             if (addr2) $('input[name="ceoAddr2"]').val(addr2);
             if (zip) $('input[name="ceoZip"]').val(zip);
-            if (tel1) $('input[name="ceoPhone"]').val(tel1);
+            if (tel1) $('input[name="ceoTel"]').val(tel1);
+            if (tel2) $('input[name="ceoPhone"]').val(tel2);
         }
 
         $('#nav-mcht').addClass('active');
