@@ -95,7 +95,7 @@
 														<div class="form-group col-sm-6">
 															<label class="control-label col-sm-4 req-label">연락처</label>
 															<div class="col-sm-6">
-																<input type="text" class="form-control input-sm phone" maxlength="13" name="phone" placeholder="ex) 010-1234-0000" value="<c:if test="${not empty isMcht}">${DATAMAP.tel1 }</c:if>">
+																<input type="text" class="form-control input-sm phone" maxlength="13" name="phone" placeholder="ex) 010-1234-0000" value="<c:if test="${not empty isMcht}">${DATAMAP.tel2 }</c:if>">
 															</div>
 														</div>
 														<div class="form-group col-sm-6">
