@@ -20,7 +20,7 @@ import com.pgmate.lib.util.prop.PropertyUtil;
 public class ConfigLoader {
 
 	private static Logger logger 		= LoggerFactory.getLogger(com.pgmate.lib.conf.ConfigLoader.class);
-	private static String SERVICE_JSON 	= PropertyUtil.getCyrexConf()+File.separator+"service.json";
+	private static String SERVICE_JSON 	= "conf"+File.separator+"service.json";
 	private static byte[] SEED_KEY		= ByteUtil.toBytes("696d697373796f7568616e6765656e61", 16);
 	private static Config config 		= null;
 	public static boolean CRYPT			= false;
