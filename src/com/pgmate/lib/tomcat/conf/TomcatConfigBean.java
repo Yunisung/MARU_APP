@@ -13,7 +13,7 @@ public class TomcatConfigBean {
 	private int minThreads			= 20;
 	private int maxThreads			= 150;
 	private TomcatSSLConfigBean ssl	= null;
-	private String contextPath		= "../";
+	private String contextPath		= "/";
 	
 	public TomcatConfigBean() {
 		// TODO Auto-generated constructor stub
