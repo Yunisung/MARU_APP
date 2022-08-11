@@ -3,9 +3,9 @@ bin/stop.sh
 
 # JVM_ARGS for VM
 ##########################
-JVM_ARGS="-DMARU_APP -server -DCP_CONF=./conf -Dlogback.configurationFile=./conf/logback.xml -Dfile.encoding=UTF-8 -Djava.io.tmpdir=./web/upload -Djava.awt.headless=true"
+JVM_ARGS="-DMARU_APP -server -DCP_CONF=/conf -Dlogback.configurationFile=/conf/logback.xml -Dfile.encoding=UTF-8 -Djava.io.tmpdir=/web/upload -Djava.awt.headless=true"
 JVM_ARGS="$JVM_ARGS -Xss512k -Xms1024m -Xmx2048m"
-JVM_ARGS="$JVM_ARGS -cp ./lib/*:./lib/apache/*:./lib/tomcat/*:./lib/spring/*:./web/WEB-INF/classes"
+JVM_ARGS="$JVM_ARGS -cp /lib/*:/lib/apache/*:/lib/tomcat/*:/lib/spring/*:/web/WEB-INF/classes"
 
 
 
