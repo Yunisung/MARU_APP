@@ -9,9 +9,9 @@
     </appender>
 
  	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
-    	<file>../logs/root.txt</file>
+    	<file>logs/root.txt</file>
     	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-    		<fileNamePattern>../logs/backup/root.%d{yyyyMMdd}.zip</fileNamePattern><!-- daily rollover -->
+    		<fileNamePattern>logs/backup/root.%d{yyyyMMdd}.zip</fileNamePattern><!-- daily rollover -->
       		<maxHistory>30</maxHistory><!-- keep 30 days' worth of history -->
     	</rollingPolicy>
 		<encoder>
@@ -20,9 +20,9 @@
 	</appender> 
 	
 	<appender name="loginInterceptor" class="ch.qos.logback.core.rolling.RollingFileAppender"> 
-    	<file>../logs/access.txt</file>
+    	<file>logs/access.txt</file>
     	<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-    		<fileNamePattern>../logs/backup/access.%i.zip</fileNamePattern><!-- daily rollover -->
+    		<fileNamePattern>logs/backup/access.%i.zip</fileNamePattern><!-- daily rollover -->
       		<minIndex>1</minIndex>
       		<maxIndex>100</maxIndex>
     	</rollingPolicy>
