@@ -8,8 +8,8 @@ JVM_ARGS="$JVM_ARGS -Xss512k -Xms1024m -Xmx2048m"
 JVM_ARGS="$JVM_ARGS -cp ./lib/*:./lib/apache/*:./lib/tomcat/*:./lib/spring/*:./web/WEB-INF/classes"
 
 
-#java $JVM_ARGS com.pgmate.lib.tomcat.Tomcat8 &
-export BUILD_ID=dontKillMe
-nohup java $JVM_ARGS com.pgmate.lib.tomcat.Tomcat8 &
+java $JVM_ARGS com.pgmate.lib.tomcat.Tomcat8 &
+#export BUILD_ID=dontKillMe
+#nohup java $JVM_ARGS com.pgmate.lib.tomcat.Tomcat8 &
 echo $!>pwd.pid
 echo MARU_APP [START]
