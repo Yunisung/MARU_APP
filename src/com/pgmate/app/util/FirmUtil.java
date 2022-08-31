@@ -16,7 +16,7 @@ public class FirmUtil {
   private static Logger logger = LoggerFactory.getLogger(com.pgmate.app.util.FirmUtil.class);
 
   private SharedMap<String, Object> resMap = new SharedMap<String, Object>();
-  private static String host 	= "127.0.0.1"; //"203.245.13.63";
+  private static String host 	= "10.100.200.10"; //"203.245.13.63";
 	private static int port 	= 10006;
 	private static int newPort 	= 10026; //KSNET 자금이체 대행포트
 	private static int timeout  = 40000;
