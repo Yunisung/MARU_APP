@@ -36,7 +36,7 @@ public class FirmUtil {
 	  logger.info("요청:{}",action);
 	  firmBean = comm(firmBean);
 	  logger.info("응답:{},{}",firmBean.resultCd,firmBean.resultMsg);
-	  return comm(firmBean);
+	  return firmBean;
   }
   
 	/**
