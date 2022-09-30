@@ -2475,6 +2475,16 @@
 																	</div>
 																	<div class="row">
 																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">통합인증<br>수수료</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${VACT_MAP.totalAuthFee}</p> 원
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="row">
+																		<div class="col-md-6">
 																			<div id="respiteCntDiv" class="form-group pg-view-group">
 																				<label class="control-label col-md-3">API인증<br>인증유예횟수</label>
 																				<div class="col-md-9">

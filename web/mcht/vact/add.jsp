@@ -422,6 +422,15 @@
 													</div>
 												</div>
 											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">통합인증<br>수수료</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency totalAuthFee comma" maxlength="10" data-oper="comma" name="totalAuthFee" placeholder="" value="50">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
 											<div id="respiteCntDiv" class="form-group col-sm-6">
 												<label class="control-label col-sm-4 req-label">API인증<br>인증유예횟수</label>
 												<div class="col-sm-6">
