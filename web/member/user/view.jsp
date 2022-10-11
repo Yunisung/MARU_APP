@@ -119,7 +119,7 @@
 																<div class="form-group pg-view-group">
 																	<label class="control-label col-md-3">소속:</label>
 																	<div class="col-md-9">
-																		<p class="form-control-static">${DATAMAP.grade}</p>
+																		<p class="form-control-static">${DATAMAP.grade} [${parentName}]</p>
 																	</div>
 																</div>
 															</div>

@@ -51,6 +51,13 @@
 											<div class="caption">
 												<i class="fa fa-reorder"></i> 사용자 정보 변경
 											</div>
+											<div class="actions">
+												<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '대행사' }">
+													<a href="/member/user/change/${DATAMAP.id}" class="btn btn-circle btn-default">
+														<i class="fa fa-pencil"></i> 소속 변경
+													</a>
+												</c:if>
+											</div>
 										</div>
 										<div class="portlet-body form">
 											<form class="form-horizontal form-bordered" role="form" data-form="true" id="writeFrm" name="form" action="/member/user/" method="post">
