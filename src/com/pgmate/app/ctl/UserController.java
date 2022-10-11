@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pgmate.app.dao.*;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,14 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.pgmate.app.dao.CPDAO;
-import com.pgmate.app.dao.EformDAO;
-import com.pgmate.app.dao.HTDAO;
-import com.pgmate.app.dao.LoanDAO;
-import com.pgmate.app.dao.MchtDAO;
-import com.pgmate.app.dao.MchtMngDAO;
-import com.pgmate.app.dao.UserAccessDAO;
-import com.pgmate.app.dao.UserDAO;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.CPResponse;
 import com.pgmate.app.util.CPRUtil;
@@ -89,7 +82,9 @@ public class UserController {
 	
 	@RequestMapping(value = "/member/user/view/{userid}", method = RequestMethod.GET)
     public ModelAndView view(HttpServletRequest request, @PathVariable String userid) throws Exception {
-		request.setAttribute("DATAMAP", new UserDAO().getById(userid).getRow(0));
+
+		SharedMap<String, Object> userDao = new UserDAO().getById(userid).getRow(0);
+		request.setAttribute("DATAMAP", userDao);
 		request.setAttribute("DATAACCESSMAP", new UserAccessDAO().getById(userid,10).getRows());
 		
 		//전자계약서 목록 가져오기
@@ -101,6 +96,20 @@ public class UserController {
 		request.setAttribute("resJson", resJson);
 		request.setAttribute("token", token);
 		//전자계약서 목록 가져오기
+
+		//소속표시
+		String parentName = "";
+		String parentId = userDao.getString("parentId");
+		if(userDao.getString("grade").equals("대행사")) {
+			SharedMap<String, Object> distDao = new DistDAO().getById(parentId).getRowFirst();
+			parentName = distDao.getString("name");
+		} else if(userDao.getString("grade").equals("에이전시")) {
+			SharedMap<String, Object> agencyDao = new AgencyDAO().getById(parentId).getRowFirst();
+			String distId = agencyDao.getString("distId");
+			SharedMap<String, Object> distDao = new DistDAO().getById(distId).getRowFirst();
+			parentName = distDao.getString("name") + " > " + agencyDao.getString("name");
+		}
+		request.setAttribute("parentName", parentName);
 		
         return new ModelAndView("/member/user/view");
     }
@@ -136,6 +145,46 @@ public class UserController {
 	        		.cpResponse();
 		}
     }
+
+	//대행사, 에이전시 소속변경
+	@RequestMapping(value = {"/member/user/change/{userid}"}, method = RequestMethod.GET)
+	public ModelAndView change(HttpServletRequest request, @PathVariable String userid) {
+		SharedMap<String, Object> userDao = new UserDAO().getById(userid).getRowFirst();
+		request.setAttribute("DATAMAP", userDao);
+
+		//소속표시
+		String parentName = "";
+		String parentId = userDao.getString("parentId");
+		if(userDao.getString("grade").equals("대행사")) {
+			SharedMap<String, Object> distDao = new DistDAO().getById(parentId).getRowFirst();
+			parentName = distDao.getString("name");
+		} else if(userDao.getString("grade").equals("에이전시")) {
+			SharedMap<String, Object> agencyDao = new AgencyDAO().getById(parentId).getRowFirst();
+			String distId = agencyDao.getString("distId");
+			SharedMap<String, Object> distDao = new DistDAO().getById(distId).getRowFirst();
+			parentName = distDao.getString("name") + " > " + agencyDao.getString("name");
+		}
+		request.setAttribute("parentName", parentName);
+
+		return new ModelAndView("/member/user/change");
+	}
+
+	@RequestMapping(value = {"/member/user/change/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse changeUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+
+		if(cpDAO.updateAndBack("PG_USER", SessionUtil.getUserId(request), cpRequest.data)){
+			SessionUtil.initSessionData(request);
+			return new CPRUtil(cpRequest)
+					.resultOK("사용자 소속이 변경되었습니다.")
+					.cpResponse();
+		}else{
+			return new CPRUtil(cpRequest)
+					.resultNOK("사용자 소속 변경에 실패하였습니다.",cpDAO.getError())
+					.cpResponse();
+		}
+	}
+
 	
 	@RequestMapping(value = {"/member/user/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody CPResponse update(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
