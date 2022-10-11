@@ -102,12 +102,19 @@ public class UserController {
 		String parentId = userDao.getString("parentId");
 		if(userDao.getString("grade").equals("대행사")) {
 			SharedMap<String, Object> distDao = new DistDAO().getById(parentId).getRowFirst();
-			parentName = distDao.getString("name");
+			parentName = " [ " + distDao.getString("name") + " ] ";
 		} else if(userDao.getString("grade").equals("에이전시")) {
 			SharedMap<String, Object> agencyDao = new AgencyDAO().getById(parentId).getRowFirst();
 			String distId = agencyDao.getString("distId");
 			SharedMap<String, Object> distDao = new DistDAO().getById(distId).getRowFirst();
-			parentName = distDao.getString("name") + " > " + agencyDao.getString("name");
+			parentName = " [ " + distDao.getString("name") + " > " + agencyDao.getString("name") + " ] ";
+		} else if(userDao.getString("grade").equals("지사")) {
+			SharedMap<String, Object> salesDao = new MemberSalesDAO().getById(parentId).getRowFirst();
+			String agencyId = salesDao.getString("agencyId");
+			SharedMap<String, Object> agencyDao = new AgencyDAO().getById(agencyId).getRowFirst();
+			String distId = agencyDao.getString("distId");
+			SharedMap<String, Object> distDao = new DistDAO().getById(distId).getRowFirst();
+			parentName = " [ "+distDao.getString("name") + " > " + agencyDao.getString("name") + " > " + salesDao.getString("name") + " ] ";
 		}
 		request.setAttribute("parentName", parentName);
 		
@@ -163,6 +170,13 @@ public class UserController {
 			String distId = agencyDao.getString("distId");
 			SharedMap<String, Object> distDao = new DistDAO().getById(distId).getRowFirst();
 			parentName = distDao.getString("name") + " > " + agencyDao.getString("name");
+		} else if(userDao.getString("grade").equals("지사")) {
+			SharedMap<String, Object> salesDao = new MemberSalesDAO().getById(parentId).getRowFirst();
+			String agencyId = salesDao.getString("agencyId");
+			SharedMap<String, Object> agencyDao = new AgencyDAO().getById(agencyId).getRowFirst();
+			String distId = agencyDao.getString("distId");
+			SharedMap<String, Object> distDao = new DistDAO().getById(distId).getRowFirst();
+			parentName = distDao.getString("name") + " > " + agencyDao.getString("name") + " > " + salesDao.getString("name");
 		}
 		request.setAttribute("parentName", parentName);
 
