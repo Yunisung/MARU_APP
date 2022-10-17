@@ -56,10 +56,10 @@
 	        	<a href="/mcht/accntSearch/form" class="nav-link ">
 	                <span class="title">비대면계좌개설 조회</span></a>
 	        </li>
-	        <!-- <li class="nav-item start ">
+	        <li class="nav-item start ">
 	        	<a href="/mcht/noti/form.jsp" class="nav-link ">
 	                <span class="title">노티 등록</span></a>
-	        </li> -->
+	        </li>
         </c:if>
     </ul>
 </li>
