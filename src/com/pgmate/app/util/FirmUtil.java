@@ -16,7 +16,7 @@ public class FirmUtil {
   private static Logger logger = LoggerFactory.getLogger(com.pgmate.app.util.FirmUtil.class);
 
   private SharedMap<String, Object> resMap = new SharedMap<String, Object>();
-  private static String host 	= "pgwas2"; //"203.245.13.63";
+  private static String host 	= "10.100.200.10"; //"203.245.13.63";
 	private static int port 	= 10006;
 	private static int newPort 	= 10026; //KSNET 자금이체 대행포트
 	private static int timeout  = 40000;
@@ -35,7 +35,7 @@ public class FirmUtil {
 	  logger.info("요청:{}",action);
 	  firmBean = comm(firmBean);
 	  logger.info("응답:{},{}",firmBean.resultCd,firmBean.resultMsg);
-	  return comm(firmBean);
+	  return firmBean;
   }
   
 	/**
@@ -179,12 +179,12 @@ public class FirmUtil {
 		String resJson = "";
 		long time = System.currentTimeMillis();
 		try{
-			if("0600300".equals(firmBean.msgType) && "089".equals(firmBean.bankCd)){
-				port = 10026;
-			}else {
-				port = 10006;
-			}
-			
+//			if("0600300".equals(firmBean.msgType) && "089".equals(firmBean.bankCd)){
+//				port = 10026;
+//			}else {
+//				port = 10006;
+//			}
+			port = 10006;
 			socket = new Socket(host, port);
 			socket.setSoTimeout(timeout);
 			
@@ -213,7 +213,7 @@ public class FirmUtil {
 			bout.close();
 			
 			firmBean = (FirmBean)GsonUtil.fromJson(new String(res,"MS949"), FirmBean.class);
-			
+			resJson = GsonUtil.toJson(firmBean);
 		}catch(Exception e){
 			firmBean.resultCd = "XXXX";
 			firmBean.resultMsg = "펌뱅킹 시스템과의 통신장애 :"+e.getMessage();

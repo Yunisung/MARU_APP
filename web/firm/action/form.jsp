@@ -67,26 +67,22 @@
 															<label class="control-label col-lg-3">은행선택</label>
 															<select id="select" class="selectpicker col-lg-8" name="mAccnt" data-oper="eq">
 																<option value="">-----&nbsp;</option>  
-																<option value="0201005103757834" selected="selected">우리은행(1005103757834)</option>
-																<option value="0201005004107798">우리은행(1005004107798)</option>
-																<option value="08970110000010023">케이뱅크(70110000010023)</option>
-																<option value="007101021504175">수협은행(101021504175)</option>
-																<option value="007101021518182">수협은행(101021518182)</option>
+																<option value="0398003344291839" selected="selected">경남은행(8003344291839)</option>
 															</select>
 														</div>  
  														<div class="form-group pg-form-group">
-																<button type="button" class="btn blue btn-outline " value="0800100" onClick="handleClick(this)">      
-																	<i class="fa fa-mouse-pointer" aria-hidden="true"></i> 업무개시     
-																</button>  
+<%--																<button type="button" class="btn blue btn-outline " value="0800100" onClick="handleClick(this)">      --%>
+<%--																	<i class="fa fa-mouse-pointer" aria-hidden="true"></i> 업무개시     --%>
+<%--																</button>  --%>
 																<button type="button" class="btn green btn-outline " value="0600300" onClick="handleClick(this)">      
 																	<i class="fa fa-calculator" aria-hidden="true"></i> 잔액조회     
 																</button>
-																<button type="button" class="btn purple btn-outline " value="0700100" onClick="handleClick(this)">    
-																	<i class="fa fa-bar-chart" aria-hidden="true"></i> 거래집계     
-																</button>    
-																<button type="button" class="btn red btn-outline " value="0800800" onClick="handleClick(this)">                
-																	<i class="fa fa-wrench" aria-hidden="true"></i> 테스트콜           
-																</button>   
+<%--																<button type="button" class="btn purple btn-outline " value="0700100" onClick="handleClick(this)">    --%>
+<%--																	<i class="fa fa-bar-chart" aria-hidden="true"></i> 거래집계     --%>
+<%--																</button>    --%>
+<%--																<button type="button" class="btn red btn-outline " value="0800800" onClick="handleClick(this)">                --%>
+<%--																	<i class="fa fa-wrench" aria-hidden="true"></i> 테스트콜           --%>
+<%--																</button>   --%>
 														</div>   
 														</div>
 													</div>      

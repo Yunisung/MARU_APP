@@ -1522,6 +1522,7 @@ public class MchtController {
 		sharedMap.put("ownerAuthFee", CommonUtil.moneyFormat(sharedMap.getString("ownerAuthFee")));
 		sharedMap.put("accountAuthFee", CommonUtil.moneyFormat(sharedMap.getString("accountAuthFee")));
 		sharedMap.put("arsAuthFee", CommonUtil.moneyFormat(sharedMap.getString("arsAuthFee")));
+		sharedMap.put("totalAuthFee", CommonUtil.moneyFormat(sharedMap.getString("totalAuthFee")));
     	
     	sharedMap.put("rate", String.format("%.3f",sharedMap.getDouble("rate")*100));
     	sharedMap.put("distRate", String.format("%.3f",sharedMap.getDouble("distRate")*100));
