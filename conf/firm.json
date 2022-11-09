@@ -1,5 +1,5 @@
 {
-  "firmServer": "pgwas2",
+  "firmServer": "10.100.200.10",
   "firmPort": 10006,
   "firmTimeout": 35000,
   "firmStartTime": 3000,

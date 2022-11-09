@@ -197,7 +197,7 @@
 																<!--/span-->
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">사업장연락처2</label>
+																		<label class="control-label col-md-3">휴대폰번호</label>
 																		<div class="col-md-9">
 																			<p class="form-control-static">${DATAMAP.tel2}</p>
 																		</div>
@@ -519,6 +519,9 @@
 																					<label class="control-label col-md-3">대행사 정산유형</label>
 																					<div class="col-md-9">
 																						<p class="form-control-static distNum">${DATADISTMAP.settleName} (${DATADISTMAP.payStatus})</p>
+																						<c:if test="${DATADISTMAP.settleType == 'M+10'}">
+																							<span>매월 10일</span>
+																						</c:if>
 																						<c:if test="${DATADISTMAP.settleType == 'M+25'}">
 																							<span>매월 25일</span>
 																						</c:if>
@@ -547,6 +550,9 @@
 																					<label class="control-label col-md-3">에이전시 정산유형</label>
 																					<div class="col-md-9">
 																						<p class="form-control-static agencyNum">${DATAAGENCYMAP.settleName} (${DATAAGENCYMAP.payStatus})</p>
+																						<c:if test="${DATAAGENCYMAP.settleType == 'M+10'}">
+																							<span>매월 10일</span>
+																						</c:if>
 																						<c:if test="${DATAAGENCYMAP.settleType == 'M+25'}">
 																							<span>매월 25일</span>
 																						</c:if>
@@ -575,6 +581,9 @@
 																					<label class="control-label col-md-3">지사 정산유형</label>
 																					<div class="col-md-9">
 																						<p class="form-control-static salesNum">${DATASALESMAP.settleName} (${DATASALESMAP.payStatus})</p>
+																						<c:if test="${DATASALESMAP.settleType == 'M+10'}">
+																							<span>매월 10일</span>
+																						</c:if>
 																						<c:if test="${DATASALESMAP.settleType == 'M+25'}">
 																							<span>매월 25일</span>
 																						</c:if>
@@ -2466,10 +2475,30 @@
 																	</div>
 																	<div class="row">
 																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">통합인증<br>수수료</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${VACT_MAP.totalAuthFee}</p> 원
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="row">
+																		<div class="col-md-6">
 																			<div id="respiteCntDiv" class="form-group pg-view-group">
 																				<label class="control-label col-md-3">API인증<br>인증유예횟수</label>
 																				<div class="col-md-9">
 																					<p class="form-control-static digits">${VACT_MAP.respiteCnt}</p> 회
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="row">
+																		<div class="col-md-6">
+																			<div id="depositLimitCntDiv" class="form-group pg-view-group">
+																				<label class="control-label col-md-3">입금<br>제한횟수</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${VACT_MAP.depositLimitCnt}</p> 회
 																				</div>
 																			</div>
 																		</div>

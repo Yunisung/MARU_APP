@@ -142,13 +142,13 @@
 														</div>
 													</div>
 													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4 req-label">전화번호</label>
+														<label class="control-label col-sm-4 req-label">사업장 연락처</label>
 														<div class="col-sm-6">
 															<input type="text" class="form-control input-sm numberHypen" maxlength="20" name="tel1" placeholder="" value="${DATAMAP.tel1 }">
 														</div>
 													</div>
 													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4">전화번호2</label>
+														<label class="control-label col-sm-4">휴대폰번호</label>
 														<div class="col-sm-6">
 															<input type="text" class="form-control input-sm numberHypen" maxlength="20" name="tel2" placeholder="" value="${DATAMAP.tel2 }">
 														</div>

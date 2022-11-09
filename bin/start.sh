@@ -1,5 +1,5 @@
 #!/bin/sh
-./stop.sh
+bin/stop.sh
 
 # JVM_ARGS for VM
 ##########################
@@ -10,3 +10,4 @@ JVM_ARGS="$JVM_ARGS -cp ../lib/*:../lib/apache/*:../lib/tomcat/*:../lib/spring/*
 
 java $JVM_ARGS com.pgmate.lib.tomcat.Tomcat8 &
 echo $!>pwd.pid
+

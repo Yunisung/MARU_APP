@@ -39,17 +39,17 @@
                                         </div>
                                         <div class="input-container" style="margin: 0 45px;">
                                             <div class="input-wrapper id">
-                                                <input type="text" name="memberId" placeholder="아이디 입력"  tabindex="1">
+                                                <input id="userId" type="text" name="memberId" placeholder="아이디 입력"  tabindex="1">
                                             </div>
                                             <div class="input-wrapper pw">
-                                                <input type="password" name="memberPw" placeholder="비밀번호 입력"  tabindex="2">
+                                                <input id="userPw" type="password" name="memberPw" placeholder="비밀번호 입력"  tabindex="2">
                                             </div>
                                             <div class="input-wrapper smsGroup" style="display:none;">
                                                 <input type="text" placeholder="인증번호" name="smsKey" maxlength="6">
                                             </div>
                                         </div>
                                         <div class="btn">
-                                            <button type="submit" id="btn-submit" class="">로그인</button>
+                                            <button id="submit" type="submit" id="btn-submit" class="">로그인</button>
                                         </div>
                                         <div class="chk_box">
                                             <input type="checkbox" id="chk" name="remember">

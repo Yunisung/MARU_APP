@@ -78,17 +78,15 @@
 													</div>
 													<div class="form-group col-sm-6">
 														<label class="control-label input-sm col-sm-4 req-label">정산유형</label>
-														<div class="col-sm-6">
-																<input type="text" class="form-control input-sm settleType" name="settleType" readonly="readonly" value="M+25">
-														</div>
-														<%--
+<!-- 														<div class="col-sm-6"> -->
+<!-- 																<input type="text" class="form-control input-sm settleType" name="settleType" readonly="readonly" value="M+25"> -->
+<!-- 														</div> -->
+														
 														<select name="settleType" class="selectpicker col-sm-6">
-															<option value="M+3">다음달 3일 정산</option>
 															<option value="M+10" selected>다음달 10일 정산</option>
-															<option value="M+1">다음달 1일 정산</option>
-															<option value="M+5">다음달 5일 정산</option>
-															<option value="M+20">다음달 20일 정산</option>
-														</select> --%>
+															<option value="M+15">다음달 15일 정산</option>
+															<option value="M+25">다음달 25일 정산</option>
+														</select>
 													</div>
 													<!-- <div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">에이전시 수수료</label>

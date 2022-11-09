@@ -1229,26 +1229,26 @@ public class MchtController {
 	@RequestMapping(value = {"/mcht/tax/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody CPResponse taxUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
-		MchtDAO mchtDao = new MchtDAO();
-		
-		String taxId = cpRequest.getKeyValue("taxId");
-		String account = cpRequest.getValue("account");
-		String bankCd = cpRequest.getValue("bankCd");
-		String accntHolder = cpRequest.getValue("accntHolder");
-		
-		logger.info("taxUpdate : [{}][{}][{}][{}]", taxId, account, bankCd, accntHolder);
-
-		SharedMap<String, Object> taxData = mchtDao.getTaxData(taxId).getRowFirst();
-		
-		if(!taxData.getString("account").equals(account) || 
-		   !taxData.getString("bankCd").equals(bankCd) ||
-		   !taxData.getString("accntHolder").equals(accntHolder)) {
-			logger.info("taxUpdate : [{}][{}][{}][{}]", taxId, taxData.getString("account"), taxData.getString("bankCd"), taxData.getString("accntHolder"));
-			
-			return new CPRUtil(cpRequest)
-	        		.resultNOK("은행정보는 변경할 수 없습니다. 관리자에게 문의해 주세요.",cpDAO.getError())
-	        		.cpResponse();
-		}
+//		MchtDAO mchtDao = new MchtDAO();
+//		
+//		String taxId = cpRequest.getKeyValue("taxId");
+//		String account = cpRequest.getValue("account");
+//		String bankCd = cpRequest.getValue("bankCd");
+//		String accntHolder = cpRequest.getValue("accntHolder");
+//		
+//		logger.info("taxUpdate : [{}][{}][{}][{}]", taxId, account, bankCd, accntHolder);
+//
+//		SharedMap<String, Object> taxData = mchtDao.getTaxData(taxId).getRowFirst();
+//		
+//		if(!taxData.getString("account").equals(account) || 
+//		   !taxData.getString("bankCd").equals(bankCd) ||
+//		   !taxData.getString("accntHolder").equals(accntHolder)) {
+//			logger.info("taxUpdate : [{}][{}][{}][{}]", taxId, taxData.getString("account"), taxData.getString("bankCd"), taxData.getString("accntHolder"));
+//			
+//			return new CPRUtil(cpRequest)
+//	        		.resultNOK("은행정보는 변경할 수 없습니다. 관리자에게 문의해 주세요.",cpDAO.getError())
+//	        		.cpResponse();
+//		}
 		
 		
 		
@@ -1522,6 +1522,7 @@ public class MchtController {
 		sharedMap.put("ownerAuthFee", CommonUtil.moneyFormat(sharedMap.getString("ownerAuthFee")));
 		sharedMap.put("accountAuthFee", CommonUtil.moneyFormat(sharedMap.getString("accountAuthFee")));
 		sharedMap.put("arsAuthFee", CommonUtil.moneyFormat(sharedMap.getString("arsAuthFee")));
+		sharedMap.put("totalAuthFee", CommonUtil.moneyFormat(sharedMap.getString("totalAuthFee")));
     	
     	sharedMap.put("rate", String.format("%.3f",sharedMap.getDouble("rate")*100));
     	sharedMap.put("distRate", String.format("%.3f",sharedMap.getDouble("distRate")*100));
@@ -1550,7 +1551,14 @@ public class MchtController {
 			dao.addWhere("mchtId", cpRequest.getKeyValue("mchtId"), DAO.eq);
 
 			dao.update();
-			
+
+			//PYS : 입금제한횟수 업데이트 하기
+			dao = new DAO();
+			dao.setTable("PG_VACT_DTL");
+			dao.setRecord("depositLimitCnt", cpRequest.getData("depositLimitCnt").val);
+			dao.addWhere("mchtId", cpRequest.getKeyValue("mchtId"), DAO.eq);
+			dao.update();
+
 //			dao = new DAO();
 //			dao.setTable("PG_VACT_AUTH_STATEINIT_INFO");
 //			dao.setRecord("stateInitCnt", cpRequest.getData("stateInitCnt").val);
