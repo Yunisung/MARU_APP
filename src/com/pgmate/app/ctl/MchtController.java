@@ -1639,9 +1639,11 @@ public class MchtController {
 	public @ResponseBody SharedMap<String, Object> vactExIssue(HttpServletRequest request, @PathVariable String mchtId,
 		@PathVariable String bankCd, @PathVariable String holderName, @PathVariable long cnt) {
 		SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+		boolean flag = true;
 		resMap.put("result", "NOK");
 
 		DAO dao = new DAO();
+		VactDtlDAO vactDtlDAO = new VactDtlDAO();
 		dao.setTable("VW_VACT_UNUSED");
 		dao.setColumns("COUNT(*) as cnt");
 		dao.addWhere("bankCd", bankCd, DAO.eq);
@@ -1649,12 +1651,23 @@ public class MchtController {
 		logger.debug("{} UNUSED VACT CNT: {}, {}", bankCd, orgCnt, cnt);
 		if (cnt > orgCnt) {
 			resMap.put("msg", "보유 계좌가 요청 계좌보다 적습니다.");
-		} else if(new VactDtlDAO().insert(mchtId, bankCd, cnt, holderName, SessionUtil.getUserId(request)) < 1) {
-			resMap.put("msg", "DB 작업에 실패했습니다.관리자에게 문의해주세요.");
-		} else {
-			dao.initRecord();
-			logger.debug("UPDATE PG_MCHT_MNG_VACT {}:", dao.update("UPDATE PG_MCHT_MNG_VACT A LEFT JOIN (SELECT COUNT(*) as cnt, mchtId FROM PG_VACT_DTL GROUP BY mchtId) B ON A.mchtId = B.mchtId SET A.quantity = B.cnt WHERE A.mchtId ='"+mchtId+"' "));
-			resMap.put("result", "OK");
+			flag = false;
+		}
+		if(flag) {
+			List<String> issueIdList;
+			//insert 된 issueId 리스트 반환
+			issueIdList = vactDtlDAO.insert(mchtId, bankCd, cnt, holderName, SessionUtil.getUserId(request));
+
+			if(issueIdList.size() < 1) {
+				resMap.put("msg", "DB 작업에 실패했습니다.관리자에게 문의해주세요.");
+			} else {
+				dao.initRecord();
+
+				logger.debug("INSERT HT_VACT_DTL {} : ", vactDtlDAO.insertHtVactDtl(issueIdList));
+				logger.debug("UPDATE PG_MCHT_MNG_VACT {}:", dao.update("UPDATE PG_MCHT_MNG_VACT A LEFT JOIN (SELECT COUNT(*) as cnt, mchtId FROM PG_VACT_DTL GROUP BY mchtId) B ON A.mchtId = B.mchtId SET A.quantity = B.cnt WHERE A.mchtId ='"+mchtId+"' "));
+				resMap.put("result", "OK");
+			}
+
 		}
 
 		return resMap;
