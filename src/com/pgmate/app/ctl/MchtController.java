@@ -1548,6 +1548,7 @@ public class MchtController {
 			DAO dao = new DAO();
 			dao.setTable("PG_VACT_AUTH_INFO");
 			dao.setRecord("respiteCnt", cpRequest.getData("respiteCnt").val);
+			dao.setRecord("depositLimitCnt", cpRequest.getData("depositLimitCnt").val);
 			dao.addWhere("mchtId", cpRequest.getKeyValue("mchtId"), DAO.eq);
 
 			dao.update();

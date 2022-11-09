@@ -2493,6 +2493,16 @@
 																			</div>
 																		</div>
 																	</div>
+																	<div class="row">
+																		<div class="col-md-6">
+																			<div id="depositLimitCntDiv" class="form-group pg-view-group">
+																				<label class="control-label col-md-3">입금<br>제한횟수</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${VACT_MAP.depositLimitCnt}</p> 회
+																				</div>
+																			</div>
+																		</div>
+																	</div>
 																</c:if>
 															</div>
 															<div class="form-actions">

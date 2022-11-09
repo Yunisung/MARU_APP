@@ -440,6 +440,15 @@
 													</div>
 												</div>
 											</div>
+											<div id="depositLimitCntDiv" class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">입금<br>제한횟수</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency depositLimitCnt" maxlength="3" name="depositLimitCnt" placeholder="" value="10">
+														<span class="input-group-addon">회</span>
+													</div>
+												</div>
+											</div>
 										</div>
 										<div class="alert alert-danger display-hide"></div>
 										<div class="form-actions right">
@@ -693,14 +702,17 @@
 			var selected = $(this).find("option:selected").val();
 			
 			if(selected == '0'){
+				$('#depositLimitCntDiv').hide();
 				$('#respiteCntDiv').hide();
 				$('#stateInitCntDiv').hide();
 				$('#authBankCdDiv').hide();
 			}else if(selected == '1'){
+				$('#depositLimitCntDiv').show();
 				$('#respiteCntDiv').show();
 				$('#stateInitCntDiv').hide();
 				$('#authBankCdDiv').hide();
 			}else if(selected == '2'){
+				$('#depositLimitCntDiv').hide();
 				$('#respiteCntDiv').hide();
 				$('#stateInitCntDiv').show();
 				$('#authBankCdDiv').show();
@@ -721,14 +733,17 @@
 			var selected = $('select[name="authType"]').find("option:selected").val();
 
 			if(selected == '0'){
+				$('#depositLimitCntDiv').hide();
 				$('#respiteCntDiv').hide();
 				$('#stateInitCntDiv').hide();
 				$('#authBankCdDiv').hide();
 			}else if(selected == '1'){
+				$('#depositLimitCntDiv').show();
 				$('#respiteCntDiv').show();
 				$('#stateInitCntDiv').hide();
 				$('#authBankCdDiv').hide();
 			}else if(selected == '2'){
+				$('#depositLimitCntDiv').hide();
 				$('#respiteCntDiv').hide();
 				$('#stateInitCntDiv').show();
 				$('#authBankCdDiv').show();
