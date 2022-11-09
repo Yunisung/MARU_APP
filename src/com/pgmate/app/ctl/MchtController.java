@@ -1548,11 +1548,17 @@ public class MchtController {
 			DAO dao = new DAO();
 			dao.setTable("PG_VACT_AUTH_INFO");
 			dao.setRecord("respiteCnt", cpRequest.getData("respiteCnt").val);
-			dao.setRecord("depositLimitCnt", cpRequest.getData("depositLimitCnt").val);
 			dao.addWhere("mchtId", cpRequest.getKeyValue("mchtId"), DAO.eq);
 
 			dao.update();
-			
+
+			//PYS : 입금제한횟수 업데이트 하기
+			dao = new DAO();
+			dao.setTable("PG_VACT_DTL");
+			dao.setRecord("depositLimitCnt", cpRequest.getData("depositLimitCnt").val);
+			dao.addWhere("mchtId", cpRequest.getKeyValue("mchtId"), DAO.eq);
+			dao.update();
+
 //			dao = new DAO();
 //			dao.setTable("PG_VACT_AUTH_STATEINIT_INFO");
 //			dao.setRecord("stateInitCnt", cpRequest.getData("stateInitCnt").val);
