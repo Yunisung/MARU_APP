@@ -87,10 +87,10 @@ public class VactDtlDAO extends DAO {
 			int count = 0;
 			String expire = (Integer.parseInt(CommonUtil.getCurrentDate("yyyy")) + 1) + CommonUtil.getCurrentDate("MMdd");
 
-			int i = 1;
 			for (SharedMap<String, Object> map : targetList) {
 				String issueId = TrxDAO.getIssueId();
 				issueIdList.add(issueId);
+				int i = 1;
 				pstmt.setString(i++, issueId);
 				pstmt.setString(i++, map.getString("account"));
 				pstmt.setString(i++, "영구");
@@ -132,8 +132,8 @@ public class VactDtlDAO extends DAO {
 	 */
 	public int insertHtVactDtl(List<String> issueIdList){
 		logger.debug("insert HT_VACT_DTL batch: {}", issueIdList.size());
-		String query = "INSERT INTO HT_VACT_DTL (issueId, account, vactType, status, mchtId, holderName, amount, oper, trackId, depositCnt, depositLimitCnt, expireAt, expireDate, udf1, udf2, reason, resultCd, resultMsg, regId, regDay)"
-				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		String query = "INSERT INTO HT_VACT_DTL (issueId, account, vactType, status, mchtId, holderName, amount, oper, trackId, depositCnt, depositLimitCnt, expireAt, udf1, udf2, reason, resultCd, resultMsg, regId, regDay)"
+				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
 		DBManager db = null;
 		Connection conn = null;
@@ -165,7 +165,6 @@ public class VactDtlDAO extends DAO {
 				pstmt.setString(i++, map.getString("depositCnt"));
 				pstmt.setString(i++, map.getString("depositLimitCnt"));
 				pstmt.setString(i++, map.getString("expireAt"));
-				pstmt.setString(i++, map.getString("expireDate"));
 				pstmt.setString(i++, map.getString("udf1"));
 				pstmt.setString(i++, map.getString("udf2"));
 				pstmt.setString(i++, map.getString("reason"));
