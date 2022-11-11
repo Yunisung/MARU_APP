@@ -137,7 +137,7 @@ public class FirmUtil {
 		  firmBean.userIp	= ip;
 		  firmBean.userId 	= userId;
 		  logger.info("요청:{}",action);
-		  firmBean = newComm(firmBean);
+		  firmBean = comm(firmBean);
 		  logger.info("응답:{},{}",firmBean.resultCd,firmBean.resultMsg);
 		  return firmBean;
 	  }
@@ -163,7 +163,7 @@ public class FirmUtil {
 		firmBean.data.put("sender", sender);
 		firmBean.data.put("procType","MT");
 		
-		firmBean = newComm(firmBean);
+		firmBean = comm(firmBean);
 		logger.info("응답:{},{}",firmBean.resultCd,firmBean.resultMsg);
 		logger.info("idx:{},{}",firmBean.idx,firmBean.data.getLong("balance"));
 		logger.info("data : {}",GsonUtil.toJson(firmBean.data));
