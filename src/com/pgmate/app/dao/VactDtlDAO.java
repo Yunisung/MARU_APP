@@ -195,6 +195,7 @@ public class VactDtlDAO extends DAO {
 
 	public SharedMap<String,Object> getVactDtl(String issueId) {
 		super.setTable("PG_VACT_DTL");
+		super.setColumns("*");
 		super.addWhere("issueId", issueId, eq);
 
 		super.setLimit(1);
