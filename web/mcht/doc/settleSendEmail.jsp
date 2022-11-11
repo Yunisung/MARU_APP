@@ -220,7 +220,7 @@
 											<tr>
 												<td style="vertical-align: top;"><img
 													src="https://admin.bkwinners.kr/assets/global/img/emailDot.gif"></td>
-												<td>(주)케이원 피에스는 앞으로도 더 나은 서비스 제공을 위해 최선을 다하겠습니다.</td>
+												<td>(주)부국위너스는 앞으로도 더 나은 서비스 제공을 위해 최선을 다하겠습니다.</td>
 											</tr>
 										</tbody>
 									</table>

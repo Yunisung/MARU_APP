@@ -67,7 +67,7 @@
 															<label class="control-label col-lg-3">은행선택</label>
 															<select id="select" class="selectpicker col-lg-8" name="mAccnt" data-oper="eq">
 																<option value="">-----&nbsp;</option>  
-																<option value="0398003344291839" selected="selected">경남은행(8003344291839)</option>
+																<option value="08970022000000008" selected="selected">케이뱅크(70022000000008)</option>
 															</select>
 														</div>  
  														<div class="form-group pg-form-group">

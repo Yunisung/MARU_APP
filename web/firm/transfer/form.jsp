@@ -56,7 +56,7 @@
 														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-3">송신계좌</label>
 															<select id="select" class="selectpicker col-lg-8" name="sendAccnt" data-oper="eq">
-																<option value="08970110000010023" selected="selected">케이뱅크(70110000010023)</option>
+																<option value="08970022000000008" selected="selected">케이뱅크(70022000000008)</option>
 															</select>
 														</div>  
 														
@@ -76,10 +76,10 @@
 														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-3">수신계좌</label>
 															<select id="select" class="selectpicker col-lg-8" name="recvAccnt" data-oper="eq">
-																<option value="0201005902772439" selected="selected">우리은행(1005902772439)</option>
-																<option value="0201005103757834">우리은행(1005103757834)</option>
-																<option value="0201005004107798">우리은행(1005004107798)</option>
-																<option value="0392070131351802">경남은행(2070131351802)</option>
+																<option value="088100035873256" selected="selected">신한은행(100-035-873256)</option>
+<%--																<option value="0201005103757834">우리은행(1005103757834)</option>--%>
+<%--																<option value="0201005004107798">우리은행(1005004107798)</option>--%>
+<%--																<option value="0392070131351802">경남은행(2070131351802)</option>--%>
 															</select>
 														</div>  
 														<div class="form-group pg-form-group">
