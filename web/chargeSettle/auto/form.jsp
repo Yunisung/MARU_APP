@@ -50,7 +50,7 @@
 										<div class="portlet-body form light">
 											<form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/chargeSettle/auto/list" method="post">
 												<input type="hidden" data-reg="false" name="reason" value="충전 자동 정산내역">
-												<input type="hidden" data-reg="false" name="thead" value="stlId:정산번호,payType:거래유형,stlType:정산주기,status:지급상태,stlDay:정산일,name:가맹점명,mchtId:가맹점ID,payTerm:대상거래기간,payCnt:매입/입금건수,payAmt:매입/입금금액,rfdCnt:매입취소/입금취소건수,rfdAmt:매입취소/입금취소금액,totCnt:합계건수,totAmt:합계금액,stlFee:가맹점수수료,stlAmount:정산액">
+												<input type="hidden" data-reg="false" name="thead" value="stlId:정산번호,payType:거래유형,stlType:정산주기,status:지급상태,stlDay:정산일,name:가맹점명,mchtId:가맹점ID,payTerm:대상거래기간,payCnt:매입/입금건수,payAmt:매입/입금금액,rfdCnt:매입취소/입금취소건수,rfdAmt:매입취소/입금취소금액,totCnt:합계건수,totAmt:합계금액,stlFee:가맹점수수료,totalAuthFee:인증수수료,stlAmount:정산액">
 												<div class="form-body">
 													<div class="row">
 														<div class="form-group pg-form-group">
