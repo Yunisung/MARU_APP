@@ -1524,10 +1524,10 @@ public class MchtController {
 		sharedMap.put("arsAuthFee", CommonUtil.moneyFormat(sharedMap.getString("arsAuthFee")));
 		sharedMap.put("totalAuthFee", CommonUtil.moneyFormat(sharedMap.getString("totalAuthFee")));
     	
-    	sharedMap.put("rate", String.format("%.3f",sharedMap.getDouble("rate")*100));
-    	sharedMap.put("distRate", String.format("%.3f",sharedMap.getDouble("distRate")*100));
-    	sharedMap.put("agencyRate", String.format("%.3f",sharedMap.getDouble("agencyRate")*100));
-    	sharedMap.put("salesRate", String.format("%.3f",sharedMap.getDouble("salesRate")*100));
+    	sharedMap.put("rate", String.format("%.4f",sharedMap.getDouble("rate")));
+    	sharedMap.put("distRate", String.format("%.4f",sharedMap.getDouble("distRate")));
+    	sharedMap.put("agencyRate", String.format("%.4f",sharedMap.getDouble("agencyRate")));
+    	sharedMap.put("salesRate", String.format("%.4f",sharedMap.getDouble("salesRate")));
     	
 		SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
 		request.setAttribute("MCHT_MAP", new MchtDAO().getById(mchtId).getRowFirst());
