@@ -146,7 +146,7 @@
 												<label class="control-label col-sm-4 req-label">1회한도</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
-														<input type="text" class="form-control limitOnce comma" data-oper="comma" maxlength="10" name="limitOnce" placeholder="" value="${DATAMAP.limitOnce }">
+														<input type="text" class="form-control limitOnce currency" data-oper="comma" maxlength="10" name="limitOnce" placeholder="" value="${DATAMAP.limitOnce }">
 														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
 													</div>
 												</div>
@@ -155,7 +155,7 @@
 												<label class="control-label col-sm-4 req-label">1일한도</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
-														<input type="text" class="form-control limitDay comma" data-oper="comma" maxlength="14" name="limitDay" placeholder="" value="${DATAMAP.limitDay }">
+														<input type="text" class="form-control limitDay currency" data-oper="comma" maxlength="14" name="limitDay" placeholder="" value="${DATAMAP.limitDay }">
 														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
 													</div>
 												</div>
