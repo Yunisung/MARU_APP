@@ -2820,17 +2820,17 @@ public class MchtController {
 	
 	@RequestMapping(value = "/mcht/distRate/get/{distNum}", method = RequestMethod.GET)
 	public @ResponseBody Object distRateGet(HttpServletRequest request, @PathVariable String distNum) {
-		return new DistMngDAO().getById(distNum).getRowFirst();
+		return new DistMngDAO().getByNum(distNum).getRowFirst();
 	}
 	
 	@RequestMapping(value = "/mcht/agencyRate/get/{agencyNum}", method = RequestMethod.GET)
 	public @ResponseBody Object agencyRateGet(HttpServletRequest request, @PathVariable String agencyNum) {
-		return new AgencyMngDAO().getById(agencyNum).getRowFirst();
+		return new AgencyMngDAO().getByNum(agencyNum).getRowFirst();
 	}
 	
 	@RequestMapping(value = "/mcht/salesRate/get/{salesNum}", method = RequestMethod.GET)
 	public @ResponseBody Object salesRateGet(HttpServletRequest request, @PathVariable String salesNum) {
-		return new MemberSalesMngDAO().getById(salesNum).getRowFirst();
+		return new MemberSalesMngDAO().getByNum(salesNum).getRowFirst();
 	}
 	
 	@RequestMapping(value = {"/mcht/tmnInsert/form"})
