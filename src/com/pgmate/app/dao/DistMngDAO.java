@@ -58,7 +58,7 @@ public class DistMngDAO extends DAO{
 		setColumns("distId as distNum, settleType as distSettleName, payStatus as distPayStatus");
 		addWhere("lower(distId)",distId.toLowerCase(),eq);
 		addWhere("payStatus","사용");
-		addWhere("payType",payType,eq);
+//		addWhere("payType",payType,eq);
 		setOrderBy("payStatus asc, settleType asc");
 		return search();
 	}

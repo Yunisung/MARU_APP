@@ -59,7 +59,7 @@ public class AgencyMngDAO extends DAO{
 		setColumns("agencyId as agencyNum, settleType as agencySettleName, payStatus as agencyPayStatus");
 		addWhere("lower(agencyId)",agencyId.toLowerCase(),eq);
 		addWhere("payStatus","사용");
-		addWhere("payType", payType, eq);
+//		addWhere("payType", payType, eq);
 		setOrderBy("payStatus asc, settleType asc");
 		return search();
 	}
