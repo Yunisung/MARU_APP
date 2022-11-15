@@ -229,11 +229,11 @@
 											</div>
 											<div class="form-group col-sm-6">
 												<label class="control-label input-sm col-sm-4">대행사 정산유형</label> 
-												<select name="distNum" class="selectpicker col-sm-6" id="distType">
-													<c:forEach items="${DISTMNGTYPE }" var="entry">
-														<option value="${entry.distNum}">${entry.distSettleName} (${entry.distPayStatus})</option>
-													</c:forEach>
-												</select>
+<%--												<select name="distNum" class="selectpicker col-sm-6" id="distType">--%>
+<%--													<c:forEach items="${DISTMNGTYPE }" var="entry">--%>
+<%--														<option value="${entry.distNum}">${entry.distSettleName} (${entry.distPayStatus})</option>--%>
+<%--													</c:forEach>--%>
+<%--												</select>--%>
 												<script type="text/javascript">document.forms.writeFrm.distNum.value = '${DATAMAP.distNum}'</script>
 												<input type="hidden" name="distSettleType" value="${DATAMAP.distSettleType}">
 												<span class="distSettleType"></span>
@@ -264,11 +264,11 @@
 											</div>
 											<div class="form-group col-sm-6">
 												<label class="control-label input-sm col-sm-4">에이전시 정산유형</label> 
-												<select name="agencyNum" class="selectpicker col-sm-6" id="agencyType">
-													<c:forEach items="${AGENCYMNGTYPE }" var="entry">
-														<option value="${entry.agencyNum}">${entry.agencySettleName} (${entry.agencyPayStatus})</option>
-													</c:forEach>
-												</select>
+<%--												<select name="agencyNum" class="selectpicker col-sm-6" id="agencyType">--%>
+<%--													<c:forEach items="${AGENCYMNGTYPE }" var="entry">--%>
+<%--														<option value="${entry.agencyNum}">${entry.agencySettleName} (${entry.agencyPayStatus})</option>--%>
+<%--													</c:forEach>--%>
+<%--												</select>--%>
 												<script type="text/javascript">document.forms.writeFrm.agencyNum.value = '${DATAMAP.agencyNum}'</script>
 												<input type="hidden" name="agencySettleType" value="${DATAMAP.agencySettleType}">
 												<span class="agencySettleType"></span>
@@ -299,11 +299,11 @@
 											</div>
 											<div class="form-group col-sm-6">
 												<label class="control-label input-sm col-sm-4">지사 정산유형</label> 
-												<select name="salesNum" class="selectpicker col-sm-6" id="salesType">
-													<c:forEach items="${SALESMNGTYPE }" var="entry">
-														<option value="${entry.salesNum}">${entry.salesSettleName} (${entry.salesPayStatus})</option>
-													</c:forEach>
-												</select>
+<%--												<select name="salesNum" class="selectpicker col-sm-6" id="salesType">--%>
+<%--													<c:forEach items="${SALESMNGTYPE }" var="entry">--%>
+<%--														<option value="${entry.salesNum}">${entry.salesSettleName} (${entry.salesPayStatus})</option>--%>
+<%--													</c:forEach>--%>
+<%--												</select>--%>
 												<script type="text/javascript">document.forms.writeFrm.salesNum.value = '${DATAMAP.salesNum}'</script>
 												<input type="hidden" name="salesSettleType" value="${DATAMAP.salesSettleType}">
 												<span class="salesSettleType"></span>
