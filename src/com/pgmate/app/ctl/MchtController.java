@@ -1509,8 +1509,8 @@ public class MchtController {
 	@RequestMapping(value = "/mcht/vact/modify/{mchtId}", method = RequestMethod.GET)
 	public ModelAndView vactModify(HttpServletRequest request, @PathVariable String mchtId) {
 		SharedMap<String,Object> sharedMap = new MchtVactDAO().getByMchtId(mchtId);
-		sharedMap.put("limitOnce", CommonUtil.moneyFormat(sharedMap.getString("limitOnce")));
-		sharedMap.put("limitDay", CommonUtil.moneyFormat(sharedMap.getString("limitDay")));
+		sharedMap.put("limitOnce", sharedMap.getString("limitOnce"));
+		sharedMap.put("limitDay", sharedMap.getString("limitDay"));
 		sharedMap.put("fee", CommonUtil.moneyFormat(sharedMap.getString("fee")));
 		sharedMap.put("distFee", CommonUtil.moneyFormat(sharedMap.getString("distFee")));
 		sharedMap.put("agencyFee", CommonUtil.moneyFormat(sharedMap.getString("agencyFee")));
