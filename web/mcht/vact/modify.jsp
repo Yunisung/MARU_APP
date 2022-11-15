@@ -757,7 +757,7 @@
 			
 			if(selected === undefined || selected == "" || selected === null ){
 				$('#distType').empty();
-				$('#distType').append('<option value="" id="distSelect" selected>--- 선택 (기본 M+15) ---</option>');
+				$('#distType').append('<option value="" id="distSelect" selected>--- 선택 (기본 M+10) ---</option>');
 				$('#distType').selectpicker('refresh');
 			} else {
 				$.ajax({
@@ -774,7 +774,7 @@
 			var selected = $('#agencyType').find("option:selected").val();
 			if(selected === undefined || selected == "" || selected === null ){
 				$('#agencyType').empty();
-				$('#agencyType').append('<option value="" id="agencySelect" selected>--- 선택 (기본 M+15) ---</option>');
+				$('#agencyType').append('<option value="" id="agencySelect" selected>--- 선택 (기본 M+10) ---</option>');
 				$('#agencyType').selectpicker('refresh');
 			} else {
 				$.ajax({
@@ -790,7 +790,7 @@
 			var selected = $('#salesType').find("option:selected").val();
 			if(selected === undefined || selected == "" || selected === null ){
 				$('#salesType').empty();
-				$('#salesType').append('<option value="" id="salesSelect" selected>--- 선택 (기본 M+15) ---</option>');
+				$('#salesType').append('<option value="" id="salesSelect" selected>--- 선택 (기본 M+10) ---</option>');
 				$('#salesType').selectpicker('refresh');
 			} else {
 				$.ajax({
