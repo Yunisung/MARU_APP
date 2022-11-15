@@ -595,50 +595,50 @@
 			}
 		}
 		
-		$('#distType').on('change', function() {
-			var selected = $(this).find("option:selected").val();
-			if(selected == '') return false;
-		  	$.ajax({
-		  		url:'/mcht/distRate/get/'+selected,
-		  		method: 'GET',
-		  		dataType: 'json',
-		  		success: function(data){
-	  				$('input[name="distFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
-	  				$('input[name="distRate"]').val((data.rate*100).toFixed(3));
-		  			$('.distSettleType').html(data.settleType);
-	  			}
-		  	})
-		});
-		
-		$('#agencyType').on('change', function() {
-			var selected = $(this).find("option:selected").val();
-			if(selected == '') return false;
-		  	$.ajax({
-		  		url:'/mcht/agencyRate/get/'+selected,
-		  		method: 'GET',
-		  		dataType: 'json',
-		  		success: function(data){
-	  				$('input[name="agencyFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
-	  				$('input[name="agencyRate"]').val((data.rate*100).toFixed(3));
-		  			$('.agencySettleType').html(data.settleType);
-	  			}
-		  	})
-		});
-		
-		$('#salesType').on('change', function() {
-			var selected = $(this).find("option:selected").val();
-			if(selected == '') return false;
-		  	$.ajax({
-		  		url:'/mcht/salesRate/get/'+selected,
-		  		method: 'GET',
-		  		dataType: 'json',
-		  		success: function(data){
-	  				$('input[name="salesFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
-	  				$('input[name="salesRate"]').val((data.rate*100).toFixed(3));
-		  			$('.salesSettleType').html(data.settleType);
-	  			}
-		  	})
-		});
+		// $('#distType').on('change', function() {
+		// 	var selected = $(this).find("option:selected").val();
+		// 	if(selected == '') return false;
+		//   	$.ajax({
+		//   		url:'/mcht/distRate/get/'+selected,
+		//   		method: 'GET',
+		//   		dataType: 'json',
+		//   		success: function(data){
+	  	// 			$('input[name="distFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
+	  	// 			$('input[name="distRate"]').val((data.rate*100).toFixed(3));
+		//   			$('.distSettleType').html(data.settleType);
+	  	// 		}
+		//   	})
+		// });
+		//
+		// $('#agencyType').on('change', function() {
+		// 	var selected = $(this).find("option:selected").val();
+		// 	if(selected == '') return false;
+		//   	$.ajax({
+		//   		url:'/mcht/agencyRate/get/'+selected,
+		//   		method: 'GET',
+		//   		dataType: 'json',
+		//   		success: function(data){
+	  	// 			$('input[name="agencyFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
+	  	// 			$('input[name="agencyRate"]').val((data.rate*100).toFixed(3));
+		//   			$('.agencySettleType').html(data.settleType);
+	  	// 		}
+		//   	})
+		// });
+		//
+		// $('#salesType').on('change', function() {
+		// 	var selected = $(this).find("option:selected").val();
+		// 	if(selected == '') return false;
+		//   	$.ajax({
+		//   		url:'/mcht/salesRate/get/'+selected,
+		//   		method: 'GET',
+		//   		dataType: 'json',
+		//   		success: function(data){
+	  	// 			$('input[name="salesFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
+	  	// 			$('input[name="salesRate"]').val((data.rate*100).toFixed(3));
+		//   			$('.salesSettleType').html(data.settleType);
+	  	// 		}
+		//   	})
+		// });
 		
 		$('#payOutType').on('change', function(){
 			var selected = $(this).find("option:selected").val();
