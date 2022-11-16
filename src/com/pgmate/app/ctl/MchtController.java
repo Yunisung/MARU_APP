@@ -2740,7 +2740,11 @@ public class MchtController {
 	public @ResponseBody CPResponse chargeMngInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
 		//identity 입력시 암호화하여 넣어야함.
-		if (cpDAO.insertByOper("PG_MCHT_CHARGE_MNG", SessionUtil.getUserId(request), cpRequest.data)) {
+		String mchtId = cpRequest.getValue("mchtId");
+		String tk = GenKey.genKeys(CPKEY.CASH_TRANSFER, mchtId);
+
+
+		if (cpDAO.insertByOper("PG_MCHT_CHARGE_MNG", tk, SessionUtil.getUserId(request), cpRequest.data)) {
 			return new CPRUtil(cpRequest).resultOK("가맹점 충전정산 정보가 등록되었습니다.").cpResponse();
 		} else {
 			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 정보 등록에 실패하였습니다.",cpDAO.getError() )
