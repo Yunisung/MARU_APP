@@ -2849,6 +2849,15 @@
 																		<!--/span-->
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">출금키</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${DATACHARGEMAP.transferKey}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<!--/span-->
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">출금고객적요</label>
 																				<div class="col-md-9">
 																					<p class="form-control-static">${DATACHARGEMAP.recordInfo}</p>
