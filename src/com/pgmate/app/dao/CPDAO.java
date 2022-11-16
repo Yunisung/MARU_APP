@@ -49,10 +49,18 @@ public class CPDAO extends DAO{
 		CPUtil.setDAO(this, datas);
 		return super.insert();
 	}
-	
-	public boolean insertByOper(String table, String transferKey, String regId, List<Data> datas){
+
+	public boolean insertByOperAddKey(String table, String transferKey, String regId, List<Data> datas) {
 		this.setTable(table);
 		this.setRecord("transferKey", transferKey);
+		this.setRecord("regId", regId);
+		this.setRecord("regDay", CommonUtil.getCurrentDate("yyyyMMdd"));
+		CPUtil.setOperDAO(this, datas);
+		return super.insert();
+	}
+
+	public boolean insertByOper(String table, String regId, List<Data> datas){
+		this.setTable(table);
 		this.setRecord("regId", regId);
 		this.setRecord("regDay", CommonUtil.getCurrentDate("yyyyMMdd"));
 		CPUtil.setOperDAO(this, datas);

@@ -2744,7 +2744,7 @@ public class MchtController {
 		String tk = GenKey.genKeys(CPKEY.CASH_TRANSFER, mchtId);
 
 
-		if (cpDAO.insertByOper("PG_MCHT_CHARGE_MNG", tk, SessionUtil.getUserId(request), cpRequest.data)) {
+		if (cpDAO.insertByOperAddKey("PG_MCHT_CHARGE_MNG", tk, SessionUtil.getUserId(request), cpRequest.data)) {
 			return new CPRUtil(cpRequest).resultOK("가맹점 충전정산 정보가 등록되었습니다.").cpResponse();
 		} else {
 			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 정보 등록에 실패하였습니다.",cpDAO.getError() )
