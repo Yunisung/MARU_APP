@@ -161,7 +161,8 @@ public class FirmUtil {
 		firmBean.data.put("amount",amount);
 		firmBean.data.put("recvBankCd",recvBankCd);
 		firmBean.data.put("recvAccount",recvAccount);
-		firmBean.data.put("sender", sender);
+		//PYS : sender를 안보내면  (주)부국위너스로 나오도록 세팅되있음.
+//		firmBean.data.put("sender", sender);
 		firmBean.data.put("procType","MT");
 		
 		firmBean = comm(firmBean);
