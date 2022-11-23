@@ -2851,7 +2851,8 @@
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">출금키</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static">${DATACHARGEMAP.transferKey}</p>
+<%--																					<p class="form-control-static">${DATACHARGEMAP.transferKey}</p>--%>
+																					<p class="form-control-static">개발팀에 문의</p>
 																				</div>
 																			</div>
 																		</div>
