@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pgmate.app.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -69,11 +70,6 @@ import com.pgmate.app.model.ajax.Data;
 import com.pgmate.app.model.ajax.Interest;
 import com.pgmate.app.model.ajax.TmnList;
 import com.pgmate.app.session.CPSession;
-import com.pgmate.app.util.CPRUtil;
-import com.pgmate.app.util.CPUtil;
-import com.pgmate.app.util.SQLInjectionUtil;
-import com.pgmate.app.util.SessionUtil;
-import com.pgmate.app.util.WalletAccntUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.key.CPKEY;
@@ -2743,8 +2739,10 @@ public class MchtController {
 		String mchtId = cpRequest.getValue("mchtId");
 		String tk = GenKey.genKeys(CPKEY.CASH_TRANSFER, mchtId);
 
+		//PYS : 출금키 생성시 암호화해서 DB에 저장
+		String encKey = KSignUtil.getInstance().Encrypt(tk);
 
-		if (cpDAO.insertByOperAddKey("PG_MCHT_CHARGE_MNG", tk, SessionUtil.getUserId(request), cpRequest.data)) {
+		if (cpDAO.insertByOperAddKey("PG_MCHT_CHARGE_MNG", encKey, SessionUtil.getUserId(request), cpRequest.data)) {
 			return new CPRUtil(cpRequest).resultOK("가맹점 충전정산 정보가 등록되었습니다.").cpResponse();
 		} else {
 			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 정보 등록에 실패하였습니다.",cpDAO.getError() )
