@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -2748,6 +2749,36 @@ public class MchtController {
 			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 정보 등록에 실패하였습니다.",cpDAO.getError() )
 					.cpResponse();
 		}
+	}
+
+	@RequestMapping(value = {"/mcht/chargeMng/transferKey"}, method = RequestMethod.POST)
+	public @ResponseBody SharedMap<String, Object> createTransferKey(HttpServletRequest request, @RequestBody Map<String, Object> param) {
+		MchtChargeSettleDAO mchtChargeSettleDAO = new MchtChargeSettleDAO();
+		SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+
+		String mchtId = (String) param.get("mchtId");
+		SharedMap<String,Object> sharedMap = mchtChargeSettleDAO.getById(mchtId).getRowFirst();
+
+		// 키 생성
+		String tk = GenKey.genKeys(CPKEY.CASH_TRANSFER, mchtId);
+		String encKey = KSignUtil.getInstance().Encrypt(tk);
+
+		boolean updated = false;
+		if(sharedMap.size() > 0) {
+			updated = mchtChargeSettleDAO.updateTransferKey(encKey, SessionUtil.getUserId(request), mchtId);
+		}
+
+		if(updated) {
+			resMap.put("msg", "출금키가 생성되었습니다.");
+			String newEncKey = encKey.substring(0, 10) + "************";
+			resMap.put("transferKey", newEncKey);
+			resMap.put("result", "OK");
+		} else {
+			resMap.put("msg", "출금키 생성에 실패하였습니다.");
+			resMap.put("result", "NOK");
+		}
+
+		return resMap;
 	}
 	
 	@RequestMapping(value = "/mcht/chargeMng/modify/{mchtId}", method = RequestMethod.GET)
