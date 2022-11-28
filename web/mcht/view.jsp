@@ -1,7 +1,7 @@
 <%@page contentType="text/html; charset=UTF-8"%> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
@@ -2851,8 +2851,18 @@
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">출금키</label>
 																				<div class="col-md-9">
-<%--																					<p class="form-control-static">${DATACHARGEMAP.transferKey}</p>--%>
-																					<p class="form-control-static">개발팀에 문의</p>
+																					<c:choose>
+																						<c:when test="${!empty DATACHARGEMAP.transferKey && fn:length(DATACHARGEMAP.transferKey) > 10}">
+																							<p class="form-control-static" id="chargeTransferKey">${DATACHARGEMAP.transferKey.substring(0, 10)}************</p>
+																						</c:when>
+																						<c:otherwise>
+																							<p class="form-control-static" id="chargeTransferKey">&nbsp;</p>
+																						</c:otherwise>
+																					</c:choose>
+																					<button type="button" class="btn btn-sm btn-default" onclick="createTransferKey('${DATAMAP.mchtId}');">
+																						<i class="fa fa-check"></i> 출금키 생성
+																					</button>
+																					<%--<p class="form-control-static">개발팀에 문의</p>--%>
 																				</div>
 																			</div>
 																		</div>
@@ -2866,6 +2876,14 @@
 																			</div>
 																		</div>
 																		<!--/span-->
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">출금키 전달 이메일</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${DATACHARGEMAP.transferKeyEmail}</p>
+																				</div>
+																			</div>
+																		</div>
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">출금거래전달 주소(URL)</label>
@@ -3140,6 +3158,33 @@
 	    			bootbox.alert('Error ' + errorThrown);
 	    		}
 	        });
+		}
+
+		function createTransferKey(mchtId) {
+			if(!confirm('출금키를 생성하시겠습니까?')) return;
+
+			$.ajax({
+				type: "POST",
+				url: "/mcht/chargeMng/transferKey",
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				data: JSON.stringify({ "mchtId": mchtId }),
+				success: function(res){
+					//console.log(res);
+					const msg = res.msg;
+					const transferKey = res.transferKey;
+					if (res.result == 'OK') {
+						bootbox.alert(msg, function() {
+							document.getElementById('chargeTransferKey').innerText = transferKey;
+						});
+					} else {
+						bootbox.alert(msg);
+					}
+				},
+				error: function(xhr, textStatus, errorThrown){
+					bootbox.alert('Error ' + errorThrown);
+				}
+			});
 		}
 
 		$('#nav-mcht').addClass('active');
