@@ -3162,7 +3162,7 @@
 
 		function createTransferKey(mchtId) {
 			const transferKeyTel = $("#transferKeyTel").text();
-			if(transferKeyTel == null || transferKeyTel == "") {
+			if(!$.trim(transferKeyTel)) {
 				bootbox.alert("출금키 전달 휴대폰이 존재하지 않습니다.");
 				return;
 			}
