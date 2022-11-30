@@ -2752,6 +2752,31 @@ public class MchtController {
 		}
 	}
 
+	@RequestMapping(value = "/mcht/chargeMng/modify/{mchtId}", method = RequestMethod.GET)
+	public ModelAndView chargeMngModify(HttpServletRequest request, @PathVariable String mchtId) {
+		SharedMap<String,Object> sharedMap = new MchtChargeSettleDAO().getById(mchtId).getRowFirst();
+		sharedMap.put("withdrawFee", CommonUtil.moneyFormat(sharedMap.getString("withdrawFee")));
+		sharedMap.put("distPayInFee", CommonUtil.moneyFormat(sharedMap.getString("distPayInFee")));
+		sharedMap.put("agencyPayInFee", CommonUtil.moneyFormat(sharedMap.getString("agencyPayInFee")));
+		sharedMap.put("salesPayInFee", CommonUtil.moneyFormat(sharedMap.getString("salesPayInFee")));
+		
+		request.setAttribute("MCHTMAP", new MchtDAO().getById(mchtId).getRowFirst());
+		request.setAttribute("DATAMAP", sharedMap);
+		return new ModelAndView("/mcht/chargeMng/modify");
+	}
+	
+	@RequestMapping(value = {"/mcht/chargeMng/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse chargeMngUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+		//identity 입력시 암호화하여 넣어야함.
+		if (cpDAO.updateByOper("PG_MCHT_CHARGE_MNG", SessionUtil.getUserId(request), cpRequest.data)) {
+			return new CPRUtil(cpRequest).resultOK("가맹점 충전정산 정보가 수정되었습니다.").cpResponse();
+		} else {
+			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 정보 수정에 실패하였습니다.",cpDAO.getError() )
+					.cpResponse();
+		}
+	}
+
 	@RequestMapping(value = {"/mcht/chargeMng/transferKey"}, method = RequestMethod.POST)
 	public @ResponseBody SharedMap<String, Object> createTransferKey(HttpServletRequest request, @RequestBody Map<String, Object> param) {
 		MchtChargeSettleDAO mchtChargeSettleDAO = new MchtChargeSettleDAO();
@@ -2808,31 +2833,6 @@ public class MchtController {
 			return false;
 		}
 		return true;
-	}
-	
-	@RequestMapping(value = "/mcht/chargeMng/modify/{mchtId}", method = RequestMethod.GET)
-	public ModelAndView chargeMngModify(HttpServletRequest request, @PathVariable String mchtId) {
-		SharedMap<String,Object> sharedMap = new MchtChargeSettleDAO().getById(mchtId).getRowFirst();
-		sharedMap.put("withdrawFee", CommonUtil.moneyFormat(sharedMap.getString("withdrawFee")));
-		sharedMap.put("distPayInFee", CommonUtil.moneyFormat(sharedMap.getString("distPayInFee")));
-		sharedMap.put("agencyPayInFee", CommonUtil.moneyFormat(sharedMap.getString("agencyPayInFee")));
-		sharedMap.put("salesPayInFee", CommonUtil.moneyFormat(sharedMap.getString("salesPayInFee")));
-		
-		request.setAttribute("MCHTMAP", new MchtDAO().getById(mchtId).getRowFirst());
-		request.setAttribute("DATAMAP", sharedMap);
-		return new ModelAndView("/mcht/chargeMng/modify");
-	}
-	
-	@RequestMapping(value = {"/mcht/chargeMng/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody CPResponse chargeMngUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
-		CPDAO cpDAO = new CPDAO();
-		//identity 입력시 암호화하여 넣어야함.
-		if (cpDAO.updateByOper("PG_MCHT_CHARGE_MNG", SessionUtil.getUserId(request), cpRequest.data)) {
-			return new CPRUtil(cpRequest).resultOK("가맹점 충전정산 정보가 수정되었습니다.").cpResponse();
-		} else {
-			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 정보 수정에 실패하였습니다.",cpDAO.getError() )
-					.cpResponse();
-		}
 	}
 	
 	@RequestMapping(value = "/mcht/balance/modify/{mchtId}", method = RequestMethod.GET)
