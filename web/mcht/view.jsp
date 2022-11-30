@@ -2880,7 +2880,7 @@
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">출금키 전달 휴대폰</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static">${DATACHARGEMAP.transferKeyTel}</p>
+																					<p class="form-control-static" id="transferKeyTel">${DATACHARGEMAP.transferKeyTel}</p>
 																				</div>
 																			</div>
 																		</div>
@@ -3161,28 +3161,36 @@
 		}
 
 		function createTransferKey(mchtId) {
-			if(!confirm('출금키를 생성하시겠습니까?')) return;
+			const transferKeyTel = $("#transferKeyTel").text();
+			if(transferKeyTel == null || transferKeyTel == "") {
+				bootbox.alert("출금키 전달 휴대폰이 존재하지 않습니다.");
+				return;
+			}
 
-			$.ajax({
-				type: "POST",
-				url: "/mcht/chargeMng/transferKey",
-				contentType: "application/json; charset=utf-8",
-				dataType: "json",
-				data: JSON.stringify({ "mchtId": mchtId }),
-				success: function(res){
-					//console.log(res);
-					const msg = res.msg;
-					const transferKey = res.transferKey;
-					if (res.result == 'OK') {
-						bootbox.alert(msg, function() {
-							document.getElementById('chargeTransferKey').innerText = transferKey;
-						});
-					} else {
-						bootbox.alert(msg);
-					}
-				},
-				error: function(xhr, textStatus, errorThrown){
-					bootbox.alert('Error ' + errorThrown);
+			bootbox.confirm("출금키를 생성하시겠습니까?", function(result) {
+				if(result) {
+					$.ajax({
+						type: "POST",
+						url: "/mcht/chargeMng/transferKey",
+						contentType: "application/json; charset=utf-8",
+						dataType: "json",
+						data: JSON.stringify({"mchtId": mchtId}),
+						success: function (res) {
+							//console.log(res);
+							const msg = res.msg;
+							const transferKey = res.transferKey;
+							if (res.result == 'OK') {
+								bootbox.alert(msg, function () {
+									document.getElementById('chargeTransferKey').innerText = transferKey;
+								});
+							} else {
+								bootbox.alert(msg);
+							}
+						},
+						error: function (xhr, textStatus, errorThrown) {
+							bootbox.alert('Error ' + errorThrown);
+						}
+					});
 				}
 			});
 		}
