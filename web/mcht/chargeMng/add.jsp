@@ -90,6 +90,12 @@
 															<input type="text" class="form-control input-sm" name="hookAddr" value="" placeholder="https://www.test.com/notiurl">
 														</div>
 													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4">출금키 전달 휴대폰</label>
+														<div class="col-sm-6">
+															<input type="text" class="form-control input-sm" name="transferKeyTel" value="">
+														</div>
+													</div>
 													
 												</div>
 												<div class="alert alert-danger display-hide"></div>
