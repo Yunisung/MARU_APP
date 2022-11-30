@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.pgmate.app.util.*;
+import com.pgmate.lib.sms.SmsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -2760,11 +2761,24 @@ public class MchtController {
 		SharedMap<String,Object> sharedMap = mchtChargeSettleDAO.getById(mchtId).getRowFirst();
 
 		// 키 생성
-		String tk = GenKey.genKeys(CPKEY.CASH_TRANSFER, mchtId);
-		String encKey = KSignUtil.getInstance().Encrypt(tk);
+		String originalKey = GenKey.genKeys(CPKEY.CASH_TRANSFER, mchtId);
+		String encKey = KSignUtil.getInstance().Encrypt(originalKey);
 
 		boolean updated = false;
+		resMap.put("msg", "출금키 생성에 실패하였습니다.");
+		resMap.put("result", "NOK");
+
 		if(sharedMap.size() > 0) {
+			String transferKeyTel = sharedMap.getString("transferKeyTel");
+			if(CommonUtil.isEmpty(transferKeyTel)) {
+				logger.info("출금키 연락처가 존재하지 않습니다.");
+				return resMap;
+			} else {
+				String msg = "출금키가 생성되었습니다. 출금키: " + originalKey + "";
+				if(!sendSMS(msg, transferKeyTel)) {
+					return resMap;
+				}
+			}
 			updated = mchtChargeSettleDAO.updateTransferKey(encKey, SessionUtil.getUserId(request), mchtId);
 		}
 
@@ -2773,12 +2787,27 @@ public class MchtController {
 			String newEncKey = encKey.substring(0, 10) + "************";
 			resMap.put("transferKey", newEncKey);
 			resMap.put("result", "OK");
-		} else {
-			resMap.put("msg", "출금키 생성에 실패하였습니다.");
-			resMap.put("result", "NOK");
 		}
 
 		return resMap;
+	}
+
+	private boolean sendSMS(String msg, String setTel) {
+		WebCache wc = new WebCache();
+		String number = String.format("%1$" + 6 + "s", ((int) (Math.random() * 999999) + 1)).replace(' ', '0');
+		wc.setSMSKey(setTel, number);
+
+		String msgBody = "[(주)부국위너스] " + msg + "";
+		try {
+			SmsUtil.sendSms(SmsUtil.LMS_URL, setTel.replaceAll("\\[^0-9]+", ""), msgBody);
+			logger.debug("NoticeSend SMS SEND");
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			logger.error("공지사항 SMS 전송 중 오류발생. 확인요망 [" + e.getMessage() + "]");
+
+			return false;
+		}
+		return true;
 	}
 	
 	@RequestMapping(value = "/mcht/chargeMng/modify/{mchtId}", method = RequestMethod.GET)
