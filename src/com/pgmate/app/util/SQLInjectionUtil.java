@@ -70,9 +70,8 @@ public class SQLInjectionUtil {
 		orgVal = evilChars.matcher(orgVal).replaceAll("");
 		
 		// 특수 문자 필터링
-		//210121 KJM : db 들어가는 json 값 치환 주석처리
-//		orgVal = orgVal.replaceAll("'", "&#39;");
-//		orgVal = orgVal.replaceAll("\"", "&#34;");
+		orgVal = orgVal.replaceAll("'", "&#39;");
+		orgVal = orgVal.replaceAll("\"", "&#34;");
 		// orgVal = orgVal.replaceAll("-", "&#45;");
 		// orgVal = orgVal.replaceAll("(", "&#40;");
 		// orgVal = orgVal.replaceAll(")", "&#41;");
