@@ -360,7 +360,16 @@ public class UserController {
   
     @RequestMapping(value = "/member/user/updatePassword/{userid}", method = RequestMethod.POST)
     public @ResponseBody String updatePassword(HttpServletRequest request, @PathVariable String userid) {
-    	
+		UserDAO userDAO = new UserDAO();
+		SharedMap<String, Object> result = userDAO.getById(userid).getRowFirst();
+
+		String oldPassWord = CommonUtil.nToB(request.getParameter("check"));
+
+		String pwCheck =  new CPDAO().getPassword(oldPassWord);
+		if(!result.getString("pw").equalsIgnoreCase(pwCheck)){
+			return "기존 비밀번호가 틀립니다";
+		}
+
     	String passKey = CommonUtil.nToB(request.getParameter("pw"));
     	
     	CPRequest cpRequest = new CPRequest();
@@ -370,7 +379,7 @@ public class UserController {
 		cpRequest.setData("pw", hashed);
 		
     	CPDAO cpDAO = new CPDAO();
-    	
+
     	//과거에 사용했던 비밀번호 확인
     	cpDAO.setTable("HT_USER_PW");
     	cpDAO.setColumns("pw");
