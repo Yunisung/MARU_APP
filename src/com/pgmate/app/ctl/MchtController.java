@@ -2808,9 +2808,10 @@ public class MchtController {
 		}
 
 		if(updated) {
-			resMap.put("msg", "출금키가 생성되었습니다.");
+			resMap.put("msg", "출금키가 생성되었습니다. " + "<br> 출금키 : " + originalKey + "");
 			String newEncKey = encKey.substring(0, 10) + "************";
 			resMap.put("transferKey", newEncKey);
+			resMap.put("originalKey", originalKey);
 			resMap.put("result", "OK");
 		}
 
