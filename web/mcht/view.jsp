@@ -2861,7 +2861,7 @@
 																					</c:choose>
 																					<c:if test="${CP_SESSION.grade eq '본사' && CP_SESSION.role != '일반'}">
 																						<button type="button" class="btn btn-sm btn-default" onclick="createTransferKey('${DATAMAP.mchtId}');">
-																							<i class="fa fa-check"></i> 출금키 생성
+																							<i class="fa fa-check"></i> 출금키 재생성
 																						</button>
 																					</c:if>
 																					<%--<p class="form-control-static">개발팀에 문의</p>--%>
