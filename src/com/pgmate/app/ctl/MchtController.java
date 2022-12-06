@@ -2794,7 +2794,7 @@ public class MchtController {
 		resMap.put("result", "NOK");
 
 		if(sharedMap.size() > 0) {
-			String transferKeyTel = sharedMap.getString("transferKeyTel");
+			/*String transferKeyTel = sharedMap.getString("transferKeyTel");
 			if(CommonUtil.isEmpty(transferKeyTel)) {
 				logger.info("출금키 연락처가 존재하지 않습니다.");
 				return resMap;
@@ -2803,7 +2803,7 @@ public class MchtController {
 				if(!sendSMS(msg, transferKeyTel)) {
 					return resMap;
 				}
-			}
+			}*/
 			updated = mchtChargeSettleDAO.updateTransferKey(encKey, SessionUtil.getUserId(request), mchtId);
 		}
 
