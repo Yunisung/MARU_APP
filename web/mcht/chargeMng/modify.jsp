@@ -90,12 +90,12 @@
 															<input type="text" class="form-control input-sm" name="hookAddr" value="${DATAMAP.hookAddr }">
 														</div>
 													</div>
-													<div class="form-group col-sm-6">
+													<%--<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4">출금키 전달 휴대폰</label>
 														<div class="col-sm-6">
 															<input type="text" class="form-control input-sm" name="transferKeyTel" value="${DATAMAP.transferKeyTel }">
 														</div>
-													</div>
+													</div>--%>
 													
 												</div>
 												<div class="alert alert-danger display-hide"></div>

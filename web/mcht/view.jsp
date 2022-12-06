@@ -2878,14 +2878,14 @@
 																			</div>
 																		</div>
 																		<!--/span-->
-																		<div class="col-md-6">
+																		<%--<div class="col-md-6">
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">출금키 전달 휴대폰</label>
 																				<div class="col-md-9">
 																					<p class="form-control-static" id="transferKeyTel">${DATACHARGEMAP.transferKeyTel}</p>
 																				</div>
 																			</div>
-																		</div>
+																		</div>--%>
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">출금거래전달 주소(URL)</label>
@@ -3163,11 +3163,11 @@
 		}
 
 		function createTransferKey(mchtId) {
-			const transferKeyTel = $("#transferKeyTel").text();
+			/*const transferKeyTel = $("#transferKeyTel").text();
 			if(!$.trim(transferKeyTel)) {
 				bootbox.alert("출금키 전달 휴대폰이 존재하지 않습니다.");
 				return;
-			}
+			}*/
 
 			bootbox.confirm("출금키를 생성하시겠습니까?", function(result) {
 				if(result) {
