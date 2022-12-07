@@ -7,13 +7,17 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import com.pgmate.app.security.CustomUserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +32,6 @@ import com.pgmate.app.dao.UserIpDAO;
 import com.pgmate.app.interceptor.SessionExclude;
 import com.pgmate.app.session.CPSession;
 import com.pgmate.app.util.CPUtil;
-import com.pgmate.app.util.InfoBankSMS;
 import com.pgmate.app.util.SessionUtil;
 import com.pgmate.app.util.WebCache;
 import com.pgmate.lib.dao.RecordSet;
@@ -255,6 +258,62 @@ public class LoginController {
 		SessionUtil.setAttribute(request,"endDate",CommonUtil.getCurrentDate("yyyyMMdd"));
 		return "OK||"+cpSession.getTargetURL();
 		
+	}
+
+	@RequestMapping(value = "/login/invalidCheck", method = RequestMethod.GET)
+	@SessionExclude
+	public @ResponseBody String loginInvalidCheck(Model model, HttpSession session, HttpServletRequest request){
+		logger.info("----- login/in START -----");
+		UserDAO userDAO = new UserDAO();
+
+		String ip = request.getHeader("X-FORWARDED-FOR");
+		if (ip == null || ip.isEmpty()) ip = CommonUtil.nToB(request.getHeader("X-Real-IP"));
+		if (ip == null || ip.isEmpty()) ip = request.getRemoteAddr();
+
+		CustomUserDetail userDetails = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getDetails();
+		String memberId = userDetails.getUserId();
+//		String memberPw = userDetails.getUserPw();
+		RecordSet rset = userDAO.getById(memberId);
+
+		if (rset.size() < 1) {
+			return "NOK||등록되지 않은 아이디이거나, 아이디 또는 비밀번호를 잘못 입력하셨습니다.";
+		}
+
+		SharedMap<String, Object> memberMap = rset.getRow(0);
+
+		//접속 패스워드에 대한 재시도횟수 초기화
+		userDAO.updateUserPwRetry(memberMap.getString("id"), 0);
+		if(memberMap.getString("grade").equals("본사") && memberMap.getString("role").equals("관리자")) {
+			SessionUtil.setAttribute(request, "CP_DEBUG",CPUtil.CP_DEBUG);
+		}
+		logger.debug("grade [{}]",memberMap.getString("grade"));
+		logger.debug("role [{}]",memberMap.getString("role"));
+
+		//USERSESSION
+		CPSession cpSession = new CPSession();
+		cpSession.setAccessDate(CommonUtil.getCurrentTimestamp());
+
+		cpSession.setLastAccessDate(userDAO.getAccessById(memberMap.getString("id")));
+
+		SessionUtil.initSessionData(cpSession, memberMap);
+
+		cpSession.setTargetURL("/");
+
+		// 모든 유저 대행사 아이디 세팅
+		SharedMap<String, Object> userInfo = userDAO.getParentsById(memberId).getRowFirst();
+		if(!userInfo.isEmpty()) {
+			cpSession.setDistId(userInfo.getString("distId"));
+		}
+
+		//ACCESS 기록 추가
+		logger.info("----- loing/in ID Access -----");
+		userDAO.insertUserAcess(memberMap.getString("id"),ip,request.getHeader("User-Agent"));
+
+		//Session  생성
+		SessionUtil.create(request, cpSession, memberMap);
+		SessionUtil.setAttribute(request,"endDate",CommonUtil.getCurrentDate("yyyyMMdd"));
+		return "OK||"+cpSession.getTargetURL();
+
 	}
 	
 	@RequestMapping(value = "/login/out", method = RequestMethod.GET)
