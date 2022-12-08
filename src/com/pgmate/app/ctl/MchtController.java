@@ -1509,6 +1509,7 @@ public class MchtController {
 		SharedMap<String,Object> sharedMap = new MchtVactDAO().getByMchtId(mchtId);
 		sharedMap.put("limitOnce", sharedMap.getString("limitOnce"));
 		sharedMap.put("limitDay", sharedMap.getString("limitDay"));
+		sharedMap.put("limitAmount", sharedMap.getString("limitAmount"));
 		sharedMap.put("fee", CommonUtil.moneyFormat(sharedMap.getString("fee")));
 		sharedMap.put("distFee", CommonUtil.moneyFormat(sharedMap.getString("distFee")));
 		sharedMap.put("agencyFee", CommonUtil.moneyFormat(sharedMap.getString("agencyFee")));
