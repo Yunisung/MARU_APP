@@ -397,7 +397,7 @@
 	        </li>
         </ul>
     </li> 
-<c:if test="${CP_SESSION.grade == '본사'}">
+<c:if test="${(CP_SESSION.grade =='본사' || CP_SESSION.grade =='대행사')}">
     <!-- 가상계좌 정산 시작 -->
     <li class="nav-item start " id="nav-vact-settle">
         <a href="javascript:;" class="nav-link nav-toggle" id="nav-sales"><i class="icon-calculator"></i>
@@ -411,15 +411,16 @@
                 <a href="/vactSettle/dist/form.jsp" class="nav-link ">
         	      <span class="title">대행사 정산 조회</span></a>
             </li>
-            <li class="nav-item start ">
-                <a href="/vactSettle/agency/form.jsp" class="nav-link ">
-        	      <span class="title">에이전시 정산 조회</span></a>
-            </li>
-            <li class="nav-item start ">
-                <a href="/vactSettle/sales/form.jsp" class="nav-link ">
-        	      <span class="title">지사 정산 조회</span></a>
-            </li>
-            
+            <c:if test="${CP_SESSION.grade == '본사'}">
+                <li class="nav-item start ">
+                    <a href="/vactSettle/agency/form.jsp" class="nav-link ">
+                      <span class="title">에이전시 정산 조회</span></a>
+                </li>
+                <li class="nav-item start ">
+                    <a href="/vactSettle/sales/form.jsp" class="nav-link ">
+                      <span class="title">지사 정산 조회</span></a>
+                </li>
+            </c:if>
         </ul>
     </li>
 	<li class="nav-item start " id="nav-charge">
