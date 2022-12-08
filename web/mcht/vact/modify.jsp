@@ -170,6 +170,15 @@
 												</div>
 											</div>
 											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">입금단위제한</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency limitAmount comma" maxlength="14" data-oper="comma" name="limitAmount" placeholder="" value="${DATAMAP.limitAmount}">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
 												<div style="padding-top:45px; border-left:none;"></div>
 											</div>
 											<div class="form-group col-sm-12 form-subtitle">
