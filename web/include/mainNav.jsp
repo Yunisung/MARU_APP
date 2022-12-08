@@ -403,10 +403,12 @@
         <a href="javascript:;" class="nav-link nav-toggle" id="nav-sales"><i class="icon-calculator"></i>
 						<span class="title">가상계좌 정산</span><span class="arrow"></span></a>
         <ul class="sub-menu">
-           <li class="nav-item start ">
-                <a href="/vactSettle/mcht/form.jsp" class="nav-link ">
-        	      <span class="title">가맹점 정산 조회</span></a>
-            </li>
+            <c:if test="${CP_SESSION.grade == '본사'}">
+                <li class="nav-item start ">
+                    <a href="/vactSettle/mcht/form.jsp" class="nav-link ">
+                      <span class="title">가맹점 정산 조회</span></a>
+               </li>
+            </c:if>
             <li class="nav-item start ">
                 <a href="/vactSettle/dist/form.jsp" class="nav-link ">
         	      <span class="title">대행사 정산 조회</span></a>
@@ -423,7 +425,9 @@
             </c:if>
         </ul>
     </li>
-	<li class="nav-item start " id="nav-charge">
+</c:if>
+<c:if test="${CP_SESSION.grade == '본사'}">
+    <li class="nav-item start " id="nav-charge">
 	    <a href="javascript:;" class="nav-link nav-toggle"><i class="icon-check"></i>
 			<span class="title">충전 정산</span><span class="arrow"></span></a>
 	    <ul class="sub-menu">
