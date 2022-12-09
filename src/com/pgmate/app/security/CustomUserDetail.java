@@ -13,6 +13,7 @@ public class CustomUserDetail implements UserDetails {
     private String userPw;
     private String auth;
     private String name;
+    private String smsKey;
 
     public String getUserId() {
         return userId;
@@ -37,6 +38,14 @@ public class CustomUserDetail implements UserDetails {
     }
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSmsKey() {
+        return smsKey;
+    }
+
+    public void setSmsKey(String smsKey) {
+        this.smsKey = smsKey;
     }
 
     @Override

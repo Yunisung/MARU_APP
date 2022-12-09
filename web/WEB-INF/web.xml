@@ -89,7 +89,8 @@
 	</listener>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/cp-core-config.xml
+		<param-value>
+			/WEB-INF/cp-core-config.xml
 			/WEB-INF/cp-security-config.xml
 		</param-value>
 	</context-param>
