@@ -14,11 +14,11 @@
           http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<http pattern="/assets/**" security="none"></http>
 
-	<http auto-config='true'>
-		<intercept-url pattern="/index.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<intercept-url pattern="/login/form" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<intercept-url pattern="/login/invalidCheck" access="IS_AUTHENTICATED_ANONYMOUSLY,ROLE_USER"/>
-		<intercept-url pattern="/**" access="ROLE_USER"/>
+	<http auto-config='true' use-expressions="true">
+		<intercept-url pattern="/index.jsp" access="permitAll()" />
+		<intercept-url pattern="/login/form" access="permitAll()" />
+		<intercept-url pattern="/login/invalidCheck" access="permitAll()"/>
+		<!--<intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>-->
 		<form-login login-page="/login/form"
 					username-parameter="memberId"
 					password-parameter="memberPw"
@@ -26,29 +26,35 @@
 					default-target-url="/login/invalidCheck"
 					authentication-failure-handler-ref="loginFailureHandler"
 					always-use-default-target='true'
+					authentication-details-source-ref="customWebAuthenticationDetailsSource"
 		/>
 
 		<!--<session-management>
 			<concurrency-control max-sessions="1" expired-url="/login_duplicate"/>
 		</session-management>-->
 
+		<!--<intercept-url pattern="/mcht/form" access="hasRole('ROLE_ADMIN')"/>-->
+		<intercept-url pattern="/mcht/form" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER') and hasRole('ROLE_MCHT')"/>
+
+		<!--<custom-filter ref="customAuthenticationFilter" before="FORM_LOGIN_FILTER" />-->
+
 	</http>
+
+	<authentication-manager alias="customAuthenticationManager">
+		<authentication-provider ref="customAuthenticationProvider" />
+	</authentication-manager>
+
+	<beans:bean id="defaultWebSecurityExpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
 
 	<beans:bean id="loginFailureHandler" class="com.pgmate.app.security.AjaxAuthenticationFailureHandler" />
 
-	<beans:bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
+	<beans:bean id="customAuthenticationProvider" class="com.pgmate.app.security.CustomAuthenticationProvider" />
 
-	<authentication-manager>
-		<authentication-provider ref="customAuthenticationProvider"/>
-		<!--<authentication-provider>
-			<user-service>
-				<user name="scoh1112" password="dhtpckd1" authorities="ROLE_USER, ROLE_ADMIN" />
-				<user name="bob" password="1111" authorities="ROLE_USER" />
-			</user-service>
-		</authentication-provider>-->
-	</authentication-manager>
+	<!--<beans:bean id="customAuthenticationFilter" class="com.pgmate.app.security.filter.CustomAuthenticationFilter">
+		<beans:property name="authenticationManager" ref="customAuthenticationManager" />
+	</beans:bean>-->
+	<beans:bean id="customWebAuthenticationDetailsSource" class="com.pgmate.app.security.filter.CustomWebAuthenticationDetailsSource" />
 
-	<beans:bean id="customAuthenticationProvider" class="com.pgmate.app.security.CustomAuthenticationProvider"/>
-
+	<!--<global-method-security pre-post-annotations="enabled" secured-annotations="enabled" />-->
 
 </beans:beans>

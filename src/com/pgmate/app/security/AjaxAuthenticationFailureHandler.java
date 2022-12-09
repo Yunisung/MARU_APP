@@ -9,12 +9,14 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+//@Component
 public class AjaxAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -28,9 +30,7 @@ public class AjaxAuthenticationFailureHandler implements AuthenticationFailureHa
         response.setCharacterEncoding("UTF-8");
 
         if (exception instanceof BadCredentialsException) {
-            errorMessage = "NOK||등록되지 않은 아이디이거나, 아이디 또는 비밀번호를 잘못 입력하셨습니다.";
-        } else if (exception instanceof LockedException) {
-            errorMessage = "NOK||아이디가 만료되었습니다.";
+            errorMessage = exception.getMessage();
         }
 
         objectMapper.writeValue(response.getWriter(), errorMessage);
