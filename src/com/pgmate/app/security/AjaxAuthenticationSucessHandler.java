@@ -83,5 +83,8 @@ public class AjaxAuthenticationSucessHandler implements AuthenticationSuccessHan
         //return "OK||"+cpSession.getTargetURL();
 
         objectMapper.writeValue(response.getWriter(), "OK||"+cpSession.getTargetURL());
+
+        logger.info("Authentication ROLE => {}", authentication.getAuthorities());
+        //logger.debug("xxxxxxxxxxxx => {}", authentication.getDetails());
     }
 }

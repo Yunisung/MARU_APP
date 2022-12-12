@@ -97,15 +97,8 @@ public class MchtController {
 	
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.ctl.MchtController.class );
 
-	//@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER') and hasRole('ROLE_MCHT')")
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = {"/mcht/form"})
     public ModelAndView form(HttpServletRequest request) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		logger.debug("xxxxxxxxxxxx => {}", authentication.getAuthorities());
-		logger.debug("xxxxxxxxxxxx => {}", authentication.getDetails());
-		//logger.debug("xxxxxxxxxxxx => {}", request.getSession().getAttribute("smsKey"));
-
 		return new ModelAndView("/mcht/form");
     }
 	
