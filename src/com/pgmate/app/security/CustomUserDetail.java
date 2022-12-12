@@ -1,5 +1,6 @@
 package com.pgmate.app.security;
 
+import com.pgmate.lib.util.map.SharedMap;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,10 +12,11 @@ import java.util.List;
 public class CustomUserDetail implements UserDetails {
     private String userId;
     private String userPw;
-    private String userType;
+    private String userType;            // 일반, 터미널
     private String userGrade;
     private String userRole;
     private String smsKey;
+    private SharedMap<String,Object> initMap;        // 초기화정보 (터미널일 경우 사용)
 
     public String getUserId() {
         return userId;
@@ -57,6 +59,14 @@ public class CustomUserDetail implements UserDetails {
 
     public void setSmsKey(String smsKey) {
         this.smsKey = smsKey;
+    }
+
+    public SharedMap<String, Object> getInitMap() {
+        return initMap;
+    }
+
+    public void setInitMap(SharedMap<String, Object> initMap) {
+        this.initMap = initMap;
     }
 
     @Override

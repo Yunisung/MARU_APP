@@ -27,6 +27,9 @@ public class AjaxAuthenticationSucessHandler implements AuthenticationSuccessHan
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        logger.info("Authentication ROLE => {}", authentication.getAuthorities());
+        //logger.debug("xxxxxxxxxxxx => {}", authentication.getDetails());
+
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
 
@@ -40,6 +43,20 @@ public class AjaxAuthenticationSucessHandler implements AuthenticationSuccessHan
         CustomUserDetail userDetails = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getDetails();
         String memberId = userDetails.getUserId();
 //		String memberPw = userDetails.getUserPw();
+
+        // 터미널 인가 처리
+        if(userDetails.getUserType().equals("터미널")) {
+            CPSession cpSession = new CPSession();
+            SharedMap<String,Object> tmnMap = userDetails.getInitMap();
+            SessionUtil.initTmnSessionData(cpSession, tmnMap);
+            cpSession.setTargetURL("/");
+            //Session  생성
+            SessionUtil.create(request, cpSession);
+            SessionUtil.setAttribute(request,"endDate",CommonUtil.getCurrentDate("yyyyMMdd"));
+            objectMapper.writeValue(response.getWriter(), "OK||"+cpSession.getTargetURL());
+            return;
+        }
+
         RecordSet rset = userDAO.getById(memberId);
 
         if (rset.size() < 1) {
@@ -83,8 +100,5 @@ public class AjaxAuthenticationSucessHandler implements AuthenticationSuccessHan
         //return "OK||"+cpSession.getTargetURL();
 
         objectMapper.writeValue(response.getWriter(), "OK||"+cpSession.getTargetURL());
-
-        logger.info("Authentication ROLE => {}", authentication.getAuthorities());
-        //logger.debug("xxxxxxxxxxxx => {}", authentication.getDetails());
     }
 }

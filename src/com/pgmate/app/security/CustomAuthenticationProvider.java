@@ -55,7 +55,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                     user.setUserId(memberId);
                     user.setUserPw(memberPw);
                     user.setUserType("터미널");
+                    user.setInitMap(tmnMap);
                     return user;
+                } else {
+                    throw new BadCredentialsException("NOK||등록되지 않은 아이디이거나, 아이디 또는 비밀번호를 잘못 입력하셨습니다.");
                 }
             } else {
                 throw new BadCredentialsException("NOK||등록되지 않은 아이디이거나, 아이디 또는 비밀번호를 잘못 입력하셨습니다.");
@@ -153,21 +156,23 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             // role 부여
             roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-            if(userDetails.getUserRole().equals("관리자")) {
-                roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            }
+            if(userDetails.getUserType().equals("일반")) {
+                if (userDetails.getUserRole().equals("관리자")) {
+                    roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                }
 
-            // grade에 따른 role 부여
-            if(userDetails.getUserGrade().equals("본사")) {
-                roles.add(new SimpleGrantedAuthority("ROLE_COMP"));
-            } else if(userDetails.getUserGrade().equals("대행사")) {
-                roles.add(new SimpleGrantedAuthority("ROLE_DIST"));
-            } else if(userDetails.getUserGrade().equals("에이전시")) {
-                roles.add(new SimpleGrantedAuthority("ROLE_AGENCY"));
-            } else if(userDetails.getUserGrade().equals("지사")) {
-                roles.add(new SimpleGrantedAuthority("ROLE_SALES"));
-            } else if(userDetails.getUserGrade().equals("가맹점")) {
-                roles.add(new SimpleGrantedAuthority("ROLE_MCHT"));
+                // grade에 따른 role 부여
+                if (userDetails.getUserGrade().equals("본사")) {
+                    roles.add(new SimpleGrantedAuthority("ROLE_COMP"));
+                } else if (userDetails.getUserGrade().equals("대행사")) {
+                    roles.add(new SimpleGrantedAuthority("ROLE_DIST"));
+                } else if (userDetails.getUserGrade().equals("에이전시")) {
+                    roles.add(new SimpleGrantedAuthority("ROLE_AGENCY"));
+                } else if (userDetails.getUserGrade().equals("지사")) {
+                    roles.add(new SimpleGrantedAuthority("ROLE_SALES"));
+                } else if (userDetails.getUserGrade().equals("가맹점")) {
+                    roles.add(new SimpleGrantedAuthority("ROLE_MCHT"));
+                }
             }
 
         } else {
