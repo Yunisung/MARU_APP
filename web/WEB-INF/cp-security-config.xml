@@ -33,11 +33,12 @@
 			<concurrency-control max-sessions="1" expired-url="/login_duplicate"/>
 		</session-management>-->
 
-		<intercept-url pattern="/mcht/form" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/mcht/form" access="hasRole('ROLE_COMP')"/>
 		<!--<intercept-url pattern="/mcht/form" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER') and hasRole('ROLE_MCHT')"/>-->
 		<!--<intercept-url pattern="/mcht/chargeMng/transferKey" access="hasRole('ROLE_ADMIN')"/>-->
 
 		<!--<custom-filter ref="customAuthenticationFilter" before="FORM_LOGIN_FILTER" />-->
+		<expression-handler ref="defaultWebSecurityExpressionHandler" />
 
 	</http>
 
@@ -45,17 +46,31 @@
 		<authentication-provider ref="customAuthenticationProvider" />
 	</authentication-manager>
 
-	<beans:bean id="defaultWebSecurityExpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
+	<beans:bean id="defaultWebSecurityExpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
+		<beans:property name="roleHierarchy" ref="customRoleHierarchy" />
+	</beans:bean>
 
 	<beans:bean id="loginSuccessHandler" class="com.pgmate.app.security.AjaxAuthenticationSucessHandler" />
 	<beans:bean id="loginFailureHandler" class="com.pgmate.app.security.AjaxAuthenticationFailureHandler" />
-
 	<beans:bean id="customAuthenticationProvider" class="com.pgmate.app.security.CustomAuthenticationProvider" />
 
 	<!--<beans:bean id="customAuthenticationFilter" class="com.pgmate.app.security.filter.CustomAuthenticationFilter">
 		<beans:property name="authenticationManager" ref="customAuthenticationManager" />
 	</beans:bean>-->
 	<beans:bean id="customWebAuthenticationDetailsSource" class="com.pgmate.app.security.filter.CustomWebAuthenticationDetailsSource" />
+
+	<!-- role 계층구조 적용 -->
+	<beans:bean id="customRoleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+		<beans:property name="hierarchy">
+			<beans:value>
+				ROLE_COMP_ADMIN > ROLE_COMP
+				ROLE_DIST_ADMIN > ROLE_DIST
+				ROLE_AGENCY_ADMIN > ROLE_AGENCY
+				ROLE_SALES_ADMIN > ROLE_SALES
+				ROLE_MCHT_ADMIN > ROLE_MCHT
+			</beans:value>
+		</beans:property>
+	</beans:bean>
 
 	<!--<global-method-security pre-post-annotations="enabled" secured-annotations="enabled" />-->
 
