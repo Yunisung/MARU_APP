@@ -1,5 +1,6 @@
 package com.pgmate.app.security;
 
+import com.pgmate.app.dao.MchtDAO;
 import com.pgmate.app.dao.MchtTmnDAO;
 import com.pgmate.app.dao.UserDAO;
 import com.pgmate.app.dao.UserIpDAO;
@@ -28,7 +29,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.security.CustomAuthenticationProvider.class );
 
-    UserDetails isValidUser(String memberId, String memberPw, String smsKey, String ip, String userAgent) {
+    CustomUserDetail isValidUser(String memberId, String memberPw, String smsKey, String ip, String userAgent) {
 
         logger.info("----- login/in START -----");
         UserDAO userDAO = new UserDAO();
@@ -44,8 +45,18 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             logger.info("----- login/in notFind ID -----");
             // 로그인 아이디가 아닌 터미널로 접속했는지 확인
             RecordSet rset2 = new MchtTmnDAO().getById(memberId);
-            if(rset2.size() == 0) {
-                // 터미널 인증 필요
+            if(rset2.size() > 0) {
+                SharedMap<String,Object> tmnMap = rset2.getRow(0);
+                SharedMap<String,Object> tmnMchtMap = new MchtDAO().getById(tmnMap.getString("mchtId")).getRow(0);
+
+                // 터미널 인증 검사
+                if(tmnMchtMap.getString("aggregator").equalsIgnoreCase("Y") && tmnMap.isEquals("serial", memberPw) && tmnMap.isEquals("status", "사용")){
+                    CustomUserDetail user = new CustomUserDetail();
+                    user.setUserId(memberId);
+                    user.setUserPw(memberPw);
+                    user.setUserType("터미널");
+                    return user;
+                }
             } else {
                 throw new BadCredentialsException("NOK||등록되지 않은 아이디이거나, 아이디 또는 비밀번호를 잘못 입력하셨습니다.");
             }
@@ -119,6 +130,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         CustomUserDetail user = new CustomUserDetail();
         user.setUserId(memberId);
         user.setUserPw(memberPw);
+        user.setUserGrade(memberMap.getString("grade"));
+        user.setUserRole(memberMap.getString("role"));
+        user.setUserType("일반");
         return user;
     }
 
@@ -132,12 +146,30 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String ip = details.getIp();
         String userAgent = details.getUserAgent();
 
-        UserDetails userDetails = isValidUser(username, password, smsKey, ip, userAgent);
+        CustomUserDetail userDetails = isValidUser(username, password, smsKey, ip, userAgent);
 
         List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
         if (userDetails != null) {
+            // role 부여
             roles.add(new SimpleGrantedAuthority("ROLE_USER"));
-            roles.add(new SimpleGrantedAuthority("ROLE_MCHT"));
+
+            if(userDetails.getUserRole().equals("관리자")) {
+                roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            }
+
+            // grade에 따른 role 부여
+            if(userDetails.getUserGrade().equals("본사")) {
+                roles.add(new SimpleGrantedAuthority("ROLE_COMP"));
+            } else if(userDetails.getUserGrade().equals("대행사")) {
+                roles.add(new SimpleGrantedAuthority("ROLE_DIST"));
+            } else if(userDetails.getUserGrade().equals("에이전시")) {
+                roles.add(new SimpleGrantedAuthority("ROLE_AGENCY"));
+            } else if(userDetails.getUserGrade().equals("지사")) {
+                roles.add(new SimpleGrantedAuthority("ROLE_SALES"));
+            } else if(userDetails.getUserGrade().equals("가맹점")) {
+                roles.add(new SimpleGrantedAuthority("ROLE_MCHT"));
+            }
+
         } else {
             // roles.add(new SimpleGrantedAuthority("IS_AUTHENTICATED_ANONYMOUSLY"));
             throw new BadCredentialsException("Incorrect user credentials !!");

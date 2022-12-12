@@ -11,8 +11,9 @@ import java.util.List;
 public class CustomUserDetail implements UserDetails {
     private String userId;
     private String userPw;
-    private String auth;
-    private String name;
+    private String userType;
+    private String userGrade;
+    private String userRole;
     private String smsKey;
 
     public String getUserId() {
@@ -27,17 +28,27 @@ public class CustomUserDetail implements UserDetails {
     public void setUserPw(String userPw) {
         this.userPw = userPw;
     }
-    public String getAuth() {
-        return auth;
+    public String getUserType() {
+        return userType;
     }
-    public void setAuth(String auth) {
-        this.auth = auth;
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
-    public String getName() {
-        return name;
+
+    public String getUserGrade() {
+        return userGrade;
     }
-    public void setName(String name) {
-        this.name = name;
+
+    public void setUserGrade(String userGrade) {
+        this.userGrade = userGrade;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 
     public String getSmsKey() {
