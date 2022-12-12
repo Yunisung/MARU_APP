@@ -157,22 +157,29 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             roles.add(new SimpleGrantedAuthority("ROLE_USER"));
 
             if(userDetails.getUserType().equals("일반")) {
+                String grantedRole = "";
+                // grade에 따른 role 부여
+                if (userDetails.getUserGrade().equals("본사")) {
+                    grantedRole = "ROLE_COMP";
+                } else if (userDetails.getUserGrade().equals("대행사")) {
+                    grantedRole = "ROLE_DIST";
+                } else if (userDetails.getUserGrade().equals("에이전시")) {
+                    grantedRole = "ROLE_AGENCY";
+                } else if (userDetails.getUserGrade().equals("지사")) {
+                    grantedRole = "ROLE_SALES";
+                } else if (userDetails.getUserGrade().equals("가맹점")) {
+                    grantedRole = "ROLE_MCHT";
+                }
+                // 관리자라면 _ADMIN 부여
                 if (userDetails.getUserRole().equals("관리자")) {
-                    roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                    grantedRole = grantedRole + "_ADMIN";
                 }
 
                 // grade에 따른 role 부여
-                if (userDetails.getUserGrade().equals("본사")) {
-                    roles.add(new SimpleGrantedAuthority("ROLE_COMP"));
-                } else if (userDetails.getUserGrade().equals("대행사")) {
-                    roles.add(new SimpleGrantedAuthority("ROLE_DIST"));
-                } else if (userDetails.getUserGrade().equals("에이전시")) {
-                    roles.add(new SimpleGrantedAuthority("ROLE_AGENCY"));
-                } else if (userDetails.getUserGrade().equals("지사")) {
-                    roles.add(new SimpleGrantedAuthority("ROLE_SALES"));
-                } else if (userDetails.getUserGrade().equals("가맹점")) {
-                    roles.add(new SimpleGrantedAuthority("ROLE_MCHT"));
-                }
+                roles.add(new SimpleGrantedAuthority(grantedRole));
+
+            } else if(userDetails.getUserType().equals("터미널")) {
+                roles.add(new SimpleGrantedAuthority("ROLE_TMN"));
             }
 
         } else {
