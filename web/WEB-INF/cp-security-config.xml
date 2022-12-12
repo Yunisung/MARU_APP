@@ -33,7 +33,7 @@
 			<concurrency-control max-sessions="1" expired-url="/login_duplicate"/>
 		</session-management>-->
 
-		<intercept-url pattern="/mcht/form" access="hasRole('ROLE_COMP')"/>
+		<!--<intercept-url pattern="/mcht/form" access="hasRole('ROLE_COMP')"/>-->
 		<!--<intercept-url pattern="/mcht/form" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER') and hasRole('ROLE_MCHT')"/>-->
 		<!--<intercept-url pattern="/mcht/chargeMng/transferKey" access="hasRole('ROLE_ADMIN')"/>-->
 
