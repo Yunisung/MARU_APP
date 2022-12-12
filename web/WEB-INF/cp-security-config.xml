@@ -37,29 +37,22 @@
 		<!--<intercept-url pattern="/mcht/form" access="hasAnyRole('ROLE_ADMIN', 'ROLE_USER') and hasRole('ROLE_MCHT')"/>-->
 		<!--<intercept-url pattern="/mcht/chargeMng/transferKey" access="hasRole('ROLE_ADMIN')"/>-->
 
-		<!--<custom-filter ref="customAuthenticationFilter" before="FORM_LOGIN_FILTER" />-->
 		<expression-handler ref="defaultWebSecurityExpressionHandler" />
-
 	</http>
 
 	<authentication-manager alias="customAuthenticationManager">
 		<authentication-provider ref="customAuthenticationProvider" />
 	</authentication-manager>
 
-	<beans:bean id="defaultWebSecurityExpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
-		<beans:property name="roleHierarchy" ref="customRoleHierarchy" />
-	</beans:bean>
-
 	<beans:bean id="loginSuccessHandler" class="com.pgmate.app.security.AjaxAuthenticationSucessHandler" />
 	<beans:bean id="loginFailureHandler" class="com.pgmate.app.security.AjaxAuthenticationFailureHandler" />
 	<beans:bean id="customAuthenticationProvider" class="com.pgmate.app.security.CustomAuthenticationProvider" />
-
-	<!--<beans:bean id="customAuthenticationFilter" class="com.pgmate.app.security.filter.CustomAuthenticationFilter">
-		<beans:property name="authenticationManager" ref="customAuthenticationManager" />
-	</beans:bean>-->
 	<beans:bean id="customWebAuthenticationDetailsSource" class="com.pgmate.app.security.filter.CustomWebAuthenticationDetailsSource" />
 
 	<!-- role 계층구조 적용 -->
+	<beans:bean id="defaultWebSecurityExpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
+		<beans:property name="roleHierarchy" ref="customRoleHierarchy" />
+	</beans:bean>
 	<beans:bean id="customRoleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
 		<beans:property name="hierarchy">
 			<beans:value>
