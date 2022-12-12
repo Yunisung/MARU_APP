@@ -13,11 +13,16 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pgmate.app.security.filter.CustomWebAuthenticationDetails;
 import com.pgmate.app.util.*;
 import com.pgmate.lib.sms.SmsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,10 +96,17 @@ import hanati.openapi.cipher.blockcipher.HanaTICryptoUtil;
 public class MchtController {
 	
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.ctl.MchtController.class );
-	
+
+	//@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER') and hasRole('ROLE_MCHT')")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = {"/mcht/form"})
     public ModelAndView form(HttpServletRequest request) {
-        return new ModelAndView("/mcht/form");
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		logger.debug("xxxxxxxxxxxx => {}", authentication.getAuthorities());
+		logger.debug("xxxxxxxxxxxx => {}", authentication.getDetails());
+		//logger.debug("xxxxxxxxxxxx => {}", request.getSession().getAttribute("smsKey"));
+
+		return new ModelAndView("/mcht/form");
     }
 	
 	@RequestMapping(value = {"/mcht/add"})
