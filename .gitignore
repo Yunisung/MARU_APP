@@ -1,3 +1,9 @@
 classes/
 web/WEB-INF/classes/
 logs/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
