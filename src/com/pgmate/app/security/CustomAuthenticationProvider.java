@@ -171,7 +171,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                     grantedRole = "ROLE_MCHT";
                 }
                 // 관리자라면 _ADMIN 부여
-                if (userDetails.getUserRole().equals("관리자")) {
+                if (userDetails.getUserRole().equals("관리자") || userDetails.getUserRole().equals("마스터")) {
                     grantedRole = grantedRole + "_ADMIN";
                 }
 
