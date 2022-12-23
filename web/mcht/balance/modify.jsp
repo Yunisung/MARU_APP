@@ -70,12 +70,20 @@
 											</div>
 											<div class="form-group">
 												<label for="trxType" class="col-md-2 control-label">거래구분</label>
-												<select name="trxType" class="selectpicker col-sm-2">
+												<select id="trxType" name="trxType" class="selectpicker col-sm-2">
 													<option value="">선택</option>
 													<option value="입금">입금</option>
 													<option value="출금">출금</option>
 												</select>
 											</div>
+                                            <div class="form-group">
+                                                <label for="trxUnit" class="col-md-2 control-label">거래유형</label>
+                                                <select id="trxUnit" name="trxUnit" class="selectpicker col-sm-2">
+                                                    <option value="">선택</option>
+                                                    <option value="수기등록">수기등록</option>
+                                                    <option value="인증수수료">인증수수료</option>
+                                                </select>
+                                            </div>
 											<div class="form-group">
 												<label for="amount" class="col-md-2 control-label">금액</label>
 												<div class="col-md-4">
@@ -84,7 +92,7 @@
 											</div>
 											<div class="form-group">
 												<label for="comment" class="col-md-2 control-label">기재내역 </label>
-												<div class="col-md-8">
+												<div class="col-md-8" id="comment">
 													<textarea rows="4" name="comment" id="lsummary" placeholder="Write comment here ..." class="form-control input-md"></textarea>
 												</div>
 											</div>
@@ -120,6 +128,9 @@
             rules: {
                 trxType:{
                 	required: true	
+                },
+                trxUnit:{
+                    required: true
                 },
                 amount: {
                     money: true,
