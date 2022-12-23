@@ -2793,7 +2793,7 @@ public class MchtController {
 		settleMap.put("trxId", chargeSettleDAO.getChargeSettleTrxId());
 		settleMap.put("mchtId", cpRequest.getValue("mchtId"));
 		settleMap.put("trxType", cpRequest.getValue("trxType"));
-		settleMap.put("trxUnit", "수기등록");
+		settleMap.put("trxUnit", cpRequest.getValue("trxUnit"));
 		String regDate = CommonUtil.getCurrentDate("yyyyMMddHHmmss");
 		settleMap.put("trxDay", regDate.substring(0, 8));
 		settleMap.put("trxTime", regDate.substring(8));
