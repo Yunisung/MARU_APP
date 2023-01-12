@@ -74,8 +74,8 @@
 													<c:if test="${CP_SESSION.grade eq '본사'}">
 														<li class="tab_svc"><a href="#tab_svc" data-toggle="tab" aria-expanded="false"> 서비스 </a></li>
 														
-														<li class="tab_phone"><a href="#tab_phone" data-toggle="tab" aria-expanded="false"> 휴대폰결제 </a></li>
-														
+<%--														<li class="tab_phone"><a href="#tab_phone" data-toggle="tab" aria-expanded="false"> 휴대폰결제 </a></li>--%>
+														<li class="tab_totalAuth"><a href="#tab_totalAuth" data-toggle="tab" aria-expanded="false"> 통합인증 </a></li>
 														<c:if test="${DATASVCMAP.virAccount eq '사용'}">
 															<li class="tab_virAccount"><a href="#tab_virAccount" data-toggle="tab" aria-expanded="false"> 가상계좌 </a></li>
 														</c:if>
@@ -1963,6 +1963,107 @@
 														</form>
 													</div>
 													<!-- 휴대폰 결제 끝 -->
+													<!-- 통합인증 탭 시작 -->
+													<div class="tab-pane" id="tab_totalAuth">
+														<form class="form-horizontal form" role="form">
+															<c:if test="${empty TOTALAUTH_MAP}">
+																<div class="form-actions">
+																	<div class="row">
+																		<div class="col-md-12">
+																			<button type="button" class="btn btn-sm green pull-right" onclick="location.href='/mcht/totalAuth/add/${DATAMAP.mchtId}';">
+																				<i class="fa fa-pencil"></i> 통합인증 설정
+																			</button>
+																		</div>
+																		<div class="col-md-6"></div>
+																	</div>
+																</div>
+															</c:if>
+															<c:if test="${not empty TOTALAUTH_MAP}">
+																<div class="form-body">
+																	<div class="form-group col-sm-12 form-subtitle">
+																		<label><i class="fa fa-reorder"></i> 기본 정보</label>
+																	</div>
+																	<div class="row">
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">주민번호체크</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.identityCheck}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3"></label>
+																				<div class="col-md-9">
+																					<p class="form-control-static"></p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">실명인증 사용</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.ownerAuth}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">실명인증 수수료</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.ownerAuthFee}</p>원
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">계좌 1원인증 사용</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.accountAuth}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">계좌 1원인증 수수료</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.accountAuthFee}</p>원
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">ARS인증 사용</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.arsAuth}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">ARS인증 수수료</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.arsAuthFee}</p>원
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="form-actions">
+																	<div class="row">
+																		<div class="col-md-12">
+																			<button type="button" class="btn btn-sm green pull-right" onclick="location.href='/mcht/totalAuth/modify/${DATAMAP.mchtId}';">
+																				<i class="fa fa-pencil"></i> 통합인증 수정
+																			</button>
+																		</div>
+																		<div class="col-md-6"></div>
+																	</div>
+																</div>
+																</c:if>
+														</form>
+													</div>
+													<!-- 통합인증 탭 끝 -->
 													<!-- 가상계좌 정보 탭 시작 -->
 													<div class="tab-pane" id="tab_virAccount">
 														<form class="form-horizontal form" role="form">
