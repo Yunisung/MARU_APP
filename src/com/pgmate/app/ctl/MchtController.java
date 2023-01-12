@@ -35,42 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.pgmate.app.dao.AgencyDAO;
-import com.pgmate.app.dao.AgencyMngDAO;
-import com.pgmate.app.dao.CPDAO;
-import com.pgmate.app.dao.ChargeSettleDAO;
-import com.pgmate.app.dao.CodeDAO;
-import com.pgmate.app.dao.DistDAO;
-import com.pgmate.app.dao.DistMngDAO;
-import com.pgmate.app.dao.FileDAO;
-import com.pgmate.app.dao.HTDAO;
-import com.pgmate.app.dao.LoanDAO;
-import com.pgmate.app.dao.LoanSettleDAO;
-import com.pgmate.app.dao.MchtChargeSettleDAO;
-import com.pgmate.app.dao.MchtDAO;
-import com.pgmate.app.dao.MchtDdctDAO;
-import com.pgmate.app.dao.MchtDiffDAO;
-import com.pgmate.app.dao.MchtFeeTemplateDAO;
-import com.pgmate.app.dao.MchtInterTemplateDAO;
-import com.pgmate.app.dao.MchtInterestDAO;
-import com.pgmate.app.dao.MchtMngDAO;
-import com.pgmate.app.dao.MchtPispDAO;
-import com.pgmate.app.dao.MchtSvcDAO;
-import com.pgmate.app.dao.MchtTaxDAO;
-import com.pgmate.app.dao.MchtTmnDAO;
-import com.pgmate.app.dao.MchtVactDAO;
-import com.pgmate.app.dao.MemberSalesDAO;
-import com.pgmate.app.dao.MemberSalesMngDAO;
-import com.pgmate.app.dao.OrgFeeDAO;
-import com.pgmate.app.dao.OrgInterFeeDAO;
-import com.pgmate.app.dao.PhoneDAO;
 //import com.pgmate.app.dao.SimpleDAO;
-import com.pgmate.app.dao.TotCapDAO;
-import com.pgmate.app.dao.TrxCapDAO;
-import com.pgmate.app.dao.UserDAO;
-import com.pgmate.app.dao.VactDtlDAO;
-import com.pgmate.app.dao.VanDAO;
-import com.pgmate.app.dao.WalletDAO;
 import com.pgmate.app.interceptor.SessionExclude;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.CPResponse;
@@ -322,6 +287,10 @@ public class MchtController {
 		request.setAttribute("HT_TMN_MAP", mchtTmnDAO.getHtByMchtId(mchtId).getRows());
 		request.setAttribute("HT_VACT_MNG_MAP", mchtTmnDAO.getHtVactByMchtId(mchtId).getRows());
 
+
+		//230112_PYS : 통합인증 탭 추가
+		request.setAttribute("TOTALAUTH_MAP", new MchtTotalAuthDAO().getByMchtId(mchtId));
+		
 	//	long startTime3 = System.currentTimeMillis();
 	//	logger.info("THIRD TIME : {}", (startTime3 - startTime2));
         return new ModelAndView("/mcht/view");
@@ -887,6 +856,45 @@ public class MchtController {
 		}
 	}
 	//======================================================== 노티 정보
+
+	//230112_PYS : 통합인증
+	@RequestMapping(value = "/mcht/totalAuth/add/{mchtId}", method = RequestMethod.GET)
+	public ModelAndView totalAuthAdd(HttpServletRequest request, @PathVariable String mchtId) {
+		request.setAttribute("MCHT_MAP", new MchtDAO().getById(mchtId).getRowFirst());
+		return new ModelAndView("/mcht/totalAuth/add");
+	}
+
+	@RequestMapping(value = {"/mcht/totalAuth/insert"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse totalAuthInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+		if (cpDAO.insertByOper("PG_MCHT_TOTAL_AUTH", SessionUtil.getUserId(request), cpRequest.data)) {
+			return new CPRUtil(cpRequest).resultOK("가맹점 통합인증 정보가 등록되었습니다.").cpResponse();
+		} else {
+			return new CPRUtil(cpRequest)
+					.resultNOK("가맹점 통합인증 정보 등록에 실패하였습니다.",cpDAO.getError())
+					.cpResponse();
+		}
+	}
+
+	@RequestMapping(value = "/mcht/totalAuth/modify/{mchtId}", method = RequestMethod.GET)
+	public ModelAndView totalAuthModify(HttpServletRequest request, @PathVariable String mchtId) {
+		SharedMap<String, Object> sharedMap = new MchtTotalAuthDAO().getByMchtId(mchtId);
+		request.setAttribute("DATAMAP", sharedMap);
+		return new ModelAndView("/mcht/totalAuth/modify");
+	}
+
+	@RequestMapping(value = "/mcht/totalAuth/update", method = RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse totalAuthUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+
+		if (cpDAO.update("PG_MCHT_TOTAL_AUTH", SessionUtil.getUserId(request), cpRequest.data)) {
+			return new CPRUtil(cpRequest).resultOK("통합인증 정보가 변경되었습니다.").cpResponse();
+		} else {
+			return new CPRUtil(cpRequest).resultNOK("통합인증 정보 변경에 실패하였습니다.",cpDAO.getError())
+					.cpResponse();
+		}
+	}
+
 
 	//======================================================== 가맹점 월 정산내역 이메일 전송
 	/*
