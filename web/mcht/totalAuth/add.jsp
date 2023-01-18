@@ -49,10 +49,12 @@
                                         <input type="hidden" name="action_type" value="insert" data-reg="false" />
                                         <div class="form-body row">
                                             <div class="form-group col-sm-6">
-                                                <label class="control-label input-sm col-sm-4 req-label">가맹점 ID</label>
-                                                <div class="col-sm-6">
-                                                    <input type="text" class="form-control input-sm" name="mchtId" value="${MCHT_MAP.mchtId}" readonly>
-                                                </div>
+                                                <label class="control-label col-sm-4 req-label">정산유형
+                                                </label>
+                                                <select id="settleType" name="settleType" class="selectpicker col-sm-6">
+                                                    <option value="B+1" selected>B+1</option>
+                                                    <option value="C+0">C+0</option>
+                                                </select>
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4 req-label">주민번호<br> 체크

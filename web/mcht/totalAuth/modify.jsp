@@ -47,11 +47,14 @@
                                 <form class="form-horizontal form-bordered" role="form" data-form="true" id="writeFrm" name="form" action="/mcht/totalAuth/" method="post">
                                         <div class="form-body row">
                                             <input type="hidden" name="action_type" value="update" data-reg="false" />
+                                            <input type="hidden" data-key="true" name="mchtId" value="${DATAMAP.mchtId}">
                                             <div class="form-group col-sm-6">
-                                                <label class="control-label input-sm col-sm-4 req-label">가맹점 ID</label>
-                                                <div class="col-sm-6">
-                                                    <input type="text" class="form-control input-sm" data-key="true" name="mchtId" value="${DATAMAP.mchtId}" readonly>
-                                                </div>
+                                                <label class="control-label col-sm-4 req-label">정산유형
+                                                </label>
+                                                <select id="settleType" name="settleType" class="selectpicker col-sm-6">
+                                                    <option value="B+1" selected>B+1</option>
+                                                    <option value="C+0">C+0</option>
+                                                </select>
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4 req-label">주민번호<br> 체크
