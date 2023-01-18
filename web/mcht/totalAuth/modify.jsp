@@ -56,6 +56,9 @@
                                                     <option value="C+0">C+0</option>
                                                 </select>
                                             </div>
+                                            <script type="text/javascript">
+                                                document.forms.writeFrm.settleType.value = '${DATAMAP.settleType}'
+                                            </script>
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4 req-label">주민번호<br> 체크
                                                 </label>
