@@ -1986,17 +1986,17 @@
 																	<div class="row">
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
-																				<label class="control-label col-md-3">주민번호체크</label>
+																				<label class="control-label col-md-3">정산유형</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static">${TOTALAUTH_MAP.identityCheck}</p>
+																					<p class="form-control-static">${TOTALAUTH_MAP.settleType}</p>
 																				</div>
 																			</div>
 																		</div>
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
-																				<label class="control-label col-md-3"></label>
+																				<label class="control-label col-md-3">주민번호체크</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static"></p>
+																					<p class="form-control-static">${TOTALAUTH_MAP.identityCheck}</p>
 																				</div>
 																			</div>
 																		</div>
