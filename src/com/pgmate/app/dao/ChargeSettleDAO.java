@@ -97,6 +97,36 @@ public class ChargeSettleDAO extends DAO{
 		super.initRecord();
 		return result;
 	}
+
+	public boolean insertChargeSettleForVact(SharedMap<String, Object> settleMap) {
+		super.setTable("PG_CHARGE_SETTLE");
+		super.setRecord("trxId", settleMap.getString("trxId"));
+		super.setRecord("mchtId", settleMap.getString("mchtId"));
+		super.setRecord("trxType", settleMap.getString("trxType"));
+		super.setRecord("trxUnit", settleMap.getString("trxUnit"));
+		super.setRecord("trxDay", settleMap.getString("trxDay"));
+		super.setRecord("trxTime", settleMap.getString("trxTime"));
+		super.setRecord("amount", Math.abs(settleMap.getLong("amount")));
+		super.setRecord("fee", settleMap.getString("fee"));
+		super.setRecord("feeVat", settleMap.getString("feeVat"));
+		super.setRecord("bankFee", 0);
+		super.setRecord("netAmount", Math.abs(settleMap.getLong("netAmount")));
+		super.setRecord("balance", settleMap.getLong("balance"));
+		super.setRecord("trackId", settleMap.getString("trackId"));
+		super.setRecord("refId", settleMap.getString("refId"));
+		super.setRecord("bankCd", "");
+		super.setRecord("bankName", "");
+		super.setRecord("account", "");
+		super.setRecord("holder", "");
+		super.setRecord("recordInfo", "");
+		super.setRecord("summary", settleMap.getString("summary"));
+		super.setRecord("regId", settleMap.getString("regId"));
+		super.setRecord("regDay", settleMap.getString("regDay"));
+
+		boolean result = super.insert();
+		super.initRecord();
+		return result;
+	}
 	
 	public static String getFunction(String function, String value) {
 		String returnVal = "";
