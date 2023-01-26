@@ -158,6 +158,9 @@ public class VactSettleController {
 							settleMap.put("trxTime", regDate.substring(8));
 							settleMap.put("trackId", settleMap.getString("stlId"));
 							settleMap.put("refId", settleMap.getString("stlId"));
+							settleMap.put("amount", settleMap.getLong("payAmt"));
+							settleMap.put("fee", settleMap.getLong("payFee"));
+							settleMap.put("feeVat", settleMap.getLong("payFeeVat"));
 							settleMap.put("netAmount", settleMap.getLong("payOutAmt"));
 							settleMap.put("balance", chargeSettleDAO.getMchtBalance(settleMap.getString("mchtId")).getLong("balance")+settleMap.getLong("netAmount"));
 							String stlDay = settleMap.getString("stlDay").substring(0, 4)+"-"+settleMap.getString("stlDay").substring(4,6)+"-"+settleMap.getString("stlDay").substring(6);
@@ -165,7 +168,8 @@ public class VactSettleController {
 							settleMap.put("regId", SessionUtil.getUserId(request));
 							settleMap.put("regDay", regDate.substring(0, 8));
 							
-							chargeSettleDAO.insertChargeSettle(settleMap);
+							//chargeSettleDAO.insertChargeSettle(settleMap);
+							chargeSettleDAO.insertChargeSettleForVact(settleMap);
 						}
 					}
 				}
