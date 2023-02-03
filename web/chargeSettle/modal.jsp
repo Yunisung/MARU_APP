@@ -20,6 +20,11 @@
 			<li class="active">
 				<a href="#tab1" data-toggle="tab">거래정보</a>
 			</li>
+			<c:if test="${CP_SESSION.grade == '본사' && DATAMAP.trxType eq '출금'}">
+				<li>
+					<a href="#tab_hook" data-toggle="tab">통지 정보</a>
+				</li>
+			</c:if>
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane active" id="tab1">	
@@ -225,14 +230,91 @@
 				</form>
 				<!-- END FORM-->
 			</div>
+			<div class="tab-pane" id="tab_hook">
+				<!-- BEGIN FORM-->
+				<div class="form-body row">
+					<!--/span-->
+					<div class='col-md-4'>
+						<div class='form-group pg-view-group'>
+							<label class='control-label col-md-4'>Status</label>
+							<div class='col-md-8'>
+								<p class='form-control-static'>${DATANOTIMAP.status}</p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class='col-md-4'>
+						<div class='form-group pg-view-group'>
+							<label class='control-label col-md-4'>Retry</label>
+							<div class='col-md-8'>
+								<p class='form-control-static'>${DATANOTIMAP.retry}</p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class='col-md-4'>
+						<div class='form-group pg-view-group'>
+							<label class='control-label col-md-4'>Type</label>
+							<div class='col-md-8'>
+								<p class='form-control-static'>${DATANOTIMAP.hookType}</p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class='col-md-4'>
+						<div class='form-group pg-view-group'>
+							<label class='control-label col-md-4'>Address</label>
+							<div class='col-md-8'>
+								<p class='form-control-static'>${DATANOTIMAP.hookAddr}</p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class='col-md-4'>
+						<div class='form-group pg-view-group'>
+							<label class='control-label col-md-4'>Sent Date</label>
+							<div class='col-md-8'>
+								<p class='form-control-static'>${DATANOTIMAP.sentDate}</p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class='col-md-4'>
+						<div class='form-group pg-view-group'>
+							<label class='control-label col-md-4'></label>
+							<div class='col-md-8'>
+								<button class="btn btn-sm blue" onClick="retryHook();">재전송</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="modal-footer">
 		<button type="button" data-dismiss="modal" class="btn btn-sm">Close</button>
 	</div>
 	<script>
-	
-	
+		function retryHook() {
+			bootbox.confirm('해당 거래를 재전송 하시겠습니까?', function(result) {
+				if (result) {
+					$.ajax({
+						type: "GET",
+						url: "/chargeSettle/retry/${DATAMAP.trxId}",
+						success: function (res) {
+							if(res.result == 'OK') {
+								bootbox.alert('재전송 요청에 성공했습니다.');
+							} else {
+								bootbox.alert(res.msg);
+							}
+						},
+						error: function (res, status) {
+							bootbox.alert('재전송 요청에 실패했습니다.' + status);
+						}
+					});
+				}
+			});
+		};
 	</script>
 </body>
 </html>
