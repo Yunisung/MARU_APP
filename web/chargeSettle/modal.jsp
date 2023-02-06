@@ -283,7 +283,12 @@
 						<div class='form-group pg-view-group'>
 							<label class='control-label col-md-4'></label>
 							<div class='col-md-8'>
+							<c:if test="${!empty DATANOTIMAP }">
 								<button class="btn btn-sm blue" onClick="retryHook();">재전송</button>
+							</c:if>
+							<c:if test="${empty DATANOTIMAP }">
+								<p class='form-control-static'>전송중</p>
+							</c:if>
 							</div>
 						</div>
 					</div>
