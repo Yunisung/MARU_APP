@@ -20,7 +20,7 @@
 			<li class="active">
 				<a href="#tab1" data-toggle="tab">거래정보</a>
 			</li>
-			<c:if test="${CP_SESSION.grade == '본사' && DATAMAP.trxType eq '출금'}">
+			<c:if test="${CP_SESSION.grade == '본사' && DATAMAP.trxType eq '출금' && DATAMAP.trxUnit eq '펌뱅킹'}">
 				<li>
 					<a href="#tab_hook" data-toggle="tab">통지 정보</a>
 				</li>
