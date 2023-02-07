@@ -53,7 +53,6 @@
                                                 </label>
                                                 <select id="settleType" name="settleType" class="selectpicker col-sm-6">
                                                     <option value="B+1" selected>B+1</option>
-                                                    <option value="C+0">C+0</option>
                                                 </select>
                                             </div>
                                             <script type="text/javascript">
