@@ -111,7 +111,7 @@
 		<!-- 가상계좌 정산 -->
 		<intercept-url pattern="/vactSettle/mcht/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT')"/>
 		<intercept-url pattern="/vactSettle/dist/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST')"/>
-		<intercept-url pattern="/vactSettle/agency/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/vactSettle/agency/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_AGENCY')"/>
 		<intercept-url pattern="/vactSettle/sales/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
 
 		<!-- 충전 정산 -->
