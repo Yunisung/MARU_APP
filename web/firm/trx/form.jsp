@@ -115,6 +115,7 @@
 																<option value="월렛">월렛</option>
 																<option value="모계좌">모계좌</option>
 																<option value="잔액이체">잔액이체</option>
+																<option value="1원인증">1원인증</option>
 															</select>
 														</div>
 														<div class="form-group pg-form-group">
