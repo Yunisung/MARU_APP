@@ -99,6 +99,7 @@
 																	<option value="신용카드정산">신용카드정산</option>
 																	<option value="가상계좌정산">가상계좌정산</option>
 																	<option value="펌뱅킹">펌뱅킹</option>
+																	<option value="인증수수료">인증수수료</option>
 															</select>
 														</div>
 														<div class="form-group pg-form-group">
