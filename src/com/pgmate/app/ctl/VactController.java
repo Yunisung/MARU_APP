@@ -70,6 +70,87 @@ public class VactController {
     RecordSet rset = vactTrxDAO.list(cpRequest.data, cpRequest.page);
     return new CPRUtil(cpRequest).dataList(rset, vactTrxDAO).setView(request, "/vact/trx/list", "");
   }
+
+    /**
+     * CREATE by PYS : 거래관리 - 가상계좌관리 - 인증수수료조회 페이지
+     * @param request
+     * @param cpRequest
+     * @return
+     */
+    @RequestMapping(value = "/vact/auth/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView authList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+        SessionUtil.setSearchGrade(request, cpRequest);
+
+        //터미널아이디로 접속한 경우 가맹점아이디로 검색
+        CPSession cpSession = SessionUtil.get(request);
+        if(cpSession.getGrade().equals("하위가맹점")) {
+            MchtTmnDAO mDAO = new MchtTmnDAO();
+            SharedMap<String, Object> map = mDAO.getById(cpRequest.getKeyValue("tmnId")).getRowFirst();
+            cpRequest.replaceKeyName("tmnId", "mchtId");
+            cpRequest.replaceKeyValue("mchtId",	map.getString("mchtId"));
+        }
+
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+
+        //가상계좌 은행이름, 계좌번호 세팅
+        //나중에 PAY쪽에서 가상계좌 발행할때 update하는 방법도 괜춘할듯.
+        RecordSet rset = vactTrxDAO.authList(cpRequest.data, cpRequest.page);
+        for(SharedMap<String,Object>  data : rset.getRows()) {
+            String totalAuthId = data.getString("totalAuthId");
+            RecordSet recordSet = vactTrxDAO.getVactAuth(totalAuthId);
+            if(recordSet.size() != 0) {
+                String bankCd = recordSet.getRowFirst().getString("vactBankCd");
+                String bankName = vactTrxDAO.getBankName(bankCd).getString("codeName");;
+                String account = recordSet.getRowFirst().getString("vactAccount");
+
+                data.put("vactBank", bankName);
+                data.put("vactAccount", account);
+            }
+        }
+
+
+        //수수료 건수, 수수료 총금액 표시
+        if(cpSession.getGrade().equals("본사")) {
+            String ownerCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "owner", "").getRowFirst().getString("count");
+            String ownerFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "owner", "").getRowFirst().getString("authFeeSum");
+            String accountCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "account", "").getRowFirst().getString("count");
+            String accountFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "account", "").getRowFirst().getString("authFeeSum");
+            String arsCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ars", "").getRowFirst().getString("count");
+            String arsFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ars", "").getRowFirst().getString("authFeeSum");
+            String totalCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "", "").getRowFirst().getString("count");
+            String totalFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "", "").getRowFirst().getString("authFeeSum");
+
+            request.setAttribute("OWNER_COUNT", ownerCount);
+            request.setAttribute("OWNER_SUM", ownerFeeSum);
+            request.setAttribute("ACCOUNT_COUNT", accountCount);
+            request.setAttribute("ACCOUNT_SUM", accountFeeSum);
+            request.setAttribute("ARS_COUNT", arsCount);
+            request.setAttribute("ARS_SUM", arsFeeSum);
+            request.setAttribute("TOTAL_COUNT", totalCount);
+            request.setAttribute("TOTAL_SUM", totalFeeSum);
+        } else if(cpSession.getGrade().equals("가맹점")) {
+            String mchtId = cpRequest.getKeyValue("mchtId");
+            String ownerCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "owner", mchtId).getRowFirst().getString("count");
+            String ownerFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "owner", mchtId).getRowFirst().getString("authFeeSum");
+            String accountCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "account", mchtId).getRowFirst().getString("count");
+            String accountFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "account", mchtId).getRowFirst().getString("authFeeSum");
+            String arsCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ars", mchtId).getRowFirst().getString("count");
+            String arsFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ars", mchtId).getRowFirst().getString("authFeeSum");
+            String totalCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "", mchtId).getRowFirst().getString("count");
+            String totalFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "", mchtId).getRowFirst().getString("authFeeSum");
+
+            request.setAttribute("OWNER_COUNT", ownerCount);
+            request.setAttribute("OWNER_SUM", ownerFeeSum);
+            request.setAttribute("ACCOUNT_COUNT", accountCount);
+            request.setAttribute("ACCOUNT_SUM", accountFeeSum);
+            request.setAttribute("ARS_COUNT", arsCount);
+            request.setAttribute("ARS_SUM", arsFeeSum);
+            request.setAttribute("TOTAL_COUNT", totalCount);
+            request.setAttribute("TOTAL_SUM", totalFeeSum);
+        }
+
+        return new CPRUtil(cpRequest).dataList(rset, vactTrxDAO).setView(request, "/vact/auth/list", "");
+    }
   
   @RequestMapping(value = "/vact/trx/view/{vactId}", method = RequestMethod.GET)
   public ModelAndView trxView(HttpServletRequest request, @PathVariable String vactId) {
