@@ -109,5 +109,19 @@ public class VactTrxDAO extends DAO {
 			return true;
 		}
 	}
+
+	/**
+	 * 출금계좌정보 조회
+	 * @param account
+	 * @return
+	 */
+	public SharedMap<String, Object> withdrawAccount(String account){
+		super.setTable("PG_VACT_REG");
+		super.setColumns("FN_AES_DEC(withdrawAccount) AS withdrawAccountDec");
+		super.addWhere("account",account);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst();
+	}
 }
 

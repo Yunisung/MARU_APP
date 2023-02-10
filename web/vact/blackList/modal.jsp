@@ -1,0 +1,84 @@
+<%@page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
+<!DOCTYPE html>
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head></head>
+<body>
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">×</button>
+		<h4>출금계좌번호 조회</h4>
+	</div>
+	<div class="modal-body">
+		<!-- BEGIN FORM-->
+		<div class="portlet light portlet-form">
+			<%--<div class="portlet-title"></div>--%>
+			<div class="portlet-body form light">
+				<div class="form-body row">
+					<div class="form-group col-sm-offset-2">
+						<label class="control-label input-sm col-sm-2 req-label">가상계좌번호</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control input-sm accountNo" id="accountNo" value="" >
+						</div>
+						<div class="col-sm-2">
+							<a class="btn btn-sm green" href="javascript:getWithdrawAccount()">출금계좌조회</a>
+						</div>
+					</div>
+					<div class="form-group col-sm-offset-2">
+						<div class="col-sm-10">
+							<p class="form-control-static" id="resultMsg">&nbsp;</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- END FORM-->
+	</div>
+	<div class="modal-footer">
+		<button type="button" data-dismiss="modal" class="btn btn-sm">Close</button>
+	</div>
+	<script type="text/javascript">
+		function getWithdrawAccount() {
+			var accountNo = document.getElementById('accountNo').value;
+			if(accountNo === '') {
+				bootbox.alert("가상계좌번호를 입력해주세요.");
+				return;
+			}
+
+			$.ajax({
+				type: "GET",
+				url: "/vact/withdrawAccount/" + accountNo,
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				success: function (res) {
+					//console.log(res);
+					const msg = res.msg;
+					const withdrawAccount = res.withdrawAccount;
+					if (res.result == 'OK') {
+						document.getElementById('resultMsg').innerText = msg;
+						bootbox.confirm("출금계좌번호 " + withdrawAccount + "를 등록하시겠습니까?", function(result) {
+							if(result) {
+								document.getElementById('account').value = withdrawAccount;
+								var $modal = $('#pgmate-modal');
+								$modal.modal('toggle');
+							}
+						});
+					} else {
+						bootbox.alert(msg);
+					}
+				},
+				error: function (xhr, textStatus, errorThrown) {
+					bootbox.alert('Error ' + errorThrown);
+				}
+			});
+		}
+	</script>
+</body>
+</html>
