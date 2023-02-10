@@ -35,7 +35,42 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.pgmate.app.dao.AgencyDAO;
+import com.pgmate.app.dao.AgencyMngDAO;
+import com.pgmate.app.dao.CPDAO;
+import com.pgmate.app.dao.ChargeSettleDAO;
+import com.pgmate.app.dao.CodeDAO;
+import com.pgmate.app.dao.DistDAO;
+import com.pgmate.app.dao.DistMngDAO;
+import com.pgmate.app.dao.FileDAO;
+import com.pgmate.app.dao.HTDAO;
+import com.pgmate.app.dao.LoanDAO;
+import com.pgmate.app.dao.LoanSettleDAO;
+import com.pgmate.app.dao.MchtChargeSettleDAO;
+import com.pgmate.app.dao.MchtDAO;
+import com.pgmate.app.dao.MchtDdctDAO;
+import com.pgmate.app.dao.MchtDiffDAO;
+import com.pgmate.app.dao.MchtFeeTemplateDAO;
+import com.pgmate.app.dao.MchtInterTemplateDAO;
+import com.pgmate.app.dao.MchtInterestDAO;
+import com.pgmate.app.dao.MchtMngDAO;
+import com.pgmate.app.dao.MchtPispDAO;
+import com.pgmate.app.dao.MchtSvcDAO;
+import com.pgmate.app.dao.MchtTaxDAO;
+import com.pgmate.app.dao.MchtTmnDAO;
+import com.pgmate.app.dao.MchtVactDAO;
+import com.pgmate.app.dao.MemberSalesDAO;
+import com.pgmate.app.dao.MemberSalesMngDAO;
+import com.pgmate.app.dao.OrgFeeDAO;
+import com.pgmate.app.dao.OrgInterFeeDAO;
+import com.pgmate.app.dao.PhoneDAO;
 //import com.pgmate.app.dao.SimpleDAO;
+import com.pgmate.app.dao.TotCapDAO;
+import com.pgmate.app.dao.TrxCapDAO;
+import com.pgmate.app.dao.UserDAO;
+import com.pgmate.app.dao.VactDtlDAO;
+import com.pgmate.app.dao.VanDAO;
+import com.pgmate.app.dao.WalletDAO;
 import com.pgmate.app.interceptor.SessionExclude;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.CPResponse;
@@ -43,6 +78,11 @@ import com.pgmate.app.model.ajax.Data;
 import com.pgmate.app.model.ajax.Interest;
 import com.pgmate.app.model.ajax.TmnList;
 import com.pgmate.app.session.CPSession;
+import com.pgmate.app.util.CPRUtil;
+import com.pgmate.app.util.CPUtil;
+import com.pgmate.app.util.SQLInjectionUtil;
+import com.pgmate.app.util.SessionUtil;
+import com.pgmate.app.util.WalletAccntUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.key.CPKEY;
@@ -279,15 +319,17 @@ public class MchtController {
 		request.setAttribute("PG_MNG_MAP", mchtMngDAO.getById(mchtId).getRowFirst());
 		request.setAttribute("PG_TAX_MAP", mchtTaxDAO.getByMchtId(mchtId).getRowFirst());
 		request.setAttribute("PG_TMN_MAP", mchtTmnDAO.getPgByMchtId(mchtId).getRowFirst());
-		
+		request.setAttribute("PG_VACT_MNG_MAP", mchtTmnDAO.getVactByMchtId(mchtId).getRowFirst());
+
 		request.setAttribute("HT_MAP", mchtDAO.getHtById(mchtId).getRows());
 		request.setAttribute("HT_MNG_MAP", mchtMngDAO.getHtById(mchtId).getRows());
 		request.setAttribute("HT_TAX_MAP", mchtTaxDAO.getHtByMchtId(mchtId).getRows());
 		request.setAttribute("HT_TMN_MAP", mchtTmnDAO.getHtByMchtId(mchtId).getRows());
+		request.setAttribute("HT_VACT_MNG_MAP", mchtTmnDAO.getHtVactByMchtId(mchtId).getRows());
 
 		//230112_PYS : 통합인증 탭 추가
 		request.setAttribute("TOTALAUTH_MAP", new MchtTotalAuthDAO().getByMchtId(mchtId));
-		
+
 	//	long startTime3 = System.currentTimeMillis();
 	//	logger.info("THIRD TIME : {}", (startTime3 - startTime2));
         return new ModelAndView("/mcht/view");
@@ -1555,7 +1597,7 @@ public class MchtController {
 	public @ResponseBody CPResponse vactUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
 		//identity 입력시 암호화하여 넣어야함.
-		if (cpDAO.updateByOper("PG_MCHT_MNG_VACT", SessionUtil.getUserId(request), cpRequest.data)) {
+		if (cpDAO.updateAndBack("PG_MCHT_MNG_VACT", SessionUtil.getUserId(request), cpRequest.data)) {
 			
 			DAO dao = new DAO();
 			dao.setTable("PG_VACT_AUTH_INFO");
@@ -2752,20 +2794,14 @@ public class MchtController {
 	public @ResponseBody CPResponse chargeMngInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
 		//identity 입력시 암호화하여 넣어야함.
-		String mchtId = cpRequest.getValue("mchtId");
-		String tk = GenKey.genKeys(CPKEY.CASH_TRANSFER, mchtId);
-
-		//PYS : 출금키 생성시 암호화해서 DB에 저장
-		String encKey = KSignUtil.getInstance().Encrypt(tk);
-
-		if (cpDAO.insertByOperAddKey("PG_MCHT_CHARGE_MNG", encKey, SessionUtil.getUserId(request), cpRequest.data)) {
+		if (cpDAO.insertByOper("PG_MCHT_CHARGE_MNG", SessionUtil.getUserId(request), cpRequest.data)) {
 			return new CPRUtil(cpRequest).resultOK("가맹점 충전정산 정보가 등록되었습니다.").cpResponse();
 		} else {
 			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 정보 등록에 실패하였습니다.",cpDAO.getError() )
 					.cpResponse();
 		}
 	}
-
+	
 	@RequestMapping(value = "/mcht/chargeMng/modify/{mchtId}", method = RequestMethod.GET)
 	public ModelAndView chargeMngModify(HttpServletRequest request, @PathVariable String mchtId) {
 		SharedMap<String,Object> sharedMap = new MchtChargeSettleDAO().getById(mchtId).getRowFirst();
@@ -2789,65 +2825,6 @@ public class MchtController {
 			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 정보 수정에 실패하였습니다.",cpDAO.getError() )
 					.cpResponse();
 		}
-	}
-
-	@RequestMapping(value = {"/mcht/chargeMng/transferKey"}, method = RequestMethod.POST)
-	public @ResponseBody SharedMap<String, Object> createTransferKey(HttpServletRequest request, @RequestBody Map<String, Object> param) {
-		MchtChargeSettleDAO mchtChargeSettleDAO = new MchtChargeSettleDAO();
-		SharedMap<String, Object> resMap = new SharedMap<String, Object>();
-
-		String mchtId = (String) param.get("mchtId");
-		SharedMap<String,Object> sharedMap = mchtChargeSettleDAO.getById(mchtId).getRowFirst();
-
-		// 키 생성
-		String originalKey = GenKey.genKeys(CPKEY.CASH_TRANSFER, mchtId);
-		String encKey = KSignUtil.getInstance().Encrypt(originalKey);
-
-		boolean updated = false;
-		resMap.put("msg", "출금키 생성에 실패하였습니다.");
-		resMap.put("result", "NOK");
-
-		if(sharedMap.size() > 0) {
-			/*String transferKeyTel = sharedMap.getString("transferKeyTel");
-			if(CommonUtil.isEmpty(transferKeyTel)) {
-				logger.info("출금키 연락처가 존재하지 않습니다.");
-				return resMap;
-			} else {
-				String msg = "출금키가 생성되었습니다. 출금키: " + originalKey + "";
-				if(!sendSMS(msg, transferKeyTel)) {
-					return resMap;
-				}
-			}*/
-			updated = mchtChargeSettleDAO.updateTransferKey(encKey, SessionUtil.getUserId(request), mchtId);
-		}
-
-		if(updated) {
-			resMap.put("msg", "출금키가 생성되었습니다. " + "<br> 출금키 : " + originalKey + "");
-			String newEncKey = encKey.substring(0, 10) + "************";
-			resMap.put("transferKey", newEncKey);
-			resMap.put("originalKey", originalKey);
-			resMap.put("result", "OK");
-		}
-
-		return resMap;
-	}
-
-	private boolean sendSMS(String msg, String setTel) {
-		WebCache wc = new WebCache();
-		String number = String.format("%1$" + 6 + "s", ((int) (Math.random() * 999999) + 1)).replace(' ', '0');
-		wc.setSMSKey(setTel, number);
-
-		String msgBody = "[(주)부국위너스] " + msg + "";
-		try {
-			SmsUtil.sendSms(SmsUtil.LMS_URL, setTel.replaceAll("\\[^0-9]+", ""), msgBody);
-			logger.debug("NoticeSend SMS SEND");
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			logger.error("공지사항 SMS 전송 중 오류발생. 확인요망 [" + e.getMessage() + "]");
-
-			return false;
-		}
-		return true;
 	}
 	
 	@RequestMapping(value = "/mcht/balance/modify/{mchtId}", method = RequestMethod.GET)
