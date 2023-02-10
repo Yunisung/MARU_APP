@@ -1329,6 +1329,78 @@
 															<div class="portlet-title">
 																<div class="caption font-red-sunglo">
 																	<i class="icon-pointer font-red-sunglo"></i>
+																	<span class="caption-subject bold uppercase"> 가상계좌 지불 및 정산 정보 변경 이력</span>
+																</div>
+															</div>
+															<div class="portlet-body form light">
+																<div class="table-scrollable">
+																	<!-- 리스트 본문 시작 -->
+																	<table class="pg-table table table-striped table-hover flip-content">
+																		<!-- table-bordered -->
+																		<thead>
+																		<tr>
+																			<th>No</th>
+																			<th data-sort="string">지불사용여부</th>
+																			<th data-sort="string">정산유형</th>
+																			<th data-sort="string">가맹점 수수료</th>
+																		<%-- <th data-sort="string">선정산 수수료</th>--%>
+																			<th data-sort="string">대행사 수수료</th>
+																			<th data-sort="string">에이전시 수수료</th>
+																			<th data-sort="string">통합인증 수수료</th>
+																			<th data-sort="string">1회한도</th>
+																			<th data-sort="string">1일한도</th>
+																			<th data-sort="string">입금제한횟수</th>
+																			<th data-sort="string">입금단위제한</th>
+																			<%--<th data-sort="string">선정산 한도</th> --%>
+																			<th data-sort="string">summary</th>
+																			<th data-sort="string">변경자</th>
+																			<th data-sort="string">변경일시</th>
+																		</tr>
+																		</thead>
+																		<tbody id="list">
+																		<tr>
+																			<td>${fn:length(HT_VACT_MNG_MAP) + 1}</td>
+																			<td>${PG_VACT_MNG_MAP.status}</td>
+																			<td>${PG_VACT_MNG_MAP.settleType}</td>
+																			<td><fmt:formatNumber value="${PG_VACT_MNG_MAP.rate * 100}" pattern="0.000"/> %</td>
+																			<td><fmt:formatNumber value="${PG_VACT_MNG_MAP.distRate * 100}" pattern="0.000"/> %</td>
+																			<td><fmt:formatNumber value="${PG_VACT_MNG_MAP.agencyRate * 100}" pattern="0.000"/> %</td>
+																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.totalAuthFee}" pattern="#,##0" /></td>
+																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.limitOnce}" pattern="#,##0" /></td>
+																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.limitDay}" pattern="#,##0" /></td>
+																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.depositLimitCnt}" pattern="#,##0" /></td>
+																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.limitAmount}" pattern="#,##0" /></td>
+																			<td>${PG_VACT_MNG_MAP.summary}</td>
+																			<td>${PG_VACT_MNG_MAP.regId}</td>
+																			<td>${PG_VACT_MNG_MAP.regDate}</td>
+																		</tr>
+																		<c:forEach var="entry" items="${HT_VACT_MNG_MAP}" varStatus="status">
+																			<tr>
+																				<td>${fn:length(HT_VACT_MNG_MAP) - status.index}</td>
+																				<td>${entry.status}</td>
+																				<td>${entry.settleType}</td>
+																				<td><fmt:formatNumber value="${entry.rate * 100}" pattern="0.000"/> %</td>
+																				<td><fmt:formatNumber value="${entry.distRate * 100}" pattern="0.000"/> %</td>
+																				<td><fmt:formatNumber value="${entry.agencyRate * 100}" pattern="0.000"/> %</td>
+																				<td><fmt:formatNumber type="number" value="${entry.totalAuthFee}" pattern="#,##0" /></td>
+																				<td><fmt:formatNumber type="number" value="${entry.limitOnce}" pattern="#,##0" /></td>
+																				<td><fmt:formatNumber type="number" value="${entry.limitDay}" pattern="#,##0" /></td>
+																				<td><fmt:formatNumber type="number" value="${entry.depositLimitCnt}" pattern="#,##0" /></td>
+																				<td><fmt:formatNumber type="number" value="${entry.limitAmount}" pattern="#,##0" /></td>
+																				<td>${entry.summary}</td>
+																				<td>${entry.regId}</td>
+																				<td>${entry.regDate}</td>
+																			</tr>
+																		</c:forEach>
+																		</tbody>
+																	</table>
+																</div>
+															</div>
+														</div>
+														<div class="portlet light portlet-form">
+															<div class="portlet-title">
+																<div class="caption font-red-sunglo">
+																	<i class="icon-pointer font-red-sunglo"></i>
 																	<span class="caption-subject bold uppercase"> TAX 정보 변경 이력</span>
 																</div>
 															</div>

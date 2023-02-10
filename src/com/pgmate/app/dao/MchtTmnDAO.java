@@ -105,9 +105,23 @@ public class MchtTmnDAO extends DAO{
 		addWhere("lower(mchtId)", mchtId.toLowerCase(), eq);
 		return search();
 	}
+
+	public RecordSet getHtVactByMchtId(String mchtId) {
+		setTable("HT_MCHT_MNG_VACT");
+		setColumns("*");
+		addWhere("lower(mchtId)", mchtId.toLowerCase(), eq);
+		return search();
+	}
 	
 	public RecordSet getPgByMchtId(String mchtId) {
 		setTable("PG_MCHT_TMN");
+		setColumns("*");
+		addWhere("lower(mchtId)", mchtId.toLowerCase(), eq);
+		return search();
+	}
+
+	public RecordSet getVactByMchtId(String mchtId) {
+		setTable("PG_MCHT_MNG_VACT");
 		setColumns("*");
 		addWhere("lower(mchtId)", mchtId.toLowerCase(), eq);
 		return search();

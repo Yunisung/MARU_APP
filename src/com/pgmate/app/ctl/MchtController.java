@@ -310,12 +310,14 @@ public class MchtController {
 		request.setAttribute("PG_MNG_MAP", mchtMngDAO.getById(mchtId).getRowFirst());
 		request.setAttribute("PG_TAX_MAP", mchtTaxDAO.getByMchtId(mchtId).getRowFirst());
 		request.setAttribute("PG_TMN_MAP", mchtTmnDAO.getPgByMchtId(mchtId).getRowFirst());
-		
+		request.setAttribute("PG_VACT_MNG_MAP", mchtTmnDAO.getVactByMchtId(mchtId).getRowFirst());
+
 		request.setAttribute("HT_MAP", mchtDAO.getHtById(mchtId).getRows());
 		request.setAttribute("HT_MNG_MAP", mchtMngDAO.getHtById(mchtId).getRows());
 		request.setAttribute("HT_TAX_MAP", mchtTaxDAO.getHtByMchtId(mchtId).getRows());
 		request.setAttribute("HT_TMN_MAP", mchtTmnDAO.getHtByMchtId(mchtId).getRows());
-		
+		request.setAttribute("HT_VACT_MNG_MAP", mchtTmnDAO.getHtVactByMchtId(mchtId).getRows());
+
 	//	long startTime3 = System.currentTimeMillis();
 	//	logger.info("THIRD TIME : {}", (startTime3 - startTime2));
         return new ModelAndView("/mcht/view");
@@ -1543,7 +1545,7 @@ public class MchtController {
 	public @ResponseBody CPResponse vactUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
 		//identity 입력시 암호화하여 넣어야함.
-		if (cpDAO.updateByOper("PG_MCHT_MNG_VACT", SessionUtil.getUserId(request), cpRequest.data)) {
+		if (cpDAO.updateAndBack("PG_MCHT_MNG_VACT", SessionUtil.getUserId(request), cpRequest.data)) {
 			
 			DAO dao = new DAO();
 			dao.setTable("PG_VACT_AUTH_INFO");
