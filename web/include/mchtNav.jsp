@@ -35,6 +35,9 @@
                     <li class="nav-item ">
                         <a href="/vact/trx/form.jsp" class="nav-link ">거래내역조회</a>
                     </li>
+					<li class="nav-item ">
+						<a href="/vact/auth/form.jsp" class="nav-link ">인증수수료조회</a>
+					</li>
                 </ul>
             </li>  	
 				<li class="nav-item start ">
