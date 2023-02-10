@@ -95,7 +95,12 @@
 															<label class="control-label input-sm col-sm-4 req-label">출금계좌번호
 															</label>
 															<div class="col-sm-6">
-																<input type="text" class="form-control input-sm numberHypen" maxlength="14" name="account" value="">
+																<div class="col-sm-10">
+																	<input type="text" class="form-control input-sm numberHypen" maxlength="14" id="account" name="account" value="">
+																</div>
+																<div class="col-sm-2">
+																	<a class="btn btn-sm green link_modal" onclick="showModal('/vact/reg/blackList/withdrawAccount')">가상계좌번호로 조회</a>
+																</div>
 															</div>
 														</div>
 														<div class="form-group col-sm-4">
@@ -161,6 +166,20 @@
 				});
 			}
 		});
+
+		function showModal(url) {
+			var $modal = $('#pgmate-modal');
+			if ($modal.children().length < 1) {
+				$modal.empty();
+			}
+
+			$modal.load(url, '', function(responseTxt, statusTxt, xhr) {
+				if (statusTxt == "success") {
+					$modal.modal();
+					textMask();
+				}
+			});
+		}
 		
 		$('#nav-trx').addClass('active');
 	</script>
