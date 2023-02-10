@@ -89,6 +89,25 @@ public class VactController {
     }
     return resMap;
   }
+
+    @RequestMapping(value = "/vact/withdrawAccount/{account}", method = RequestMethod.GET)
+    public @ResponseBody SharedMap<String, Object> withdrawAccount(HttpServletRequest request, @PathVariable String account) {
+        SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+        SharedMap<String, Object> sharedMap = vactTrxDAO.withdrawAccount(account);
+        String withdrawAccountDec = sharedMap.getString("withdrawAccountDec");
+
+        if (!CommonUtil.isNullOrSpace(withdrawAccountDec)) {
+            resMap.put("msg", "출금계좌번호 : " + withdrawAccountDec + "");
+            resMap.put("withdrawAccount", withdrawAccountDec);
+            resMap.put("result", "OK");
+        } else {
+            resMap.put("msg", "출금계좌번호가 존재하지 않습니다.");
+            resMap.put("result", "NOK");
+        }
+        return resMap;
+    }
   
   @RequestMapping(value = {"/vact/reg/blackList/add"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
   public @ResponseBody CPResponse blackListInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
@@ -116,6 +135,11 @@ public class VactController {
 	        	.resultNOK(CPUtil.RESULT_DATA_INFAIL,cpDAO.getError())
 	        	.cpResponse();
   }
+
+    @RequestMapping(value = "/vact/reg/blackList/withdrawAccount", method = RequestMethod.GET)
+    public ModelAndView withdrawAccountView(HttpServletRequest request) {
+        return new ModelAndView("/vact/blackList/modal");
+    }
   
   
   @RequestMapping(value = "/vact/reg/blackList/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
