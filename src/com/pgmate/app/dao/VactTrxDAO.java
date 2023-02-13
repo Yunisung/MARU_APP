@@ -195,6 +195,18 @@ public class VactTrxDAO extends DAO {
 		}
 	}
 
+	public boolean updateBlackReason(String idx, String reason) {
+		this.setTable("PG_VACT_REG_BLACKLIST");
+		this.setRecord("reason", reason);
+		this.setWhere("idx IN (" + idx + ")");
+
+		boolean updated = super.update();
+
+		super.initRecord();
+
+		return updated;
+	}
+
 	/**
 	 * 출금계좌정보 조회
 	 * @param account
