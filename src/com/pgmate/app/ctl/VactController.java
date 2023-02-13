@@ -182,4 +182,23 @@ public class VactController {
 		
       return "true";
   }
+    @RequestMapping(value = "/vact/blackList/changeReason", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Object changeBlackListReasen(HttpServletRequest request, @RequestBody SharedMap<String, Object> reqMap) {
+        SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+
+        String idx = reqMap.getString("idx");
+        String reason = reqMap.getString("reason");
+
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+
+        if(vactTrxDAO.updateBlackReason(idx, reason)) {
+            resMap.put("resultCd", "0000");
+            resMap.put("resultMsg", "변경되었습니다.");
+        } else {
+            resMap.put("resultCd", "9999");
+            resMap.put("resultMsg", "변경에 실패했습니다.");
+        }
+
+        return resMap;
+    }
 }
