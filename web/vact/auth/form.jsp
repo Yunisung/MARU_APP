@@ -54,7 +54,7 @@
                                 <form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/vact/auth/list"
                                       method="post">
                                     <input type="hidden" data-reg="false" name="reason" value="가상계좌 인증수수료내역">
-                                    <input type="hidden" data-reg="false" name="thead" value="regDate:인증일시,authId:인증수수료ID,mchtName:가맹점명,mchtId:가맹점ID,summary:인증수단,resultMsg:인증결과,authFee:인증수수료,authFeeVat:인증수수료VAT,stlStatus:인증수수료정산결과,stlId:정산번호,stlDay:정산예정일,stlType:정산유형">
+                                    <input type="hidden" data-reg="false" name="thead" value="regDate:인증일시,authId:인증수수료ID,mchtName:가맹점명,mchtId:가맹점ID,authType:인증수단,resultMsg:인증결과,authFee:인증수수료,authFeeVat:인증수수료VAT,stlStatus:인증수수료정산결과,stlId:정산번호,stlDay:정산예정일,stlType:정산유형, summary:비고">
 
                                     <div class="form-body">
                                         <div class="row">
@@ -82,10 +82,16 @@
                                                 <label class="control-label col-lg-4">인증수단</label>
                                                 <select class="selectpicker col-lg-8" name="authType" data-oper="eq">
                                                     <option value="">-- 전체 -- </option>
-                                                    <option value="owner">실명인증</option>
-                                                    <option value="account">계좌1원인증</option>
-                                                    <option value="ars">ARS인증</option>
+                                                    <option value="실명인증">실명인증</option>
+                                                    <option value="1원인증">1원인증</option>
+                                                    <option value="ARS인증">ARS인증</option>
                                                 </select>
+                                            </div>
+                                            <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">가맹점ID</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control input-sm" name="mchtId" data-oper="eq" placeholder="가맹점 아이디">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -156,17 +162,17 @@
     })
     var trxArr = '';
     $(document).on('click', '.changeStlDay', function() {
-        var trxId = '';
+        var authId = '';
         $('table.pg-table>tbody>tr').each(function(i, e) {
             if ($(e).find('input[type="checkbox"]').is(':checked')) {
-                trxId += "'" + $(e).attr('data-trxId') + "',";
+                authId += "'" + $(e).attr('data-authId') + "',";
             }
         });
 
-        if (trxId.length < 1) {
+        if (authId.length < 1) {
             bootbox.alert("대상을 체크하세요.");
         } else {
-            trxArr = trxId.substring(0, trxId.length - 1);
+            trxArr = authId.substring(0, authId.length - 1);
             var $modal = $('#pgmate-modal');
             if ($modal.children().length < 1) {
                 $modal.empty();
@@ -185,7 +191,7 @@
         var trxId = '';
         $('table.pg-table>tbody>tr').each(function(i, e) {
             if ($(e).find('input[type="checkbox"]').is(':checked')) {
-                trxId += "'" + $(e).attr('data-trxId') + "',";
+                trxId += "'" + $(e).attr('data-authId') + "',";
             }
         });
 
@@ -211,7 +217,7 @@
         var trxId = '';
         $('table.pg-table>tbody>tr').each(function(i, e) {
             if ($(e).find('input[type="checkbox"]').is(':checked')) {
-                trxId += "'" + $(e).attr('data-trxId') + "',";
+                trxId += "'" + $(e).attr('data-authId') + "',";
             }
         });
 

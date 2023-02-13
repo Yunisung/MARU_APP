@@ -111,12 +111,12 @@ public class VactController {
 
         //수수료 건수, 수수료 총금액 표시
         if(cpSession.getGrade().equals("본사")) {
-            String ownerCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "owner", "").getRowFirst().getString("count");
-            String ownerFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "owner", "").getRowFirst().getString("authFeeSum");
-            String accountCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "account", "").getRowFirst().getString("count");
-            String accountFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "account", "").getRowFirst().getString("authFeeSum");
-            String arsCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ars", "").getRowFirst().getString("count");
-            String arsFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ars", "").getRowFirst().getString("authFeeSum");
+            String ownerCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "실명인증", "").getRowFirst().getString("count");
+            String ownerFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "실명인증", "").getRowFirst().getString("authFeeSum");
+            String accountCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "1원인증", "").getRowFirst().getString("count");
+            String accountFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "1원인증", "").getRowFirst().getString("authFeeSum");
+            String arsCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ARS인증", "").getRowFirst().getString("count");
+            String arsFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ARS인증", "").getRowFirst().getString("authFeeSum");
             String totalCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "", "").getRowFirst().getString("count");
             String totalFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "", "").getRowFirst().getString("authFeeSum");
 
@@ -130,12 +130,12 @@ public class VactController {
             request.setAttribute("TOTAL_SUM", totalFeeSum);
         } else if(cpSession.getGrade().equals("가맹점")) {
             String mchtId = cpRequest.getKeyValue("mchtId");
-            String ownerCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "owner", mchtId).getRowFirst().getString("count");
-            String ownerFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "owner", mchtId).getRowFirst().getString("authFeeSum");
-            String accountCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "account", mchtId).getRowFirst().getString("count");
-            String accountFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "account", mchtId).getRowFirst().getString("authFeeSum");
-            String arsCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ars", mchtId).getRowFirst().getString("count");
-            String arsFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ars", mchtId).getRowFirst().getString("authFeeSum");
+            String ownerCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "실명인증", mchtId).getRowFirst().getString("count");
+            String ownerFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "실명인증", mchtId).getRowFirst().getString("authFeeSum");
+            String accountCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "1원인증", mchtId).getRowFirst().getString("count");
+            String accountFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "1원인증", mchtId).getRowFirst().getString("authFeeSum");
+            String arsCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ARS인증", mchtId).getRowFirst().getString("count");
+            String arsFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ARS인증", mchtId).getRowFirst().getString("authFeeSum");
             String totalCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "", mchtId).getRowFirst().getString("count");
             String totalFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "", mchtId).getRowFirst().getString("authFeeSum");
 
@@ -150,6 +150,65 @@ public class VactController {
         }
 
         return new CPRUtil(cpRequest).dataList(rset, vactTrxDAO).setView(request, "/vact/auth/list", "");
+    }
+
+    @RequestMapping(value = "/vact/auth/changeStlDayUpdate", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Object changeAuthStlDay(HttpServletRequest request, @RequestBody SharedMap<String, Object> reqMap) {
+        SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+
+        String authId = reqMap.getString("trxId");
+        String summary = reqMap.getString("stlDay");
+
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+
+        if(vactTrxDAO.updateAuthStlDay(authId, summary)) {
+            resMap.put("resultCd", "0000");
+            resMap.put("resultMsg", "변경되었습니다.");
+        } else {
+            resMap.put("resultCd", "9999");
+            resMap.put("resultMsg", "변경에 실패했습니다.");
+        }
+
+        return resMap;
+    }
+
+    @RequestMapping(value = "/vact/auth/changeStlStatusUpdate", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Object changeAuthStlStatus(HttpServletRequest request, @RequestBody SharedMap<String, Object> reqMap) {
+        SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+
+        String authId = reqMap.getString("trxId");
+
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+
+        if(vactTrxDAO.updateAuthStlStatus(authId)) {
+            resMap.put("resultCd", "0000");
+            resMap.put("resultMsg", "변경되었습니다.");
+        } else {
+            resMap.put("resultCd", "9999");
+            resMap.put("resultMsg", "변경에 실패했습니다.");
+        }
+
+        return resMap;
+    }
+
+    @RequestMapping(value = "/vact/auth/changeSummary", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Object changeAuthSummary(HttpServletRequest request, @RequestBody SharedMap<String, Object> reqMap) {
+        SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+
+        String authId = reqMap.getString("trxId");
+        String summary = reqMap.getString("summary");
+
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+
+        if(vactTrxDAO.updateAuthSummary(authId, summary)) {
+            resMap.put("resultCd", "0000");
+            resMap.put("resultMsg", "변경되었습니다.");
+        } else {
+            resMap.put("resultCd", "9999");
+            resMap.put("resultMsg", "변경에 실패했습니다.");
+        }
+
+        return resMap;
     }
   
   @RequestMapping(value = "/vact/trx/view/{vactId}", method = RequestMethod.GET)

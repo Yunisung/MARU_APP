@@ -55,6 +55,9 @@ public class VactTrxDAO extends DAO {
 		return super.search();	//LIST PAGING 검색 
 	}
 
+	/**
+	 * 인증수수료 관련
+	 */
 	public RecordSet authList(List<Data> datas, Page page) {
 		super.setTable("PG_TOTAL_AUTH");
 
@@ -99,6 +102,42 @@ public class VactTrxDAO extends DAO {
 		RecordSet rset = super.search();
 		super.initRecord();
 		return rset;
+	}
+
+	public boolean updateAuthStlDay(String authId, String stlDay) {
+		this.setTable("PG_TOTAL_AUTH");
+		this.setRecord("stlDay", stlDay);
+		this.setWhere("authId IN (" + authId + ")");
+
+		boolean updated = super.update();
+
+		super.initRecord();
+
+		return updated;
+	}
+
+	public boolean updateAuthStlStatus(String authId) {
+		this.setTable("PG_TOTAL_AUTH");
+		this.setRecord("stlStatus", "정산완료");
+		this.setWhere("authId IN (" + authId + ")");
+
+		boolean updated = super.update();
+
+		super.initRecord();
+
+		return updated;
+	}
+
+	public boolean updateAuthSummary(String authId, String summary) {
+		this.setTable("PG_TOTAL_AUTH");
+		this.setRecord("summary", summary);
+		this.setWhere("authId IN (" + authId + ")");
+
+		boolean updated = super.update();
+
+		super.initRecord();
+
+		return updated;
 	}
 
 	/**
