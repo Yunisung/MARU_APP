@@ -1531,10 +1531,10 @@ public class MchtController {
 		sharedMap.put("arsAuthFee", CommonUtil.moneyFormat(sharedMap.getString("arsAuthFee")));
 		sharedMap.put("totalAuthFee", CommonUtil.moneyFormat(sharedMap.getString("totalAuthFee")));
     	
-    	sharedMap.put("rate", String.format("%.4f",sharedMap.getDouble("rate")));
-    	sharedMap.put("distRate", String.format("%.4f",sharedMap.getDouble("distRate")));
-    	sharedMap.put("agencyRate", String.format("%.4f",sharedMap.getDouble("agencyRate")));
-    	sharedMap.put("salesRate", String.format("%.4f",sharedMap.getDouble("salesRate")));
+    	sharedMap.put("rate", String.format("%.5f",sharedMap.getDouble("rate")));
+    	sharedMap.put("distRate", String.format("%.5f",sharedMap.getDouble("distRate")));
+    	sharedMap.put("agencyRate", String.format("%.5f",sharedMap.getDouble("agencyRate")));
+    	sharedMap.put("salesRate", String.format("%.5f",sharedMap.getDouble("salesRate")));
     	
 		SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
 		request.setAttribute("MCHT_MAP", new MchtDAO().getById(mchtId).getRowFirst());
