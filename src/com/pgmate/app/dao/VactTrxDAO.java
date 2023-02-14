@@ -110,5 +110,32 @@ public class VactTrxDAO extends DAO {
 			return true;
 		}
 	}
+
+	public boolean updateBlackReason(String idx, String reason) {
+		this.setTable("PG_VACT_REG_BLACKLIST");
+		this.setRecord("reason", reason);
+		this.setWhere("idx IN (" + idx + ")");
+
+		boolean updated = super.update();
+
+		super.initRecord();
+
+		return updated;
+	}
+
+	/**
+	 * 출금계좌정보 조회
+	 * @param account
+	 * @return
+	 */
+	public SharedMap<String, Object> withdrawAccount(String account){
+		super.setTable("PG_VACT_REG a, PG_CODE b");
+		super.setColumns("FN_AES_DEC(withdrawAccount) AS withdrawAccountDec, withdrawBankCd, b.codeName as withdrawBankNm, holderName");
+		super.addWhere("a.withdrawBankCd = b.code and b.alias = 'BANK'");
+		super.addWhere("account",account);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst();
+	}
 }
 

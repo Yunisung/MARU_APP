@@ -11,7 +11,10 @@
 	</div>
 	<div class="actions">
 		<div class="btn-group">
-			<a class="btn btn-sm red selectRetry" href="javascript:selectDelete();"">
+			<a class="btn btn-sm blue changeReason" href="javascript:;">
+				사유변경
+			</a>
+			<a class="btn btn-sm red selectRetry" href="javascript:selectDelete();">
 				블랙리스트 삭제
 			</a>
 		</div>&nbsp;&nbsp;

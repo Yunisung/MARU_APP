@@ -170,6 +170,15 @@
 												</div>
 											</div>
 											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">입금단위제한</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency limitAmount comma" maxlength="14" data-oper="comma" name="limitAmount" placeholder="" value="${DATAMAP.limitAmount}">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
 												<div style="padding-top:45px; border-left:none;"></div>
 											</div>
 											<div class="form-group col-sm-12 form-subtitle">
@@ -757,7 +766,7 @@
 			
 			if(selected === undefined || selected == "" || selected === null ){
 				$('#distType').empty();
-				$('#distType').append('<option value="" id="distSelect" selected>--- 선택 (기본 M+15) ---</option>');
+				$('#distType').append('<option value="" id="distSelect" selected>--- 선택 (기본 M+10) ---</option>');
 				$('#distType').selectpicker('refresh');
 			} else {
 				$.ajax({
@@ -774,7 +783,7 @@
 			var selected = $('#agencyType').find("option:selected").val();
 			if(selected === undefined || selected == "" || selected === null ){
 				$('#agencyType').empty();
-				$('#agencyType').append('<option value="" id="agencySelect" selected>--- 선택 (기본 M+15) ---</option>');
+				$('#agencyType').append('<option value="" id="agencySelect" selected>--- 선택 (기본 M+10) ---</option>');
 				$('#agencyType').selectpicker('refresh');
 			} else {
 				$.ajax({
@@ -790,7 +799,7 @@
 			var selected = $('#salesType').find("option:selected").val();
 			if(selected === undefined || selected == "" || selected === null ){
 				$('#salesType').empty();
-				$('#salesType').append('<option value="" id="salesSelect" selected>--- 선택 (기본 M+15) ---</option>');
+				$('#salesType').append('<option value="" id="salesSelect" selected>--- 선택 (기본 M+10) ---</option>');
 				$('#salesType').selectpicker('refresh');
 			} else {
 				$.ajax({

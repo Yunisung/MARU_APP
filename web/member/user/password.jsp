@@ -99,7 +99,7 @@
                 $.ajax({
                 	type:"POST",
                 	url: form1.attr("action"),
-                	data: "pw=" + $("#pw").val(),
+                	data: {"pw": $("#pw").val(), "check": $("#check").val()},
                 	success : function(data) {
                 		if(data.indexOf("OK") > -1) {
                 			finishWin("비밀번호 변경에 성공했습니다.");

@@ -6,15 +6,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pgmate.app.dao.*;
+import com.pgmate.app.security.filter.CustomWebAuthenticationDetails;
+import com.pgmate.app.util.*;
+import com.pgmate.lib.sms.SmsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,11 +78,6 @@ import com.pgmate.app.model.ajax.Data;
 import com.pgmate.app.model.ajax.Interest;
 import com.pgmate.app.model.ajax.TmnList;
 import com.pgmate.app.session.CPSession;
-import com.pgmate.app.util.CPRUtil;
-import com.pgmate.app.util.CPUtil;
-import com.pgmate.app.util.SQLInjectionUtil;
-import com.pgmate.app.util.SessionUtil;
-import com.pgmate.app.util.WalletAccntUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.key.CPKEY;
@@ -123,15 +127,15 @@ public class MchtController {
 		request.setAttribute("SEARCH_NUM", num);
 		request.setAttribute("SEARCH_PAYTYPE", payType);
 		request.setAttribute("SEARCH_SETTLENAME", new DistMngDAO().getByNum(num).getRowFirst().getString("settleName"));
-		
+
         return new ModelAndView("/mcht/dist/form");
     }
-	
+
 	@RequestMapping(value = "/mcht/dist/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView mchtDistList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
 		MchtDAO mchtDAO = new MchtDAO();
 		RecordSet rset;
-		
+
 		for(Data data :  cpRequest.data) {
 			logger.debug("CPRequest {}, {}", data.name, data.val);
 		}
@@ -145,10 +149,10 @@ public class MchtController {
 			cpRequest.deleteKeyData("payType");
 			rset = mchtDAO.mngSimpleList(cpRequest.data,cpRequest.page);
 		}
-		
+
 		return new CPRUtil(cpRequest).dataList(rset,mchtDAO).setView(request,"/mcht/list","");
 	}
-	
+
 	@RequestMapping(value = "/mcht/agency/mnglist/{payType}/{agencyId}/{num}", method = RequestMethod.GET)
     public ModelAndView mchtAgencyMngList(HttpServletRequest request, @PathVariable String payType, @PathVariable String agencyId, @PathVariable String num) {
 		request.setAttribute("SEARCH_AGENCYID", agencyId);
@@ -157,16 +161,16 @@ public class MchtController {
 		request.setAttribute("SEARCH_SETTLENAME", new AgencyMngDAO().getByNum(num).getRowFirst().getString("settleName"));
         return new ModelAndView("/mcht/agency/form");
     }
-	
+
 	@RequestMapping(value = "/mcht/agency/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView mchtAgnecyList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
 		MchtDAO mchtDAO = new MchtDAO();
 		RecordSet rset;
-		
+
 		for(Data data :  cpRequest.data) {
 			logger.debug("CPRequest {}, {}", data.name, data.val);
 		}
-		
+
 		if(cpRequest.getKeyValue("payType").equals("신용카드")) {
 			cpRequest.deleteKeyData("payType");
 			rset = mchtDAO.mngList(cpRequest.data,cpRequest.page);
@@ -177,10 +181,10 @@ public class MchtController {
 			cpRequest.deleteKeyData("payType");
 			rset = mchtDAO.mngSimpleList(cpRequest.data,cpRequest.page);
 		}
-		
+
 		return new CPRUtil(cpRequest).dataList(rset,mchtDAO).setView(request,"/mcht/list","");
 	}
-	
+
 	@RequestMapping(value = "/mcht/sales/mnglist/{payType}/{salesId}/{num}", method = RequestMethod.GET)
     public ModelAndView mchtSalesMngList(HttpServletRequest request, @PathVariable String payType, @PathVariable String salesId, @PathVariable String num) {
 		request.setAttribute("SEARCH_SALESID", salesId);
@@ -189,16 +193,16 @@ public class MchtController {
 		request.setAttribute("SEARCH_SETTLENAME", new MemberSalesMngDAO().getByNum(num).getRowFirst().getString("settleName"));
         return new ModelAndView("/mcht/sales/form");
     }
-	
+
 	@RequestMapping(value = "/mcht/sales/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView mchtSalesList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
 		MchtDAO mchtDAO = new MchtDAO();
 		RecordSet rset;
-		
+
 		for(Data data :  cpRequest.data) {
 			logger.debug("CPRequest {}, {}", data.name, data.val);
 		}
-		
+
 		if(cpRequest.getKeyValue("payType").equals("신용카드")) {
 			cpRequest.deleteKeyData("payType");
 			rset = mchtDAO.mngList(cpRequest.data,cpRequest.page);
@@ -209,10 +213,10 @@ public class MchtController {
 			cpRequest.deleteKeyData("payType");
 			rset = mchtDAO.mngSimpleList(cpRequest.data,cpRequest.page);
 		}
-		
+
 		return new CPRUtil(cpRequest).dataList(rset,mchtDAO).setView(request,"/mcht/list","");
 	}
-	
+
 	@RequestMapping(value = "/mcht/idList", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView idList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
 		MchtDAO mchtDAO = new MchtDAO();
@@ -261,7 +265,7 @@ public class MchtController {
 		request.setAttribute("DATADISTMAP", new DistMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("distId")).getRowFirst());
 		request.setAttribute("DATAAGENCYMAP", new AgencyMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("agencyId")).getRowFirst());
 		request.setAttribute("DATASALESMAP", new MemberSalesMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("salesId")).getRowFirst());
-		
+
 		//long startTime1 = System.currentTimeMillis();
 		//logger.info("FIRST TIME : {}", (startTime1 - startTime));
 		
@@ -295,14 +299,14 @@ public class MchtController {
 		request.setAttribute("DATACHARGEMAP", new MchtChargeSettleDAO().getById(mchtId).getRowFirst());
 		request.setAttribute("DATABALMAP", new MchtChargeSettleDAO().getBalance(mchtId));
 		
-		//가맹점 간편 결제 설정 
+		//가맹점 간편 결제 설정
 //		request.setAttribute("DATASIMPLEMAP", new SimpleDAO().getByMchtId(mchtId));
 //		if(request.getAttribute("DATASIMPLEMAP") != null){
 //			request.setAttribute("SIMPLE_DISTMAP", new DistMngDAO().getByNum(new SimpleDAO().getByMchtId(mchtId).getString("distNum")).getRowFirst());
 //			request.setAttribute("SIMPLE_AGENCYMAP", new AgencyMngDAO().getByNum(new SimpleDAO().getByMchtId(mchtId).getString("agencyNum")).getRowFirst());
 //			request.setAttribute("SIMPLE_SALESMAP", new MemberSalesMngDAO().getByNum(new SimpleDAO().getByMchtId(mchtId).getString("salesNum")).getRowFirst());
 //		}
-		
+
 	//	long startTime2 = System.currentTimeMillis();
 	//	logger.info("SECOND TIME : {}", (startTime2 - startTime1));
 		
@@ -383,7 +387,7 @@ public class MchtController {
 					new MchtMngDAO().updateDiffType("일반", cpRequest.getKeyValue("mchtId"));
 				}
 			}
-			
+
 			return new CPRUtil(cpRequest)
 	        		.resultOK("가맹점 정보가 변경되었습니다.")
 	        		.cpResponse();
@@ -644,7 +648,7 @@ public class MchtController {
 		DistDAO.setColumns("count(1) as cnt");
 		DistDAO.addWhere("distId", result.get("distId").toString(), DAO.eq);
 		DistDAO.addWhere("payType", "신용카드", DAO.eq);
-		
+
 		if(DistDAO.search().getRowFirst().getInt("cnt") >= 1) {
 			resultMap.put("distRes", "OK");
 		} else {
@@ -692,7 +696,7 @@ public class MchtController {
     	sharedMap.put("distPayInFee", CommonUtil.moneyFormat(sharedMap.getString("distPayInFee")));
     	sharedMap.put("agencyPayInFee", CommonUtil.moneyFormat(sharedMap.getString("agencyPayInFee")));
     	sharedMap.put("salesPayInFee", CommonUtil.moneyFormat(sharedMap.getString("salesPayInFee")));
-    	
+
 //    	sharedMap.put("salesRate", String.format("%.3f",sharedMap.getDouble("rate")));
     	sharedMap.put("rate", sharedMap.getDouble("rate"));
     	sharedMap.put("salesRate", sharedMap.getDouble("salesRate"));
@@ -722,7 +726,7 @@ public class MchtController {
     	sharedMap.put("diff2CheckSalesRate", sharedMap.getDouble("diff2CheckSalesRate"));
     	sharedMap.put("diff3SalesRate", sharedMap.getDouble("diff3SalesRate"));
     	sharedMap.put("diff3CheckSalesRate", sharedMap.getDouble("diff3CheckSalesRate"));
-    	
+
     	request.setAttribute("DATAMAP", sharedMap);
 //    	request.setAttribute("DATADISTMNGMAP", new AgencyMngDAO().getById(sharedMap.getString("agencyId")).getRowFirst());
 //    	request.setAttribute("BANK_OPTION", new CodeDAO().getBank().getRows());
@@ -846,32 +850,32 @@ public class MchtController {
 			dao.setColumns("distId");
 			dao.addWhere("distId", id, DAO.eq);
 			dao.setOrderBy("");
-			
+
 		}else if(idType == "agencyId" || "agencyId".equals(idType)) {
 			dao.setTable("PG_MAM_AGENCY");
 			dao.setColumns("agencyId");
 			dao.addWhere("agencyId", id, DAO.eq);
 			dao.setOrderBy("");
-			
+
 		}else if(idType == "salesId" || "salesId".equals(idType)) {
 			dao.setTable("PG_MAM_SALES");
 			dao.setColumns("salesId");
 			dao.addWhere("salesId", id, DAO.eq);
 			dao.setOrderBy("");
-			
+
 		}else if(idType == "mchtId" || "mchtId".equals(idType)) {
 			dao.setTable("PG_MCHT");
 			dao.setColumns("mchtId");
 			dao.addWhere("mchtId", id, DAO.eq);
 			dao.setOrderBy("");
-			
+
 		}else if(idType == "tmnId" || "tmnId".equals(idType)) {
 			dao.setTable("PG_MCHT_TMN");
 			dao.setColumns("tmnId");
 			dao.addWhere("tmnId", id, DAO.eq);
 			dao.setOrderBy("");
 		}
-		
+
 		if(id.indexOf(" ") > -1){
 			return GsonUtil.toJson("아이디에는 공백이 포함 될 수 없습니다.");
 		}
@@ -883,7 +887,7 @@ public class MchtController {
 		}
 	}
 	//======================================================== 노티 정보
-	
+
 	//======================================================== 가맹점 월 정산내역 이메일 전송
 	/*
 	 * 이메일 전송 내용 SELECT(가맹점 정산 내역)
@@ -952,10 +956,10 @@ public class MchtController {
     @RequestMapping(value = "/mcht/tmn/modify/{tmnId}", method = RequestMethod.GET)
     public ModelAndView tmnModify(HttpServletRequest request, @PathVariable String tmnId) {
     	SharedMap<String,Object> result = new MchtTmnDAO().getById(tmnId).getRowFirst();
-    	
+
     	result.put("minAmount", CommonUtil.moneyFormat(result.getString("minAmount")));
     	result.put("limitAmount", CommonUtil.moneyFormat(result.getString("limitAmount")));
-    	
+
     	request.setAttribute("DATATAXMAP", new MchtTaxDAO().getSelectOption(result.getString("mchtId")));
     	request.setAttribute("VANMAP", new VanDAO().vanList().getRows());
     	if(result.getString("van").equals("DANAL")) {
@@ -1099,9 +1103,9 @@ public class MchtController {
 	@RequestMapping(value = {"/mcht/tmnDtl/modify/{tmnId}"})
 	public ModelAndView tmnDtlModify(HttpServletRequest request, @PathVariable String tmnId) {
 		SharedMap<String,Object> result = new MchtTmnDAO().getById(tmnId).getRowFirst();
-		
+
 		result.put("dtlRate", String.format("%.3f",result.getDouble("dtlRate")*100));
-		
+
 		request.setAttribute("MCHTMAP", new MchtDAO().getById(result.getString("mchtId")).getRowFirst());
 		request.setAttribute("TAXMAP", new MchtTaxDAO().getById(result.getString("taxId")).getRowFirst());
 		request.setAttribute("BANK_OPTION", new CodeDAO().getBank().getRows());
@@ -1232,28 +1236,28 @@ public class MchtController {
 	public @ResponseBody CPResponse taxUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
 //		MchtDAO mchtDao = new MchtDAO();
-//		
+//
 //		String taxId = cpRequest.getKeyValue("taxId");
 //		String account = cpRequest.getValue("account");
 //		String bankCd = cpRequest.getValue("bankCd");
 //		String accntHolder = cpRequest.getValue("accntHolder");
-//		
+//
 //		logger.info("taxUpdate : [{}][{}][{}][{}]", taxId, account, bankCd, accntHolder);
 //
 //		SharedMap<String, Object> taxData = mchtDao.getTaxData(taxId).getRowFirst();
-//		
-//		if(!taxData.getString("account").equals(account) || 
+//
+//		if(!taxData.getString("account").equals(account) ||
 //		   !taxData.getString("bankCd").equals(bankCd) ||
 //		   !taxData.getString("accntHolder").equals(accntHolder)) {
 //			logger.info("taxUpdate : [{}][{}][{}][{}]", taxId, taxData.getString("account"), taxData.getString("bankCd"), taxData.getString("accntHolder"));
-//			
+//
 //			return new CPRUtil(cpRequest)
 //	        		.resultNOK("은행정보는 변경할 수 없습니다. 관리자에게 문의해 주세요.",cpDAO.getError())
 //	        		.cpResponse();
 //		}
-		
-		
-		
+
+
+
 		//identity 입력시 암호화하여 넣어야함.
 		cpRequest.replaceValue("identity",cpDAO.getAESEnc(cpRequest.getValue("identity")));
 		if(cpDAO.updateAndBackByOper("PG_MCHT_TAX", SessionUtil.getUserId(request), cpRequest.data)){
@@ -1464,17 +1468,17 @@ public class MchtController {
 		public @ResponseBody CPResponse svcUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 			CPDAO cpDAO = new CPDAO();
 			MchtDAO mchtDAO = new MchtDAO();
-			
+
 			//identity 입력시 암호화하여 넣어야함.
 			if(cpDAO.update("PG_MCHT_SVC", SessionUtil.getUserId(request), cpRequest.data)){
 				String checkSimple = cpRequest.getValue("simpleBill");
 				String mchtId = cpRequest.getValue("mchtId");
-				
+
 				//간편결제 사용시 타 결제 수단 미사용
 				if(checkSimple.equals("미사용")) {
 					mchtDAO.updateSimpleStatus(mchtId);
 				}
-				
+
 				return new CPRUtil(cpRequest)
 		        		.resultOK("가맹점 서비스 정보가 변경되었습니다.")
 		        		.cpResponse();
@@ -1511,8 +1515,9 @@ public class MchtController {
 	@RequestMapping(value = "/mcht/vact/modify/{mchtId}", method = RequestMethod.GET)
 	public ModelAndView vactModify(HttpServletRequest request, @PathVariable String mchtId) {
 		SharedMap<String,Object> sharedMap = new MchtVactDAO().getByMchtId(mchtId);
-		sharedMap.put("limitOnce", CommonUtil.moneyFormat(sharedMap.getString("limitOnce")));
-		sharedMap.put("limitDay", CommonUtil.moneyFormat(sharedMap.getString("limitDay")));
+		sharedMap.put("limitOnce", sharedMap.getString("limitOnce"));
+		sharedMap.put("limitDay", sharedMap.getString("limitDay"));
+		sharedMap.put("limitAmount", sharedMap.getString("limitAmount"));
 		sharedMap.put("fee", CommonUtil.moneyFormat(sharedMap.getString("fee")));
 		sharedMap.put("distFee", CommonUtil.moneyFormat(sharedMap.getString("distFee")));
 		sharedMap.put("agencyFee", CommonUtil.moneyFormat(sharedMap.getString("agencyFee")));
@@ -1525,12 +1530,12 @@ public class MchtController {
 		sharedMap.put("accountAuthFee", CommonUtil.moneyFormat(sharedMap.getString("accountAuthFee")));
 		sharedMap.put("arsAuthFee", CommonUtil.moneyFormat(sharedMap.getString("arsAuthFee")));
 		sharedMap.put("totalAuthFee", CommonUtil.moneyFormat(sharedMap.getString("totalAuthFee")));
-    	
-    	sharedMap.put("rate", String.format("%.3f",sharedMap.getDouble("rate")*100));
-    	sharedMap.put("distRate", String.format("%.3f",sharedMap.getDouble("distRate")*100));
-    	sharedMap.put("agencyRate", String.format("%.3f",sharedMap.getDouble("agencyRate")*100));
-    	sharedMap.put("salesRate", String.format("%.3f",sharedMap.getDouble("salesRate")*100));
-    	
+
+    	sharedMap.put("rate", String.format("%.5f",sharedMap.getDouble("rate")));
+    	sharedMap.put("distRate", String.format("%.5f",sharedMap.getDouble("distRate")));
+    	sharedMap.put("agencyRate", String.format("%.5f",sharedMap.getDouble("agencyRate")));
+    	sharedMap.put("salesRate", String.format("%.5f",sharedMap.getDouble("salesRate")));
+
 		SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
 		request.setAttribute("MCHT_MAP", new MchtDAO().getById(mchtId).getRowFirst());
 		request.setAttribute("DATASVCMAP", new MchtSvcDAO().getByMchtId(mchtId));
@@ -1546,7 +1551,7 @@ public class MchtController {
 		CPDAO cpDAO = new CPDAO();
 		//identity 입력시 암호화하여 넣어야함.
 		if (cpDAO.updateAndBack("PG_MCHT_MNG_VACT", SessionUtil.getUserId(request), cpRequest.data)) {
-			
+
 			DAO dao = new DAO();
 			dao.setTable("PG_VACT_AUTH_INFO");
 			dao.setRecord("respiteCnt", cpRequest.getData("respiteCnt").val);
@@ -1567,7 +1572,7 @@ public class MchtController {
 //			dao.addWhere("mchtId", cpRequest.getKeyValue("mchtId"), DAO.eq);
 //
 //			dao.update();
-			
+
 			return new CPRUtil(cpRequest).resultOK("가맹점 가상계좌 정보가 변경되었습니다.").cpResponse();
 		} else {
 			return new CPRUtil(cpRequest).resultNOK("가맹점 가상계좌 정보 변경에 실패하였습니다.",cpDAO.getError() )
@@ -1680,43 +1685,43 @@ public class MchtController {
     public @ResponseBody SharedMap<String, Object> distVactCheck(HttpServletRequest request, @PathVariable String mchtId) {
     	SharedMap<String, Object> resultMap = new SharedMap<String, Object>();
     	SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
-    	
+
     	AgencyMngDAO agencyDAO = new AgencyMngDAO();
     	DistDAO DistDAO = new DistDAO();
-    	
+
     	System.out.println(new AgencyDAO().getById(mchtId).getRowFirst().get("agencyId") + ":290");
-    	
+
     	agencyDAO.setTable("PG_MAM_AGENCY_MNG");
 		agencyDAO.setColumns("count(1) as cnt");
 		agencyDAO.addWhere("agencyId", result.get("agencyId").toString(), DAO.eq);
 		agencyDAO.addWhere("payType", "가상계좌", DAO.eq);
 
-		//에이전시 관리정보 체크		
+		//에이전시 관리정보 체크
 		if(agencyDAO.search().getRowFirst().getInt("cnt") >= 1) {
 			resultMap.put("agencyRes", "OK");
 		} else {
 			resultMap.put("agencyRes", "NOK");
 			resultMap.put("agencyMsg", "에이전시");
 		}
-		
+
 		//대행사 관리정보 체크
 		DistDAO.setTable("PG_MAM_DIST_MNG");
 		DistDAO.setColumns("count(1) as cnt");
 		DistDAO.addWhere("distId", result.get("distId").toString(), DAO.eq);
 		DistDAO.addWhere("payType", "가상계좌", DAO.eq);
-		
+
 		if(DistDAO.search().getRowFirst().getInt("cnt") >= 1) {
 			resultMap.put("distRes", "OK");
 		} else {
 			resultMap.put("distRes", "NOK");
 			resultMap.put("distMsg", "대행사");
 		}
-		
+
 		return resultMap;
     }
-    
-	
-	
+
+
+
 	
 	@RequestMapping(value = "/mcht/pisp/add/{mchtId}", method = RequestMethod.GET)
 	public ModelAndView pispAdd(HttpServletRequest request, @PathVariable String mchtId) {
@@ -1843,7 +1848,7 @@ public class MchtController {
 	@RequestMapping(value = "/mcht/feeTemplate/modify/{idx}", method = RequestMethod.GET)
 	public ModelAndView mchtFeeTemplateModify(HttpServletRequest request, @PathVariable String idx) {
 		SharedMap<String, Object> sharedMap = new MchtFeeTemplateDAO().getFeeTemplate(idx).getRowFirst();
-    	
+
     	sharedMap.put("rate", String.format("%.3f",sharedMap.getDouble("rate")*100));
     	sharedMap.put("agencyRate", String.format("%.3f",sharedMap.getDouble("agencyRate")*100));
     	sharedMap.put("distRate", String.format("%.3f",sharedMap.getDouble("distRate")*100));
@@ -2230,7 +2235,7 @@ public class MchtController {
 		
 		return resultMap;
 	}
-	
+
 	@RequestMapping(value = "/mcht/inter/add/{mchtId}", method = RequestMethod.GET)
 	public ModelAndView interAdd(HttpServletRequest request, @PathVariable String mchtId) {
 		request.setAttribute("DATAMAP", new MchtDAO().getById(mchtId).getRowFirst());
@@ -2742,14 +2747,20 @@ public class MchtController {
 	public @ResponseBody CPResponse chargeMngInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
 		//identity 입력시 암호화하여 넣어야함.
-		if (cpDAO.insertByOper("PG_MCHT_CHARGE_MNG", SessionUtil.getUserId(request), cpRequest.data)) {
+		String mchtId = cpRequest.getValue("mchtId");
+		String tk = GenKey.genKeys(CPKEY.CASH_TRANSFER, mchtId);
+
+		//PYS : 출금키 생성시 암호화해서 DB에 저장
+		String encKey = KSignUtil.getInstance().Encrypt(tk);
+
+		if (cpDAO.insertByOperAddKey("PG_MCHT_CHARGE_MNG", encKey, SessionUtil.getUserId(request), cpRequest.data)) {
 			return new CPRUtil(cpRequest).resultOK("가맹점 충전정산 정보가 등록되었습니다.").cpResponse();
 		} else {
 			return new CPRUtil(cpRequest).resultNOK("가맹점 충전정산 정보 등록에 실패하였습니다.",cpDAO.getError() )
 					.cpResponse();
 		}
 	}
-	
+
 	@RequestMapping(value = "/mcht/chargeMng/modify/{mchtId}", method = RequestMethod.GET)
 	public ModelAndView chargeMngModify(HttpServletRequest request, @PathVariable String mchtId) {
 		SharedMap<String,Object> sharedMap = new MchtChargeSettleDAO().getById(mchtId).getRowFirst();
@@ -2757,7 +2768,7 @@ public class MchtController {
 		sharedMap.put("distPayInFee", CommonUtil.moneyFormat(sharedMap.getString("distPayInFee")));
 		sharedMap.put("agencyPayInFee", CommonUtil.moneyFormat(sharedMap.getString("agencyPayInFee")));
 		sharedMap.put("salesPayInFee", CommonUtil.moneyFormat(sharedMap.getString("salesPayInFee")));
-		
+
 		request.setAttribute("MCHTMAP", new MchtDAO().getById(mchtId).getRowFirst());
 		request.setAttribute("DATAMAP", sharedMap);
 		return new ModelAndView("/mcht/chargeMng/modify");
@@ -2774,7 +2785,66 @@ public class MchtController {
 					.cpResponse();
 		}
 	}
-	
+
+	@RequestMapping(value = {"/mcht/chargeMng/transferKey"}, method = RequestMethod.POST)
+	public @ResponseBody SharedMap<String, Object> createTransferKey(HttpServletRequest request, @RequestBody Map<String, Object> param) {
+		MchtChargeSettleDAO mchtChargeSettleDAO = new MchtChargeSettleDAO();
+		SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+
+		String mchtId = (String) param.get("mchtId");
+		SharedMap<String,Object> sharedMap = mchtChargeSettleDAO.getById(mchtId).getRowFirst();
+
+		// 키 생성
+		String originalKey = GenKey.genKeys(CPKEY.CASH_TRANSFER, mchtId);
+		String encKey = KSignUtil.getInstance().Encrypt(originalKey);
+
+		boolean updated = false;
+		resMap.put("msg", "출금키 생성에 실패하였습니다.");
+		resMap.put("result", "NOK");
+
+		if(sharedMap.size() > 0) {
+			/*String transferKeyTel = sharedMap.getString("transferKeyTel");
+			if(CommonUtil.isEmpty(transferKeyTel)) {
+				logger.info("출금키 연락처가 존재하지 않습니다.");
+				return resMap;
+			} else {
+				String msg = "출금키가 생성되었습니다. 출금키: " + originalKey + "";
+				if(!sendSMS(msg, transferKeyTel)) {
+					return resMap;
+				}
+			}*/
+			updated = mchtChargeSettleDAO.updateTransferKey(encKey, SessionUtil.getUserId(request), mchtId);
+		}
+
+		if(updated) {
+			resMap.put("msg", "출금키가 생성되었습니다. " + "<br> 출금키 : " + originalKey + "");
+			String newEncKey = encKey.substring(0, 10) + "************";
+			resMap.put("transferKey", newEncKey);
+			resMap.put("originalKey", originalKey);
+			resMap.put("result", "OK");
+		}
+
+		return resMap;
+	}
+
+	private boolean sendSMS(String msg, String setTel) {
+		WebCache wc = new WebCache();
+		String number = String.format("%1$" + 6 + "s", ((int) (Math.random() * 999999) + 1)).replace(' ', '0');
+		wc.setSMSKey(setTel, number);
+
+		String msgBody = "[(주)부국위너스] " + msg + "";
+		try {
+			SmsUtil.sendSms(SmsUtil.LMS_URL, setTel.replaceAll("\\[^0-9]+", ""), msgBody);
+			logger.debug("NoticeSend SMS SEND");
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			logger.error("공지사항 SMS 전송 중 오류발생. 확인요망 [" + e.getMessage() + "]");
+
+			return false;
+		}
+		return true;
+	}
+
 	@RequestMapping(value = "/mcht/balance/modify/{mchtId}", method = RequestMethod.GET)
 	public ModelAndView modifyBalance(HttpServletRequest request, @PathVariable String mchtId) {
 		request.setAttribute("MCHTMAP", new MchtDAO().getById(mchtId).getRowFirst());
@@ -2819,28 +2889,28 @@ public class MchtController {
 					.cpResponse();
 		}
 	}
-	
+
 	@RequestMapping(value = "/mcht/distRate/get/{distNum}", method = RequestMethod.GET)
 	public @ResponseBody Object distRateGet(HttpServletRequest request, @PathVariable String distNum) {
 		return new DistMngDAO().getByNum(distNum).getRowFirst();
 	}
-	
+
 	@RequestMapping(value = "/mcht/agencyRate/get/{agencyNum}", method = RequestMethod.GET)
 	public @ResponseBody Object agencyRateGet(HttpServletRequest request, @PathVariable String agencyNum) {
 		return new AgencyMngDAO().getByNum(agencyNum).getRowFirst();
 	}
-	
+
 	@RequestMapping(value = "/mcht/salesRate/get/{salesNum}", method = RequestMethod.GET)
 	public @ResponseBody Object salesRateGet(HttpServletRequest request, @PathVariable String salesNum) {
 		return new MemberSalesMngDAO().getByNum(salesNum).getRowFirst();
 	}
-	
+
 	@RequestMapping(value = {"/mcht/tmnInsert/form"})
 	public ModelAndView tmnInsertForm(HttpServletRequest request) {
 		request.setAttribute("VANMAP", new VanDAO().vanList().getRows());
 		return new ModelAndView("/mcht/tmnInsert/form");
 	}
-	
+
 	@RequestMapping(value = "/mcht/tmnInsert/excel/save", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody SharedMap<String, Object> tmnExceladd(HttpServletRequest request) {
 		SharedMap<String, Object> resultMap = new SharedMap<String, Object>();
@@ -2856,9 +2926,9 @@ public class MchtController {
 			}
 			Gson gson = new Gson();
 			TmnList tmnList = gson.fromJson(sb.toString(), TmnList.class);
-			
+
 			List<SharedMap<String, Object>> list = tmnList.list;
-			
+
 			logger.info("mchtId [{}]",tmnList.mchtId);
 			logger.info("taxId [{}]",tmnList.taxId);
 			logger.info("webPay [{}]",tmnList.webPay);
@@ -2875,27 +2945,27 @@ public class MchtController {
 			logger.info("van [{}]",tmnList.van);
 			logger.info("vanIdx [{}]",tmnList.vanIdx);
 			logger.info("TmnInsert excel COUNT : {}", list.size());
-			
+
 			if(list.size() > 0) {
 				MchtTmnDAO mchtTmnDAO = new MchtTmnDAO();
-				
+
 				String tmnArr = "";
 				for(SharedMap<String, Object> eachMap : list) {
 					if(!eachMap.isNullOrSpace("tmnId")) {
 						tmnArr += "'"+eachMap.getString("tmnId")+"',";
 					}
 				}
-				
+
 				if(!"".equals(tmnArr)) {
 					tmnArr = tmnArr.substring(0,tmnArr.length()-1);
 					List<SharedMap<String, Object>> tmnLists = mchtTmnDAO.getTmnList(tmnArr);
-					
+
 					if(tmnLists.size() > 0) {
 						resultMap.put("result", "FAIL");
 						resultMap.put("msg", "기존에 등록되어 있는 터미널아이디와 중복된 건이 있어 일괄 업로드가 불가합니다.<br>해당건 제외한 엑셀양식으로 등록 바랍니다.");
-						
-						String failTable = "<div class=\"form-group col-sm-12 form-subtitle\"><label><i class=\"fa fa-reorder\"></i>기존등록 터미널 내용</label></div>" + 
-								"<div class=\"portlet-body form light\">" + 
+
+						String failTable = "<div class=\"form-group col-sm-12 form-subtitle\"><label><i class=\"fa fa-reorder\"></i>기존등록 터미널 내용</label></div>" +
+								"<div class=\"portlet-body form light\">" +
 								"<div class=\"table-scrollable\"><table class=\"pg-table table table-striped table-hover flip-content\">" +
 								"<thead><th>가맹점아이디</th><th>가맹점명</th><th>터미널아이디</th><th>VAN</th><th>VAN정보</th><th>취급품목</th></thead>";
 						for(SharedMap<String, Object> failMap:tmnLists) {
@@ -2909,7 +2979,7 @@ public class MchtController {
 							}else {
 								failTable += "<td colspan=\"\" class=\"font-red\">지정되지 않음</td>";
 							}
-							
+
 							failTable += "<td>"+failMap.getString("description")+"</td>";
 							failTable += "</tr>";
 						}
@@ -2918,9 +2988,9 @@ public class MchtController {
 						return resultMap;
 					}
 				}
-				
-				List<SharedMap<String, Object>> dtlList = new ArrayList<SharedMap<String,Object>>(); 
-				List<SharedMap<String, Object>> tmnLists = new ArrayList<SharedMap<String,Object>>(); 
+
+				List<SharedMap<String, Object>> dtlList = new ArrayList<SharedMap<String,Object>>();
+				List<SharedMap<String, Object>> tmnLists = new ArrayList<SharedMap<String,Object>>();
 				for(SharedMap<String, Object> eachMap : list) {
 					SharedMap<String, Object> tmnMap = new SharedMap<String,Object>();
 					if(!eachMap.isNullOrSpace("tmnId")) {
@@ -2949,7 +3019,7 @@ public class MchtController {
 					tmnMap.put("limitEndTime",tmnList.limitEndTime);
 					tmnMap.put("regId",regId);
 					tmnMap.put("regDay",regDay);
-					
+
 					if(!CommonUtil.isNullOrSpace(tmnMap.getString("isDtl"))) {
 						tmnLists.add(tmnMap);
 					}
@@ -2979,7 +3049,7 @@ public class MchtController {
 						tmnMap.put("regDay",regDay);
 						dtlList.add(tmnDtlMap);
 					}
-					
+
 				}
 				if(mchtTmnDAO.insetMchtTmnBatch(tmnLists) > 0) {
 					if(dtlList.size() > 0) {
@@ -2996,7 +3066,7 @@ public class MchtController {
 						resultMap.put("result", "OK");
 						resultMap.put("msg", "터미널 일괄등록이 완료되었습니다.");
 					}
-					
+
 				}else {
 					resultMap.put("result", "NOK");
 					resultMap.put("msg", "터미널 일괄등록에 실패하였습니다.");
@@ -3007,17 +3077,17 @@ public class MchtController {
 				resultMap.put("result", "NOK");
 				resultMap.put("msg", "터미널 일괄등록에 실패하였습니다.");
 			}
-			
+
 		}catch (Exception e) {
 			e.printStackTrace();
 			resultMap.put("result", "NOK");
 			resultMap.put("msg", "터미널 일괄등록에 실패하였습니다.");
 		}
-		
-			
+
+
 		return resultMap;
 	}
-	
+
 	@RequestMapping(value = "/mcht/getMcht/{mchtId}", method = RequestMethod.GET)
     public @ResponseBody SharedMap<String, Object> getMcht(HttpServletRequest request, @PathVariable String mchtId) {
 		SharedMap<String,Object> resultMap = new SharedMap<String,Object>();

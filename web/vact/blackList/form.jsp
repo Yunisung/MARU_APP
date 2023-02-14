@@ -132,7 +132,35 @@
 			searchForList();
 		}, 100); //검색 실행
 		$('#nav-trx').addClass('active');
-		
+
+		var idxArr = '';
+		$(document).on('click', '.changeReason', function() {
+			var idx = '';
+			$('table.pg-table>tbody>tr').each(function(i, e) {
+				if ($(e).find('input[type="checkbox"]').is(':checked')) {
+					idx += $(e).attr('data-idx') + ",";
+				}
+			});
+
+			if (idx.length < 1) {
+				bootbox.alert("대상을 체크하세요.");
+			} else {
+				idxArr = idx.substring(0, idx.length - 1);
+				var $modal = $('#pgmate-modal');
+				if ($modal.children().length < 1) {
+					$modal.empty();
+				}
+				var url = '/vact/blackList/changeReason.jsp';
+
+				$modal.load(url, '', function(responseTxt, statusTxt, xhr) {
+					if (statusTxt == "success") {
+						$modal.modal();
+						textMask();
+					}
+				});
+			}
+		});
+
 		function selectDelete() {
 			var idx = '';
 			$('table.pg-table>tbody>tr').each(function(i, e) {

@@ -1,0 +1,212 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+			 xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xmlns:p="http://www.springframework.org/schema/p"
+			 xmlns:util="http://www.springframework.org/schema/util"
+			 xmlns:context="http://www.springframework.org/schema/context"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/security
+            http://www.springframework.org/schema/security/spring-security-3.2.xsd
+            http://www.springframework.org/schema/util
+            http://www.springframework.org/schema/util/spring-util-3.2.xsd
+            http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<http pattern="/assets/**" security="none"></http>
+
+	<http auto-config='true' use-expressions="true">
+		<intercept-url pattern="/index.jsp" access="permitAll()" />
+		<intercept-url pattern="/login/form" access="permitAll()" />
+		<!--<intercept-url pattern="/**" access="hasAnyRole('ROLE_USER')"/>-->
+		<form-login login-page="/login/form"
+					username-parameter="memberId"
+					password-parameter="memberPw"
+					login-processing-url="/loginProcess"
+					default-target-url="/"
+					always-use-default-target='true'
+					authentication-success-handler-ref="loginSuccessHandler"
+					authentication-failure-handler-ref="loginFailureHandler"
+					authentication-details-source-ref="customWebAuthenticationDetailsSource"
+		/>
+
+		<!--<session-management>
+			<concurrency-control max-sessions="1" expired-url="/login_duplicate"/>
+		</session-management>-->
+		<expression-handler ref="defaultWebSecurityExpressionHandler" />
+
+		<!-- 가맹점 관리 -->
+		<intercept-url pattern="/mcht/form" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES')"/>
+		<intercept-url pattern="/mcht/tmn/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/mcht/add" access="hasAnyRole('ROLE_COMP_ADMIN', 'ROLE_DIST_ADMIN', 'ROLE_AGENCY_ADMIN', 'ROLE_SALES_ADMIN')"/>
+		<intercept-url pattern="/mcht/feeTemplate/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/mcht/feeTemplate/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/mcht/interTemplate/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/mcht/van/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/mcht/van/fee/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/mcht/van/interFee/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/mcht/nontran/form" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES')"/>
+		<intercept-url pattern="/mcht/accntSearch/form" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/mcht/noti/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+
+		<!-- 거래관리 -->
+		<intercept-url pattern="/trx/cap/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/trx/pay/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/trx/err/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/vact/dtl/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT', 'ROLE_TMN')"/>
+		<intercept-url pattern="/vact/trx/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT', 'ROLE_TMN')"/>
+		<intercept-url pattern="/vact/blackList/add.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/vact/blackList/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/trx/pisp/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/trx/pisp/fcs/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/trx/status/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/trx/rfd/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES')"/>
+		<intercept-url pattern="/trx/admin_cancel/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/trx/io/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/trx/wh/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/trx/capdel/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/trxoper/load/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+
+		<!-- 매출관리 -->
+		<intercept-url pattern="/sales/dailysByStlDay/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/sales/dailysByCapDay/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/sales/settle/calendar.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/sales/collect/mcht/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/sales/monthly/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/sales/dist/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST')"/>
+		<intercept-url pattern="/sales/agency/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY')"/>
+		<intercept-url pattern="/sales/sales/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES')"/>
+		<intercept-url pattern="/sales/mcht/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/sales/mchtMonthly/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+
+		<!-- 가맹점 정산 -->
+		<intercept-url pattern="/settle/make/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/settle/mcht/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/settle/ddct/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/settle/aggregator/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/settle/tmn/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/settle/hold/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/settle/pisp/form" access="hasAnyRole('ROLE_COMP')"/>
+
+		<!-- 대행사 정산 -->
+		<intercept-url pattern="/settle/dist/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST')"/>
+		<intercept-url pattern="/settle/agency/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_AGENCY')"/>
+		<intercept-url pattern="/settle/sales/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_SALES')"/>
+
+		<!-- 입금 정산 -->
+		<intercept-url pattern="/collect/temp/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/collect/excel/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/collect/collect/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/collect/mcht/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+
+		<!-- 영중소 차액 정산 -->
+		<intercept-url pattern="/diff/temp/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/diff/excel/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/diff/collect/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/diff/mcht/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+
+		<!-- 실시간 정산 -->
+		<intercept-url pattern="/realtimeSettle/realtime/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/realtimeSettle/auto/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+
+		<!-- 가상계좌 정산 -->
+		<intercept-url pattern="/vactSettle/mcht/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/vactSettle/dist/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST')"/>
+		<intercept-url pattern="/vactSettle/agency/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_AGENCY')"/>
+		<intercept-url pattern="/vactSettle/sales/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+
+		<!-- 충전 정산 -->
+		<intercept-url pattern="/chargeSettle/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/chargeSettle/err/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/chargeSettle/auto/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+
+		<!-- 대출 정산 -->
+		<intercept-url pattern="/loanSettle/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/loanSettle/prepay/form" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES')"/>
+		<intercept-url pattern="/loanSettle/status/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/loanSettle/settleList/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/loanSettle/settle/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES')"/>
+
+		<!-- 현금 영수증 -->
+		<intercept-url pattern="/cashReceipt/add.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/cashReceipt/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+
+		<!-- 휴대폰 결제 -->
+		<intercept-url pattern="/phone/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/phone/settle/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/phone/excel/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/phone/sunab/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+
+		<!-- 전자계약서 -->
+		<intercept-url pattern="/eform/auth/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/eform/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/eform/main" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/eform/member/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+
+		<!-- 멤버관리 -->
+		<intercept-url pattern="/member/user/form" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES')"/>
+		<intercept-url pattern="/member/user/add" access="hasAnyRole('ROLE_COMP_ADMIN', 'ROLE_DIST_ADMIN')"/>
+		<intercept-url pattern="/member/user/add/admin" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/member/user/add/mcht" access="hasAnyRole('ROLE_COMP_ADMIN', 'ROLE_DIST_ADMIN', 'ROLE_AGENCY_ADMIN', 'ROLE_SALES_ADMIN')"/>
+		<intercept-url pattern="/member/dist/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/member/dist/add" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/member/agency/form" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST')"/>
+		<intercept-url pattern="/member/agency/add" access="hasAnyRole('ROLE_COMP_ADMIN', 'ROLE_DIST_ADMIN')"/>
+		<intercept-url pattern="/member/sales/form" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY')"/>
+		<intercept-url pattern="/member/sales/add" access="hasAnyRole('ROLE_COMP_ADMIN', 'ROLE_DIST_ADMIN', 'ROLE_AGENCY_ADMIN')"/>
+		<intercept-url pattern="/member/rate/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+
+		<!-- 펌뱅킹 관리 -->
+		<intercept-url pattern="/firm/trx/form" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/firm/master/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/firm/err/form" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/firm/action/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+
+		<!-- TMS -->
+		<intercept-url pattern="/tms/io/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+
+		<!-- 시스템 관리 -->
+		<intercept-url pattern="/system/send/add" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/system/send/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/system/faq/form" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/system/iqr/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+
+		<!-- 고객센터 -->
+		<intercept-url pattern="/system/notice/form" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/system/faq/view" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/system/task/view" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+
+		<!-- 단말기 로그인 -->
+		<intercept-url pattern="/subMcht/trx/form.jsp" access="hasAnyRole('ROLE_TMN')"/>
+		<intercept-url pattern="/subMcht/settle/form.jsp" access="hasAnyRole('ROLE_TMN')"/>
+		<intercept-url pattern="/subMcht/myprofile/*" access="hasAnyRole('ROLE_TMN')"/>
+
+	</http>
+
+	<authentication-manager alias="customAuthenticationManager">
+		<authentication-provider ref="customAuthenticationProvider" />
+	</authentication-manager>
+
+	<beans:bean id="loginSuccessHandler" class="com.pgmate.app.security.AjaxAuthenticationSucessHandler" />
+	<beans:bean id="loginFailureHandler" class="com.pgmate.app.security.AjaxAuthenticationFailureHandler" />
+	<beans:bean id="customAuthenticationProvider" class="com.pgmate.app.security.CustomAuthenticationProvider" />
+	<beans:bean id="customWebAuthenticationDetailsSource" class="com.pgmate.app.security.filter.CustomWebAuthenticationDetailsSource" />
+
+	<!-- role 계층구조 적용 -->
+	<beans:bean id="defaultWebSecurityExpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
+		<beans:property name="roleHierarchy" ref="customRoleHierarchy" />
+	</beans:bean>
+	<beans:bean id="customRoleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+		<beans:property name="hierarchy">
+			<beans:value>
+				ROLE_COMP_ADMIN > ROLE_COMP
+				ROLE_DIST_ADMIN > ROLE_DIST
+				ROLE_AGENCY_ADMIN > ROLE_AGENCY
+				ROLE_SALES_ADMIN > ROLE_SALES
+				ROLE_MCHT_ADMIN > ROLE_MCHT
+			</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<!--<global-method-security pre-post-annotations="enabled" secured-annotations="enabled" />-->
+
+</beans:beans>

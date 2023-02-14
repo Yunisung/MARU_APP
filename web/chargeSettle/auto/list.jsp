@@ -52,6 +52,7 @@
 					<th>합계건수</th>
 					<th>합계금액</th>
 					<th>가맹점수수료</th>
+					<th>인증수수료</th>
 					<th>정산액</th>
 				</tr>
 			</thead>
@@ -79,6 +80,7 @@
 						<td class="text-right digits">${entry.totCnt}</td>
 						<td class="text-right digits">${entry.totAmt}</td>
 						<td class="text-right digits">${entry.stlFee}</td>
+						<td class="text-right digits">${entry.totalAuthFee}</td>
 						<td class="text-right digits">${entry.stlAmount}</td>
 					</tr>
 				</c:forEach>

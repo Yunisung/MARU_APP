@@ -95,6 +95,30 @@ public class VactController {
     }
     return resMap;
   }
+
+    @RequestMapping(value = "/vact/withdrawAccount/{account}", method = RequestMethod.GET)
+    public @ResponseBody SharedMap<String, Object> withdrawAccount(HttpServletRequest request, @PathVariable String account) {
+        SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+        SharedMap<String, Object> sharedMap = vactTrxDAO.withdrawAccount(account);
+        String withdrawAccountDec = sharedMap.getString("withdrawAccountDec");
+        String withdrawBankCd = sharedMap.getString("withdrawBankCd");
+        String withdrawBankNm = sharedMap.getString("withdrawBankNm");
+        String holderName = sharedMap.getString("holderName");
+
+        if (!CommonUtil.isNullOrSpace(withdrawAccountDec)) {
+            resMap.put("msg", "[" + withdrawBankNm + "/" + withdrawAccountDec + "/" + holderName + "]");
+            resMap.put("withdrawAccount", withdrawAccountDec);
+            resMap.put("withdrawBankCd", withdrawBankCd);
+            resMap.put("holderName", holderName);
+            resMap.put("result", "OK");
+        } else {
+            resMap.put("msg", "출금계좌번호가 존재하지 않습니다.");
+            resMap.put("result", "NOK");
+        }
+        return resMap;
+    }
   
   @RequestMapping(value = {"/vact/reg/blackList/add"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
   public @ResponseBody CPResponse blackListInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
@@ -122,6 +146,11 @@ public class VactController {
 	        	.resultNOK(CPUtil.RESULT_DATA_INFAIL,cpDAO.getError())
 	        	.cpResponse();
   }
+
+    @RequestMapping(value = "/vact/reg/blackList/withdrawAccount", method = RequestMethod.GET)
+    public ModelAndView withdrawAccountView(HttpServletRequest request) {
+        return new ModelAndView("/vact/blackList/modal");
+    }
   
   
   @RequestMapping(value = "/vact/reg/blackList/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
@@ -164,4 +193,23 @@ public class VactController {
 		
       return "true";
   }
+    @RequestMapping(value = "/vact/blackList/changeReason", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody Object changeBlackListReasen(HttpServletRequest request, @RequestBody SharedMap<String, Object> reqMap) {
+        SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+
+        String idx = reqMap.getString("idx");
+        String reason = reqMap.getString("reason");
+
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+
+        if(vactTrxDAO.updateBlackReason(idx, reason)) {
+            resMap.put("resultCd", "0000");
+            resMap.put("resultMsg", "변경되었습니다.");
+        } else {
+            resMap.put("resultCd", "9999");
+            resMap.put("resultMsg", "변경에 실패했습니다.");
+        }
+
+        return resMap;
+    }
 }

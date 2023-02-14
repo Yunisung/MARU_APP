@@ -131,7 +131,8 @@
                 var datas = $('.login-form').serialize();
                 console.log('submit:', datas);
                 $.ajax({
-                    url: '/login/in',
+                    // url: '/login/in',
+                    url: '/loginProcess',
                     type: 'POST',
                     data: datas,
                     success: loginSuccess,

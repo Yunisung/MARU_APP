@@ -468,21 +468,23 @@
 	</div>
 	<script>
 		function retryHook() {
-			bootbox.confirm('해당 거래를 재전송 하시겠습니까?', function() {
-				$.ajax({
-					type: "GET",
-					url: "/vact/retry/${DATAMAP.vactId}",
-					success: function (res) {
-						if(res.result == 'OK') {
-							bootbox.alert('재전송 요청에 성공했습니다.');
-						} else {
-							bootbox.alert(res.msg);
+			bootbox.confirm('해당 거래를 재전송 하시겠습니까?', function(result) {
+				if (result) {
+					$.ajax({
+						type: "GET",
+						url: "/vact/retry/${DATAMAP.vactId}",
+						success: function (res) {
+							if(res.result == 'OK') {
+								bootbox.alert('재전송 요청에 성공했습니다.');
+							} else {
+								bootbox.alert(res.msg);
+							}
+						},
+						error: function (res, status) {
+							bootbox.alert('재전송 요청에 실패했습니다.' + status);
 						}
-					},
-					error: function (res, status) {
-						bootbox.alert('재전송 요청에 실패했습니다.' + status);
-					}
-				});
+					});
+				}
 			});
 		};
 	</script>

@@ -157,6 +157,15 @@
 												</div>
 											</div>
 											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">입금단위제한</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency limitAmount comma" maxlength="14" data-oper="comma" name="limitAmount" placeholder="" value="0">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
 												<div style="padding-top:45px; border-left:none;"></div>
 											</div>
 											<div class="form-group col-sm-12 form-subtitle">
@@ -214,7 +223,7 @@
 											<div class="form-group col-sm-6">
 												<label class="control-label input-sm col-sm-4">대행사 정산유형</label> 
 												<select name="distNum" class="selectpicker col-sm-6" id="distType">
-													<option value="">--- 선택 (기본 M+15) ---</option>
+													<option value="">--- 선택 (기본 M+10) ---</option>
 													<c:forEach items="${DISTMNGTYPE }" var="entry">
 														<option value="${entry.distNum}">${entry.distSettleName} (${entry.distPayStatus})</option>
 													</c:forEach>
@@ -248,7 +257,7 @@
 											<div class="form-group col-sm-6">
 												<label class="control-label input-sm col-sm-4">에이전시 정산유형</label> 
 												<select name="agencyNum" class="selectpicker col-sm-6" id="agencyType">
-													<option value="">--- 선택 (기본 M+15) ---</option>
+													<option value="">--- 선택 (기본 M+10) ---</option>
 													<c:forEach items="${AGENCYMNGTYPE }" var="entry">
 														<option value="${entry.agencyNum}">${entry.agencySettleName} (${entry.agencyPayStatus})</option>
 													</c:forEach>
@@ -282,7 +291,7 @@
 											<div class="form-group col-sm-6">
 												<label class="control-label input-sm col-sm-4">지사 정산유형</label> 
 												<select name="salesNum" class="selectpicker col-sm-6" id="salesType">
-													<option value="">--- 선택 (기본 M+15) ---</option>
+													<option value="">--- 선택 (기본 M+10) ---</option>
 													<c:forEach items="${SALESMNGTYPE }" var="entry">
 														<option value="${entry.salesNum}">${entry.salesSettleName} (${entry.salesPayStatus})</option>
 													</c:forEach>

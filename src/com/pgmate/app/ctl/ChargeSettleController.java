@@ -3,14 +3,14 @@ package com.pgmate.app.ctl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pgmate.app.dao.ChargeSettleNotiDAO;
+import com.pgmate.lib.dao.DAO;
+import com.pgmate.lib.util.map.SharedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pgmate.app.dao.ChargeAutoSettleDAO;
@@ -44,9 +44,23 @@ public class ChargeSettleController {
 	@RequestMapping(value = "/chargeSettle/view/{trxId}", method = RequestMethod.GET)
     public ModelAndView trxView(HttpServletRequest request, @PathVariable("trxId") String trxId) {
 		request.setAttribute("DATAMAP", new ChargeSettleDAO().getById(trxId).getRow(0));
+		request.setAttribute("DATANOTIMAP", new ChargeSettleNotiDAO().getById(trxId).getRow(0));
         return new ModelAndView("/chargeSettle/modal");
-		
-		
+
+	}
+
+	@RequestMapping(value = "/chargeSettle/retry/{trxId}", method = RequestMethod.GET)
+	public @ResponseBody
+	SharedMap<String, Object> trxRetry(HttpServletRequest request, @PathVariable String trxId) {
+		SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+		resMap.put("result", "NOK");
+		DAO dao = new DAO();
+		if (dao.update("UPDATE PG_CHARGE_SETTLE_NOTI SET status='전송장애', retry='1' WHERE trxId ='" + trxId + "'")) {
+			resMap.put("result", "OK");
+		} else {
+			resMap.put("msg", "재전송에 실패했습니다. 관리자에게 문의해주세요.");
+		}
+		return resMap;
 	}
 	
 	@RequestMapping(value = "/chargeSettle/err/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)

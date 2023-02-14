@@ -4,20 +4,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-
-import com.pgmate.lib.util.gson.GsonUtil;
-import com.pgmate.lib.util.map.SharedMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.pgmate.lib.util.gson.GsonUtil;
+import com.pgmate.lib.util.map.SharedMap;
 
 public class FirmUtil {
   private static Logger logger = LoggerFactory.getLogger(com.pgmate.app.util.FirmUtil.class);
 
   private SharedMap<String, Object> resMap = new SharedMap<String, Object>();
-  private static String host 	= "10.100.200.10"; //"203.245.13.63";
+//  private static String host 	= "10.100.200.10"; //"203.245.13.63";
+  private static String host 	= "pgwas3"; //"203.245.13.63";
 	private static int port 	= 10006;
 	private static int newPort 	= 10026; //KSNET 자금이체 대행포트
 	private static int timeout  = 40000;
@@ -39,8 +39,6 @@ public class FirmUtil {
 	  return firmBean;
   }
   
-
-	
 	/**
 	 * 은행통한 예금주조회
 	 * @param bankCd
@@ -163,7 +161,8 @@ public class FirmUtil {
 		firmBean.data.put("amount",amount);
 		firmBean.data.put("recvBankCd",recvBankCd);
 		firmBean.data.put("recvAccount",recvAccount);
-		firmBean.data.put("sender", sender);
+		//PYS : sender를 안보내면  (주)부국위너스로 나오도록 세팅되있음.
+//		firmBean.data.put("sender", sender);
 		firmBean.data.put("procType","MT");
 		
 		firmBean = comm(firmBean);
@@ -293,7 +292,6 @@ public class FirmUtil {
 		return firmBean;
 	}
 
-	
 	public static String accountFormat(String bankCd,String account){
 		account = account.replaceAll("[-]","").trim();
 		int len = account.length();
@@ -628,7 +626,6 @@ public class FirmUtil {
 			return account;  
 		}
 
-	
 	
 	public static void main(String[] args){  
 		String bankCd = "292";
