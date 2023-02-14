@@ -61,11 +61,14 @@
 					//console.log(res);
 					const msg = res.msg;
 					const withdrawAccount = res.withdrawAccount;
+					const withdrawBankCd = res.withdrawBankCd;
 					if (res.result == 'OK') {
 						document.getElementById('resultMsg').innerText = msg;
 						bootbox.confirm("출금계좌번호 " + withdrawAccount + "를 등록하시겠습니까?", function(result) {
 							if(result) {
 								document.getElementById('account').value = withdrawAccount;
+								$('#bankCd').val(withdrawBankCd);
+								$('.selectpicker').selectpicker('refresh');
 								var $modal = $('#pgmate-modal');
 								$modal.modal('toggle');
 							}
