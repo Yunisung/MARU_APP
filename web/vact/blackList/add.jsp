@@ -63,7 +63,7 @@
 													<div class="form-body row">
 														<div class="form-group pg-form-group">
 															<label class="control-label input-sm col-sm-4 req-label">출금은행</label>
-															<select class="selectpicker col-lg-8" name="bankCd" data-oper="eq">
+															<select class="selectpicker col-lg-8" name="bankCd" id="bankCd" data-oper="eq">
 																<option value="">-- 전체 -- </option>
 																<option value="007">수협</option>
 																<option value="003">기업</option>

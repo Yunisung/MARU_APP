@@ -97,10 +97,12 @@ public class VactController {
         VactTrxDAO vactTrxDAO = new VactTrxDAO();
         SharedMap<String, Object> sharedMap = vactTrxDAO.withdrawAccount(account);
         String withdrawAccountDec = sharedMap.getString("withdrawAccountDec");
+        String withdrawBankCd = sharedMap.getString("withdrawBankCd");
 
         if (!CommonUtil.isNullOrSpace(withdrawAccountDec)) {
             resMap.put("msg", "출금계좌번호 : " + withdrawAccountDec + "");
             resMap.put("withdrawAccount", withdrawAccountDec);
+            resMap.put("withdrawBankCd", withdrawBankCd);
             resMap.put("result", "OK");
         } else {
             resMap.put("msg", "출금계좌번호가 존재하지 않습니다.");
