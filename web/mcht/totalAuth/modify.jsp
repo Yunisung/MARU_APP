@@ -47,7 +47,7 @@
                                 <form class="form-horizontal form-bordered" role="form" data-form="true" id="writeFrm" name="form" action="/mcht/totalAuth/" method="post">
                                         <div class="form-body row">
                                             <input type="hidden" name="action_type" value="update" data-reg="false" />
-                                            <input type="hidden" data-key="true" name="mchtId" value="${DATAMAP.mchtId}">
+                                            <input type="hidden" class="form-control input-sm" data-key="true" name="mchtId" value="${DATAMAP.mchtId}">
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4 req-label">정산유형
                                                 </label>

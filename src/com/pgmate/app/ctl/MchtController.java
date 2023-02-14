@@ -887,7 +887,7 @@ public class MchtController {
 	public @ResponseBody CPResponse totalAuthUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
 
-		if (cpDAO.update("PG_MCHT_TOTAL_AUTH", SessionUtil.getUserId(request), cpRequest.data)) {
+		if (cpDAO.updateAndBack("PG_MCHT_TOTAL_AUTH", SessionUtil.getUserId(request), cpRequest.data)) {
 			return new CPRUtil(cpRequest).resultOK("통합인증 정보가 변경되었습니다.").cpResponse();
 		} else {
 			return new CPRUtil(cpRequest).resultNOK("통합인증 정보 변경에 실패하였습니다.",cpDAO.getError())
