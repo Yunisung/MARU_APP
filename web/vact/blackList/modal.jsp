@@ -62,15 +62,15 @@
 					const msg = res.msg;
 					const withdrawAccount = res.withdrawAccount;
 					const withdrawBankCd = res.withdrawBankCd;
+					const holderName = res.holderName;
 					if (res.result == 'OK') {
-						document.getElementById('resultMsg').innerText = msg;
-						bootbox.confirm("출금계좌번호 " + withdrawAccount + "를 등록하시겠습니까?", function(result) {
+						document.getElementById('resultMsg').innerText = "출금계좌정보: " + msg;
+						bootbox.confirm(msg + " 정보를 등록하시겠습니까?", function(result) {
 							if(result) {
 								document.getElementById('account').value = withdrawAccount;
 								$('#bankCd').val(withdrawBankCd);
 								$('.selectpicker').selectpicker('refresh');
-								var $modal = $('#pgmate-modal');
-								$modal.modal('toggle');
+								$('#pgmate-modal').modal('hide');
 							}
 						});
 					} else {

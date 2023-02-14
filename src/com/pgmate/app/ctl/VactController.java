@@ -238,11 +238,14 @@ public class VactController {
         SharedMap<String, Object> sharedMap = vactTrxDAO.withdrawAccount(account);
         String withdrawAccountDec = sharedMap.getString("withdrawAccountDec");
         String withdrawBankCd = sharedMap.getString("withdrawBankCd");
+        String withdrawBankNm = sharedMap.getString("withdrawBankNm");
+        String holderName = sharedMap.getString("holderName");
 
         if (!CommonUtil.isNullOrSpace(withdrawAccountDec)) {
-            resMap.put("msg", "출금계좌번호 : " + withdrawAccountDec + "");
+            resMap.put("msg", "[" + withdrawBankNm + "/" + withdrawAccountDec + "/" + holderName + "]");
             resMap.put("withdrawAccount", withdrawAccountDec);
             resMap.put("withdrawBankCd", withdrawBankCd);
+            resMap.put("holderName", holderName);
             resMap.put("result", "OK");
         } else {
             resMap.put("msg", "출금계좌번호가 존재하지 않습니다.");
