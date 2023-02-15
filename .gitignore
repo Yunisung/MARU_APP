@@ -1,7 +1,9 @@
 classes/
-conf/logback.xml
 web/WEB-INF/classes/
-lib/MARU_lib.jar
-lib/MARU_v1.jar
 logs/
 
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
