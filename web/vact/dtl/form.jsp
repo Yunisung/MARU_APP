@@ -115,6 +115,17 @@
 														<option value="우리">우리</option>
 													</select>
 												</div>
+												<div class="form-group pg-form-group">
+													<label class="control-label col-lg-4">상태</label>
+													<select class="selectpicker col-lg-8" name="status" data-oper="eq">
+														<option value="">-- 전체 -- </option>
+														<option value="대기">대기</option>
+														<option value="발행">발행</option>
+														<option value="사용자만료">사용자만료</option>
+														<option value="기한만료">기한만료</option>
+														<option value="만료">만료</option>
+													</select>
+												</div>
 											</div>
 											<c:if test="${CP_SESSION.grade eq '본사'}">
 												<div class="row search-opt">
