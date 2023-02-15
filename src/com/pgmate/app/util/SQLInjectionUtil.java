@@ -71,8 +71,8 @@ public class SQLInjectionUtil {
 		
 		// 특수 문자 필터링
 		orgVal = orgVal.replaceAll("'", "&#39;");
-		orgVal = orgVal.replaceAll("\"", "&#34;");
-		// orgVal = orgVal.replaceAll("-", "&#45;");
+//		orgVal = orgVal.replaceAll("\"", "&#34;");
+//		 orgVal = orgVal.replaceAll("-", "&#45;");
 		// orgVal = orgVal.replaceAll("(", "&#40;");
 		// orgVal = orgVal.replaceAll(")", "&#41;");
 		orgVal = orgVal.replaceAll("<", "&#60;");
@@ -88,4 +88,5 @@ public class SQLInjectionUtil {
 		}
 		return orgVal;
 	}
+
 }
