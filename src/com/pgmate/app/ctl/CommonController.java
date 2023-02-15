@@ -17,6 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.pgmate.app.dao.AgencyDAO;
+import com.pgmate.app.dao.CPDAO;
+import com.pgmate.app.dao.DistDAO;
+import com.pgmate.app.dao.MchtDAO;
+import com.pgmate.app.dao.MchtMngDAO;
+import com.pgmate.app.dao.ReserveRateDAO;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.CPResponse;
 import com.pgmate.app.session.CPSession;
@@ -58,6 +64,7 @@ public class CommonController {
 	public ModelAndView vactRateAdd(HttpServletRequest request, @PathVariable String mchtId) {
 		SharedMap<String,Object> result = null;
 		result = new MchtDAO().getById(mchtId).getRowFirst();
+		request.setAttribute("MCHTMAP",new MchtVactDAO().getByMchtId(mchtId));
 		request.setAttribute("VACTMAP",new MchtVactDAO().getByMchtId(mchtId));
 		request.setAttribute("PARENTID", mchtId);
 		return new ModelAndView("/member/vactRate/add", "DATAMAP", result);
@@ -95,6 +102,7 @@ public class CommonController {
 		return new ModelAndView("/member/vactRate/modify", "DATAMAP", new ReserveVactRateDAO().getByIdx(idx).getRowFirst());
 	}
 
+	//KJM : 멤버관리 > 수수료 변경 예약 리스트
 	@RequestMapping(value = "/member/rate/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response,@RequestBody CPRequest cpRequest) {
 		ReserveRateDAO  reserveRateDAO = new ReserveRateDAO();
@@ -162,10 +170,10 @@ public class CommonController {
 	
 	@RequestMapping(value = "/common/typeahead/{key}/{keyword}", method = RequestMethod.GET)
     public @ResponseBody String typeahead(HttpServletRequest request, @PathVariable String key, @PathVariable String keyword) {
-		
 		ArrayList<String> resultArray = new ArrayList<>();
 		DAO dao = new DAO();
 		CPSession session = SessionUtil.get(request);
+
 		if(key.equalsIgnoreCase("mchtId")) {
 			dao.setTable("PG_MCHT");
 			dao.setColumns("mchtId as resKey");
