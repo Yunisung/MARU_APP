@@ -344,23 +344,6 @@ public class DAO  implements java.io.Serializable {
 	}
 	
 	/**
-	 * prepared insert,update 사용 시 oper 조건에 따라 입력값을 변경한다.
-	 * @param column
-	 * @param value
-	 */
-	public void setRecord(String column,Object value,String oper){
-		if(oper.equals("percent")) {
-			Double d = Double.valueOf((String)value);
-			value = String.format("%.5f", d / 100);
-		}
-		
-		if(oper.equals("comma")) {
-			value = (Object)String.valueOf(value).replace(",", "");
-		}
-		record.put(column, value);
-	}
-	
-	/**
 	 * 페이징 시 재 검색조건 가져올때.
 	 * @return
 	 */

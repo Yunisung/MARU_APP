@@ -100,7 +100,7 @@ public class SessionUtil {
 		HttpSession session = request.getSession(true);
 		
 		if(memberMap.getString("grade").equals("본사") && !memberMap.getString("role").equals("일반")) {
-			session.setMaxInactiveInterval(CPUtil.CP_SESSION_TIMEOUT_KWON);
+			session.setMaxInactiveInterval(CPUtil.CP_SESSION_TIMEOUT);
 		}else {
 			session.setMaxInactiveInterval(CPUtil.CP_SESSION_TIMEOUT);
 		}
