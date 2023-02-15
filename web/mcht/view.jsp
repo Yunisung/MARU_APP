@@ -2206,7 +2206,11 @@
 																				<c:if test="${VACT_MAP.feeType == '1'}">정률</c:if>
 																				<c:if test="${VACT_MAP.feeType == '2'}">혼합</c:if>
 																			</p>
+																			<c:if test="${CP_SESSION.grade == '본사'}">
+																				<a class="btn btn-sm" href="/member/vactRate/add/${DATAMAP.mchtId }">수수료 변경 예약</a>
+																			</c:if>
 																		</div>
+
 																	</div>
 																</div>
 																<div class="col-md-6">
@@ -2249,9 +2253,7 @@
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">가맹점 정산수수료율</label>
-																			<div class="col-md-9">
-																				<p class="form-control-static"><fmt:formatNumber value="${VACT_MAP.rate * 100}" pattern="0.000"/> % (VAT별도)</p>
-																			</div>
+																			<p class="form-control-static"><fmt:formatNumber value="${VACT_MAP.rate * 100}" pattern="0.000"/> % (VAT별도)</p>
 																		</div>
 																	</div>
 																</c:if>

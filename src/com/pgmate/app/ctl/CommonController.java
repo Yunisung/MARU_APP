@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pgmate.app.dao.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -43,6 +44,7 @@ public class CommonController {
 		return new ModelAndView("/common/changeIdentity");
     }
 	
+	// KBR 헤더 디버그 클릭 시 
 	@RequestMapping(value = {"/common/debug"}, method = RequestMethod.GET)
     public @ResponseBody String debug(HttpServletRequest request) {
 		if(CPUtil.CP_DEBUG){
@@ -58,11 +60,57 @@ public class CommonController {
 	}
 	
 	// ======================================================= 수수료 변경 예약
+
+	@RequestMapping(value = {"/member/vactRate/add/{mchtId}"})
+	public ModelAndView vactRateAdd(HttpServletRequest request, @PathVariable String mchtId) {
+		SharedMap<String,Object> result = null;
+		result = new MchtDAO().getById(mchtId).getRowFirst();
+		request.setAttribute("MCHTMAP",new MchtVactDAO().getByMchtId(mchtId));
+		request.setAttribute("VACTMAP",new MchtVactDAO().getByMchtId(mchtId));
+		request.setAttribute("PARENTID", mchtId);
+		return new ModelAndView("/member/vactRate/add", "DATAMAP", result);
+	}
+
+	@RequestMapping(value = {"/member/vactRate/insert"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse vactInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+		if(cpDAO.insert("PG_RESERVE_VACT_RATE", SessionUtil.getUserId(request), cpRequest.data)){
+			return new CPRUtil(cpRequest)
+					.resultOK(CPUtil.RESULT_DATA_INSERTED).redirect(cpRequest.redirect)
+					.cpResponse();
+		}else{
+			return new CPRUtil(cpRequest)
+					.resultNOK(CPUtil.RESULT_DATA_INFAIL,cpDAO.getError())
+					.cpResponse();
+		}
+	}
+
+	@RequestMapping(value = "/member/vactRate/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ModelAndView vactList(HttpServletRequest request, HttpServletResponse response,@RequestBody CPRequest cpRequest) {
+		ReserveVactRateDAO reserveVactRateDAO = new ReserveVactRateDAO();
+		SessionUtil.setSearchGrade(request, cpRequest);
+		//KJM : 상태 조건 안줬을 때
+		if(CommonUtil.isNullOrSpace(cpRequest.getKeyValue("status"))){
+			//KJM : 기본 상태 조회 조건 세팅
+			cpRequest.setData("status", "폐기", "ne", "", true);
+		}
+		RecordSet rset = reserveVactRateDAO.list(cpRequest.data,cpRequest.page);
+		return new CPRUtil(cpRequest).dataList(rset, reserveVactRateDAO).setView(request,"/member/vactRate/list","");
+	}
+
+	@RequestMapping(value = "/member/vactRate/modify/{idx}", method = RequestMethod.GET)
+	public ModelAndView vactModify(HttpServletRequest request, @PathVariable String idx) {
+		return new ModelAndView("/member/vactRate/modify", "DATAMAP", new ReserveVactRateDAO().getByIdx(idx).getRowFirst());
+	}
+
+	//KJM : 멤버관리 > 수수료 변경 예약 리스트
 	@RequestMapping(value = "/member/rate/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response,@RequestBody CPRequest cpRequest) {
 		ReserveRateDAO  reserveRateDAO = new ReserveRateDAO();
 		SessionUtil.setSearchGrade(request, cpRequest);
+		//KJM : 상태 조건 안줬을 때
 		if(CommonUtil.isNullOrSpace(cpRequest.getKeyValue("status"))){
+			//KJM : 기본 상태 조회 조건 세팅
 			cpRequest.setData("status", "폐기", "ne", "", true);
 		}
 		RecordSet rset = reserveRateDAO.list(cpRequest.data,cpRequest.page);
@@ -93,6 +141,7 @@ public class CommonController {
         return new ModelAndView("/member/rate/modify", "DATAMAP", new ReserveRateDAO().getByIdx(idx).getRowFirst());
     }
     
+    // KBR 가맹점조회 > 리스트 > 지불 및 정산 > 수수료 변경 예약 클릭 > submit 
     @RequestMapping(value = {"/member/rate/insert"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody CPResponse insert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
@@ -122,13 +171,13 @@ public class CommonController {
 		}
     }
 	
-	
+	// KBR : 검색폼에서 이름또는 가맹점ID 검색한 정보를  ajax 통신  
 	@RequestMapping(value = "/common/typeahead/{key}/{keyword}", method = RequestMethod.GET)
     public @ResponseBody String typeahead(HttpServletRequest request, @PathVariable String key, @PathVariable String keyword) {
-		
 		ArrayList<String> resultArray = new ArrayList<>();
 		DAO dao = new DAO();
 		CPSession session = SessionUtil.get(request);
+		
 		if(key.equalsIgnoreCase("mchtId")) {
 			dao.setTable("PG_MCHT");
 			dao.setColumns("mchtId as resKey");
@@ -154,6 +203,7 @@ public class CommonController {
 			dao.addWhere("mchtId",session.getParentId(),DAO.eq);
 		}
 		
+		// KBR : 검색 키워드에 들어가는(like) 이름 또는 가맹점Id 모두 들고옴
 		RecordSet rset = dao.search();
 		while(rset.next()) {
 			resultArray.add(rset.getString("resKey"));
@@ -162,17 +212,19 @@ public class CommonController {
         return GsonUtil.toJson(resultArray);
     }
 	
+	//KJM : 거래생성 > ONLINE 거래생성 > 에이전시 하위 가맹점 조회 ajax 통신
 	@RequestMapping(value = "/common/mchtList/{agencyId}", method = RequestMethod.GET)
     public @ResponseBody String getMchtList(HttpServletRequest request, @PathVariable String agencyId) {
 		
 		DAO dao = new DAO();
-		dao.setTable("PG_MCHT");
-		dao.setColumns("name,mchtId");
-		dao.addWhere("agencyId", agencyId, DAO.eq);
+		dao.setTable("PG_MCHT");					//KJM : 가맹점 정보 테이블
+		dao.setColumns("name,mchtId");				//이름, 아이디
+		dao.addWhere("agencyId", agencyId, DAO.eq);	//where : agencyId 같은, 상태 = "사용"
 		dao.addWhere("status", "사용", DAO.eq);
 		dao.setLimit(999999);
-		dao.setOrderBy("name asc");
+		dao.setOrderBy("name asc");					//이름을 기준으로 오름차순
 		
+		//KJM : 조회 결과를 json 형식으로 보내준다
         return GsonUtil.toJson(dao.search().getRows());
     }
 	
@@ -194,21 +246,19 @@ public class CommonController {
         return GsonUtil.toJson(dao.search().getRows());
     }
 	
+	//KJM : 거래생성 > ONLINE 거래생성 > 가맹점 하위 터미널 조회 ajax 통신
 	@RequestMapping(value = "/common/tmnList/{mchtId}", method = RequestMethod.GET)
     public @ResponseBody String getMchtTmnList(HttpServletRequest request, @PathVariable String mchtId) {
 		
 		DAO dao = new DAO();
-		dao.setTable("PG_MCHT_TMN");
-		dao.setColumns("tmnId,van,description");
-		dao.addWhere("mchtId", mchtId, DAO.eq);
+		dao.setTable("PG_MCHT_TMN");			//KJM : 가맹점 터미널 기본정보 테이블
+		dao.setColumns("tmnId,van,description");//단말기아이디, 사용 van, 취급품목
+		dao.addWhere("mchtId", mchtId, DAO.eq);	//where : 단말기아이디 같은, 상태 = "사용"
 		dao.addWhere("status", "사용", DAO.eq);
 		dao.setLimit(999999);
-		dao.setOrderBy("tmnId asc");
+		dao.setOrderBy("tmnId asc");			//단말기아이디를 기준으로 오름차순
+		
+		//KJM : 조회 결과를 json 형식으로 보내준다
 		return GsonUtil.toJson(dao.search().getRows());
     }
-	
-	
-	
-	
-	
 }
