@@ -659,6 +659,10 @@
                     <a href="/member/rate/form.jsp" class="nav-link ">
         	    	<span class="title">수수료 변경 예약</span></a>
                 </li>
+                <li class="nav-item start ">
+                    <a href="/member/vactRate/form.jsp" class="nav-link ">
+                        <span class="title">가상계좌 수수료 변경 예약</span></a>
+                </li>
             </c:if>
         </ul>
     </li>
