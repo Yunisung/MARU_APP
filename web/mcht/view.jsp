@@ -25,11 +25,11 @@
 					<div class="mtouch-container">
 						 <!-- BEGIN PAGE BAR -->
 						<div class="page-bar">
-							<ul class="page-breadcrumb">
+								<ul class="page-breadcrumb">
 									<li><a href="/">Home</a><i class="fa fa-circle"></i></li>
 									<li><span>가맹점 관리</span><i class="fa fa-circle"></i></li>
-									<li><span>가맹점 페이지(${DATAMAP.nick})</span></li>
-							</ul>
+									<li><span>가맹점 페이지</span> <span class="caption-subject bold font-red-sunglo">${DATAMAP.nick}</span></li>
+								</ul>
 							<div class="page-toolbar">
 									<div class="btn-group btn-theme-panel">
 										<a class="btn float-window"><i class="icon-size-fullscreen"></i></a>
