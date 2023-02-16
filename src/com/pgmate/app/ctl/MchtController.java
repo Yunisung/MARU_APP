@@ -357,7 +357,7 @@ public class MchtController {
 		cpRequest.replaceValue("identity",cpDAO.getAESEnc(cpRequest.getValue("identity")));
 		cpRequest.replaceValue("ceoIdentity",cpDAO.getAESEnc(cpRequest.getValue("ceoIdentity")));
 		
-		if(cpDAO.updateAndBackExcept("PG_MCHT", SessionUtil.getUserId(request), cpRequest.data)){
+		if(cpDAO.updateAndBack("PG_MCHT", SessionUtil.getUserId(request), cpRequest.data)){
 			/*
 			// 분리정산 터미널 여부 확인
 			WalletDAO walletDAO = new WalletDAO();
@@ -576,7 +576,7 @@ public class MchtController {
 			}
 		}
 		*/
-		if(cpDAO.updateAndBackExcept("PG_MCHT", SessionUtil.getUserId(request), cpRequest.data)){
+		if(cpDAO.updateAndBack("PG_MCHT", SessionUtil.getUserId(request), cpRequest.data)){
 			/*
 			if(trxCapCnt < 1) {
 				return new CPRUtil(cpRequest)
