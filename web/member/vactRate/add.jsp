@@ -271,7 +271,23 @@
 				$('.noneDiv').show();
 			}
 		});
-		
+
+		$(document).ready(function(){
+			var selected = $('select[name="feeType"]').find("option:selected").val();
+			if(selected == '0'){
+				$('#rateDiv').hide();
+				$('#distRateDiv').hide();
+				$('#agencyRateDiv').hide();
+				$('#salesRateDiv').hide();
+				$('.noneDiv').hide();
+			} else if(selected == '1'){
+				$('#feeDiv').hide();
+				$('#distFeeDiv').hide();
+				$('#agencyFeeDiv').hide();
+				$('#salesFeeDiv').hide();
+				$('.noneDiv').hide();
+			}
+		})
 		// $('.rate2').val(($('.rate').val()*100).toFixed(3));
 		// $('.loanRate2').val(($('.loanRate').val()*100).toFixed(3));
 		// $('.distRate2').val(($('.distRate').val()*100).toFixed(3));
