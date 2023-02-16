@@ -28,7 +28,7 @@
 							<ul class="page-breadcrumb">
 									<li><a href="/">Home</a><i class="fa fa-circle"></i></li>
 									<li><span>가맹점 관리</span><i class="fa fa-circle"></i></li>
-									<li><span>가맹점 페이지</span></li>
+									<li><span>가맹점 페이지(${DATAMAP.nick})</span></li>
 							</ul>
 							<div class="page-toolbar">
 									<div class="btn-group btn-theme-panel">
