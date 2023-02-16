@@ -65,7 +65,6 @@ public class CommonController {
 	public ModelAndView vactRateAdd(HttpServletRequest request, @PathVariable String mchtId) {
 		SharedMap<String,Object> result = null;
 		result = new MchtDAO().getById(mchtId).getRowFirst();
-		request.setAttribute("MCHTMAP",new MchtVactDAO().getByMchtId(mchtId));
 		request.setAttribute("VACTMAP",new MchtVactDAO().getByMchtId(mchtId));
 		request.setAttribute("PARENTID", mchtId);
 		return new ModelAndView("/member/vactRate/add", "DATAMAP", result);

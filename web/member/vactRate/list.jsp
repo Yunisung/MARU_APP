@@ -18,8 +18,8 @@
 			<thead>
 				<tr>
 					<th>No</th>
-					<th data-sort="string">제목</th>
-					<th data-sort="string">가맹점</th>
+					<th data-sort="string" style="min-width:150px;">제목</th>
+					<th data-sort="string" style="min-width:250px;">가맹점</th>
 					<th data-sort="string">적용일</th>
 					<th data-sort="string">적용 가맹점 수수료</th>
 					<th data-sort="string">현재 가맹점 수수료</th>
