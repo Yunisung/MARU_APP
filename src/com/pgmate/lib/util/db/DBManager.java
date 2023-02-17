@@ -154,11 +154,11 @@ public abstract class DBManager {
 		int result = 0;
 		DBUtil dbUtil = new DBUtil();
 		try {
-			if(debug){logger.debug("query : [{}] ",query);}
 			conn		= getConnection();
 			pstmt		= conn.prepareStatement(query);
 			dbUtil.setXssChange(this.xssChange);
 			dbUtil.setValues(pstmt, record);
+			if(debug){logger.debug("query : [{}] ",pstmt.toString());}
 			result  	= pstmt.executeUpdate();
 			conn.commit();
 		}catch(SQLException t){
@@ -179,11 +179,11 @@ public abstract class DBManager {
 		long result = 0;
 		DBUtil dbUtil = new DBUtil();
 		try {
-			if(debug){logger.debug("query : [{}] ",query);}
 			conn		= getConnection();
 			pstmt		= conn.prepareStatement(query);
 			dbUtil.setXssChange(this.xssChange);
 			dbUtil.setValues(pstmt, record);
+			if(debug){logger.debug("query : [{}] ",pstmt.toString());}
 			result  	= pstmt.executeUpdate();
 			rset		= pstmt.executeQuery("SELECT LAST_INSERT_ID() ");
 			
