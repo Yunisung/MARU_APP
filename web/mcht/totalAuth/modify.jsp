@@ -74,8 +74,7 @@
                                                 <label class="control-label col-sm-4 req-label">실명인증
                                                 </label>
                                                 <select id="ownerAuth" name="ownerAuth" class="selectpicker col-sm-6">
-                                                    <option value="Y" selected>Y</option>
-                                                    <option value="N">N</option>
+                                                    <option value="Y">Y</option>
                                                 </select>
                                             </div>
                                             <script type="text/javascript">
@@ -179,13 +178,49 @@
             $('.confirm_accountAuth').text("계좌1원인증 : " + account);
             $('.confirm_arsAuth').text("ARS인증 : " + ars);
 
-            bootbox.confirm($('#bootbox_confirm').html(), function(result) {
-                if (result) {
-                    ajaxFormSubmit(form, '/mcht/view/'+ $('input[name="mchtId"]').val()+'/tab_totalAuth'); //PAGE 이동
-                }
-            });
+            if(ars == 'Y' && identity == 'N') {
+                var error = '<button class="close" data-close="alert"></button>';
+                error += "ARS인증을 사용할경우 주민번호 체크도 사용해야됩니다.";
+                error1.html(error);
+                error1.show();
+                App.scrollTo(error1, -200);
+                $('.identityCheck').focus();
+            } else {
+                bootbox.confirm($('#bootbox_confirm').html(), function(result) {
+                    if (result) {
+                        ajaxFormSubmit(form, '/mcht/view/'+ $('input[name="mchtId"]').val()+'/tab_totalAuth'); //PAGE 이동
+                    }
+                });
+            }
         }
     });
+
+    $('#accountAuth').change(function(e) {
+        var val = $(this).find("option:selected").val();
+
+        if(val == 'N') {
+            $("#arsAuth option:eq(0)").remove();
+            $("#arsAuth option:eq(1)").prop("selected", "selected");
+            $("#arsAuth").selectpicker('refresh');
+        } else {
+            $("#arsAuth option:eq(0)").remove();
+            $("#arsAuth option:eq(1)").remove();
+            $("#arsAuth").append("<option value='Y'>Y</option>");
+            $("#arsAuth").append("<option value='N'>N</option>");
+            $("#arsAuth").selectpicker('refresh');
+        }
+    });
+
+    $(document).ready(function() {
+        var val = document.forms.writeFrm.accountAuth.value;
+
+        if(val == 'N') {
+            $("#arsAuth option:eq(0)").remove();
+            $("#arsAuth option:eq(1)").prop("selected", "selected");
+            $("#arsAuth").selectpicker('refresh');
+        }
+    });
+
     $('#nav-mcht').addClass('active');
 </script>
 <!-- END FORM JAVASCRIPT -->
