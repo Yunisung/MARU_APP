@@ -69,6 +69,8 @@ public class DAO  implements java.io.Serializable {
 	private String hash		= "";
 	private static Key secretKeySpec = null;
 
+	private boolean xssChange	= true;
+
 	public DAO() {
 		this("",CPUtil.CP_DEBUG);		
 	}
@@ -128,6 +130,14 @@ public class DAO  implements java.io.Serializable {
 	 */
 	public void setDebug(boolean debug) {
 		this.debug = debug;
+	}
+
+	/**
+	 * XSS 적용유무
+	 * @param xssChange
+	 */
+	public void setXssChange(boolean xssChange) {
+		this.xssChange = xssChange;
 	}
 
 	/**
@@ -540,8 +550,10 @@ public class DAO  implements java.io.Serializable {
 
 		int ret = 0;
 		long startsTime = System.currentTimeMillis();
-		try{			
-			ret=DBFactory.getInstance().preparedExecuteUpdate(sql.toString(),record);
+		try{
+			DBManager db = DBFactory.getInstance();
+			db.setXssChange(this.xssChange);
+			ret = db.preparedExecuteUpdate(sql.toString(),record);
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
 		}finally{
@@ -577,8 +589,10 @@ public class DAO  implements java.io.Serializable {
 
 		long ret = 0;
 		long startsTime = System.currentTimeMillis();
-		try{			
-			ret=DBFactory.getInstance().preparedExecuteUpdateAndLastIdx(sql.toString(), record);
+		try{
+			DBManager db = DBFactory.getInstance();
+			db.setXssChange(this.xssChange);
+			ret = db.preparedExecuteUpdateAndLastIdx(sql.toString(), record);
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
 		}finally{
@@ -625,7 +639,9 @@ public class DAO  implements java.io.Serializable {
 		int ret = 0;
 		long startsTime = System.currentTimeMillis();
 		try{
-			ret=DBFactory.getInstance().preparedExecuteUpdate(sql.toString(),record );
+			DBManager db = DBFactory.getInstance();
+			db.setXssChange(this.xssChange);
+			ret = db.preparedExecuteUpdate(sql.toString(),record );
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
 		}finally{
@@ -644,7 +660,9 @@ public class DAO  implements java.io.Serializable {
 		int ret = 0;
 		long startsTime = System.currentTimeMillis();
 		try{
-			ret=DBFactory.getInstance().preparedExecuteUpdate(sql.toString(),record );
+			DBManager db = DBFactory.getInstance();
+			db.setXssChange(this.xssChange);
+			ret = db.preparedExecuteUpdate(sql.toString(),record );
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
 		}finally{

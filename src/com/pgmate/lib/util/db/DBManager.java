@@ -28,6 +28,7 @@ public abstract class DBManager {
 	private boolean debug							= false;
 	private String error						= "";
 	private int defaultTimeout						= 90000;
+	private boolean xssChange						= true;
 	
 	
 	public static DBManager getManager(String dbName) throws Exception {
@@ -115,6 +116,10 @@ public abstract class DBManager {
 	public void setDebug(boolean debug){
 		this.debug = debug;
 	}
+
+	public void setXssChange(boolean xssChange){
+		this.xssChange = xssChange;
+	}
 	
 	public String getError(){
 		return this.error;
@@ -152,6 +157,7 @@ public abstract class DBManager {
 			if(debug){logger.debug("query : [{}] ",query);}
 			conn		= getConnection();
 			pstmt		= conn.prepareStatement(query);
+			dbUtil.setXssChange(this.xssChange);
 			dbUtil.setValues(pstmt, record);
 			result  	= pstmt.executeUpdate();
 			conn.commit();
@@ -176,6 +182,7 @@ public abstract class DBManager {
 			if(debug){logger.debug("query : [{}] ",query);}
 			conn		= getConnection();
 			pstmt		= conn.prepareStatement(query);
+			dbUtil.setXssChange(this.xssChange);
 			dbUtil.setValues(pstmt, record);
 			result  	= pstmt.executeUpdate();
 			rset		= pstmt.executeQuery("SELECT LAST_INSERT_ID() ");
