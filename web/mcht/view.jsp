@@ -1358,7 +1358,7 @@
 
 																		<tbody id="list">
 																		<tr>
-																			<td>${fn:length(HT_VACT_MNG_MAP) + 1} ${PG_VACT_MNG_MAP.mchtId}</td>
+																			<td>${fn:length(HT_VACT_MNG_MAP) + 1}</td>
 																			<td>${PG_VACT_MNG_MAP.status}</td>
 																			<td>${PG_VACT_MNG_MAP.settleType}</td>
 																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.fee}" pattern="#,##0"/> </td>
