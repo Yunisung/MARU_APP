@@ -553,6 +553,7 @@ public class DAO  implements java.io.Serializable {
 		try{
 			DBManager db = DBFactory.getInstance();
 			db.setXssChange(this.xssChange);
+			db.setDebug(this.debug);
 			ret = db.preparedExecuteUpdate(sql.toString(),record);
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
@@ -592,6 +593,7 @@ public class DAO  implements java.io.Serializable {
 		try{
 			DBManager db = DBFactory.getInstance();
 			db.setXssChange(this.xssChange);
+			db.setDebug(this.debug);
 			ret = db.preparedExecuteUpdateAndLastIdx(sql.toString(), record);
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
@@ -641,6 +643,7 @@ public class DAO  implements java.io.Serializable {
 		try{
 			DBManager db = DBFactory.getInstance();
 			db.setXssChange(this.xssChange);
+			db.setDebug(this.debug);
 			ret = db.preparedExecuteUpdate(sql.toString(),record );
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
@@ -662,6 +665,7 @@ public class DAO  implements java.io.Serializable {
 		try{
 			DBManager db = DBFactory.getInstance();
 			db.setXssChange(this.xssChange);
+			db.setDebug(this.debug);
 			ret = db.preparedExecuteUpdate(sql.toString(),record );
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
