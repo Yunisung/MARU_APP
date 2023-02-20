@@ -1342,10 +1342,13 @@
 																			<th>No</th>
 																			<th data-sort="string">지불사용여부</th>
 																			<th data-sort="string">정산유형</th>
+																			<th data-sort="string">수수료타입</th>
 																			<th data-sort="string">가맹점 수수료</th>
 																		<%-- <th data-sort="string">선정산 수수료</th>--%>
 																			<th data-sort="string">대행사 수수료</th>
+																			<th data-sort="string">대행사 수수료율</th>
 																			<th data-sort="string">에이전시 수수료</th>
+																			<th data-sort="string">에이전시 수수료율</th>
 																			<th data-sort="string">통합인증 수수료</th>
 																			<th data-sort="string">1회한도</th>
 																			<th data-sort="string">1일한도</th>
@@ -1357,13 +1360,23 @@
 																			<th data-sort="string">변경일시</th>
 																		</tr>
 																		</thead>
+<%--																		<c:if test="${not empty PG_VACT_MNG_MAP}">--%>
+
 																		<tbody id="list">
 																		<tr>
 																			<td>${fn:length(HT_VACT_MNG_MAP) + 1}</td>
 																			<td>${PG_VACT_MNG_MAP.status}</td>
 																			<td>${PG_VACT_MNG_MAP.settleType}</td>
+																			<c:choose>
+																				<c:when test="${PG_VACT_MNG_MAP.feeType eq '0'}"><td>정액</td></c:when>
+																				<c:when test="${PG_VACT_MNG_MAP.feeType eq '1'}"><td>정률</td></c:when>
+																				<c:when test="${PG_VACT_MNG_MAP.feeType eq '2'}"><td>혼합</td></c:when>
+																			</c:choose>
+																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.fee}" pattern="#,##0"/> </td>
 																			<td><fmt:formatNumber value="${PG_VACT_MNG_MAP.rate * 100}" pattern="0.000"/> %</td>
+																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.distFee}" pattern="#,##0"/></td>
 																			<td><fmt:formatNumber value="${PG_VACT_MNG_MAP.distRate * 100}" pattern="0.000"/> %</td>
+																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.agencyFee}" pattern="#,##0"/></td>
 																			<td><fmt:formatNumber value="${PG_VACT_MNG_MAP.agencyRate * 100}" pattern="0.000"/> %</td>
 																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.totalAuthFee}" pattern="#,##0" /></td>
 																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.limitOnce}" pattern="#,##0" /></td>
@@ -1379,8 +1392,16 @@
 																				<td>${fn:length(HT_VACT_MNG_MAP) - status.index}</td>
 																				<td>${entry.status}</td>
 																				<td>${entry.settleType}</td>
+																				<c:choose>
+																					<c:when test="${entry.feeType eq '0'}"><td>정액</td></c:when>
+																					<c:when test="${entry.feeType eq '1'}"><td>정률</td></c:when>
+																					<c:when test="${entry.feeType eq '2'}"><td>혼합</td></c:when>
+																				</c:choose>
+																				<td><fmt:formatNumber type="number" value="${entry.fee}" pattern="#,##0"/></td>
 																				<td><fmt:formatNumber value="${entry.rate * 100}" pattern="0.000"/> %</td>
+																				<td><fmt:formatNumber type="number" value="${entry.distFee}" pattern="#,##0"/></td>
 																				<td><fmt:formatNumber value="${entry.distRate * 100}" pattern="0.000"/> %</td>
+																				<td><fmt:formatNumber type="number" value="${entry.agencyFee}" pattern="#,##0"/></td>
 																				<td><fmt:formatNumber value="${entry.agencyRate * 100}" pattern="0.000"/> %</td>
 																				<td><fmt:formatNumber type="number" value="${entry.totalAuthFee}" pattern="#,##0" /></td>
 																				<td><fmt:formatNumber type="number" value="${entry.limitOnce}" pattern="#,##0" /></td>
@@ -1393,6 +1414,8 @@
 																			</tr>
 																		</c:forEach>
 																		</tbody>
+
+<%--																		</c:if>--%>
 																	</table>
 																</div>
 															</div>
