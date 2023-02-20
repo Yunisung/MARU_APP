@@ -366,7 +366,7 @@ public class UserController {
 		String oldPassWord = CommonUtil.nToB(request.getParameter("check"));
 
 		String pwCheck =  new CPDAO().getPassword(oldPassWord);
-		if(!result.getString("pw").equalsIgnoreCase(pwCheck)){
+		if(result.getString("pw").equalsIgnoreCase(pwCheck)){
 			return "기존 비밀번호가 틀립니다";
 		}
 
