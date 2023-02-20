@@ -1266,7 +1266,6 @@
 																				<th data-sort="string">지불사용여부</th>
 																				<th data-sort="string">정산유형</th>
 																				<th data-sort="string">가맹점 수수료</th>
-																				<th data-sort="string">가맹점 수수료율</th>
 																				<%-- <th data-sort="string">선정산 수수료</th>--%>
 																				<th data-sort="string">대행사 수수료</th>
 																				<th data-sort="string">에이전시 수수료</th>
@@ -1345,6 +1344,7 @@
 																			<th data-sort="string">정산유형</th>
 																			<th data-sort="string">수수료타입</th>
 																			<th data-sort="string">가맹점 수수료</th>
+																			<th data-sort="string">가맹점 수수료율</th>
 																		<%-- <th data-sort="string">선정산 수수료</th>--%>
 																			<th data-sort="string">대행사 수수료</th>
 																			<th data-sort="string">대행사 수수료율</th>
