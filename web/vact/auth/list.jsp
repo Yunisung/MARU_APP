@@ -84,7 +84,7 @@
                 <tr data-authId="${entry.authId}"<c:if test="${status.index ne 0 && entry.stlDay ne CPR.data[status.index-1].stlDay}">
                     class="bg-grey-cararra bg-font-grey-cararra"
                 </c:if>>
-                    <td>${status.count}</td>
+                    <td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
                     <c:if test="${ (CP_SESSION.grade eq '본사') && CP_SESSION.role != '일반'}">
                         <td class="btn-td">
                             <input type="checkbox" class="row-check" id="${entry.authId}_check" class="checkbox-style" /><label for="${entry.authId}_check"></label>
