@@ -51,7 +51,7 @@
 				</c:if>
 				<c:forEach var="entry" items="${CPR.data}" varStatus="status">
 					<tr>
-						<td>${status.count}</td>
+						<td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
 						<td>${entry.issueId}</td>
 						<td>${entry.issuerBank}</td>
 						<td>${entry.account}</td>
