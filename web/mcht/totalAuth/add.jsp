@@ -195,6 +195,15 @@
         }
     });
 
+    $('#identityCheck').change(function(e) {
+        var val = $(this).find("option:selected").val();
+
+        if(val == 'N') {
+            $("#arsAuth option:eq(1)").prop("selected", "selected");
+            $("#arsAuth").selectpicker('refresh');
+        }
+    });
+
     $('#nav-mcht').addClass('active');
 </script>
 <!-- END FORM JAVASCRIPT -->
