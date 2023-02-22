@@ -93,6 +93,12 @@
                                                     <input type="text" class="form-control input-sm" name="mchtId" data-oper="eq" placeholder="가맹점 아이디">
                                                 </div>
                                             </div>
+                                            <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">가맹점명</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control input-sm typeahead mchtName" name="mchtName" data-oper="lk" placeholder="가맹점명" data-search="mchtName">
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="form-group pg-form-group">
