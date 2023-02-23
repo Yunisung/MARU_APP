@@ -199,6 +199,22 @@
 														</div>
 													</c:if>
 
+													<div class="form-group col-sm-6">
+														<label class="control-label  col-sm-4 req-label">활성화 시작일자</label>
+														<div class="col-md-4 col-sm-6">
+															<c:choose>
+																<c:when test="${DATAMAP.mchtActiveDate ne ''}">
+																	<fmt:parseDate value="${DATAMAP.mchtActiveDate}" var="dateStr" pattern="yyyyMMdd"/>
+																	<fmt:formatDate value="${dateStr }" pattern="yyyy-MM-dd" var="mchtActiveDate"/>
+																	<input type="text" class="form-control input-sm datepicker activeDate" maxlength="10" name="activeDate" placeholder="" value="${mchtActiveDate}">
+																</c:when>
+																<c:otherwise>
+																	<input type="text" class="form-control input-sm datepicker activeDate now-date" maxlength="10" name="activeDate" placeholder="" value="">
+																</c:otherwise>
+															</c:choose>
+														</div>
+													</div>
+
 													<!-- 대표자 영역 -->
 													<div class="form-group col-sm-12 form-subtitle">
 														<label><i class="fa fa-reorder"></i> 대표자 정보 입력</label>

@@ -350,7 +350,8 @@ public class MchtController {
 		SharedMap<String, Object> parents = new MemberSalesDAO().getParentsId(cpRequest.getValue("salesId"));
 		cpRequest.setData("agencyId", parents.getString("agencyId"));
 		cpRequest.setData("distId", parents.getString("distId"));
-		
+		cpRequest.setData("activeDate", CommonUtil.getCurrentDate("yyyyMMdd"));
+
 		if(cpDAO.insert("PG_MCHT", SessionUtil.getUserId(request), cpRequest.data)){
 			return new CPRUtil(cpRequest)
 					.resultOK(CPUtil.RESULT_DATA_INSERTED).redirect(cpRequest.redirect)

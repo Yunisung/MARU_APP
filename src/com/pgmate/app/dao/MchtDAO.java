@@ -19,7 +19,7 @@ import com.pgmate.lib.util.map.SharedMap;
 public class MchtDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.MchtDAO.class );
 	private static final String TABLE = "VW_MCHT";
-	private static final String COLUMNS = "mchtId,name,nick,status,bizType,bizCategory,distId,agencyId,salesId,idType,FN_MASK_IDENTIFY(identity) as identity,tel1,tel2,fax,zip,addr1,addr2,lat,lng,ceoName,FN_MASK_IDENTIFY(ceoIdentity) as ceoIdentity,ceoPhone,ceoTel,ceoZip,ceoAddr1,ceoAddr2,managerName,managerPhone,deposit,regId,regDay,regDate,salesName,agencyName,distName,aggregator,FN_AES_DEC(identity) AS decIdentity";
+	private static final String COLUMNS = "mchtId,name,nick,status,bizType,bizCategory,distId,agencyId,salesId,idType,FN_MASK_IDENTIFY(identity) as identity,tel1,tel2,fax,zip,addr1,addr2,lat,lng,ceoName,FN_MASK_IDENTIFY(ceoIdentity) as ceoIdentity,ceoPhone,ceoTel,ceoZip,ceoAddr1,ceoAddr2,managerName,managerPhone,deposit,regId,regDay,regDate,salesName,agencyName,distName,aggregator,FN_AES_DEC(identity) AS decIdentity, mchtActiveDate";
 
 	public MchtDAO() {
 		super(TABLE,CPUtil.CP_DEBUG);

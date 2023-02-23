@@ -179,16 +179,16 @@
 																<!--/span-->
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">등록일시</label>
+																		<label class="control-label col-md-3">시작일자</label>
 																		<div class="col-md-9">
-																			<p class="form-control-static">${DATAMAP.activeDate}</p>
+																			<p class="form-control-static">${DATAMAP.mchtActiveDate}</p>
 																		</div>
 																	</div>
 																</div>
 																<!--/span-->
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">최종수정일시</label>
+																		<label class="control-label col-md-3">등록일지</label>
 																		<div class="col-md-9">
 																			<p class="form-control-static">${DATAMAP.regDate}</p>
 																		</div>
