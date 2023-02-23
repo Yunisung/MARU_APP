@@ -179,7 +179,16 @@
 																<!--/span-->
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">등록일시</label>
+																		<label class="control-label col-md-3">시작일자</label>
+																		<div class="col-md-9">
+																			<p class="form-control-static">${DATAMAP.mchtActiveDate}</p>
+																		</div>
+																	</div>
+																</div>
+																<!--/span-->
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3">등록일지</label>
 																		<div class="col-md-9">
 																			<p class="form-control-static">${DATAMAP.regDate}</p>
 																		</div>
@@ -1266,7 +1275,6 @@
 																				<th data-sort="string">지불사용여부</th>
 																				<th data-sort="string">정산유형</th>
 																				<th data-sort="string">가맹점 수수료</th>
-																				<%-- <th data-sort="string">선정산 수수료</th>--%>
 																				<th data-sort="string">대행사 수수료</th>
 																				<th data-sort="string">에이전시 수수료</th>
 																				<th data-sort="string">이체 건당 수수료</th>
@@ -1275,7 +1283,6 @@
 																				<th data-sort="string">1일한도</th>
 																				<th data-sort="string">1개월한도</th>
 																				<th data-sort="string">고액거래 기준</th>
-																				<%--<th data-sort="string">선정산 한도</th> --%>
 																				<th data-sort="string">summary</th>
 																				<th data-sort="string">변경자</th>
 																				<th data-sort="string">변경일시</th>
@@ -1305,7 +1312,6 @@
 																					<td>${entry.payStatus}</td>
 																					<td>${entry.settleType}</td>
 																					<td><fmt:formatNumber value="${entry.rate * 100}" pattern="0.000"/> %</td>
-																					<%--<td><fmt:formatNumber value="${entry.loanRate * 100}" pattern="0.000"/> %</td>--%>
 																					<td><fmt:formatNumber value="${entry.distRate * 100}" pattern="0.000"/> %</td>
 																					<td><fmt:formatNumber value="${entry.agencyRate * 100}" pattern="0.000"/> %</td>
 																					<td><fmt:formatNumber type="number" value="${entry.wireFee}" pattern="#,##0" /></td>
@@ -1314,7 +1320,6 @@
 																					<td><fmt:formatNumber type="number" value="${entry.limitDay}" pattern="#,##0" /></td>
 																					<td><fmt:formatNumber type="number" value="${entry.limitMonth}" pattern="#,##0" /></td>
 																					<td><fmt:formatNumber type="number" value="${entry.largeAmount}" pattern="#,##0" /></td>
-																					<%--<td><fmt:formatNumber type="number" value="${entry.maxLoan}" pattern="#,##0" /></td>--%>
 																					<td>${entry.summary}</td>
 																					<td>${entry.regId}</td>
 																					<td>${entry.regDate}</td>
@@ -1345,7 +1350,6 @@
 																			<th data-sort="string">수수료타입</th>
 																			<th data-sort="string">가맹점 수수료</th>
 																			<th data-sort="string">가맹점 수수료율</th>
-																		<%-- <th data-sort="string">선정산 수수료</th>--%>
 																			<th data-sort="string">대행사 수수료</th>
 																			<th data-sort="string">대행사 수수료율</th>
 																			<th data-sort="string">에이전시 수수료</th>
@@ -1355,7 +1359,6 @@
 																			<th data-sort="string">1일한도</th>
 																			<th data-sort="string">입금제한횟수</th>
 																			<th data-sort="string">입금단위제한</th>
-																			<%--<th data-sort="string">선정산 한도</th> --%>
 																			<th data-sort="string">summary</th>
 																			<th data-sort="string">변경자</th>
 																			<th data-sort="string">변경일시</th>
@@ -2230,7 +2233,11 @@
 																				<c:if test="${VACT_MAP.feeType == '1'}">정률</c:if>
 																				<c:if test="${VACT_MAP.feeType == '2'}">혼합</c:if>
 																			</p>
+																			<c:if test="${CP_SESSION.grade == '본사'}">
+																				<a class="btn btn-sm" href="/member/vactRate/add/${DATAMAP.mchtId }">수수료 변경 예약</a>
+																			</c:if>
 																		</div>
+
 																	</div>
 																</div>
 																<div class="col-md-6">
@@ -2273,9 +2280,7 @@
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">가맹점 정산수수료율</label>
-																			<div class="col-md-9">
-																				<p class="form-control-static"><fmt:formatNumber value="${VACT_MAP.rate * 100}" pattern="0.000"/> % (VAT별도)</p>
-																			</div>
+																			<p class="form-control-static"><fmt:formatNumber value="${VACT_MAP.rate * 100}" pattern="0.000"/> % (VAT별도)</p>
 																		</div>
 																	</div>
 																</c:if>
