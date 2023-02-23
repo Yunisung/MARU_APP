@@ -47,6 +47,7 @@
 					</c:if>
 					<th data-sort="string">가상계좌 인증서비스</th>
 					<th data-sort="string">등록자</th>
+					<th data-sort="string">시작일자</th>
 					<th data-sort="string">등록일시</th>
 				</tr>
 			</thead>
@@ -82,6 +83,7 @@
 						</c:if>
 						<td>${entry.authType}</td>
 						<td>${entry.regId}</td>
+						<td>${entry.mchtActiveDate}</td>
 						<td class="date">${entry.regDate}</td>
 					</tr>
 				</c:forEach>
