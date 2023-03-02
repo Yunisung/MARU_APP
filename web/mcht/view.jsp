@@ -2614,8 +2614,8 @@
 																			</div>
 																		</div>
 																	</div>
-																	
-																	<div class="row">
+
+																	<%--<div class="row">
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">실명인증<br>원가수수료</label>
@@ -2637,7 +2637,7 @@
 																			</div>
 																		</div>
 																	</div>
-																	
+
 																	<div class="row">
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
@@ -2660,7 +2660,7 @@
 																			</div>
 																		</div>
 																	</div>
-																	
+
 																	<div class="row">
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
@@ -2692,7 +2692,7 @@
 																				</div>
 																			</div>
 																		</div>
-																	</div>
+																	</div>--%>
 																	<div class="row">
 																		<div class="col-md-6">
 																			<div id="respiteCntDiv" class="form-group pg-view-group">
