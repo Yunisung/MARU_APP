@@ -213,7 +213,7 @@ public class VactTrxDAO extends DAO {
 	 * @return
 	 */
 	public SharedMap<String, Object> withdrawAccount(String account){
-		super.setTable("PG_VACT_REG a, PG_CODE b");
+		super.setTable("HT_VACT_REG a, PG_CODE b");
 		super.setColumns("FN_AES_DEC(withdrawAccount) AS withdrawAccountDec, withdrawBankCd, b.codeName as withdrawBankNm, holderName");
 		super.addWhere("a.withdrawBankCd = b.code and b.alias = 'BANK'");
 		super.addWhere("account",account);
