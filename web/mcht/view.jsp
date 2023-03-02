@@ -188,7 +188,7 @@
 																<!--/span-->
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">등록일지</label>
+																		<label class="control-label col-md-3">등록일시</label>
 																		<div class="col-md-9">
 																			<p class="form-control-static">${DATAMAP.regDate}</p>
 																		</div>
