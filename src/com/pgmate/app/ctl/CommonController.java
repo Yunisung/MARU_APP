@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pgmate.app.dao.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -16,12 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.pgmate.app.dao.AgencyDAO;
-import com.pgmate.app.dao.CPDAO;
-import com.pgmate.app.dao.DistDAO;
-import com.pgmate.app.dao.MchtDAO;
-import com.pgmate.app.dao.MchtMngDAO;
-import com.pgmate.app.dao.ReserveRateDAO;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.CPResponse;
 import com.pgmate.app.session.CPSession;
@@ -58,6 +53,48 @@ public class CommonController {
 	}
 	
 	// ======================================================= 수수료 변경 예약
+
+	@RequestMapping(value = {"/member/vactRate/add/{mchtId}"})
+	public ModelAndView vactRateAdd(HttpServletRequest request, @PathVariable String mchtId) {
+		SharedMap<String,Object> result = null;
+		result = new MchtDAO().getById(mchtId).getRowFirst();
+		request.setAttribute("VACTMAP",new MchtVactDAO().getByMchtId(mchtId));
+		request.setAttribute("PARENTID", mchtId);
+		return new ModelAndView("/member/vactRate/add", "DATAMAP", result);
+	}
+
+	@RequestMapping(value = {"/member/vactRate/insert"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse vactInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+		if(cpDAO.insert("PG_RESERVE_VACT_RATE", SessionUtil.getUserId(request), cpRequest.data)){
+			return new CPRUtil(cpRequest)
+					.resultOK(CPUtil.RESULT_DATA_INSERTED).redirect(cpRequest.redirect)
+					.cpResponse();
+		}else{
+			return new CPRUtil(cpRequest)
+					.resultNOK(CPUtil.RESULT_DATA_INFAIL,cpDAO.getError())
+					.cpResponse();
+		}
+	}
+
+	@RequestMapping(value = "/member/vactRate/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public ModelAndView vactList(HttpServletRequest request, HttpServletResponse response,@RequestBody CPRequest cpRequest) {
+		ReserveVactRateDAO reserveVactRateDAO = new ReserveVactRateDAO();
+		SessionUtil.setSearchGrade(request, cpRequest);
+		//KJM : 상태 조건 안줬을 때
+		if(CommonUtil.isNullOrSpace(cpRequest.getKeyValue("status"))){
+			//KJM : 기본 상태 조회 조건 세팅
+			cpRequest.setData("status", "폐기", "ne", "", true);
+		}
+		RecordSet rset = reserveVactRateDAO.list(cpRequest.data,cpRequest.page);
+		return new CPRUtil(cpRequest).dataList(rset, reserveVactRateDAO).setView(request,"/member/vactRate/list","");
+	}
+
+	@RequestMapping(value = "/member/vactRate/modify/{idx}", method = RequestMethod.GET)
+	public ModelAndView vactModify(HttpServletRequest request, @PathVariable String idx) {
+		return new ModelAndView("/member/vactRate/modify", "DATAMAP", new ReserveVactRateDAO().getByIdx(idx).getRowFirst());
+	}
+
 	@RequestMapping(value = "/member/rate/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response,@RequestBody CPRequest cpRequest) {
 		ReserveRateDAO  reserveRateDAO = new ReserveRateDAO();
