@@ -20,14 +20,14 @@
     <a href="/subMcht/settle/form.jsp" class="nav-link nav-toggle"><i class="icon-home"></i>
         <span class="title">정산 조회</span></a>
 </li>
- <li class="nav-item start">
+<%-- <li class="nav-item start">
      <a href="/vact/dtl/form.jsp" class="nav-link nav-toggle"><i class="icon-home"></i>
      <span class="title">가상계좌 관리-발행내역 조회</span></a>
  </li>
  <li class="nav-item start">
      <a href="/vact/trx/form.jsp" class="nav-link nav-toggle"><i class="icon-home"></i>
      <span class="title">가상계좌 관리-거래내역조회</span></a>
- </li>
+ </li>--%>
 <li class="nav-item start" id="nav-my">
     <a href="/subMcht/myprofile/${CP_SESSION.parentId }" class="nav-link nav-toggle"><i class="icon-home"></i>
         <span class="title">내 정보</span></a>
