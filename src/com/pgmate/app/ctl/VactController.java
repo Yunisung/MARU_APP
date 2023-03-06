@@ -94,17 +94,23 @@ public class VactController {
 
         //가상계좌 은행이름, 계좌번호 세팅
         //나중에 PAY쪽에서 가상계좌 발행할때 update하는 방법도 괜춘할듯.
+        //230306_PYS : 출금계좌은행, 예금주 표시
         RecordSet rset = vactTrxDAO.authList(cpRequest.data, cpRequest.page);
         for(SharedMap<String,Object>  data : rset.getRows()) {
             String totalAuthId = data.getString("totalAuthId");
             RecordSet recordSet = vactTrxDAO.getVactAuth(totalAuthId);
             if(recordSet.size() != 0) {
-                String bankCd = recordSet.getRowFirst().getString("vactBankCd");
-                String bankName = vactTrxDAO.getBankName(bankCd).getString("codeName");;
-                String account = recordSet.getRowFirst().getString("vactAccount");
 
-                data.put("vactBank", bankName);
+                /*String bankCd = recordSet.getRowFirst().getString("vactBankCd");
+                String bankName = vactTrxDAO.getBankName(bankCd).getString("codeName");
+                data.put("vactBank", bankName);*/
+
+                String account = recordSet.getRowFirst().getString("vactAccount");
+                SharedMap<String, Object> regMap = vactTrxDAO.withdrawAccount(account);
+
                 data.put("vactAccount", account);
+                data.put("withdrawBankName", regMap.getString("withdrawBankNm"));
+                data.put("holderName", regMap.getString("holderName"));
             }
         }
 
