@@ -124,7 +124,7 @@
 															</div>
 															<div class="col-lg-8">
 																<div class="input-group input-group-sm input-daterange" data-date-format="yyyy-mm-dd">
-																	<c:if test="${CP_SESSION.grade != '본사'}">
+																	<%--<c:if test="${CP_SESSION.grade != '본사'}">
 																		<input type="text" class="form-control date-selector-target from" name="regDay" value="" data-oper="ge" readonly="readonly" style="background-color:white">
 																		<span class="input-group-addon">~</span>
 																		<input type="text" class="form-control date-selector-target to" name="regDay" value="" data-oper="le" readonly="readonly" style="background-color:white">
@@ -133,7 +133,10 @@
 																		<input type="text" class="form-control date-selector-target now-date" name="regDay" value="" data-oper="ge" readonly="readonly" style="background-color:white">
 																		<span class="input-group-addon">~</span>
 																		<input type="text" class="form-control date-selector-target now-date" name="regDay" value="" data-oper="le" readonly="readonly" style="background-color:white">
-																	</c:if>
+																	</c:if>--%>
+																	<input type="text" class="form-control date-selector-target now-date" name="regDay" value="" data-oper="ge" readonly="readonly" style="background-color:white">
+																	<span class="input-group-addon">~</span>
+																	<input type="text" class="form-control date-selector-target now-date" name="regDay" value="" data-oper="le" readonly="readonly" style="background-color:white">
 																</div>
 															</div>
 														</div>
