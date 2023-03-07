@@ -17,7 +17,7 @@ import java.util.List;
 public class ReserveVactRateDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( ReserveVactRateDAO.class );
 	private static final String TABLE = "VW_RESERVE_VACT_RATE";
-	private static final String COLUMNS = "idx, member, title, parentId, fee, rate, distFee, distRate, agencyFee, agencyRate, beforeFee, beforeRate, beforeDistFee, beforeDistRate, beforeAgencyFee, beforeAgencyRate, pubDay, status, regId, regDay, regDate, feeType";
+	private static final String COLUMNS = "idx, member, title, parentId, fee, rate, distFee, distRate, agencyFee, agencyRate, salesFee, salesRate, beforeFee, beforeRate, beforeDistFee, beforeDistRate, beforeAgencyFee, beforeAgencyRate, beforeSalesFee, beforeSalesRate, pubDay, status, regId, regDay, regDate, feeType";
 
     public ReserveVactRateDAO() {
         super(TABLE,CPUtil.CP_DEBUG);
