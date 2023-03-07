@@ -33,6 +33,10 @@
 					<th data-sort="string">현재 에이전시 수수료</th>
 					<th data-sort="string">적용 에이전시 수수료율</th>
 					<th data-sort="string">현재 에이전시 수수료율</th>
+					<th data-sort="string">적용 지사 수수료</th>
+					<th data-sort="string">현재 지사 수수료</th>
+					<th data-sort="string">적용 지사 수수료율</th>
+					<th data-sort="string">현재 지사 수수료율</th>
 					<th data-sort="string">예약여부</th>
 					<th data-sort="string">등록자</th>
 					<th data-sort="string">등록일시</th>
@@ -63,6 +67,10 @@
 						<td><fmt:formatNumber value="${entry.beforeAgencyFee}"/> 원</td>
 						<td><fmt:formatNumber value="${entry.agencyRate * 100}" pattern="0.000"/> %</td>
 						<td><fmt:formatNumber value="${entry.beforeAgencyRate * 100}" pattern="0.000"/> %</td>
+						<td><fmt:formatNumber value="${entry.salesFee}"/> 원</td>
+						<td><fmt:formatNumber value="${entry.beforeSalesFee}"/> 원</td>
+						<td><fmt:formatNumber value="${entry.salesRate * 100}" pattern="0.000"/> %</td>
+						<td><fmt:formatNumber value="${entry.beforeSalesRate * 100}" pattern="0.000"/> %</td>
 						<td>${entry.status}</td>
 						<td>${entry.regId}</td>
 						<td>${entry.regDate}</td>
