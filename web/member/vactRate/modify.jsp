@@ -285,7 +285,7 @@
 			var selected = $(this).find("option:selected").val();
 
 			if(selected == '0'){
-				$('.rate').val('0');
+				$('.rate').val('0.0');
 				$('#rateDiv').hide();
 				$('.distRate').val('0');
 				$('#distRateDiv').hide();
