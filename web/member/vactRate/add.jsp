@@ -226,7 +226,6 @@
 					}
 					// 수수료 유형이 정률일 때
 				} else if($('select[name="feeType"]').val()=='1'){
-					console.log('정률 수수료 들어옴');
 					if(Number($('.distRate').val()) > Number($('.agencyRate').val())){
 						var error1Str = '<button class="close" data-close="alert"></button>';
 						error1Str += "대행사 수수료율이 에이전시 수수료율 보다 큽니다. 확인해 주시기 바랍니다.";
@@ -280,6 +279,7 @@
 						});
 					}
 				}
+
 			}
 		});
 
