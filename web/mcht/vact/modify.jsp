@@ -550,21 +550,39 @@
 				App.scrollTo(error1, -200);
 			},
 			submitHandler: function (form) {
-				if($('select[name="feeType"]').val()!='0'){
+				// 수수료 유형이 정액일 때
+				if($('select[name="feeType"]').val()=='0'){
+					if(Number($('.fee').val()) < Number($('.distFee').val()) + Number($('.agencyFee').val()) + Number($('.salesFee').val())){
+						var error1Str = '<button class="close" data-close="alert"></button>';
+						error1Str += "대행사, 에이전시, 지사 수수료의 합이 가맹점 수수료 보다 큽니다. 확인해 주시기 바랍니다.";
+						error1.html(error1Str);
+						error1.show();
+						App.scrollTo(error1, -200);
+						$('.fee').focus();
+					} else {
+						error1.hide();
+						bootbox.confirm("입력하신 정보로 가상계좌를 설정하시겠습니까?", function(result) {
+							if (result) {
+								ajaxFormSubmit(form, '/mcht/view/'+ $('input[name="mchtId"]').val() + '/tab_virAccount'); //PAGE 이동
+							}
+						});
+					}
+					// 수수료 유형이 정률일 때
+				} else if($('select[name="feeType"]').val()=='1'){
 					if(Number($('.distRate').val()) > Number($('.agencyRate').val())){
-	    				var error1Str = '<button class="close" data-close="alert"></button>';
-	                    error1Str += "대행사 수수료율이 에이전시 수수료율 보다 큽니다. 확인해 주시기 바랍니다.";
-	                    error1.html(error1Str);
-	                    error1.show();
-	                    App.scrollTo(error1, -200);
-	                    $('.agencyRate').focus();
-	    			} else if(Number($('.agencyRate').val()) > Number($('.rate').val())){
-	    				var error1Str = '<button class="close" data-close="alert"></button>';
-	                    error1Str += "에이전시 수수료율이 가맹점 수수료율 보다 큽니다. 확인해 주시기 바랍니다.";
-	                    error1.html(error1Str);
-	                    error1.show();
-	                    App.scrollTo(error1, -200);
-	    				$('.rate').focus();
+						var error1Str = '<button class="close" data-close="alert"></button>';
+						error1Str += "대행사 수수료율이 에이전시 수수료율 보다 큽니다. 확인해 주시기 바랍니다.";
+						error1.html(error1Str);
+						error1.show();
+						App.scrollTo(error1, -200);
+						$('.agencyRate').focus();
+					} else if(Number($('.agencyRate').val()) > Number($('.rate').val())){
+						var error1Str = '<button class="close" data-close="alert"></button>';
+						error1Str += "에이전시 수수료율이 가맹점 수수료율 보다 큽니다. 확인해 주시기 바랍니다.";
+						error1.html(error1Str);
+						error1.show();
+						App.scrollTo(error1, -200);
+						$('.rate').focus();
 					} else {
 						error1.hide();
 						bootbox.confirm("입력하신 정보로 가상계좌를 설정하시겠습니까?", function(result) {
@@ -574,12 +592,35 @@
 						});
 					}
 				} else {
-					error1.hide();
-					bootbox.confirm("입력하신 정보로 가상계좌를 설정하시겠습니까?", function(result) {
-						if (result) {
-							ajaxFormSubmit(form, '/mcht/view/${MCHT_MAP.mchtId}/tab_virAccount'); //PAGE 이동
-						}
-					});
+					if(Number($('.distRate').val()) > Number($('.agencyRate').val())){
+						var error1Str = '<button class="close" data-close="alert"></button>';
+						error1Str += "대행사 수수료율이 에이전시 수수료율 보다 큽니다. 확인해 주시기 바랍니다.";
+						error1.html(error1Str);
+						error1.show();
+						App.scrollTo(error1, -200);
+						$('.agencyRate').focus();
+					} else if(Number($('.agencyRate').val()) > Number($('.rate').val())){
+						var error1Str = '<button class="close" data-close="alert"></button>';
+						error1Str += "에이전시 수수료율이 가맹점 수수료율 보다 큽니다. 확인해 주시기 바랍니다.";
+						error1.html(error1Str);
+						error1.show();
+						App.scrollTo(error1, -200);
+						$('.rate').focus();
+					} else if(Number($('.fee').val()) < Number($('.distFee').val()) + Number($('.agencyFee').val()) + Number($('.salesFee').val())) {
+						var error1Str = '<button class="close" data-close="alert"></button>';
+						error1Str += "대행사, 에이전시, 지사 수수료의 합이 가맹점 수수료 보다 큽니다. 확인해 주시기 바랍니다.";
+						error1.html(error1Str);
+						error1.show();
+						App.scrollTo(error1, -200);
+						$('.fee').focus();
+					} else {
+						error1.hide();
+						bootbox.confirm("입력하신 정보로 가상계좌를 설정하시겠습니까?", function(result) {
+							if (result) {
+								ajaxFormSubmit(form, '/mcht/view/'+ $('input[name="mchtId"]').val() + '/tab_virAccount'); //PAGE 이동
+							}
+						});
+					}
 				}
 			}
 		});
