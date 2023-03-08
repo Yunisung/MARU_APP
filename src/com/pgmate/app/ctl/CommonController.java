@@ -101,6 +101,21 @@ public class CommonController {
 		return new ModelAndView("/member/vactRate/modify", "DATAMAP", new ReserveVactRateDAO().getByIdx(idx).getRowFirst());
 	}
 
+	@RequestMapping(value = {"/member/vactRate/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse vactUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+
+		if(cpDAO.updateByOper("PG_RESERVE_VACT_RATE", SessionUtil.getUserId(request), cpRequest.data)){
+			return new CPRUtil(cpRequest)
+					.resultOK("수수료 예약 정보가 변경되었습니다.")
+					.cpResponse();
+		}else{
+			return new CPRUtil(cpRequest)
+					.resultNOK("수수료 예약 정보 변경에 실패하였습니다.",cpDAO.getError())
+					.cpResponse();
+		}
+	}
+
 	//KJM : 멤버관리 > 수수료 변경 예약 리스트
 	@RequestMapping(value = "/member/rate/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response,@RequestBody CPRequest cpRequest) {
