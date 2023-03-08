@@ -137,6 +137,24 @@
 															</div>
 														</div>
 													</div>
+													<div class="form-group col-sm-6" id="salesFeeDiv">
+														<label class="control-label col-sm-4">지사 수수료(VAT별도)</label>
+														<div class="col-sm-6">
+															<div class="input-group input-group-sm">
+																<input type="text" class="form-control salesFee comma" maxlength="20" data-oper="comma" name="salesFee" placeholder="" value="0">
+																<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+															</div>
+														</div>
+													</div>
+													<div class="form-group col-sm-6" id="salesRateDiv">
+														<label class="control-label col-sm-4">지사 수수료율</label>
+														<div class="col-sm-6">
+															<div class="input-group input-group-sm">
+																<input type="text" class="form-control salesRate percent" maxlength="9" data-oper="percent" name="salesRate" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="0.000">
+																<span class="input-group-addon"> % (VAT 별도)</span>
+															</div>
+														</div>
+													</div>
 													<div class="form-group col-sm-6">
 														<label class="control-label input-sm col-sm-4 req-label">예약여부</label>
 														<select name="status" class="selectpicker col-sm-6">
@@ -186,8 +204,26 @@
 					required: true
 				}
 			},
-			submitHandler : function(form) {
-				if($('select[name="feeType"]').val()!='0'){
+			submitHandler: function (form) {
+				// 수수료 유형이 정액일 때
+				if($('select[name="feeType"]').val()=='0'){
+					if(Number($('.fee').val()) < Number($('.distFee').val()) + Number($('.agencyFee').val()) + Number($('.salesFee').val())){
+						var error1Str = '<button class="close" data-close="alert"></button>';
+						error1Str += "대행사, 에이전시, 지사 수수료의 합이 가맹점 수수료 보다 큽니다. 확인해 주시기 바랍니다.";
+						error1.html(error1Str);
+						error1.show();
+						App.scrollTo(error1, -200);
+						$('.fee').focus();
+					} else {
+						error1.hide();
+						bootbox.confirm("입력하신 정보로 가상계좌를 설정하시겠습니까?", function(result) {
+							if (result) {
+								ajaxFormSubmit(form, '/member/vactRate/form.jsp'); //PAGE 이동
+							}
+						});
+					}
+					// 수수료 유형이 정률일 때
+				} else if($('select[name="feeType"]').val()=='1'){
 					if(Number($('.distRate').val()) > Number($('.agencyRate').val())){
 						var error1Str = '<button class="close" data-close="alert"></button>';
 						error1Str += "대행사 수수료율이 에이전시 수수료율 보다 큽니다. 확인해 주시기 바랍니다.";
@@ -211,12 +247,35 @@
 						});
 					}
 				} else {
-					error1.hide();
-					bootbox.confirm("입력하신 정보로 가상계좌를 설정하시겠습니까?", function(result) {
-						if (result) {
-							ajaxFormSubmit(form, '/member/vactRate/form.jsp'); //PAGE 이동
-						}
-					});
+					if(Number($('.distRate').val()) > Number($('.agencyRate').val())){
+						var error1Str = '<button class="close" data-close="alert"></button>';
+						error1Str += "대행사 수수료율이 에이전시 수수료율 보다 큽니다. 확인해 주시기 바랍니다.";
+						error1.html(error1Str);
+						error1.show();
+						App.scrollTo(error1, -200);
+						$('.agencyRate').focus();
+					} else if(Number($('.agencyRate').val()) > Number($('.rate').val())){
+						var error1Str = '<button class="close" data-close="alert"></button>';
+						error1Str += "에이전시 수수료율이 가맹점 수수료율 보다 큽니다. 확인해 주시기 바랍니다.";
+						error1.html(error1Str);
+						error1.show();
+						App.scrollTo(error1, -200);
+						$('.rate').focus();
+					} else if(Number($('.fee').val()) < Number($('.distFee').val()) + Number($('.agencyFee').val()) + Number($('.salesFee').val())) {
+						var error1Str = '<button class="close" data-close="alert"></button>';
+						error1Str += "대행사, 에이전시, 지사 수수료의 합이 가맹점 수수료 보다 큽니다. 확인해 주시기 바랍니다.";
+						error1.html(error1Str);
+						error1.show();
+						App.scrollTo(error1, -200);
+						$('.fee').focus();
+					} else {
+						error1.hide();
+						bootbox.confirm("입력하신 정보로 가상계좌를 설정하시겠습니까?", function(result) {
+							if (result) {
+								ajaxFormSubmit(form, '/member/vactRate/form.jsp'); //PAGE 이동
+							}
+						});
+					}
 				}
 			}
 		});
@@ -225,7 +284,7 @@
 			var selected = $(this).find("option:selected").val();
 
 			if(selected == '0'){
-				$('.rate').val('0');
+				$('.rate').val('0.0');
 				$('#rateDiv').hide();
 				$('.distRate').val('0');
 				$('#distRateDiv').hide();

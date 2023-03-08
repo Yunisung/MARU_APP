@@ -30,10 +30,10 @@
                 <i class="fa fa-check-square-o"></i> 정산완료 처리
             </a>
             </li>
-            <li><a href="javascript:;" class="changeSummary is-mcht">
+            <%--<li><a href="javascript:;" class="changeSummary is-mcht">
             <i class="fa fa-check-square-o"></i> 비고 입력
             </a>
-            </li>
+            </li>--%>
             </ul>
             </div>
         </c:if>
@@ -61,8 +61,9 @@
                 <th>인증수수료ID</th>
                 <th style="min-width: 130px">가맹점명</th>
                 <th>가맹점ID</th>
-                <th>가상계좌은행</th>
                 <th>가상계좌</th>
+                <th>출금계좌은행</th>
+                <th>예금주</th>
                 <th>인증수단</th>
                 <th>인증결과</th>
                 <th>인증수수료</th>
@@ -71,7 +72,6 @@
                 <th>정산번호</th>
                 <th>정산예정일</th>
                 <th>정산유형</th>
-                <th>비고</th>
             </tr>
             </thead>
             <tbody id="list">
@@ -94,8 +94,9 @@
                     <td>${entry.authId}</td>
                     <td>${entry.mchtName}</td>
                     <td>${entry.mchtId}</td>
-                    <td>${entry.vactBank}</td>
                     <td>${entry.vactAccount}</td>
+                    <td>${entry.withdrawBankName}</td>
+                    <td>${entry.holderName}</td>
                     <td>${entry.authType}</td>
                     <td>${entry.resultMsg}</td>
                     <td>${entry.authFee}</td>
@@ -104,7 +105,6 @@
                     <td>${entry.stlId}</td>
                     <td>${entry.stlDay}</td>
                     <td>${entry.stlType}</td>
-                    <td>${entry.summary}</td>
                 </tr>
             </c:forEach>
             </tbody>
