@@ -96,7 +96,15 @@
 															<input type="text" class="form-control input-sm" name="transferKeyTel" value="${DATAMAP.transferKeyTel }">
 														</div>
 													</div>--%>
-													
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">보류금액</label>
+														<div class="col-sm-6">
+															<div class="input-group input-group-sm">
+																<input type="text"
+																	   class="form-control currency transferLimit" name="transferLimit" value="${DATAMAP.transferLimit}"> <span class="input-group-addon"><i class="fa fa-krw"></i></span>
+															</div>
+														</div>
+													</div>
 												</div>
 												<div class="alert alert-danger display-hide"></div>
 												<div class="form-actions right">
@@ -145,9 +153,13 @@
 		});
 		
    		$('.withdrawFee').val(addComma(String($('.withdrawFee').val()).replace(/[^0-9]/g,"")));
-		
+   		$('.transferLimit').val(addComma(String($('.transferLimit').val()).replace(/[^0-9]/g,"")));
+
 		$('.withdrawFee').keyup(function(){
 			$('.withdrawFee').val(addComma(String($('.withdrawFee').val()).replace(/,/g, '').replace(/[^(-?)0-9]/g,"")));
+       	});
+		$('.transferLimit').keyup(function(){
+			$('.transferLimit').val(addComma(String($('.transferLimit').val()).replace(/,/g, '').replace(/[^(-?)0-9]/g,"")));
        	});
 
 		function addComma(data) {
@@ -156,6 +168,7 @@
        	
 		$(".loading-btn").click(function(){
 	    	$('.withdrawFee').val($(".withdrawFee").val().replace(/,/g, ''));
+	    	$('.transferLimit').val($(".transferLimit").val().replace(/,/g, ''));
 		});
 		
 		$('#nav-mcht').addClass('active');
