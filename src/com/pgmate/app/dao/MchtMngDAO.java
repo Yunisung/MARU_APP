@@ -45,10 +45,21 @@ public class MchtMngDAO extends DAO{
 	
 	public RecordSet getHtById(String mchtId){
 		// KBR : 가맹점 지불 및 정산 히스토리 테이블
-		setTable("HT_MCHT_MNG");
-		setColumns("*");
-		addWhere("lower(mchtId)",mchtId.toLowerCase(),eq);
-		return search();
+//		setTable("HT_MCHT_MNG");
+//		setColumns("*");
+//		addWhere("lower(mchtId)",mchtId.toLowerCase(),eq);
+//		return search();
+		super.setTable("(SELECT * FROM  HT_MCHT_TMN where mchtId ='" + mchtId + "'" +
+				"UNION ALL" +
+				"SELECT '' AS idx, tmnId, mchtId, taxId, status, serial, payKey, activeDate, apiMaxInstall" +
+				", webPay, appDirect, semiAuth" +
+				", refundType, van, vanIdx, ccType, description, minAmount, payLimit, limitAmount, limitStartTime" +
+				", limitEndTime, regId, regDay, regDate, '' as summary " +
+				"FROM PG_MCHT_TMN WHERE mchtId ='" + mchtId + "') AS HT_TMN" +
+				"LEFT OUTER JOIN PG_MCHT_TMN ON HT_TMN.tmnId = PG_MCHT_TMN.tmnId");
+		super.setColumns("HT_TMN.*, PG_MCHT_TMN.tmnId AS originId, PG_MCHT_TMN.regDate AS activeDate");
+		super.setOrderBy("PG_MCHT_TMN.regDate DESC, PG_MCHT_TMN.tmnId DESC, HT_TMN.regDate DESC ");
+		return super.search();
 	}
 
 	public void updateLoanStatus(String mchtId){
