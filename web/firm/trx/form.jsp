@@ -86,7 +86,7 @@
 														
 														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">입금은행</label>
-															<select class="selectpicker col-lg-8" name="bankCd" data-oper="eq">
+															<select class="selectpicker col-lg-8" name="recvBank" data-oper="eq">
 																<option value=""> -----&nbsp; </option>
 																<c:forEach var="entry" items="${recvBank}" varStatus="status">
 																	<option value="${entry.code }">${ entry.codeName}&nbsp;&nbsp;[${entry.code }]</option>
