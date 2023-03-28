@@ -164,6 +164,10 @@ public enum CPKEY {
 	CASH_TRANSFER{
 		@Override
 		public String toString() { return "ct_"; }
+	},
+	REBILL {
+		@Override
+		public String toString() { return "rb_"; }
 	}
 	
 	
