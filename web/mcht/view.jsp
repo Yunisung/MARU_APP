@@ -1540,22 +1540,6 @@
 																			</tr>
 																		</thead>
 																		<tbody>
-																			<tr>
-																				<td>${fn:length(HT_TMN_MAP) + 1}</td>
-																				<td>${PG_TMN_MAP.tmnId}</td>
-																				<td>${PG_TMN_MAP.mchtId}</td>
-																				<td>${PG_TMN_MAP.taxId}</td>
-																				<td>${PG_TMN_MAP.status}</td>
-																				<td>${PG_TMN_MAP.serial}</td>
-																				<td>${PG_TMN_MAP.payKey}</td>
-																				<td>${PG_TMN_MAP.activeDate}</td>
-																				<td>${PG_TMN_MAP.van}</td>
-																				<td>${PG_TMN_MAP.vanIdx}</td>
-																				<td>${PG_TMN_MAP.description}</td>
-																				<td>${PG_TMN_MAP.summary}</td>
-																				<td>${PG_TMN_MAP.regId}</td>
-																				<td>${PG_TMN_MAP.regDate}</td>
-																			</tr>
 																			<c:forEach var="entry" items="${HT_TMN_MAP}" varStatus="status">
 																				<tr>
 																					<td>${fn:length(HT_TMN_MAP) - status.index}</td>
