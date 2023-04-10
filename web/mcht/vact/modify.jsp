@@ -83,6 +83,16 @@
 												</script>
 											</div>
 											<div class="form-group col-sm-6">
+												<label class="control-label input-sm col-sm-4 req-label">가상계좌 은행</label>
+												<select name="vactBankCd" class="selectpicker col-sm-6">
+													<option value="089" selected>케이뱅크</option>
+													<option value="039">경남은행</option>
+												</select>
+												<script type="text/javascript">
+													document.forms.writeFrm.vactBankCd.value = '${DATAMAP.vactBankCd}'
+												</script>
+											</div>
+											<div class="form-group col-sm-6">
 												<label class="control-label input-sm col-sm-4 req-label">발행유형</label>
 												<select name="issueType" class="selectpicker col-sm-6">
 													<option value="임시" selected>임시</option>
