@@ -138,11 +138,11 @@
 		                                                	<c:choose>
 			                                                    <c:when test="${DATAMAP.vanName eq 'KSNET'}">
 				                                                    <option value="KSNET" selected>KSNET</option>
-																	<option value="KCP">KCP</option>
+																	<option value="GALAXIA">GALAXIA</option>
 			                                                    </c:when>
 			                                                    <c:otherwise>
 				                                                    <option value="KSNET">KSNET</option>
-																	<option value="KCP" selected>KCP</option>
+																	<option value="GALAXIA" selected>GALAXIA</option>
 			                                                    </c:otherwise>
 		                                                    </c:choose>
 														</select>
