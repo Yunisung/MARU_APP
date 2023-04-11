@@ -136,7 +136,7 @@
 	                                                	<label class="control-label input-sm col-sm-4 req-label">차액정산 VAN</label>
 	                                                	<select name="vanName" class="selectpicker col-sm-6">
 															<option value="KSNET" selected>KSNET</option>
-															<option value="KCP">KCP</option>
+															<option value="GALAXIA">GALAXIA</option>
 														</select>
 													</div>
 												</div>
