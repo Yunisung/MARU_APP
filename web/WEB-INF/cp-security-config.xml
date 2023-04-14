@@ -66,6 +66,7 @@
 		<intercept-url pattern="/trx/wh/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
 		<intercept-url pattern="/trx/capdel/form" access="hasAnyRole('ROLE_COMP')"/>
 		<intercept-url pattern="/trxoper/load/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/rebill/reg/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT', 'ROLE_TMN')"/>
 
 		<!-- 매출관리 -->
 		<intercept-url pattern="/sales/dailysByStlDay/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
