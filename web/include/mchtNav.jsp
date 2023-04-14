@@ -36,8 +36,25 @@
                         <a href="/vact/trx/form.jsp" class="nav-link ">거래내역조회</a>
                     </li>
                 </ul>
-            </li>  	
-				<li class="nav-item start ">
+		</li>
+		<li class="nav-item">
+			<a href="javascript:;" class="nav-link nav-toggle">
+				<span class="title">정기결제 관리</span>
+				<span class="arrow"></span>
+			</a>
+			<ul class="sub-menu" style="display: none;">
+				<li class="nav-item ">
+					<a href="/rebill/reg/form.jsp" class="nav-link ">등록내역 조회</a>
+				</li>
+				<li class="nav-item ">
+					<a href="/rebill/trx/form.jsp" class="nav-link ">거래내역 조회</a>
+				</li>
+				<li class="nav-item ">
+					<a href="/rebill/err/form.jsp" class="nav-link ">오류내역 조회</a>
+				</li>
+			</ul>
+		</li>
+		<li class="nav-item start ">
             <a href="/trx/status/form.jsp" class="nav-link ">
                 <span class="title">리스크 관리</span></a>
         </li>
