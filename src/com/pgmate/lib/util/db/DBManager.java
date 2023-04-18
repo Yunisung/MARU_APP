@@ -138,7 +138,7 @@ public abstract class DBManager {
 			conn.commit();
 		}catch(SQLException t){
 			error = CommonUtil.getSQLExceptionMessage(t);
-			logger.debug("sql error : {}",error);
+			logger.error("sql error : {}, query : {}",error,query);
 			throw t;
 		}finally {
 			close(pstmt);
@@ -163,7 +163,7 @@ public abstract class DBManager {
 			conn.commit();
 		}catch(SQLException t){
 			error = CommonUtil.getSQLExceptionMessage(t);
-			logger.debug("sql error : {}",error);
+			logger.error("sql error : {}, query : {}",error,pstmt.toString());
 			throw t;
 		}finally {
 			close(pstmt);
@@ -193,7 +193,7 @@ public abstract class DBManager {
 			conn.commit();
 		}catch(SQLException t){
 			error = CommonUtil.getSQLExceptionMessage(t);
-			logger.debug("sql error : {}",error);
+			logger.error("sql error : {}, query : {}",error,pstmt.toString());
 			throw t;
 		}finally {
 			close(rset);
@@ -260,7 +260,7 @@ public abstract class DBManager {
 			
 		}catch(SQLException e) {
 			error = CommonUtil.getSQLExceptionMessage(e);
-			logger.debug("sql error : {}",error);
+			logger.error("sql error : {}, query : {}",error,query);
 			throw e;
 		}finally{
 			close(conn, stmt, rset);
@@ -296,7 +296,7 @@ public abstract class DBManager {
 			
 		}catch(SQLException e) {
 			error = CommonUtil.getSQLExceptionMessage(e);
-			logger.debug("sql error : {}",error);
+			logger.error("sql error : {}, query : {}",error,query);
 			throw e;
 		}finally{
 			close(conn, pstmt, rset);

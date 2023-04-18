@@ -49,13 +49,13 @@ public class DAO  implements java.io.Serializable {
 	public static String fnge= "fnge";
 	public static String fnlt= "fnlt";
 	public static String fnle= "fnle";
-			
-	
+
+
 	private String error	= "";
 	private boolean debug	= false;
 	private String columns	= "*";
 	private String table	= "";
-	
+
 	private String join		= "";
 	private String orderBy	= "regDate DESC";
 	private String groupBy	= "";
@@ -63,7 +63,7 @@ public class DAO  implements java.io.Serializable {
 	public StringBuilder where		= new StringBuilder();
 	private StringBuilder sql		= new StringBuilder();
 	private SharedMap<String,Object> record= new SharedMap<String,Object>();
-	
+
 	private long total		= 0;
 	private double totalSum	= 0;
 	private String hash		= "";
@@ -72,9 +72,9 @@ public class DAO  implements java.io.Serializable {
 	private boolean xssChange	= true;
 
 	public DAO() {
-		this("",CPUtil.CP_DEBUG);		
+		this("",CPUtil.CP_DEBUG);
 	}
-	
+
 	/**
 	 * TABLE 및 DEBUG = false 
 	 * @param table
@@ -82,21 +82,21 @@ public class DAO  implements java.io.Serializable {
 	public DAO(String table){
 		this(table,false);
 	}
-	
+
 	/**
 	 * TABLE, DEBUG 여부 지정
 	 * @param table
 	 * @param debug
 	 */
-	
-	
+
+
 	public DAO(String table,boolean debug){
 		if(configBean == null){
 			configBean = ConfigLoader.getConfig().db;
 		}
 		if(secretKeySpec == null){
 			try{
-			secretKeySpec = Crypt.generateKey("DES", ByteUtil.toBytes("696d697373796f7568616e6765656e61", 16));
+				secretKeySpec = Crypt.generateKey("DES", ByteUtil.toBytes("696d697373796f7568616e6765656e61", 16));
 			}catch(Exception e){}
 		}
 		this.table = table;
@@ -109,14 +109,14 @@ public class DAO  implements java.io.Serializable {
 		}
 		if(secretKeySpec == null){
 			try{
-			secretKeySpec = Crypt.generateKey("DES", ByteUtil.toBytes("696d697373796f7568616e6765656e61", 16));
+				secretKeySpec = Crypt.generateKey("DES", ByteUtil.toBytes("696d697373796f7568616e6765656e61", 16));
 			}catch(Exception e){}
 		}
 		this.table = table;
 		this.debug = debug;
 	}
-	
-	
+
+
 	/**
 	 * JDBC Error Message 전달 
 	 * @return
@@ -124,7 +124,7 @@ public class DAO  implements java.io.Serializable {
 	public String getError() {
 		return error;
 	}
-	
+
 	/**
 	 * SQL QUERY + Elapsed Time 확인
 	 */
@@ -142,7 +142,7 @@ public class DAO  implements java.io.Serializable {
 
 	/**
 	 * SELECT A,B,C 등 사용 시 A,B,C 로 지정하여 반환하고자 하는 COLUMN 을 comma 로 구분하여 전달한다.
-	 * @param columns 
+	 * @param columns
 	 */
 	public void setColumns(String columns) {
 		this.columns = columns;
@@ -155,11 +155,11 @@ public class DAO  implements java.io.Serializable {
 	public void setTable(String table) {
 		this.table = table;
 	}
-	
+
 	public String getTable() {
 		return table;
 	}
-		
+
 	/**
 	 * @param orderby :  orderBy 구문은 생략 후   "ABC desc,CDB asc" 형식으로 전달.  
 	 */
@@ -178,12 +178,12 @@ public class DAO  implements java.io.Serializable {
 
 	/**
 	 * type : INNER, OUTER ,condition : TabA.Colmun =TabB.Colmun 
-	 * @param 
+	 * @param
 	 */
 	public void setJoin(String type,String condition) {
 		this.join = type+" JOIN "+table+" ON "+condition;
 	}
-	
+
 	public void setLimit(long limit) {
 		this.limit = limit;
 	}
@@ -196,7 +196,7 @@ public class DAO  implements java.io.Serializable {
 	public void setWhere(String where) {
 		this.where = new StringBuilder().append(" ").append(where);
 	}
-	
+
 	/**
 	 * ABC='CDE' 등이며 
 	 * @param WEHRE 조건을 append 하여 저장한다. 기본적으로 기 조건과는 AND 로 지정된다.
@@ -208,13 +208,13 @@ public class DAO  implements java.io.Serializable {
 			this.where.append(" AND ").append(where);
 		}
 	}
-	
+
 	public void addWhere(String column, Object value) {
 		//idx_key = table+"_"+value;		
 		addWhere(column,value,eq);
 	}
-		
-	
+
+
 	/**
 	 * COLUMN , VALUE, Operator 를 지정하여 조건 절에 APPEND 한다.
 	 * Operator 는 eq = , gt > , ge >= , lt < , le <= , lk like 를 지원하며 그외의 연산자는 축약어가 아닌 직접 지정하면 된다. 
@@ -222,7 +222,7 @@ public class DAO  implements java.io.Serializable {
 	 * @param value
 	 * @param operatorator
 	 */
-	
+
 	public void addWhere(String column,Object value,String operator){
 		if(!column.equals("") && value !=null){
 			if(value instanceof java.lang.Long || value instanceof java.math.BigInteger || value instanceof java.lang.Integer || value instanceof java.lang.Double){
@@ -239,7 +239,7 @@ public class DAO  implements java.io.Serializable {
 				}
 			}else{
 				if(operator.equals(lk)){
-					addWhere(column +getOperator(operator)+"'%"+CommonUtil.toString(value)+"%'");		
+					addWhere(column +getOperator(operator)+"'%"+CommonUtil.toString(value)+"%'");
 				}else if(operator.equals(in) || operator.equals(ni)){
 					addWhere(column +getOperator(operator)+"("+CommonUtil.toString(value)+")");
 				}else if(operator.equals(bt)){
@@ -252,9 +252,9 @@ public class DAO  implements java.io.Serializable {
 				}
 			}
 		}
-	
+
 	}
-	
+
 	/**
 	 * prepared insert,update 사용 시 각 컬럼의 값을 직접 사용한다.
 	 * @param column
@@ -263,7 +263,7 @@ public class DAO  implements java.io.Serializable {
 	public void setRecord(String column,Object value){
 		record.put(column, value);
 	}
-	
+
 	/**
 	 * prepared insert,update 사용 시 oper 조건에 따라 입력값을 변경한다.
 	 * @param column
@@ -274,13 +274,13 @@ public class DAO  implements java.io.Serializable {
 			Double d = Double.valueOf((String)value);
 			value = String.format("%.5f", d / 100);
 		}
-		
+
 		if(oper.equals("comma")) {
 			value = (Object)String.valueOf(value).replace(",", "");
 		}
 		record.put(column, value);
 	}
-	
+
 	/**
 	 * 페이징 시 재 검색조건 가져올때.
 	 * @return
@@ -288,17 +288,17 @@ public class DAO  implements java.io.Serializable {
 	public String getHash(){
 		return this.hash;
 	}
-	
+
 	/**
 	 *지정된 TABLE, JOIN , ORDER BY , GROUP BY 으로 SELECT 쿼리를 할 경우 사용한다.
 	 * @return
 	 */
-	public RecordSet search(){		 				
+	public RecordSet search(){
 		return  query(searchInit());
 	}
 
 	private String searchInit(){
-		
+
 		sql.append("SELECT ").append(columns).append(" FROM ").append(this.table).append(this.join);
 		if(where.length() > 1){ sql.append(" WHERE ").append(where.toString());}
 		if(groupBy.length() > 1){ sql.append(" GROUP BY ").append(groupBy);}
@@ -306,11 +306,11 @@ public class DAO  implements java.io.Serializable {
 		if(limit > 0 ) { sql.append(" LIMIT ").append(limit); }
 		return sql.toString();
 	}
-	
+
 	private String searchTable(){
 		return "SELECT "+columns+" FROM "+this.table+this.join;
 	}
-	
+
 
 	private String searchCondition(){
 		StringBuilder buf = new StringBuilder();
@@ -319,14 +319,14 @@ public class DAO  implements java.io.Serializable {
 		if(orderBy.length() > 1){ buf.append(" ORDER BY ").append(orderBy);}
 		return buf.toString();
 	}
-	
+
 	private String searchCountCondition(){
 		StringBuilder buf = new StringBuilder();
 		if(where.length() > 1){ buf.append(" WHERE ").append(where.toString());}
 		if(groupBy.length() > 1){ buf.append(" GROUP BY ").append(groupBy);}
 		return buf.toString();
 	}
-	
+
 	/**
 	 * ROW 수를 조회할 때 사용한다.
 	 * @return
@@ -351,12 +351,12 @@ public class DAO  implements java.io.Serializable {
 		this.where.append(initWhere);
 		return getCount();
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
-	  * /**
+	 * /**
 	 * 페이징 관련된 값 + 페이지 HASH 를 사용해서 검색 할 경우 
 	 * 지정된 TABLE, JOIN , ORDER BY , GROUP BY 으로 SELECT 쿼리를 할 경우 사용한다.
 	 * @return
@@ -368,16 +368,16 @@ public class DAO  implements java.io.Serializable {
 	public RecordSet searchList(long current,long size,String hashVal){
 		if(current == 0){current = 1;}
 		if(size == 0){size = 20;}
-		
+
 		String countQuery 	= "";
 		String query 		= "";
-		
-		
+
+
 		if(hashVal.trim().equals("")){
 			countQuery = "SELECT COUNT(*) AS TOTAL FROM "+this.table+this.join;
 			String condition = searchCountCondition();
 			if(condition.length() > 1){ countQuery += condition; }
-			
+
 			if(!groupBy.equals("")){
 				countQuery = "SELECT COUNT(*) AS TOTAL FROM ( "+countQuery +") BC";
 			}
@@ -398,17 +398,17 @@ public class DAO  implements java.io.Serializable {
 			// CUBRID query = "SELECT * FROM (" +searchTable()+" "+hashWhere + ") LIMIT "+(size*(current-1))+","+(size);
 			query = searchTable() +" "+hashWhere +" LIMIT "+(size*(current-1))+","+(size);
 		}
-		
+
 		long startsTime = System.currentTimeMillis();
-		
+
 		DBManager db	= null;
 		Statement stmt 	= null;
 		ResultSet rset	= null;
 		Connection conn = null;
 		RecordSet records = new RecordSet();
-		
+
 		try {
-			
+
 			db = DBFactory.getInstance();
 			conn = db.getConnection();
 			stmt = conn.createStatement();
@@ -420,7 +420,7 @@ public class DAO  implements java.io.Serializable {
 			//ResultSet,Statement 초기화
 			rset.close();
 			stmt.close();
-			
+
 			stmt = conn.createStatement();
 			stmt.executeQuery(query);
 			rset = stmt.getResultSet();
@@ -429,7 +429,7 @@ public class DAO  implements java.io.Serializable {
 			}
 		}catch(Exception e) {
 			error = CommonUtil.getSQLExceptionMessage(e);
-			logger.error("sql error : {}",error);
+			logger.debug("sql error : {}",error);
 		}finally{
 			if(debug) {
 				logger.debug("query count : [{}] ",countQuery);
@@ -441,19 +441,19 @@ public class DAO  implements java.io.Serializable {
 		}
 
 		return records;
-		
+
 	}
-	
-	
-	
+
+
+
 	public RecordSet searchList2(long current,long size,String hashVal,String sumColumn){
 		if(current == 0){current = 1;}
 		if(size == 0){size = 20;}
-		
+
 		String countQuery 	= "";
 		String query 		= "";
-		
-		
+
+
 		if(hashVal.trim().equals("")){
 			countQuery = "SELECT COUNT(*) AS TOTAL,SUM("+sumColumn+") AS TOTAL_AMT FROM "+this.table+this.join;
 			String condition = searchCondition();
@@ -478,17 +478,17 @@ public class DAO  implements java.io.Serializable {
 			//CUBRID query = "SELECT * FROM (" +searchTable()+" "+hashWhere + ") LIMIT "+(size*(current-1))+","+(size);
 			query = searchTable()+" "+hashWhere + " LIMIT "+(size*(current-1))+","+(size);
 		}
-		
+
 		long startsTime = System.currentTimeMillis();
-		
+
 		DBManager db	= null;
 		Statement stmt 	= null;
 		ResultSet rset	= null;
 		Connection conn = null;
 		RecordSet records = new RecordSet();
-		
+
 		try {
-			
+
 			db = DBFactory.getInstance();
 			conn = db.getConnection();
 			stmt = conn.createStatement();
@@ -501,7 +501,7 @@ public class DAO  implements java.io.Serializable {
 			//ResultSet,Statement 초기화
 			rset.close();
 			stmt.close();
-			
+
 			stmt = conn.createStatement();
 			stmt.executeQuery(query);
 			rset = stmt.getResultSet();
@@ -522,16 +522,16 @@ public class DAO  implements java.io.Serializable {
 		}
 
 		return records;
-		
+
 	}
-	
-	
-	
+
+
+
 
 	public boolean insert(){
-		
+
 		sql.append("INSERT INTO " + this.table + " (");
-		
+
 		int max = record.size();
 		int k=0;
 		for (Iterator<String> iterator = record.keySet().iterator(); iterator.hasNext();) {
@@ -541,7 +541,7 @@ public class DAO  implements java.io.Serializable {
 			k++;
 		}
 		sql.append(") VALUES (");
-		
+
 		for(int i=0; i<max; i++) {
 			sql.append("?");
 			if(i < (max - 1)) sql.append(",");
@@ -557,22 +557,21 @@ public class DAO  implements java.io.Serializable {
 			ret = db.preparedExecuteUpdate(sql.toString(),record);
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
-			logger.error("sql error : {}, query : {}",error,sql.toString());
 		}finally{
-			if(debug){ 		
+			if(debug){
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
 			}
 			init();
 		}
-	
-		return ret > 0 ? true : false;		
+
+		return ret > 0 ? true : false;
 	}
-	
-	
+
+
 	public long insertAndLastIdx(){
-		
+
 		sql.append("INSERT INTO " + this.table + " (");
-		
+
 		int max = record.size();
 		int k=0;
 		for (Iterator<String> iterator = record.keySet().iterator(); iterator.hasNext();) {
@@ -582,7 +581,7 @@ public class DAO  implements java.io.Serializable {
 			k++;
 		}
 		sql.append(") VALUES (");
-		
+
 		for(int i=0; i<max; i++) {
 			sql.append("?");
 			if(i < (max - 1)) sql.append(",");
@@ -598,17 +597,16 @@ public class DAO  implements java.io.Serializable {
 			ret = db.preparedExecuteUpdateAndLastIdx(sql.toString(), record);
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
-			logger.error("sql error : {}, query : {}",error,sql.toString());
 		}finally{
-			if(debug){ 		
+			if(debug){
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
 			}
 			init();
 		}
-	
-		return ret ;		
+
+		return ret ;
 	}
-	
+
 	public boolean insert(String query){
 		int ret = 0;
 		long startsTime = System.currentTimeMillis();
@@ -616,21 +614,20 @@ public class DAO  implements java.io.Serializable {
 			ret=DBFactory.getInstance().preparedExecuteUpdate(query );
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
-			logger.error("sql error : {}, query : {}",error,query);
 		}finally{
 			if(debug){
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
 			}
 			init();
 		}
-	
+
 		return ret > 0 ? true : false;
 	}
-	
+
 	public boolean update(){
-		
+
 		sql.append("UPDATE " + this.table + " SET ");
-		
+
 		int max = record.size();
 		int k=0;
 		for (Iterator<String> iterator = record.keySet().iterator(); iterator.hasNext();) {
@@ -650,18 +647,17 @@ public class DAO  implements java.io.Serializable {
 			ret = db.preparedExecuteUpdate(sql.toString(),record );
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
-			logger.error("sql error : {}, query : {}",error,sql.toString());
 		}finally{
 			if(debug){
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
 			}
 			init();
 		}
-	
+
 		return ret > 0 ? true : false;
 	}
-	
-	
+
+
 	public boolean delete() {
 		sql.append("DELETE FROM " + this.table + " WHERE " + this.where.toString());
 		int ret = 0;
@@ -673,48 +669,46 @@ public class DAO  implements java.io.Serializable {
 			ret = db.preparedExecuteUpdate(sql.toString(),record );
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
-			logger.error("sql error : {}, query : {}",error,sql.toString());
 		}finally{
 			if(debug) {
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
 			}
 			init();
 		}
-	
+
 		return ret > 0 ? true : false;
 	}
-	
-	
+
+
 	public boolean update(String query){
-		
+
 		if(query.toUpperCase().indexOf("UPDATE ") > -1 && query.toUpperCase().indexOf("WHERE ") < 0){
 			logger.debug("UPDATE ERROR WHERE IS NULL [{}]" ,query.toString() );
 			return false;
 		}
-		
+
 		int ret = 0;
 		long startsTime = System.currentTimeMillis();
 		try{
 			ret=DBFactory.getInstance().preparedExecuteUpdate(query );
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
-			logger.error("sql error : {}, query : {}",error,query);
 		}finally{
 			if(debug){
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
 			}
 			init();
 		}
-	
+
 		return ret > 0 ? true : false;
 	}
-	
+
 	public long updateAndLastIdx(String query,String summary){
 		if(query.toUpperCase().indexOf("WHERE ") < 0){
 			logger.debug("UPDATE ERROR WHERE IS NULL [{}]" ,sql.toString() );
 			return 0;
 		}
-		
+
 		long lastIdx = 0;
 		DBManager db 			= null;
 		PreparedStatement pstmt 		= null;
@@ -723,7 +717,7 @@ public class DAO  implements java.io.Serializable {
 		int result = 0;
 
 		try {
-			
+
 			db 			= DBFactory.getInstance();
 			conn		= db.getConnection();
 
@@ -731,14 +725,14 @@ public class DAO  implements java.io.Serializable {
 			pstmt.setString(1,summary);
 			result  	= pstmt.executeUpdate();
 			rset		= pstmt.executeQuery("SELECT LAST_INSERT_ID() ");
-			
+
 			while(rset.next()){
 				lastIdx = rset.getLong(1);
 			}
 			conn.commit();
 		}catch(Exception t){
 			error = CommonUtil.getSQLExceptionMessage(t);
-			logger.error("sql error : {}, query : {}",error,query);
+			logger.debug("sql error : {}, query : {}",error,query);
 		}finally {
 			db.close(conn, pstmt, rset);
 		}
@@ -747,19 +741,19 @@ public class DAO  implements java.io.Serializable {
 			logger.debug("generated key : [{}] ",lastIdx);
 		}
 		return lastIdx;
-		
+
 	}
-	
-	
+
+
 	/**
-	  * 직접 쿼리로 SELECT 를 요청 할 때 사용한다.
+	 * 직접 쿼리로 SELECT 를 요청 할 때 사용한다.
 	 * @param query
 	 * @return
 	 */
 	public RecordSet query(String query){
 		DBManager db = null;
 		RecordSet rset= new RecordSet();
-		
+
 		long startsTime = System.currentTimeMillis();
 		try {
 			db = DBFactory.getInstance();
@@ -767,19 +761,18 @@ public class DAO  implements java.io.Serializable {
 			rset = db.statementExecute(query);
 		}catch(Exception e) {
 			this.error = db.getError();
-			logger.error("sql error : {}, query : {}",error,query);
 		}finally{
 			if(debug) {
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
 			}
 			init();
 		}
-		
+
 		return rset;
 	}
-	
-	
-	
+
+
+
 	public long getSeqCurrent(String name){
 		String query = "SELECT curVal FROM PG_SEQ WHERE name ='"+name+"'";
 		RecordSet rset = query(query);
@@ -790,7 +783,7 @@ public class DAO  implements java.io.Serializable {
 			return rset.getLong("curVal");
 		}
 	}
-	
+
 	public long getSeqNext(String name){
 		String query = "SELECT FN_NEXTVAL('"+name+"') as CNT";
 		RecordSet rset = query(query);
@@ -801,7 +794,7 @@ public class DAO  implements java.io.Serializable {
 			return rset.getLong("CNT");
 		}
 	}
-	
+
 	public String getPassword(String value){
 		String query = "SELECT password('"+value+"') pw";
 		RecordSet rset = query(query);
@@ -812,8 +805,8 @@ public class DAO  implements java.io.Serializable {
 			return rset.getString("pw");
 		}
 	}
-	
-	
+
+
 	public String getAESEnc(String value){
 		String query = "SELECT FN_AES_ENC('"+value+"') pw";
 		RecordSet rset = query(query);
@@ -824,7 +817,7 @@ public class DAO  implements java.io.Serializable {
 			return rset.getString("pw");
 		}
 	}
-	
+
 	public String getAESDec(String value){
 		String query = "SELECT FN_AES_DEC('"+value+"') pw";
 		RecordSet rset = query(query);
@@ -835,7 +828,7 @@ public class DAO  implements java.io.Serializable {
 			return rset.getString("pw");
 		}
 	}
-	
+
 	public String getFunction(String function,String... value){
 		String returnVal = "";
 		String query = "SELECT "+function+"( ";
@@ -843,14 +836,14 @@ public class DAO  implements java.io.Serializable {
 			query +="?,";
 		}
 		query = query.substring(0,query.length()-1) +") as val";
-		
+
 		DBManager db 			= null;
 		PreparedStatement pstmt = null;
 		Connection 	conn		= null;
 		ResultSet rset			= null;
 
 		try {
-			
+
 			db 			= DBFactory.getInstance();
 			conn		= db.getConnection();
 
@@ -859,14 +852,14 @@ public class DAO  implements java.io.Serializable {
 				pstmt.setString(i+1,value[i]);
 			}
 			rset		= pstmt.executeQuery();
-			
+
 			while(rset.next()){
 				returnVal = rset.getString(1);
 			}
 			conn.commit();
 		}catch(Exception t){
 			error = CommonUtil.getSQLExceptionMessage(t);
-			logger.error("sql error : {}, query : {}",error,query);
+			logger.debug("sql error : {}, query : {}",error,query);
 		}finally {
 			db.close(conn, pstmt, rset);
 		}
@@ -875,25 +868,25 @@ public class DAO  implements java.io.Serializable {
 		}
 		return returnVal;
 	}
-	
-	
+
+
 	/**
-	  * PAGING 검색 후 총 조회 결과 회신
-	 * @return total 
+	 * PAGING 검색 후 총 조회 결과 회신
+	 * @return total
 	 */
 	public long getTotal() {
 		return total;
 	}
-	
+
 	/**
 	 * PAGING 검색 후 총 조회 결과 회신
-	 * @return total 
+	 * @return total
 	 */
 	public double getTotalSum() {
 		return totalSum;
 	}
 
-	
+
 	private static String getOperator(String cond){
 		cond = cond.toLowerCase();
 		if(cond.equals(eq) || cond.equals(fneq)){
@@ -920,7 +913,7 @@ public class DAO  implements java.io.Serializable {
 			return cond;
 		}
 	}
-	
+
 	public String getColumns(String table){
 		StringBuffer sb = new StringBuffer();
 		DBManager db	= null;
@@ -928,24 +921,24 @@ public class DAO  implements java.io.Serializable {
 		ResultSet rset	= null;
 		Connection conn = null;
 		try {
-			
+
 			db = DBFactory.getInstance();
 			conn = db.getConnection();
 			stmt = conn.createStatement();
 			stmt.executeQuery("SELECT * FROM "+table + " WHERE 0=1");
-			
+
 			rset = stmt.getResultSet();
 			ResultSetMetaData metaData = rset.getMetaData();
 			int rowCount = metaData.getColumnCount();
 			for(int i=0;i<rowCount;i++){
-		
+
 				sb.append(metaData.getColumnName(i+1)+",");
 			}
-			
-			
+
+
 		}catch(Exception e) {
 			error = CommonUtil.getSQLExceptionMessage(e);
-			logger.error("sql error : {}",error);
+			logger.debug("sql error : {}",error);
 		}finally{
 			db.close(conn, stmt, rset);
 		}
@@ -956,13 +949,13 @@ public class DAO  implements java.io.Serializable {
 		}
 	}
 
-	
+
 	private void cryptHash(String condition){
 		try{
 			this.hash =  Crypt.encryptBase64(secretKeySpec, "DES/ECB/PKCS5Padding",null, condition.getBytes());
 		}catch(Exception e){}
 	}
-	
+
 	private String decryptDES(String condition){
 		String des = "";
 		if(condition.trim().equals("")){
@@ -973,10 +966,10 @@ public class DAO  implements java.io.Serializable {
 		}catch(Exception e){}
 		return des;
 	}
-	
+
 	public String toString(RecordSet rset){
 		StringBuilder sb = new StringBuilder();
-		
+
 		sb.append("\nsize : "+rset.size());
 		sb.append("\ncolumn : "+CommonUtil.arrayToString(rset.getColumns()));
 		while(rset.next()){
@@ -984,12 +977,12 @@ public class DAO  implements java.io.Serializable {
 			sb.append("\n row : "+rset.getIdx());
 			for (Entry<String, Object> entry : row.entrySet()) {
 				sb.append("\n   "+entry.getKey()+":"+entry.getValue());
-	        }
+			}
 		}
 		return sb.toString();
 	}
-	
-	
+
+
 	public boolean dbPing(){
 		RecordSet rset = query("SELECT 1+1 AS CNT");
 		rset.next();
@@ -998,29 +991,29 @@ public class DAO  implements java.io.Serializable {
 		}else{
 			return false;
 		}
-		
-	}
-	
 
-	
+	}
+
+
+
 	private void init(){
 		error	= "";
 		debug	= false;
 		//columns	= "*";
 		//table	= "";
-		
+
 		join		= "";
 		orderBy	= "regDate DESC";
 		groupBy	= "";
 		where.setLength(0);
 		sql.setLength(0);
 		//record.clear();
-		
+
 		//total		= 0;
 		limit = 0;
 		hash		= "";
 	}
-	
+
 	public void initRecord(){
 		record.clear();
 		where.setLength(0);
@@ -1030,12 +1023,12 @@ public class DAO  implements java.io.Serializable {
 		groupBy	= "";
 		limit = 0;
 	}
-	
+
 	public static void main(String[] args) {
 		DAO dao = new DAO();
-		
-		
+
+
 	}
-	
+
 }
 
