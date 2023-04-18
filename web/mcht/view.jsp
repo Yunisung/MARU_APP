@@ -1346,6 +1346,7 @@
 																		<tr>
 																			<th>No</th>
 																			<th data-sort="string">지불사용여부</th>
+																			<th data-sort="string">가상계좌은행</th>
 																			<th data-sort="string">정산유형</th>
 																			<th data-sort="string">수수료타입</th>
 																			<th data-sort="string">가맹점 수수료</th>
@@ -1354,7 +1355,6 @@
 																			<th data-sort="string">대행사 수수료율</th>
 																			<th data-sort="string">에이전시 수수료</th>
 																			<th data-sort="string">에이전시 수수료율</th>
-																			<th data-sort="string">통합인증 수수료</th>
 																			<th data-sort="string">1회한도</th>
 																			<th data-sort="string">1일한도</th>
 																			<th data-sort="string">입금제한횟수</th>
@@ -1370,6 +1370,10 @@
 																		<tr>
 																			<td>${fn:length(HT_VACT_MNG_MAP) + 1}</td>
 																			<td>${PG_VACT_MNG_MAP.status}</td>
+																			<c:choose>
+																				<c:when test="${PG_VACT_MNG_MAP.vactBankCd eq '089'}"><td>케이뱅크</td></c:when>
+																				<c:when test="${PG_VACT_MNG_MAP.vactBankCd eq '039'}"><td>경남은행</td></c:when>
+																			</c:choose>
 																			<td>${PG_VACT_MNG_MAP.settleType}</td>
 																			<c:choose>
 																				<c:when test="${PG_VACT_MNG_MAP.feeType eq '0'}"><td>정액</td></c:when>
@@ -1382,7 +1386,6 @@
 																			<td><fmt:formatNumber value="${PG_VACT_MNG_MAP.distRate * 100}" pattern="0.000"/> %</td>
 																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.agencyFee}" pattern="#,##0"/></td>
 																			<td><fmt:formatNumber value="${PG_VACT_MNG_MAP.agencyRate * 100}" pattern="0.000"/> %</td>
-																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.totalAuthFee}" pattern="#,##0" /></td>
 																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.limitOnce}" pattern="#,##0" /></td>
 																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.limitDay}" pattern="#,##0" /></td>
 																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.depositLimitCnt}" pattern="#,##0" /></td>
@@ -1395,6 +1398,10 @@
 																			<tr>
 																				<td>${fn:length(HT_VACT_MNG_MAP) - status.index}</td>
 																				<td>${entry.status}</td>
+																				<c:choose>
+																					<c:when test="${entry.vactBankCd eq '089'}"><td>케이뱅크</td></c:when>
+																					<c:when test="${entry.vactBankCd eq '039'}"><td>경남은행</td></c:when>
+																				</c:choose>
 																				<td>${entry.settleType}</td>
 																				<c:choose>
 																					<c:when test="${entry.feeType eq '0'}"><td>정액</td></c:when>
@@ -1407,7 +1414,6 @@
 																				<td><fmt:formatNumber value="${entry.distRate * 100}" pattern="0.000"/> %</td>
 																				<td><fmt:formatNumber type="number" value="${entry.agencyFee}" pattern="#,##0"/></td>
 																				<td><fmt:formatNumber value="${entry.agencyRate * 100}" pattern="0.000"/> %</td>
-																				<td><fmt:formatNumber type="number" value="${entry.totalAuthFee}" pattern="#,##0" /></td>
 																				<td><fmt:formatNumber type="number" value="${entry.limitOnce}" pattern="#,##0" /></td>
 																				<td><fmt:formatNumber type="number" value="${entry.limitDay}" pattern="#,##0" /></td>
 																				<td><fmt:formatNumber type="number" value="${entry.depositLimitCnt}" pattern="#,##0" /></td>
@@ -2185,6 +2191,16 @@
 																		<label class="control-label col-md-3">상태</label>
 																		<div class="col-md-9">
 																			<p class="form-control-static">${VACT_MAP.status}</p>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3">가상계좌은행</label>
+																		<div class="col-md-9">
+																			<p class="form-control-static">
+																				<c:if test="${VACT_MAP.vactBankCd == '089'}">케이뱅크</c:if>
+																				<c:if test="${VACT_MAP.vactBankCd == '039'}">경남은행</c:if>
 																		</div>
 																	</div>
 																</div>
