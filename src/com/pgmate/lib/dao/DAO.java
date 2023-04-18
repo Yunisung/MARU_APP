@@ -429,7 +429,7 @@ public class DAO  implements java.io.Serializable {
 			}
 		}catch(Exception e) {
 			error = CommonUtil.getSQLExceptionMessage(e);
-			logger.debug("sql error : {}",error);
+			logger.error("sql error : {}",error);
 		}finally{
 			if(debug) {
 				logger.debug("query count : [{}] ",countQuery);
@@ -557,6 +557,7 @@ public class DAO  implements java.io.Serializable {
 			ret = db.preparedExecuteUpdate(sql.toString(),record);
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
+			logger.error("sql error : {}, query : {}",error,sql.toString());
 		}finally{
 			if(debug){ 		
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
@@ -597,6 +598,7 @@ public class DAO  implements java.io.Serializable {
 			ret = db.preparedExecuteUpdateAndLastIdx(sql.toString(), record);
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
+			logger.error("sql error : {}, query : {}",error,sql.toString());
 		}finally{
 			if(debug){ 		
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
@@ -614,6 +616,7 @@ public class DAO  implements java.io.Serializable {
 			ret=DBFactory.getInstance().preparedExecuteUpdate(query );
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
+			logger.error("sql error : {}, query : {}",error,query);
 		}finally{
 			if(debug){
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
@@ -647,6 +650,7 @@ public class DAO  implements java.io.Serializable {
 			ret = db.preparedExecuteUpdate(sql.toString(),record );
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
+			logger.error("sql error : {}, query : {}",error,sql.toString());
 		}finally{
 			if(debug){
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
@@ -669,6 +673,7 @@ public class DAO  implements java.io.Serializable {
 			ret = db.preparedExecuteUpdate(sql.toString(),record );
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
+			logger.error("sql error : {}, query : {}",error,sql.toString());
 		}finally{
 			if(debug) {
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
@@ -693,6 +698,7 @@ public class DAO  implements java.io.Serializable {
 			ret=DBFactory.getInstance().preparedExecuteUpdate(query );
 		}catch(Exception e){
 			this.error = CommonUtil.getSQLExceptionMessage(e);
+			logger.error("sql error : {}, query : {}",error,query);
 		}finally{
 			if(debug){
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
@@ -732,7 +738,7 @@ public class DAO  implements java.io.Serializable {
 			conn.commit();
 		}catch(Exception t){
 			error = CommonUtil.getSQLExceptionMessage(t);
-			logger.debug("sql error : {}, query : {}",error,query);
+			logger.error("sql error : {}, query : {}",error,query);
 		}finally {
 			db.close(conn, pstmt, rset);
 		}
@@ -761,6 +767,7 @@ public class DAO  implements java.io.Serializable {
 			rset = db.statementExecute(query);
 		}catch(Exception e) {
 			this.error = db.getError();
+			logger.error("sql error : {}, query : {}",error,query);
 		}finally{
 			if(debug) {
 				logger.debug("elapsedTime : [{}]msec",(long)(System.currentTimeMillis()-startsTime));
@@ -859,7 +866,7 @@ public class DAO  implements java.io.Serializable {
 			conn.commit();
 		}catch(Exception t){
 			error = CommonUtil.getSQLExceptionMessage(t);
-			logger.debug("sql error : {}, query : {}",error,query);
+			logger.error("sql error : {}, query : {}",error,query);
 		}finally {
 			db.close(conn, pstmt, rset);
 		}
@@ -938,7 +945,7 @@ public class DAO  implements java.io.Serializable {
 			
 		}catch(Exception e) {
 			error = CommonUtil.getSQLExceptionMessage(e);
-			logger.debug("sql error : {}",error);
+			logger.error("sql error : {}",error);
 		}finally{
 			db.close(conn, stmt, rset);
 		}
