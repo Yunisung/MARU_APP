@@ -429,7 +429,7 @@ public class DAO  implements java.io.Serializable {
 			}
 		}catch(Exception e) {
 			error = CommonUtil.getSQLExceptionMessage(e);
-			logger.debug("sql error : {}",error);
+			logger.error("sql error : {}",error);
 		}finally{
 			if(debug) {
 				logger.debug("query count : [{}] ",countQuery);
