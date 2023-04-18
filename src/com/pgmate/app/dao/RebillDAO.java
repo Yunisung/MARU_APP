@@ -18,4 +18,12 @@ public class RebillDAO extends DAO {
         CPUtil.setDAO(this, datas); //DATA to CONDITION
         return super.searchList(page.current, page.size, page.hash); //LIST PAGING
     }
+
+    public RecordSet errList(List<Data> datas, Page page) {
+        super.setTable("PG_REBILL_ERR");
+
+        page = CPUtil.correctPage(page);
+        CPUtil.setDAO(this, datas); //DATA to CONDITION
+        return super.searchList(page.current, page.size, page.hash); //LIST PAGING
+    }
 }

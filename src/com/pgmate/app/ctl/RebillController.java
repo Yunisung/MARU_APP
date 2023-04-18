@@ -2,6 +2,7 @@ package com.pgmate.app.ctl;
 
 import com.pgmate.app.dao.MchtTmnDAO;
 import com.pgmate.app.dao.RebillDAO;
+import com.pgmate.app.dao.TrxErrDAO;
 import com.pgmate.app.dao.VactDtlDAO;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.session.CPSession;
@@ -38,8 +39,16 @@ public class RebillController {
         }
 
 
-        RebillDAO rebillRegDAO = new RebillDAO();
-        RecordSet rset = rebillRegDAO.regList(cpRequest.data, cpRequest.page);
-        return new CPRUtil(cpRequest).dataList(rset, rebillRegDAO).setView(request, "/rebill/reg/list", "");
+        RebillDAO rebillDAO = new RebillDAO();
+        RecordSet rset = rebillDAO.regList(cpRequest.data, cpRequest.page);
+        return new CPRUtil(cpRequest).dataList(rset, rebillDAO).setView(request, "/rebill/reg/list", "");
+    }
+
+    @RequestMapping(value = "/rebill/err/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView errList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
+        SessionUtil.setSearchGrade(request, cpRequest);
+        TrxErrDAO trxErrDAO = new TrxErrDAO();
+        RecordSet rset = trxErrDAO.list(cpRequest.data,cpRequest.page);
+        return new CPRUtil(cpRequest).dataList(rset,trxErrDAO).setView(request,"/trx/err/list","");
     }
 }
