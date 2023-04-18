@@ -55,26 +55,6 @@
                                     <div class="form-body">
                                         <div class="row">
                                             <div class="form-group pg-form-group">
-                                                <div class="col-lg-4" style="padding:0;">
-                                                    <select class="selectpicker col-lg-12" name="" id="date-selector" data-reg="false">
-                                                        <option value="regDay" selected>등록일자</option>
-                                                        <option value="expireDay">만료일자</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <div class="input-group input-group-sm input-daterange" data-date-format="yyyy-mm-dd">
-                                                        <input type="text" class="form-control now-date date-selector-target" name="regDay" value="" data-oper="ge">
-                                                        <span class="input-group-addon">~</span>
-                                                        <input type="text" class="form-control now-date date-selector-target" name="regDay" value="" data-oper="le">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group pg-form-group">
                                                 <label class="control-label col-lg-4">가맹점ID</label>
                                                 <div class="col-lg-8">
                                                     <input type="text" class="form-control input-sm" name="mchtId" data-oper="lk" placeholder="가맹점 아이디">
