@@ -5,16 +5,14 @@ import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.session.CPSession;
 import com.pgmate.app.util.CPRUtil;
 import com.pgmate.app.util.SessionUtil;
+import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.map.SharedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +53,22 @@ public class RebillController {
     @RequestMapping(value = "/rebill/trx/view/{trxId}", method = RequestMethod.GET)
     public ModelAndView payView(HttpServletRequest request, @PathVariable String trxId) {
         request.setAttribute("DATAMAP", new RebillDAO().getByTrxId(trxId).getRow(0));
+        request.setAttribute("DATANOTIMAP", new RebillDAO().getByNotiId(trxId).getRow(0));
         return new ModelAndView("/rebill/trx/modal");
+    }
+
+    @RequestMapping(value = "/rebill/retry/{trxId}", method = RequestMethod.GET)
+    public @ResponseBody
+    SharedMap<String, Object> trxRetry(HttpServletRequest request, @PathVariable String trxId) {
+        SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+        resMap.put("result", "NOK");
+        DAO dao = new DAO();
+        if (dao.update("UPDATE PG_TRX_NTS_PG SET status='전송장애', retry='1' WHERE trxId ='" + trxId + "'")) {
+            resMap.put("result", "OK");
+        } else {
+            resMap.put("msg", "재전송에 실패했습니다. 관리자에게 문의해주세요.");
+        }
+        return resMap;
     }
 
     @RequestMapping(value = "/rebill/err/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -72,4 +85,5 @@ public class RebillController {
         request.setAttribute("DATAMAP", new RebillDAO().getByErrId(trxId).getRow(0));
         return new ModelAndView("/rebill/err/modal");
     }
+
 }
