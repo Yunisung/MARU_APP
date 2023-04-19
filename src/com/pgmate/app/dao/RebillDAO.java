@@ -5,6 +5,7 @@ import com.pgmate.app.model.ajax.Page;
 import com.pgmate.app.util.CPUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
+import sun.plugin2.gluegen.runtime.CPU;
 
 import java.util.List;
 
@@ -19,11 +20,47 @@ public class RebillDAO extends DAO {
         return super.searchList(page.current, page.size, page.hash); //LIST PAGING
     }
 
+    public RecordSet trxList(List<Data> datas, Page page) {
+        super.setTable("PG_REBILL_PAY");
+
+        page = CPUtil.correctPage(page);
+        CPUtil.setDAO(this, datas);
+        return super.searchList(page.current, page.size, page.hash);
+    }
+
+    public RecordSet trxSum(List<Data> datas,Page page) {
+        //KJM : 금액의 합계를 amount 컬럼명으로 받겠다
+        super.setColumns("SUM(amount) AS amount");
+        page = CPUtil.correctPage(page);
+        CPUtil.setDAO(this, datas);				//DATA to CONDITION
+        RecordSet rset =  super.search();
+        super.initRecord();
+        return rset;	//LIST PAGING 검색
+    }
+
+    public RecordSet getByTrxId(String trxId) {
+        super.setTable("VW_REBILL_PAY");
+        super.setColumns("*");
+        super.addWhere("trxId", trxId);
+        RecordSet rset = super.search();
+        super.initRecord();
+        return rset;
+    }
+
     public RecordSet errList(List<Data> datas, Page page) {
         super.setTable("PG_REBILL_ERR");
 
         page = CPUtil.correctPage(page);
-        CPUtil.setDAO(this, datas); //DATA to CONDITION
-        return super.searchList(page.current, page.size, page.hash); //LIST PAGING
+        CPUtil.setDAO(this, datas);
+        return super.searchList(page.current, page.size, page.hash);
+    }
+
+    public RecordSet getByErrId(String trxId) {
+        super.setTable("PG_REBILL_ERR");
+        super.setColumns("*");
+        super.addWhere("trxId", trxId);
+        RecordSet rset = super.search();
+        super.initRecord();
+        return rset;
     }
 }

@@ -8,6 +8,9 @@
 		<i class="icon-share font-red-sunglo"></i>
 		<span class="caption-subject bold uppercase"> Result </span>
 		<span class="caption-helper"><span id="page-total">${CPR.page.total}</span> 건</span>
+		<span class="caption-helper amount_sum" style="color:#00a2ff;font-weight:600;">
+			결과 금액 합계: <fmt:formatNumber type="number" value="${AMOUNT_SUM }" pattern="#,##0" /> 원
+		</span>
 	</div>
 	<div class="actions">
 		<a class="btn btn-circle btn-icon-only btn-default" href="javascript:searchForExcel();">
@@ -27,36 +30,46 @@
 			<thead>
 				<tr>
 					<th>No</th>
+					<th>정기결제 ID</th>
 					<th>거래번호</th>
-					<th>가맹점ID</th>
 					<th>주문번호</th>
-					<th>터미널ID</th>
+					<th>터미널 ID</th>
 					<th>구매자명</th>
+					<th>구매자이메일</th>
 					<th>구매자전화번호</th>
+					<th>승인구분</th>
 					<th>금액</th>
+					<th>BIN</th>
+					<th>LAST4</th>
 					<th>매입사</th>
-					<th>결과메세지</th>
+					<th>할부</th>
+					<th>거래일시</th>
 				</tr>
 			</thead>
 			<tbody id="list">
 				<c:if test="${CPR.result.code != 200}">
 					<tr>
-						<td colspan="12">${CPR.result.code}:&nbsp;${CPR.result.message}:&nbsp;${CPR.result.error}</td>
+						<td colspan="11">${CPR.result.code}:&nbsp;${CPR.result.message}:&nbsp;${CPR.result.error}</td>
 					</tr>
 				</c:if>
 				<c:forEach var="entry" items="${CPR.data}" varStatus="status">
 					<tr>
-
 						<td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
-						<td class="link_modal" data-url="/rebill/err/view/${entry.trxId}">${entry.trxId}</td>
-						<td>${entry.mchtId}</td>
+						<td>${entry.rebillId}</td>
+						<td class="link_modal" data-url="/rebill/trx/view/${entry.trxId}">${entry.trxId}</td>
 						<td>${entry.trackId}</td>
 						<td>${entry.tmnId}</td>
 						<td>${entry.payerName}</td>
+						<td>${entry.payerEmail}</td>
 						<td>${entry.payerTel}</td>
+						<td>${entry.status}</td>
 						<td><fmt:formatNumber type="number" value="${entry.amount}" pattern="#,##0" /></td>
+						<td>${entry.bin}</td>
+						<td>${entry.last4}</td>
 						<td>${entry.issuer}</td>
-						<td title="${entry.vanResultCd }">${entry.vanResultMsg}</td>
+						<td><c:if test="${entry.installment == '00'}">일시불</c:if>
+							<c:if test="${entry.installment != '00'}">${entry.installment}</c:if></td>
+						<td class="date">${entry.reqDay}${entry.reqTime}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
