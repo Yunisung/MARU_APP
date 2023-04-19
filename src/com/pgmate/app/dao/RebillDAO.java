@@ -63,4 +63,13 @@ public class RebillDAO extends DAO {
         super.initRecord();
         return rset;
     }
+
+    public RecordSet getByNotiId(String trxId) {
+        super.setTable("PG_TRX_NTS_PG");
+        super.setColumns("*");
+        super.addWhere("trxId", trxId);
+        RecordSet rset = super.search();
+        super.initRecord();
+        return rset;
+    }
 }
