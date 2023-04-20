@@ -158,7 +158,7 @@
 												<label class="control-label col-sm-4 req-label">가상계좌별<br>1일입금 제한횟수</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
-														<input type="text" class="form-control currency limitDayCnt" maxlength="3" name="limitDayCnt" placeholder="" value="2">
+														<input type="text" class="form-control currency limitDayCnt" maxlength="3" name="limitDayCnt" placeholder="" value="0">
 														<span class="input-group-addon">회</span>
 													</div>
 												</div>
