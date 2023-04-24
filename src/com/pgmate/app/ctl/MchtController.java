@@ -1600,6 +1600,9 @@ public class MchtController {
 		dao.setColumns("issuerBank, bankCd, COUNT(*) as cnt");
 		dao.setGroupBy("bankCd");
 		dao.setOrderBy("bankCd");
+		String vactBankCd = new MchtVactDAO().getByMchtId(mchtId).getString("vactBankCd");
+		dao.setWhere(" bankCd = '"+vactBankCd+"'");
+
 		request.setAttribute("UNUSED_ACCNT_MAP", dao.search().getRows());
 
 		return new ModelAndView("/mcht/vact/issue", "DATAMAP", vartDtlList);
@@ -1621,6 +1624,8 @@ public class MchtController {
 		dao.setColumns("issuerBank, bankCd, COUNT(*) as cnt");
 		dao.setGroupBy("bankCd");
 		dao.setOrderBy("bankCd");
+		String vactBankCd = new MchtVactDAO().getByMchtId(cpRequest.getKeyValue("mchtId")).getString("vactBankCd");
+		dao.setWhere(" bankCd = '"+vactBankCd+"'");
 		request.setAttribute("UNUSED_ACCNT_MAP", dao.search().getRows());
 		//return new ModelAndView("/mcht/vact/issue/list", "DATAMAP", vartDtlList);
 		return new CPRUtil(cpRequest).dataList(rset,vactDtlDAO).setView(request,"/mcht/vact/issue/list","");
