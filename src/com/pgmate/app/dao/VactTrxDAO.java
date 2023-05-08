@@ -88,7 +88,7 @@ public class VactTrxDAO extends DAO {
 
 	public RecordSet getAuthFeeSum(List<Data> datas, String authType, String mchtId) {
 		super.setTable("PG_TOTAL_AUTH");
-		super.setColumns("COUNT(*) AS count, SUM(authFee) AS authFeeSum");
+		super.setColumns("COUNT(*) AS count, SUM(authFee) + SUM(authFeeVat) AS authFeeSum");
 		CPUtil.setDAO(this, datas);
 
 		if(!authType.equals("")) {
