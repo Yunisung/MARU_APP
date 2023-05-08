@@ -99,8 +99,8 @@
                     <td>${entry.holderName}</td>
                     <td>${entry.authType}</td>
                     <td>${entry.resultMsg}</td>
-                    <td>${entry.authFee}</td>
-                    <td>${entry.authFeeVat}</td>
+                    <td><fmt:formatNumber type="number" value="${entry.authFee}" pattern="#,##0" /></td>
+                    <td><fmt:formatNumber type="number" value="${entry.authFeeVat}" pattern="#,##0" /></td>
                     <td>${entry.stlStatus}</td>
                     <td>${entry.stlId}</td>
                     <td>${entry.stlDay}</td>
