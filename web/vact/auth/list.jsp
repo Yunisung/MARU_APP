@@ -95,7 +95,7 @@
                     <td>${entry.mchtName}</td>
                     <td>${entry.mchtId}</td>
                     <td>${entry.vactAccount}</td>
-                    <td>${entry.withdrawBankName}</td>
+                    <td>${entry.bankName}</td>
                     <td>${entry.holderName}</td>
                     <td>${entry.authType}</td>
                     <td>${entry.resultMsg}</td>
