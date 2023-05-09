@@ -106,11 +106,12 @@ public class VactController {
                 data.put("vactBank", bankName);*/
 
                 String account = recordSet.getRowFirst().getString("vactAccount");
-                SharedMap<String, Object> regMap = vactTrxDAO.withdrawAccount(account);
-
                 data.put("vactAccount", account);
-                data.put("withdrawBankName", regMap.getString("withdrawBankNm"));
-                data.put("holderName", regMap.getString("holderName"));
+
+                //230509_PYS : 아래로직은 출금계좌등록된것만 가져오기때문에, 은행과 예금주를 TOTAL_AUTH에서 가져오도록 한다.
+//                SharedMap<String, Object> regMap = vactTrxDAO.withdrawAccount(account);
+//                data.put("withdrawBankName", regMap.getString("withdrawBankNm"));
+//                data.put("holderName", regMap.getString("holderName"));
             }
         }
 
