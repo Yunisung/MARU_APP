@@ -44,17 +44,20 @@ public class ChargeSettleDAO extends DAO{
 		return search();
 	}
 	
-	public RecordSet search(List<Data> datas){ 
-		CPUtil.setDAO(this, datas);			//DATA to CONDITION 
+	public RecordSet search(List<Data> datas){
+		CPUtil.setDAO(this, datas);			//DATA to CONDITION
 		return super.search();				//단일 검색
 	}
 	
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
-		
-		super.setColumns("trxId, name, mchtId, trxType, trxUnit, trxDay, trxTime, amount, fee, feeVat, bankFee, netAmount, balance, trackId, refId, bankCd, bankName, "
-				+ "FN_AES_DEC(account) as account, FN_AES_DEC(holder) as holder, recordInfo, summary, regId, regDay, regDate, vactBankCd");
-		
+
+		super.setTable("(SELECT A.*, B.vactBankCd FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN PG_MCHT_MNG_VACT B ON A.mchtId = B.mchtId) C");
+		super.setColumns("C.*");
+
+//		super.setColumns("trxId, name, mchtId, trxType, trxUnit, trxDay, trxTime, amount, fee, feeVat, bankFee, netAmount, balance, trackId, refId, bankCd, bankName, "
+//				+ "FN_AES_DEC(account) as account, FN_AES_DEC(holder) as holder, recordInfo, summary, regId, regDay, regDate, vactBankCd");
+
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 		
