@@ -120,6 +120,14 @@
 																<input type="text" class="form-control input-sm trackId" name="trackId" data-oper="lk" placeholder="주문번호">
 															</div>
 														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">가상계좌발행은행</label>
+															<select class="selectpicker col-lg-8" name="vactBankCd" data-oper="eq">
+																<option value="">-- 전체 -- </option>
+																<option value="089">케이뱅크</option>
+																<option value="039">경남은행</option>
+															</select>
+														</div>
 													</div>
 												</div>
 												<div class="form-actions nobg right">
