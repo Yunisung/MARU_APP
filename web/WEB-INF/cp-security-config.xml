@@ -52,8 +52,9 @@
 		<intercept-url pattern="/trx/cap/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
 		<intercept-url pattern="/trx/pay/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
 		<intercept-url pattern="/trx/err/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
-		<intercept-url pattern="/vact/dtl/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT', 'ROLE_TMN')"/>
-		<intercept-url pattern="/vact/trx/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT', 'ROLE_TMN')"/>
+		<intercept-url pattern="/vact/dtl/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/vact/trx/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/vact/auth/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT', 'ROLE_TMN')"/>
 		<intercept-url pattern="/vact/blackList/add.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/vact/blackList/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/trx/pisp/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT')"/>

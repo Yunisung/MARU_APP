@@ -83,6 +83,16 @@
 												</script>
 											</div>
 											<div class="form-group col-sm-6">
+												<label class="control-label input-sm col-sm-4 req-label">가상계좌 은행</label>
+												<select name="vactBankCd" class="selectpicker col-sm-6">
+													<option value="089" selected>케이뱅크</option>
+													<option value="039">경남은행</option>
+												</select>
+												<script type="text/javascript">
+													document.forms.writeFrm.vactBankCd.value = '${DATAMAP.vactBankCd}'
+												</script>
+											</div>
+											<div class="form-group col-sm-6">
 												<label class="control-label input-sm col-sm-4 req-label">발행유형</label>
 												<select name="issueType" class="selectpicker col-sm-6">
 													<option value="임시" selected>임시</option>
@@ -146,7 +156,7 @@
 												<label class="control-label col-sm-4 req-label">1회한도</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
-														<input type="text" class="form-control limitOnce comma" data-oper="comma" maxlength="10" name="limitOnce" placeholder="" value="${DATAMAP.limitOnce }">
+														<input type="text" class="form-control limitOnce currency" data-oper="comma" maxlength="10" name="limitOnce" placeholder="" value="${DATAMAP.limitOnce }">
 														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
 													</div>
 												</div>
@@ -155,7 +165,7 @@
 												<label class="control-label col-sm-4 req-label">1일한도</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
-														<input type="text" class="form-control limitDay comma" data-oper="comma" maxlength="14" name="limitDay" placeholder="" value="${DATAMAP.limitDay }">
+														<input type="text" class="form-control limitDay currency" data-oper="comma" maxlength="14" name="limitDay" placeholder="" value="${DATAMAP.limitDay }">
 														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
 													</div>
 												</div>
@@ -429,7 +439,7 @@
 										<script type="text/javascript">
 											document.forms.writeFrm.authType.value = '${DATAMAP.authType}'
 										</script>
-										<div class="form-group col-sm-6">
+										<%--<div class="form-group col-sm-6">
 											<label class="control-label col-sm-4 req-label">실명인증<br>수수료</label>
 											<div class="col-sm-6">
 												<div class="input-group input-group-sm">
@@ -464,7 +474,7 @@
 													<span class="input-group-addon"><i class="fa fa-krw"></i></span>
 												</div>
 											</div>
-										</div>
+										</div>--%>
 										<div id="respiteCntDiv" class="form-group col-sm-6">
 											<label class="control-label col-sm-4 req-label">API인증<br>인증유예횟수</label>
 											<div class="col-sm-6">
@@ -659,7 +669,7 @@
 	  			}
 		  	})
 		});
-		
+
 		$('#agencyType').on('change', function() {
 			var selected = $(this).find("option:selected").val();
 			if(selected == '') return false;
@@ -674,7 +684,7 @@
 	  			}
 		  	})
 		});
-		
+
 		$('#salesType').on('change', function() {
 			var selected = $(this).find("option:selected").val();
 			if(selected == '') return false;

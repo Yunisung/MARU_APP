@@ -31,6 +31,7 @@
 				<tr>
 					<th>No</th>
 					<th data-sort="string">송금일시</th>
+					<th data-sort="string">출금은행</th>
 						<th data-sort="string">전문번호</th>
 						<th data-sort="string">송금금액</th>
 						<th data-sort="string">입금정보</th>
@@ -58,7 +59,18 @@
 					<tr>
 						<td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
 							<td class="date">${entry.sendDate}${entry.sendTime}</td>
-							<td>${entry.bankCd},${entry.seqNo}</td>
+							<td>
+								<c:choose>
+									<c:when test="${entry.bankCd=='089'}">
+										케이뱅크
+									</c:when>
+									<c:when test="${entry.bankCd=='039'}">
+										경남은행
+									</c:when>
+								</c:choose>
+
+							</td>
+							<td>${entry.seqNo}</td>
 							<td class="pull-right"><fmt:formatNumber type="number" value="${entry.amount}" pattern="#,##0" /></td>
 							<td>${entry.recvBankName},${entry.recvAccount}</td>
 							<td>${entry.recvHolder}</td>

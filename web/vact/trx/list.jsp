@@ -58,7 +58,7 @@
 				</c:if>
 				<c:forEach var="entry" items="${CPR.data}" varStatus="status">
 					<tr>
-						<td>${status.count}</td>
+						<td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
 						<td class="link_modal" data-url="/vact/trx/view/${entry.vactId}">${entry.vactId}</td>
 						<td>${entry.issueId}</td>
 						<td title="${entry.mchtId }">${entry.mchtName}</td>

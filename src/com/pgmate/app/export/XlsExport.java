@@ -128,6 +128,9 @@ public class XlsExport {
 		add("totPayOutFee");
 		add("bankFee");
 		add("diffAmt");
+
+		add("authFee");
+		add("authFeeVat");
 	}};
 	
 	ArrayList<String> doubleArray = new ArrayList<String>() {{

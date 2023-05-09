@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
  * @author Administrator
  *
  */
-//KJM : 가상계좌 거래내역
 public class VactTrxDAO extends DAO {
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.VactTrxDAO.class );
 	private static final String TABLE = "VW_VACT_TRX";
@@ -49,13 +48,98 @@ public class VactTrxDAO extends DAO {
 		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
 	}
 
-	//KJM : 가상계좌 거래내역들의 금액 총 합계
 	public RecordSet trxSum(List<Data> datas,Page page) {
 		super.setColumns("SUM(amount) AS amount");
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.search();	//LIST PAGING 검색 
 	}
+
+	/**
+	 * 인증수수료 관련
+	 */
+	public RecordSet authList(List<Data> datas, Page page) {
+		super.setTable("PG_TOTAL_AUTH");
+
+		page = CPUtil.correctPage(page);
+		CPUtil.setDAO(this, datas); //DATA to CONDITION
+		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
+	}
+
+	public RecordSet getVactAuth(String totalAuthId) {
+		super.setTable("PG_VACT_AUTH");
+		super.setColumns("*");
+		super.setWhere("totalAuthId ='"+totalAuthId+"'");
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset;
+	}
+
+	public SharedMap<String,Object> getBankName(String bankCd){
+		super.setTable("PG_CODE");
+		super.setColumns("*");
+		super.addWhere("`alias`","BANK", eq);
+		super.addWhere("code", bankCd, eq);
+		super.setOrderBy("");
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst();
+	}
+
+	public RecordSet getAuthFeeSum(List<Data> datas, String authType, String mchtId) {
+		super.setTable("PG_TOTAL_AUTH");
+		super.setColumns("COUNT(*) AS count, SUM(authFee) + SUM(authFeeVat) AS authFeeSum");
+		CPUtil.setDAO(this, datas);
+
+		if(!authType.equals("")) {
+			super.addWhere("authType", authType, eq);
+		}
+
+		if(!mchtId.equals("")) {
+			super.addWhere("mchtId", mchtId, eq);
+		}
+
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset;
+	}
+
+	public boolean updateAuthStlDay(String authId, String stlDay) {
+		this.setTable("PG_TOTAL_AUTH");
+		this.setRecord("stlDay", stlDay);
+		this.setWhere("authId IN (" + authId + ")");
+
+		boolean updated = super.update();
+
+		super.initRecord();
+
+		return updated;
+	}
+
+	public boolean updateAuthStlStatus(String authId) {
+		this.setTable("PG_TOTAL_AUTH");
+		this.setRecord("stlStatus", "정산완료");
+		this.setWhere("authId IN (" + authId + ")");
+
+		boolean updated = super.update();
+
+		super.initRecord();
+
+		return updated;
+	}
+
+	public boolean updateAuthSummary(String authId, String summary) {
+		this.setTable("PG_TOTAL_AUTH");
+		this.setRecord("summary", summary);
+		this.setWhere("authId IN (" + authId + ")");
+
+		boolean updated = super.update();
+
+		super.initRecord();
+
+		return updated;
+	}
+
 	/**
 	 * 블랙리스트 조회
 	 * @param datas
@@ -129,7 +213,7 @@ public class VactTrxDAO extends DAO {
 	 * @return
 	 */
 	public SharedMap<String, Object> withdrawAccount(String account){
-		super.setTable("PG_VACT_REG a, PG_CODE b");
+		super.setTable("HT_VACT_REG a, PG_CODE b");
 		super.setColumns("FN_AES_DEC(withdrawAccount) AS withdrawAccountDec, withdrawBankCd, b.codeName as withdrawBankNm, holderName");
 		super.addWhere("a.withdrawBankCd = b.code and b.alias = 'BANK'");
 		super.addWhere("account",account);

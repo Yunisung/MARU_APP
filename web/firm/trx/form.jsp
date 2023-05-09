@@ -130,6 +130,14 @@
 																<input type="text" class="form-control input-sm" name="filler" data-oper="eq" placeholder="거래번호">
 															</div>
 														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">출금은행</label>
+															<select class="selectpicker col-lg-8" name="bankCd" data-oper="eq">
+																<option value="" selected>전체</option>
+																<option value="089">케이뱅크</option>
+																<option value="039">경남은행</option>
+															</select>
+														</div>
 													</div>
 												</div>
 												<div class="form-actions nobg right">

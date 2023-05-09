@@ -22,14 +22,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 //@Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.security.CustomAuthenticationProvider.class );
-    private SharedMap<String, Long> loginMap = new SharedMap<String, Long>();
 
     CustomUserDetail isValidUser(String memberId, String memberPw, String smsKey, String ip, String userAgent) {
 
@@ -107,59 +105,27 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 throw new BadCredentialsException("INVALIDKEY||인증번호가 올바르지 않습니다.||MEMBER");
             }
         } else {
-
-            //PYS : 중복로그인금지
-            if(!loginMap.containsKey(memberId)) {
-                Date date = new Date();
-                loginMap.put(memberId, date.getTime());
-
-                throw new BadCredentialsException("UNAUTHORIZED||SMS 인증이 필요합니다.||MEMBER");
-            } else {
-
-                long prevtime = loginMap.get(memberId);
-                Date date = new Date();
-                long curtime = date.getTime();
-
-                long diff = curtime - prevtime;
-                logger.debug("loginMap diff : {}", diff);
-
-                //PYS : 1초안에 같은 요청이 들어오면 무시
-                if(diff < 1000) {
-                    throw new BadCredentialsException("");
-                } else {
-                    throw new BadCredentialsException("UNAUTHORIZED||SMS 인증이 필요합니다.||MEMBER");
+            UserIpDAO userIpDAO = new UserIpDAO();
+            /* 인증된 아이피인지 확인 */
+            rset = userIpDAO.getByActiveIp(memberId);
+            if (rset.size() < 1) {
+                logger.info("----- loing/in IP ADD -----");
+                throw new BadCredentialsException("UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER");
+            }
+            boolean authorized = false;
+            List<SharedMap<String, Object>> ipList = rset.getRows();
+            for (SharedMap<String, Object> eachMap : ipList) {
+                if (eachMap.getString("ipAddr").equals(ip)) {
+                    authorized = true;
+                    logger.debug("EXPIREDAY UPDATE : {}", userIpDAO.updateExpireDay(memberId, ip));
+                    break;
                 }
-
             }
 
-            //PYS_0421 : 로그인마다 sms인증 하도록 변경
-//            UserIpDAO userIpDAO = new UserIpDAO();
-//            /* 인증된 아이피인지 확인 */
-//            rset = userIpDAO.getByActiveIp(memberId);
-//            if (rset.size() < 1) {
-//                logger.info("----- loing/in IP ADD -----");
-//                throw new BadCredentialsException("UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER");
-//            }
-//            boolean authorized = false;
-//            List<SharedMap<String, Object>> ipList = rset.getRows();
-//            for (SharedMap<String, Object> eachMap : ipList) {
-//                if (eachMap.getString("ipAddr").equals(ip)) {
-//                    authorized = true;
-//                    logger.debug("EXPIREDAY UPDATE : {}", userIpDAO.updateExpireDay(memberId, ip));
-//                    break;
-//                }
-//            }
-//
-//            if (!authorized) {
-//                throw new BadCredentialsException("UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER");
-//            }
+            if (!authorized) {
+                throw new BadCredentialsException("UNAUTHORIZED||등록되지 않은 IP로 접속요청.<br>SMS 인증이 필요합니다.||MEMBER");
+            }
         }
-
-        if(loginMap.containsKey(memberId)) {
-            loginMap.remove(memberId);
-        }
-
-        logger.debug("loginMap : {}", loginMap.toJson());
 
         logger.info("----- login/in smsKey Check End -----");
 

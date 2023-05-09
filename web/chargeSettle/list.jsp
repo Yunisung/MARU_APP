@@ -34,6 +34,7 @@
 					<th>가맹점아이디</th>
 					<th>주문번호</th>
 					<th>참조번호</th>
+					<th>가상계좌발행은행</th>
 					<th>입출금원금</th>
 					<th>수수료</th>
 					<th>수수료부가세</th>
@@ -62,6 +63,10 @@
 						<td>${entry.mchtId}</td>
 						<td>${entry.trackId}</td>
 						<td>${entry.refId}</td>
+						<c:choose>
+							<c:when test="${entry.vactBankCd eq '089'}"><td>케이뱅크</td></c:when>
+							<c:when test="${entry.vactBankCd eq '039'}"><td>경남은행</td></c:when>
+						</c:choose>
 						<td><fmt:formatNumber type="number" value="${entry.amount}" pattern="#,##0" /></td>
 						<td><fmt:formatNumber type="number" value="${entry.fee}" pattern="#,##0" /></td>
 						<td><fmt:formatNumber type="number" value="${entry.feeVat}" pattern="#,##0" /></td>

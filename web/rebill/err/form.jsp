@@ -1,7 +1,7 @@
-<%@page contentType="text/html; charset=UTF-8"%> 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%> 
+<%@page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
@@ -10,7 +10,7 @@
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
 <head>
-<c:import url="/include/head.jsp" />	
+<c:import url="/include/head.jsp" />
 </head>
 <!-- END HEAD -->
 <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
@@ -54,7 +54,7 @@
 											<form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/rebill/err/list" method="post">
 												<input type="hidden" data-reg="false" name="reason" value="승인실패내역">
 												<input type="hidden" data-reg="false" name="thead" value="trxId:거래번호,trxType:거래구분,mchtId:가맹점ID,tmnId:터미널ID,trackId:거래추적번호,payerName:구매자,payerEmail:구매자Email,payerTel:구매자전화번호,amount:금액,issuer:매입사,last4:카드 뒷자리4,reqDay:거래요청일,reqTime:거래요청시간,van:VAN,vanId:VANID,vanTrxId:VAN거래번호,vanResultCd:VAN결과코드,vanResultMsg:VAN결과메시지">
-												
+
 												<div class="form-body">
 													<div class="row">
 														<div class="form-group pg-form-group">
@@ -77,7 +77,7 @@
 																<input type="text" class="form-control input-sm" name="amount" data-oper="eq" placeholder="승인금액">
 															</div>
 														</div>
-														
+
 														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">카드뒤4자리</label>
 															<div class="col-lg-8">
@@ -141,7 +141,7 @@
 									<!-- 검색 폼 종료 -->
 									<!-- 내용 폼 시작 -->
 									<div class="portlet light portlet-form" id="searchResult">
-										
+
 									</div>
 									<!-- 내용 폼 종료 -->
 								</div>
@@ -156,15 +156,15 @@
 	<c:import url="/include/javascript.jsp" />
 
 	<script type="text/javascript">
-	
+
 		//2022.06.27 현재년도 기준 5년 이전 년도 선택 불가 추가
 		var nowYear = new Date().getFullYear() - 5;
-		
+
 		$('.now-date').datepicker({
 			format: 'yyyy-mm-dd',			// 날짜 포맷
 			startDate: new Date(nowYear.toString())		// 5년 이전 년도 선택 불가
 		});
-	
+
 		gradeSelector('searchForm', '${CP_SESSION.grade}');
 		setTimeout(function(){ searchForList(); }, 100); //검색 실행
 		$('#nav-trx').addClass('active');

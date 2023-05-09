@@ -7,13 +7,17 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import com.pgmate.app.security.CustomUserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +32,6 @@ import com.pgmate.app.dao.UserIpDAO;
 import com.pgmate.app.interceptor.SessionExclude;
 import com.pgmate.app.session.CPSession;
 import com.pgmate.app.util.CPUtil;
-import com.pgmate.app.util.InfoBankSMS;
 import com.pgmate.app.util.SessionUtil;
 import com.pgmate.app.util.WebCache;
 import com.pgmate.lib.dao.RecordSet;
@@ -256,7 +259,8 @@ public class LoginController {
 		return "OK||"+cpSession.getTargetURL();
 		
 	}
-	
+
+
 	@RequestMapping(value = "/login/out", method = RequestMethod.GET)
 	@SessionExclude
 	public String out(HttpServletRequest request) {

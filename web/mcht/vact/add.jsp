@@ -82,6 +82,13 @@
 												</select>
 											</div>
 											<div class="form-group col-sm-6">
+												<label class="control-label input-sm col-sm-4 req-label">가상계좌 은행</label>
+												<select name="vactBankCd" class="selectpicker col-sm-6">
+													<option value="089" selected>케이뱅크</option>
+													<option value="039">경남은행</option>
+												</select>
+											</div>
+											<div class="form-group col-sm-6">
 												<label class="control-label input-sm col-sm-4 req-label">발행유형</label>
 												<select name="issueType" class="selectpicker col-sm-6">
 													<option value="임시" selected>임시</option>
@@ -151,7 +158,7 @@
 												<label class="control-label col-sm-4 req-label">가상계좌별<br>1일입금 제한횟수</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
-														<input type="text" class="form-control currency limitDayCnt" maxlength="3" name="limitDayCnt" placeholder="" value="2">
+														<input type="text" class="form-control currency limitDayCnt" maxlength="3" name="limitDayCnt" placeholder="" value="0">
 														<span class="input-group-addon">회</span>
 													</div>
 												</div>
@@ -404,7 +411,7 @@
 													<option value="1">API인증</option>
 												</select>
 											</div>
-											<div class="form-group col-sm-6">
+											<%--<div class="form-group col-sm-6">
 												<label class="control-label col-sm-4 req-label">실명인증<br>수수료</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
@@ -439,7 +446,7 @@
 														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
 													</div>
 												</div>
-											</div>
+											</div>--%>
 											<div id="respiteCntDiv" class="form-group col-sm-6">
 												<label class="control-label col-sm-4 req-label">API인증<br>인증유예횟수</label>
 												<div class="col-sm-6">

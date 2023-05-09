@@ -74,8 +74,8 @@
 													<c:if test="${CP_SESSION.grade eq '본사'}">
 														<li class="tab_svc"><a href="#tab_svc" data-toggle="tab" aria-expanded="false"> 서비스 </a></li>
 														
-														<li class="tab_phone"><a href="#tab_phone" data-toggle="tab" aria-expanded="false"> 휴대폰결제 </a></li>
-														
+<%--														<li class="tab_phone"><a href="#tab_phone" data-toggle="tab" aria-expanded="false"> 휴대폰결제 </a></li>--%>
+														<li class="tab_totalAuth"><a href="#tab_totalAuth" data-toggle="tab" aria-expanded="false"> 통합인증 </a></li>
 														<c:if test="${DATASVCMAP.virAccount eq '사용'}">
 															<li class="tab_virAccount"><a href="#tab_virAccount" data-toggle="tab" aria-expanded="false"> 가상계좌 </a></li>
 														</c:if>
@@ -1346,6 +1346,7 @@
 																		<tr>
 																			<th>No</th>
 																			<th data-sort="string">지불사용여부</th>
+																			<th data-sort="string">가상계좌은행</th>
 																			<th data-sort="string">정산유형</th>
 																			<th data-sort="string">수수료타입</th>
 																			<th data-sort="string">가맹점 수수료</th>
@@ -1354,7 +1355,6 @@
 																			<th data-sort="string">대행사 수수료율</th>
 																			<th data-sort="string">에이전시 수수료</th>
 																			<th data-sort="string">에이전시 수수료율</th>
-																			<th data-sort="string">통합인증 수수료</th>
 																			<th data-sort="string">1회한도</th>
 																			<th data-sort="string">1일한도</th>
 																			<th data-sort="string">입금제한횟수</th>
@@ -1370,6 +1370,10 @@
 																		<tr>
 																			<td>${fn:length(HT_VACT_MNG_MAP) + 1}</td>
 																			<td>${PG_VACT_MNG_MAP.status}</td>
+																			<c:choose>
+																				<c:when test="${PG_VACT_MNG_MAP.vactBankCd eq '089'}"><td>케이뱅크</td></c:when>
+																				<c:when test="${PG_VACT_MNG_MAP.vactBankCd eq '039'}"><td>경남은행</td></c:when>
+																			</c:choose>
 																			<td>${PG_VACT_MNG_MAP.settleType}</td>
 																			<c:choose>
 																				<c:when test="${PG_VACT_MNG_MAP.feeType eq '0'}"><td>정액</td></c:when>
@@ -1382,7 +1386,6 @@
 																			<td><fmt:formatNumber value="${PG_VACT_MNG_MAP.distRate * 100}" pattern="0.000"/> %</td>
 																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.agencyFee}" pattern="#,##0"/></td>
 																			<td><fmt:formatNumber value="${PG_VACT_MNG_MAP.agencyRate * 100}" pattern="0.000"/> %</td>
-																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.totalAuthFee}" pattern="#,##0" /></td>
 																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.limitOnce}" pattern="#,##0" /></td>
 																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.limitDay}" pattern="#,##0" /></td>
 																			<td><fmt:formatNumber type="number" value="${PG_VACT_MNG_MAP.depositLimitCnt}" pattern="#,##0" /></td>
@@ -1395,6 +1398,10 @@
 																			<tr>
 																				<td>${fn:length(HT_VACT_MNG_MAP) - status.index}</td>
 																				<td>${entry.status}</td>
+																				<c:choose>
+																					<c:when test="${entry.vactBankCd eq '089'}"><td>케이뱅크</td></c:when>
+																					<c:when test="${entry.vactBankCd eq '039'}"><td>경남은행</td></c:when>
+																				</c:choose>
 																				<td>${entry.settleType}</td>
 																				<c:choose>
 																					<c:when test="${entry.feeType eq '0'}"><td>정액</td></c:when>
@@ -1407,7 +1414,6 @@
 																				<td><fmt:formatNumber value="${entry.distRate * 100}" pattern="0.000"/> %</td>
 																				<td><fmt:formatNumber type="number" value="${entry.agencyFee}" pattern="#,##0"/></td>
 																				<td><fmt:formatNumber value="${entry.agencyRate * 100}" pattern="0.000"/> %</td>
-																				<td><fmt:formatNumber type="number" value="${entry.totalAuthFee}" pattern="#,##0" /></td>
 																				<td><fmt:formatNumber type="number" value="${entry.limitOnce}" pattern="#,##0" /></td>
 																				<td><fmt:formatNumber type="number" value="${entry.limitDay}" pattern="#,##0" /></td>
 																				<td><fmt:formatNumber type="number" value="${entry.depositLimitCnt}" pattern="#,##0" /></td>
@@ -2062,6 +2068,107 @@
 														</form>
 													</div>
 													<!-- 휴대폰 결제 끝 -->
+													<!-- 통합인증 탭 시작 -->
+													<div class="tab-pane" id="tab_totalAuth">
+														<form class="form-horizontal form" role="form">
+															<c:if test="${empty TOTALAUTH_MAP}">
+																<div class="form-actions">
+																	<div class="row">
+																		<div class="col-md-12">
+																			<button type="button" class="btn btn-sm green pull-right" onclick="location.href='/mcht/totalAuth/add/${DATAMAP.mchtId}';">
+																				<i class="fa fa-pencil"></i> 통합인증 설정
+																			</button>
+																		</div>
+																		<div class="col-md-6"></div>
+																	</div>
+																</div>
+															</c:if>
+															<c:if test="${not empty TOTALAUTH_MAP}">
+																<div class="form-body">
+																	<div class="form-group col-sm-12 form-subtitle">
+																		<label><i class="fa fa-reorder"></i> 기본 정보</label>
+																	</div>
+																	<div class="row">
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">정산유형</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.settleType}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">주민번호체크</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.identityCheck}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">실명인증 사용</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.ownerAuth}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">실명인증 수수료</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.ownerAuthFee}</p>원
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">계좌 1원인증 사용</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.accountAuth}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">계좌 1원인증 수수료</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.accountAuthFee}</p>원
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">ARS인증 사용</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.arsAuth}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">ARS인증 수수료</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.arsAuthFee}</p>원
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="form-actions">
+																	<div class="row">
+																		<div class="col-md-12">
+																			<button type="button" class="btn btn-sm green pull-right" onclick="location.href='/mcht/totalAuth/modify/${DATAMAP.mchtId}';">
+																				<i class="fa fa-pencil"></i> 통합인증 수정
+																			</button>
+																		</div>
+																		<div class="col-md-6"></div>
+																	</div>
+																</div>
+																</c:if>
+														</form>
+													</div>
+													<!-- 통합인증 탭 끝 -->
 													<!-- 가상계좌 정보 탭 시작 -->
 													<div class="tab-pane" id="tab_virAccount">
 														<form class="form-horizontal form" role="form">
@@ -2084,6 +2191,16 @@
 																		<label class="control-label col-md-3">상태</label>
 																		<div class="col-md-9">
 																			<p class="form-control-static">${VACT_MAP.status}</p>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3">가상계좌은행</label>
+																		<div class="col-md-9">
+																			<p class="form-control-static">
+																				<c:if test="${VACT_MAP.vactBankCd == '089'}">케이뱅크</c:if>
+																				<c:if test="${VACT_MAP.vactBankCd == '039'}">경남은행</c:if>
 																		</div>
 																	</div>
 																</div>
@@ -2513,8 +2630,8 @@
 																			</div>
 																		</div>
 																	</div>
-																	
-																	<div class="row">
+
+																	<%--<div class="row">
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">실명인증<br>원가수수료</label>
@@ -2536,7 +2653,7 @@
 																			</div>
 																		</div>
 																	</div>
-																	
+
 																	<div class="row">
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
@@ -2559,7 +2676,7 @@
 																			</div>
 																		</div>
 																	</div>
-																	
+
 																	<div class="row">
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
@@ -2591,7 +2708,7 @@
 																				</div>
 																			</div>
 																		</div>
-																	</div>
+																	</div>--%>
 																	<div class="row">
 																		<div class="col-md-6">
 																			<div id="respiteCntDiv" class="form-group pg-view-group">
@@ -3041,9 +3158,9 @@
 																		</div>
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
-																				<label class="control-label col-md-3"></label>
+																				<label class="control-label col-md-3">보류금액</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static"></p>
+																					<p class="form-control-static digits">${DATACHARGEMAP.transferLimit}</p>
 																				</div>
 																			</div>
 																		</div>

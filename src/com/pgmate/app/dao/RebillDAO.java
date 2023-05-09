@@ -5,7 +5,6 @@ import com.pgmate.app.model.ajax.Page;
 import com.pgmate.app.util.CPUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
-import sun.plugin2.gluegen.runtime.CPU;
 
 import java.util.List;
 

@@ -60,6 +60,7 @@
 												<div class="form-body row">
 													<div class="form-group col-sm-12 form-subtitle">
 														<label><i class="fa fa-reorder"></i> 기본 정보 입력</label>
+														<a href="javascript:dufilicationMchtData();" class="btn btn-sm pull-right"><i class="fa fa-check"></i> 가맹점 기본정보와 동일</a>
 													</div>
 													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">터미널 아이디</label>
@@ -185,6 +186,7 @@
 													<!-- 영수증 정보 입력 -->
 													<div class="form-group col-sm-12 form-subtitle">
 														<label><i class="fa fa-bank"></i> 영수증 정보 입력</label>
+														<a href="javascript:dufilicationRctData();" class="btn btn-sm pull-right"><i class="fa fa-check"></i> 기본정보와 동일</a>
 													</div>
 													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">사업자번호</label>
@@ -345,6 +347,40 @@
 				});
 			}
 		});
+
+		function dufilicationMchtData() {
+			$('input[name="name"]').val('${MCHTMAP.name}');
+			$('input[name="ceoName"]').val('${MCHTMAP.ceoName}');
+			$('input[name="identity"]').val('${MCHTMAP.decIdentity}');
+			$('input[name="ceoPhone"]').val('${MCHTMAP.tel2}');
+			$('input[name="tel"]').val('${MCHTMAP.tel1}');
+			$('input[name="email"]').val('${TAXMAP.email}');
+			$('select[name="bankCd"]').val('${TAXMAP.bankCd}');
+			$('.selectpicker').selectpicker('refresh');
+
+			var bankId = $('select[name="bankCd"]').val();
+			var bankName = $('select[name="bankCd"]').find('option[value="'+bankId+'"]').text();
+			bankName = bankName == '은행 선택' ? '' : bankName;
+			$('input[name="bankName"]').val(bankName);
+
+			$('input[name="account"]').val('${TAXMAP.account}');
+			$('input[name="accntHolder"]').val('${TAXMAP.accntHolder}');
+			$('input[name="zip"]').val('${MCHTMAP.zip}');
+			$('input[name="addr1"]').val('${MCHTMAP.addr1}');
+			$('input[name="addr2"]').val('${MCHTMAP.addr2}');
+		}
+		function dufilicationRctData() {
+			var nameVal = $('input[name="name"]').val();
+			var ceoName = $('input[name="ceoName"]').val();
+			var addr1 = $('input[name="addr1"]').val();
+			var addr2 = $('input[name="addr2"]').val();
+			var tel = $('input[name="tel"]').val();
+
+			if (nameVal) $('input[name="rctName"]').val(nameVal);
+			if (ceoName) $('input[name="rctCeoName"]').val(ceoName);
+			if (addr1) $('input[name="rctAddr"]').val(addr1+" "+addr2);
+			if (tel) $('input[name="rctTelNo"]').val(tel);
+		}
 		
 		$('#writeFrm .btn-addr').click(function() {
 			var frm = $('#writeFrm');

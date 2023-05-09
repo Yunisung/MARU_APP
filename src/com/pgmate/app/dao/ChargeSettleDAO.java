@@ -34,7 +34,7 @@ public class ChargeSettleDAO extends DAO{
 	
 	public RecordSet getById(String trxId){
 		super.setColumns("trxId, name, mchtId, trxType, trxUnit, trxDay, trxTime, amount, fee, feeVat, bankFee, netAmount, balance, trackId, refId, bankCd, bankName, "
-				+ "FN_AES_DEC(account) as account, FN_AES_DEC(holder) as holder, recordInfo, summary, regId, regDay, regDate");
+				+ "FN_AES_DEC(account) as account, FN_AES_DEC(holder) as holder, recordInfo, summary, regId, regDay, regDate, vactBankCd");
 		addWhere("trxId", trxId, eq);
 		return search();
 	}
@@ -53,7 +53,7 @@ public class ChargeSettleDAO extends DAO{
 		page = CPUtil.correctPage(page);
 		
 		super.setColumns("trxId, name, mchtId, trxType, trxUnit, trxDay, trxTime, amount, fee, feeVat, bankFee, netAmount, balance, trackId, refId, bankCd, bankName, "
-				+ "FN_AES_DEC(account) as account, FN_AES_DEC(holder) as holder, recordInfo, summary, regId, regDay, regDate");
+				+ "FN_AES_DEC(account) as account, FN_AES_DEC(holder) as holder, recordInfo, summary, regId, regDay, regDate, vactBankCd");
 		
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 

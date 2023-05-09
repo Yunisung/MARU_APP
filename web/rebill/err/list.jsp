@@ -46,7 +46,7 @@
 				</c:if>
 				<c:forEach var="entry" items="${CPR.data}" varStatus="status">
 					<tr>
-					
+
 						<td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
 						<td class="link_modal" data-url="/rebill/err/view/${entry.trxId}">${entry.trxId}</td>
 						<td>${entry.mchtId}</td>
