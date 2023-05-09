@@ -2487,6 +2487,22 @@
 																		</div>
 																	</div>
 																</div>
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3">가상계좌 상태값 전달 주소(URL)</label>
+																		<div class="col-md-9">
+																			<p class="form-control-static">${VACT_MAP.statusHookAddr}</p>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3"></label>
+																		<div class="col-md-9">
+																			<p class="form-control-static"></p>
+																		</div>
+																	</div>
+																</div>
 																<c:if test="${VACT_MAP.issueType eq '영구'}">
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">

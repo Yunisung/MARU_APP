@@ -137,6 +137,12 @@
 												</div>
 											</div>
 											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4">가상계좌 상태값 전달 주소(URL)</label>
+												<div class="col-sm-6">
+													<input type="text" class="form-control input-sm" maxlength="100" name="statusHookAddr" placeholder="api.example.com" value="">
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
 												<label class="control-label col-sm-4 req-label">1회한도</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
