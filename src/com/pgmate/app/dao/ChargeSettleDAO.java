@@ -52,7 +52,8 @@ public class ChargeSettleDAO extends DAO{
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 
-		super.setTable("(SELECT A.*, B.vactBankCd FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN PG_MCHT_MNG_VACT B ON A.mchtId = B.mchtId) C");
+		super.setTable("(SELECT A.*,(SELECT codeName FROM PG_CODE WHERE alias='BANK' AND code=B.vactBankCd) AS vactBankName, B.vactBankCd "
+						+ "FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN PG_MCHT_MNG_VACT B ON A.mchtId = B.mchtId) C");
 		super.setColumns("C.*");
 
 //		super.setColumns("trxId, name, mchtId, trxType, trxUnit, trxDay, trxTime, amount, fee, feeVat, bankFee, netAmount, balance, trackId, refId, bankCd, bankName, "
