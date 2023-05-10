@@ -34,7 +34,7 @@ public class ChargeSettleDAO extends DAO{
 	
 	public RecordSet getById(String trxId){
 		super.setColumns("trxId, name, mchtId, trxType, trxUnit, trxDay, trxTime, amount, fee, feeVat, bankFee, netAmount, balance, trackId, refId, bankCd, bankName, "
-				+ "FN_AES_DEC(account) as account, FN_AES_DEC(holder) as holder, recordInfo, summary, regId, regDay, regDate, vactBankCd");
+				+ "FN_AES_DEC(account) as account, FN_AES_DEC(holder) as holder, recordInfo, summary, regId, regDay, regDate");
 		addWhere("trxId", trxId, eq);
 		return search();
 	}
