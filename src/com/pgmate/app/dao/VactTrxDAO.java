@@ -66,6 +66,16 @@ public class VactTrxDAO extends DAO {
 		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
 	}
 
+	public SharedMap<String,Object> getTotalAuth(String authId) {
+		super.setTable("PG_TOTAL_AUTH a, PG_CODE b");
+		super.setColumns("FN_AES_DEC(bankAccount) AS withdrawAccountDec, bankCd as withdrawBankCd, b.codeName as withdrawBankNm, holderName");
+		super.addWhere("a.bankCd = b.code and b.alias = 'BANK'");
+		super.addWhere("authId", authId);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst();
+	}
+
 	public RecordSet getVactAuth(String totalAuthId) {
 		super.setTable("PG_VACT_AUTH");
 		super.setColumns("*");
