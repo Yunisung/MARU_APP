@@ -115,6 +115,15 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4 req-label">계좌별<br>1일인증 제한횟수</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control currency limitDayCnt" maxlength="3" name="limitDayCnt" placeholder="" value="50">
+                                                        <span class="input-group-addon">회</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="alert alert-danger display-hide"></div>
                                         <div class="form-actions right">

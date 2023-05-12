@@ -2153,6 +2153,14 @@
 																				</div>
 																			</div>
 																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">계좌별 1일인증 제한횟수</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.limitDayCnt}</p>회
+																				</div>
+																			</div>
+																		</div>
 																	</div>
 																</div>
 																<div class="form-actions">
