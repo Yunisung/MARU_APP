@@ -2,6 +2,7 @@ package com.pgmate.app.ctl;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.pgmate.app.dao.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -13,10 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.pgmate.app.dao.CPDAO;
-import com.pgmate.app.dao.MchtTmnDAO;
-import com.pgmate.app.dao.VactDtlDAO;
-import com.pgmate.app.dao.VactTrxDAO;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.CPResponse;
 import com.pgmate.app.model.ajax.Data;
@@ -260,6 +257,30 @@ public class VactController {
         }
         return resMap;
     }
+
+    @RequestMapping(value = "/vact/withdrawAccountByAuthId/{authId}", method = RequestMethod.GET)
+    public @ResponseBody SharedMap<String, Object> withdrawAccountByAuthId(HttpServletRequest request, @PathVariable String authId) {
+        SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+        SharedMap<String, Object> sharedMap = vactTrxDAO.getTotalAuth(authId);
+        String withdrawAccountDec = sharedMap.getString("withdrawAccountDec");
+        String withdrawBankCd = sharedMap.getString("withdrawBankCd");
+        String withdrawBankNm = sharedMap.getString("withdrawBankNm");
+        String holderName = sharedMap.getString("holderName");
+
+        if (!CommonUtil.isNullOrSpace(withdrawAccountDec)) {
+            resMap.put("msg", "[" + withdrawBankNm + "/" + withdrawAccountDec + "/" + holderName + "]");
+            resMap.put("withdrawAccount", withdrawAccountDec);
+            resMap.put("withdrawBankCd", withdrawBankCd);
+            resMap.put("holderName", holderName);
+            resMap.put("result", "OK");
+        } else {
+            resMap.put("msg", "계좌번호가 존재하지 않습니다.");
+            resMap.put("result", "NOK");
+        }
+        return resMap;
+    }
   
   @RequestMapping(value = {"/vact/reg/blackList/add"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
   public @ResponseBody CPResponse blackListInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
@@ -288,9 +309,14 @@ public class VactController {
 	        	.cpResponse();
   }
 
-    @RequestMapping(value = "/vact/reg/blackList/withdrawAccount", method = RequestMethod.GET)
-    public ModelAndView withdrawAccountView(HttpServletRequest request) {
-        return new ModelAndView("/vact/blackList/modal");
+    @RequestMapping(value = "/vact/reg/blackList/searchAccountModal", method = RequestMethod.GET)
+    public ModelAndView searchAccountModal(HttpServletRequest request) {
+        return new ModelAndView("/vact/blackList/search_account_modal");
+    }
+
+    @RequestMapping(value = "/vact/reg/blackList/searchAuthIdModal", method = RequestMethod.GET)
+    public ModelAndView searchAuthIdModal(HttpServletRequest request) {
+        return new ModelAndView("/vact/blackList/search_authid_modal");
     }
   
   
