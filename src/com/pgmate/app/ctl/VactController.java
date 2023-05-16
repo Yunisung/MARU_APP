@@ -88,6 +88,7 @@ public class VactController {
         }
 
         VactTrxDAO vactTrxDAO = new VactTrxDAO();
+/*
 
         //가상계좌 은행이름, 계좌번호 세팅
         //나중에 PAY쪽에서 가상계좌 발행할때 update하는 방법도 괜춘할듯.
@@ -98,9 +99,11 @@ public class VactController {
             RecordSet recordSet = vactTrxDAO.getVactAuth(totalAuthId);
             if(recordSet.size() != 0) {
 
-                /*String bankCd = recordSet.getRowFirst().getString("vactBankCd");
+                */
+/*String bankCd = recordSet.getRowFirst().getString("vactBankCd");
                 String bankName = vactTrxDAO.getBankName(bankCd).getString("codeName");
-                data.put("vactBank", bankName);*/
+                data.put("vactBank", bankName);*//*
+
 
                 String account = recordSet.getRowFirst().getString("vactAccount");
                 data.put("vactAccount", account);
@@ -112,6 +115,7 @@ public class VactController {
             }
         }
 
+*/
 
         //수수료 건수, 수수료 총금액 표시
         if(cpSession.getGrade().equals("본사")) {
