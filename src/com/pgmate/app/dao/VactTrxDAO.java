@@ -231,5 +231,17 @@ public class VactTrxDAO extends DAO {
 		super.initRecord();
 		return rset.getRowFirst();
 	}
+
+	public int countVactStatusNotiFail(String mchtId) {
+		super.setTable("PG_VACT_STATUS_NOTI");
+		super.setColumns("COUNT(*) AS cnt");
+		super.addWhere("status = '전송실패'");
+		super.addWhere("vactAccount IN (SELECT account FROM PG_VACT_DTL)");
+		super.addWhere("mchtId", mchtId);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst().getInt("cnt");
+	}
+
 }
 
