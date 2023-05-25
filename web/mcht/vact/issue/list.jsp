@@ -30,11 +30,15 @@
 				<a class="btn btn-sm btn-default" id="btn-ex-accnt" data-org-cnt="${ISSUED_ACCNT}">계좌 추가발행</a>
 			</form>
 		</div>
-		<div class="col-md-6" style="font-size:15px">
+		<div class="col-md-3" style="font-size:15px">
 			추가 발급 가능 가상계좌
 			<c:forEach var="entry" items="${UNUSED_ACCNT_MAP}" varStatus="status">
 				<div>${entry.issuerBank} : <span class="font-blue digits">${entry.cnt}</span></div>
 			</c:forEach>
+		</div>
+		<div class="col-md-3" style="font-size:15px">
+			가상계좌 상태노티 실패건
+			<div><span class="font-blue digits">${VACT_STATUS_NOTI_FAIL_CNT}</span></div>
 		</div>
 	</div>
 	</div>
