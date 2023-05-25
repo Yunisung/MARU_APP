@@ -1628,6 +1628,12 @@ public class MchtController {
 		dao.setWhere(" bankCd = '"+vactBankCd+"'");
 		request.setAttribute("UNUSED_ACCNT_MAP", dao.search().getRows());
 		//return new ModelAndView("/mcht/vact/issue/list", "DATAMAP", vartDtlList);
+
+		// 계좌상태 노티실패건
+		VactTrxDAO vactTrxDAO = new VactTrxDAO();
+		int notiFailCount = vactTrxDAO.countVactStatusNotiFail(cpRequest.getKeyValue("mchtId"));
+		request.setAttribute("VACT_STATUS_NOTI_FAIL_CNT", notiFailCount);
+
 		return new CPRUtil(cpRequest).dataList(rset,vactDtlDAO).setView(request,"/mcht/vact/issue/list","");
 	}
 	
