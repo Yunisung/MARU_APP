@@ -236,7 +236,7 @@ public class VactTrxDAO extends DAO {
 		super.setTable("PG_VACT_STATUS_NOTI");
 		super.setColumns("COUNT(*) AS cnt");
 		super.addWhere("status = '전송실패'");
-		super.addWhere("vactAccount IN (SELECT account FROM PG_VACT_DTL)");
+		super.addWhere("vactAccount IN (SELECT account FROM PG_VACT_DTL WHERE mchtId = '" + mchtId + "')");
 		super.addWhere("mchtId", mchtId);
 		RecordSet rset = super.search();
 		super.initRecord();
