@@ -66,7 +66,14 @@
                     </li>
                     <li class="dropdown dropdown-user dropdown-dark"><a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 									<img alt="" class="img-circle" src="/assets/layouts/layout/img/avatar.png" />
-									<span class="username username-hide-on-mobile"> ${CP_SESSION.name}</span>
+                                    <c:choose>
+                                        <c:when test="${CP_SESSION.grade == '하위가맹점'}">
+                                            <span class="username username-hide-on-mobile"> ${CP_SESSION.userId}</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="username username-hide-on-mobile"> ${CP_SESSION.name}</span>
+                                        </c:otherwise>
+                                    </c:choose>
 								</a>
                         <ul class="dropdown-menu dropdown-menu-default" style="width: 200px;">
                             <c:if test="${!empty CP_DEBUG}">
