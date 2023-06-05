@@ -160,7 +160,7 @@
 						</div>
 					</div>
 				</form>
-				<form class="form-horizontal form" role="form">
+				<%--<form class="form-horizontal form" role="form">
 					<div class="form-body row">
 						<!--/span-->
 						<div class='col-md-6'>
@@ -229,7 +229,7 @@
 							</div>
 						</div>
 					</div>
-				</form>
+				</form>--%>
 				<!-- END FORM-->
 			</div>
 			<c:if test="${not empty DATAREFMAP && DATAMAP.capType eq '매입'}">
