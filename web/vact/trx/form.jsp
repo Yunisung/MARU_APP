@@ -176,11 +176,11 @@
 													<label class="control-label col-lg-4">가상계좌발행은행</label>
 													<select class="selectpicker col-lg-8" name="issuerBank" data-oper="eq">
 														<option value="">-- 전체 -- </option>
-														<option value="경남">경남</option>
-														<option value="수협">수협</option>
+														<option value="경남은행">경남은행</option>
+														<option value="수협은행">수협은행</option>
 														<option value="케이뱅크">케이뱅크</option>
-														<option value="부산">부산</option>
-														<option value="우리">우리</option>
+														<option value="부산은행">부산은행</option>
+														<option value="우리은행">우리은행</option>
 													</select>
 												</div>
 											</div>
