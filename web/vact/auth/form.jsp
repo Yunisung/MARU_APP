@@ -133,6 +133,12 @@
                                                     <option value="089">케이뱅크</option>
                                                 </select>
                                             </div>
+                                            <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">예금주</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control input-sm" name="holderName" data-oper="eq" placeholder="예금주">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-actions nobg right">
