@@ -59,7 +59,10 @@ public class VactTrxDAO extends DAO {
 	 * 인증수수료 관련
 	 */
 	public RecordSet authList(List<Data> datas, Page page) {
-		super.setTable("PG_TOTAL_AUTH");
+		//23.06.13 인증수수료 조회 > 가상계좌 모계좌 은행 검색 되도록 쿼리 수정
+		super.setTable("PG_TOTAL_AUTH a, PG_MCHT_MNG_VACT b");
+		super.setColumns("a.*, b.vactBankCd");
+		super.addWhere("a.mchtId = b.mchtId");
 
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas); //DATA to CONDITION
