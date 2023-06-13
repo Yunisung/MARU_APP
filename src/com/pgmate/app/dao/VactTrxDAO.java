@@ -59,7 +59,9 @@ public class VactTrxDAO extends DAO {
 	 * 인증수수료 관련
 	 */
 	public RecordSet authList(List<Data> datas, Page page) {
-		super.setTable("PG_TOTAL_AUTH");
+		//23.06.13 인증수수료 조회 > 가상계좌 모계좌 은행 검색 되도록 쿼리 수정
+		super.setTable("(SELECT a.*, b.vactBankCd FROM PG_TOTAL_AUTH a INNER JOIN PG_MCHT_MNG_VACT b ON a.mchtId = b.mchtId) c");
+		super.setColumns("c.*");
 
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas); //DATA to CONDITION
@@ -97,8 +99,8 @@ public class VactTrxDAO extends DAO {
 	}
 
 	public RecordSet getAuthFeeSum(List<Data> datas, String authType, String mchtId) {
-		super.setTable("PG_TOTAL_AUTH");
-		super.setColumns("COUNT(*) AS count, SUM(authFee) + SUM(authFeeVat) AS authFeeSum");
+		super.setTable("(SELECT a.*, b.vactBankCd FROM PG_TOTAL_AUTH a INNER JOIN PG_MCHT_MNG_VACT b ON a.mchtId = b.mchtId) c");
+		super.setColumns("COUNT(c.authId) AS count, SUM(c.authFee) + SUM(c.authFeeVat) AS authFeeSum");
 		CPUtil.setDAO(this, datas);
 
 		if(!authType.equals("")) {
