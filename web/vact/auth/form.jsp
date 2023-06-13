@@ -124,6 +124,22 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">가상계좌발행은행</label>
+                                                <select class="selectpicker col-lg-8" name="vactBankCd" data-oper="eq">
+                                                    <option value="">-- 전체 -- </option>
+                                                    <option value="039">경남은행</option>
+                                                    <option value="089">케이뱅크</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">예금주</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control input-sm" name="holderName" data-oper="eq" placeholder="예금주">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-actions nobg right">
                                         <div class="btn folding-search-btn icon-arrow-down"></div>
