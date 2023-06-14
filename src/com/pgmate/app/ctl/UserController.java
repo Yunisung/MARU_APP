@@ -343,6 +343,11 @@ public class UserController {
     
 	@RequestMapping(value = {"/member/user/pwCheck/{userid}"}, method = RequestMethod.POST)
     public @ResponseBody String pwCheck(HttpServletRequest request, @PathVariable String userid, @RequestParam("pw") String pw) {
+		String sessionId = SessionUtil.getUserId(request);
+		if(!sessionId.equals(userid)) {
+			return "잘못된 요청입니다.";
+		}
+
 		UserDAO userDAO = new UserDAO();
 		SharedMap<String, Object> result = userDAO.getById(userid).getRowFirst();
 		
@@ -360,6 +365,12 @@ public class UserController {
   
     @RequestMapping(value = "/member/user/updatePassword/{userid}", method = RequestMethod.POST)
     public @ResponseBody String updatePassword(HttpServletRequest request, @PathVariable String userid) {
+
+		String sessionId = SessionUtil.getUserId(request);
+		if(!sessionId.equals(userid)) {
+			return "잘못된 요청입니다.";
+		}
+
 		UserDAO userDAO = new UserDAO();
 		SharedMap<String, Object> result = userDAO.getById(userid).getRowFirst();
 
@@ -423,8 +434,15 @@ public class UserController {
     
     @RequestMapping(value = "/member/user/resetPassword/{userid}", method = RequestMethod.GET)
     public @ResponseBody Map<String , Object> resetPassword(HttpServletRequest request, @PathVariable String userid) {
-    	Map<String, Object> resMap = new HashMap<String, Object>();
-    	
+		Map<String, Object> resMap = new HashMap<String, Object>();
+
+		String sessionId = SessionUtil.getUserId(request);
+		if(!sessionId.equals(userid)) {
+			resMap.put("result", "NOK");
+			resMap.put("msg", "비밀번호 변경이 실패하였습니다.");
+			return resMap;
+		}
+
     	String passKey = String.format("%05d", new Random().nextInt(99999));
     	CPRequest cpRequest = new CPRequest();
     	cpRequest.setData("id", userid, "eq", "", true);

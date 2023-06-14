@@ -138,16 +138,24 @@
 		<intercept-url pattern="/phone/sunab/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
 
 		<!-- 전자계약서 -->
+		<intercept-url pattern="/eform/*" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+<!--
+
 		<intercept-url pattern="/eform/auth/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
 		<intercept-url pattern="/eform/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
 		<intercept-url pattern="/eform/main" access="hasAnyRole('ROLE_COMP')"/>
 		<intercept-url pattern="/eform/member/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
+-->
+
 
 		<!-- 멤버관리 -->
 		<intercept-url pattern="/member/user/form" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES')"/>
 		<intercept-url pattern="/member/user/add" access="hasAnyRole('ROLE_COMP_ADMIN', 'ROLE_DIST_ADMIN')"/>
 		<intercept-url pattern="/member/user/add/admin" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/member/user/add/mcht" access="hasAnyRole('ROLE_COMP_ADMIN', 'ROLE_DIST_ADMIN', 'ROLE_AGENCY_ADMIN', 'ROLE_SALES_ADMIN')"/>
+		<intercept-url pattern="/member/user/modify/*" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/member/user/update" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/member/user/resetPassword/" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/member/dist/form" access="hasAnyRole('ROLE_COMP')"/>
 		<intercept-url pattern="/member/dist/add" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/member/agency/form" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST')"/>
