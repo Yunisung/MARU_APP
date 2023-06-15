@@ -74,7 +74,8 @@
                                                 <label class="control-label col-sm-4 req-label">실명인증
                                                 </label>
                                                 <select id="ownerAuth" name="ownerAuth" class="selectpicker col-sm-6">
-                                                    <option value="Y">Y</option>
+                                                    <option value="Y" selected>Y</option>
+                                                    <option value="N">N</option>
                                                 </select>
                                             </div>
                                             <script type="text/javascript">
