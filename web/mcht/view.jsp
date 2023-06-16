@@ -2557,7 +2557,7 @@
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">가상계좌별<br>1일입금 제한횟수</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static digits">${VACT_MAP.limitDayCnt}</p>
+																				<p class="form-control-static digits">${VACT_MAP.limitDayCnt} 회</p>
 																			</div>
 																		</div>
 																	</div>
@@ -2565,7 +2565,25 @@
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">입금단위제한</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static digits">${VACT_MAP.limitAmount}</p>
+																				<p class="form-control-static digits">${VACT_MAP.limitAmount} 원</p>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="row">
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">동일출금계좌<br>발급제한횟수</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${VACT_MAP.eqAccntIssueLimitCnt} 회</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">동일출금계좌<br>1일 입금제한횟수</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${VACT_MAP.eqAccntDepositLimitCnt} 회</p>
 																			</div>
 																		</div>
 																	</div>
