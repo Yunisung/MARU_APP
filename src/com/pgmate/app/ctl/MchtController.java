@@ -287,9 +287,10 @@ public class MchtController {
 				request.setAttribute("ORGFEEMAP", new CodeDAO().getOrgFee("ORGFEE").getRows());
 			}
 		}
-		if (svcMap.getString("pisp").equals("사용")) {
-			request.setAttribute("PISP_MAP", new MchtPispDAO().getByMchtId(mchtId));
-		}
+		//230619 PG_MCHT_MNG_PISP(지급대행) 테이블 미존재로 주석처리
+//		if (svcMap.getString("pisp").equals("사용")) {
+//			request.setAttribute("PISP_MAP", new MchtPispDAO().getByMchtId(mchtId));
+//		}
 		
 		//가맹점 휴대폰 결제 정보
 		request.setAttribute("DATAPHONEMAP", new PhoneDAO().getByMchtId(mchtId));
