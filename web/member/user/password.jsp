@@ -16,7 +16,7 @@
 	<div class="mtouch-container">
 		<h4>${DATAMAP.name} 비밀번호 변경</h4>
 		<!-- BEGIN FORM-->
-		<form class="form-horizontal form-bordered" role="form" id="writeFrm" data-form="true" name="form" action="/member/user/updatePassword/${DATAMAP.id}" method="post">
+		<form class="form-horizontal form-bordered" role="form" id="writeFrm" data-form="true" name="form" action="/member/user/sendSms/${DATAMAP.id}" method="post">
 			<div class="form-body row">
 				<div class="form-group col-sm-6">
 					<label class="control-label col-sm-4 req-label">기존 비밀번호 </label>
@@ -41,7 +41,25 @@
 			<div class="form-actions right">
 				<div class="">
 					<button type="submit" class="btn btn-sm green loading-btn" data-loading-text="Loading...">
-						<i class="fa fa-search"></i>&nbsp;비밀번호 변경
+						<i class="fa fa-phone"></i>&nbsp;인증번호 전송
+					</button>
+				</div>
+			</div>
+		</form>
+		<form class="form-horizontal form-bordered" role="form" id="submitFrm" data-form="true" name="form" action="/member/user/smsCheck/${DATAMAP.id}" method="post">
+			<div class="form-body row">
+				<div class="form-group col-sm-6">
+					<label class="control-label col-sm-4 req-label">인증번호 </label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control input-sm" maxlength="6" name="smsNumber" id="smsNumber" value="">
+					</div>
+				</div>
+			</div>
+			<div class="alert alert-danger display-hide"></div>
+			<div class="form-actions right">
+				<div class="">
+					<button type="submit" class="btn btn-sm green loading-btn" data-loading-text="Loading...">
+						<i class="fa fa-send"></i>&nbsp;비밀번호 변경
 					</button>
 				</div>
 			</div>
@@ -52,6 +70,8 @@
 	<!-- BEGIN FORM JAVASCRIPT -->
 	<script type="text/javascript">
 		var form1 = $('#writeFrm');
+		var form2 = $('#submitFrm');
+		form2.hide();
 		var error1 = $('.alert-danger', form1);
 		jQuery.validator.addMethod("notEqualTo", function(value, element, param) {
 			  return this.optional(element) || value != param;
@@ -101,23 +121,71 @@
                 	url: form1.attr("action"),
                 	data: {"pw": $("#pw").val(), "check": $("#check").val()},
                 	success : function(data) {
+						console.log(data);
                 		if(data.indexOf("OK") > -1) {
-                			finishWin("비밀번호 변경에 성공했습니다.");
+							successSms("인증번호를 전송 했습니다.");
                 		}else {
-                			finishWin("비밀번호 변경에 실패했습니다. 관리자에게 문의하세요.");
+                			finishWin(data);
                 		}
                 	},
                 	error: function(xhr, status, error) {
-                		finishWin("비밀번호 변경에 실패했습니다. 관리자에게 문의하세요.");
+                		finishWin("인증번호 전송에 실패했습니다. 관리자에게 문의하세요.");
                 	}
                 });
 			}
 		});
-		
+
+		form2.validate({
+			rules : {
+				smsNumber: {
+					required : true,
+					minlength : 6,
+					maxlength : 6
+				}
+			},
+			invalidHandler: function (event, validator) { //display error alert on form submit
+				var error1Str = '<button class="close" data-close="alert"></button>인증번호는 6자리 입니다.';
+				error1.html(error1Str);
+				error1.show();
+				App.scrollTo(error1, -200);
+			},
+			submitHandler: function (form) {
+				error1.hide();
+
+				$.ajax({
+					type:"POST",
+					url: form2.attr("action"),
+					data: {"pw": $("#pw").val(), "check": $("#check").val(), "smsNumber": $("#smsNumber").val()},
+					success : function(data) {
+						console.log(data);
+						if(data.indexOf("OK") > -1) {
+							finishWin("비밀번호를 변경 했습니다.");
+						}else {
+							failSms(data);
+						}
+					},
+					error: function(xhr, status, error) {
+						finishWin("비밀번호 변경에 실패했습니다. 관리자에게 문의하세요.");
+					}
+				});
+			}
+		});
+
 		function finishWin(msg) {
 			bootbox.alert(msg, function() {
 				window.open('about:blank','_self').self.close();  // IE에서 묻지 않고 창 닫기
 			});
+		}
+
+		function successSms(msg) {
+			bootbox.alert(msg, function (){
+				form1.hide();
+				form2.show();
+			});
+		}
+
+		function failSms(msg) {
+			bootbox.alert(msg);
 		}
 	</script>
 </body>
