@@ -255,7 +255,7 @@
 												</select>
 												<script type="text/javascript">document.forms.writeFrm.distNum.value = '${DATAMAP.distNum}'</script>
 												<input type="hidden" name="distSettleType" value="${DATAMAP.distSettleType}">
-												<span class="distSettleType"></span>
+<%--												<span class="distSettleType"></span>--%>
 											</div>
 											<div class="form-group col-sm-6 noneDiv">
 												<div style="padding-top:45px; border-left:none;"></div>
@@ -290,7 +290,7 @@
 												</select>
 												<script type="text/javascript">document.forms.writeFrm.agencyNum.value = '${DATAMAP.agencyNum}'</script>
 												<input type="hidden" name="agencySettleType" value="${DATAMAP.agencySettleType}">
-												<span class="agencySettleType"></span>
+<%--												<span class="agencySettleType"></span>--%>
 											</div>
 											<div class="form-group col-sm-6 noneDiv">
 												<div style="padding-top:45px; border-left:none;"></div>
@@ -325,7 +325,7 @@
 												</select>
 												<script type="text/javascript">document.forms.writeFrm.salesNum.value = '${DATAMAP.salesNum}'</script>
 												<input type="hidden" name="salesSettleType" value="${DATAMAP.salesSettleType}">
-												<span class="salesSettleType"></span>
+<%--												<span class="salesSettleType"></span>--%>
 											</div>
 											<div class="form-group col-sm-6 noneDiv">
 												<div style="padding-top:45px; border-left:none;"></div>
@@ -654,50 +654,55 @@
 				expireSet.attr('disabled', 'disabled');
 			}
 		}
-		
+
+		function addComma(data) {
+			return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+
 		$('#distType').on('change', function() {
 			var selected = $(this).find("option:selected").val();
 			if(selected == '') return false;
-		  	$.ajax({
-		  		url:'/mcht/distRate/get/'+selected,
-		  		method: 'GET',
-		  		dataType: 'json',
-		  		success: function(data){
-	  				$('input[name="distFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
-	  				$('input[name="distRate"]').val((data.rate*100).toFixed(3));
-		  			$('.distSettleType').html(data.settleType);
-	  			}
-		  	})
+		  	// $.ajax({
+		  	// 	url:'/mcht/distRate/get/'+selected,
+		  	// 	method: 'GET',
+		  	// 	dataType: 'json',
+		  	// 	success: function(data){
+			//
+	  		// 		$('input[name="distFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
+	  		// 		$('input[name="distRate"]').val((data.rate*100).toFixed(3));
+		  	// 		// $('.distSettleType').html(data.settleType);
+	  		// 	}
+		  	// })
 		});
 
 		$('#agencyType').on('change', function() {
 			var selected = $(this).find("option:selected").val();
 			if(selected == '') return false;
-		  	$.ajax({
-		  		url:'/mcht/agencyRate/get/'+selected,
-		  		method: 'GET',
-		  		dataType: 'json',
-		  		success: function(data){
-	  				$('input[name="agencyFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
-	  				$('input[name="agencyRate"]').val((data.rate*100).toFixed(3));
-		  			$('.agencySettleType').html(data.settleType);
-	  			}
-		  	})
+		  	// $.ajax({
+		  	// 	url:'/mcht/agencyRate/get/'+selected,
+		  	// 	method: 'GET',
+		  	// 	dataType: 'json',
+		  	// 	success: function(data){
+	  		// 		$('input[name="agencyFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
+	  		// 		$('input[name="agencyRate"]').val((data.rate*100).toFixed(3));
+		  	// 		$('.agencySettleType').html(data.settleType);
+	  		// 	}
+		  	// })
 		});
 
 		$('#salesType').on('change', function() {
 			var selected = $(this).find("option:selected").val();
 			if(selected == '') return false;
-		  	$.ajax({
-		  		url:'/mcht/salesRate/get/'+selected,
-		  		method: 'GET',
-		  		dataType: 'json',
-		  		success: function(data){
-	  				$('input[name="salesFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
-	  				$('input[name="salesRate"]').val((data.rate*100).toFixed(3));
-		  			$('.salesSettleType').html(data.settleType);
-	  			}
-		  	})
+		  	// $.ajax({
+		  	// 	url:'/mcht/salesRate/get/'+selected,
+		  	// 	method: 'GET',
+		  	// 	dataType: 'json',
+		  	// 	success: function(data){
+	  		// 		$('input[name="salesFee"]').val(addComma(String(data.fee)).replace(/[^0-9]/g,""));
+	  		// 		$('input[name="salesRate"]').val((data.rate*100).toFixed(3));
+		  	// 		// $('.salesSettleType').html(data.settleType);
+	  		// 	}
+		  	// })
 		});
 		
 		$('#payOutType').on('change', function(){
@@ -820,14 +825,14 @@
 				$('#distType').append('<option value="" id="distSelect" selected>--- 선택 (기본 M+10) ---</option>');
 				$('#distType').selectpicker('refresh');
 			} else {
-				$.ajax({
-			  		url:'/mcht/distRate/get/'+selected,
-			  		method: 'GET',
-			  		dataType: 'json',
-			  		success: function(data){
-			  			$('.distSettleType').html(data.settleType);
-		  			}
-			  	});	
+				// $.ajax({
+			  	// 	url:'/mcht/distRate/get/'+selected,
+			  	// 	method: 'GET',
+			  	// 	dataType: 'json',
+			  	// 	success: function(data){
+			  	// 		$('.distSettleType').html(data.settleType);
+		  		// 	}
+			  	// });
 			}
 			
 			
@@ -837,14 +842,14 @@
 				$('#agencyType').append('<option value="" id="agencySelect" selected>--- 선택 (기본 M+10) ---</option>');
 				$('#agencyType').selectpicker('refresh');
 			} else {
-				$.ajax({
-			  		url:'/mcht/agencyRate/get/'+selected,
-			  		method: 'GET',
-			  		dataType: 'json',
-			  		success: function(data){
-			  			$('.agencySettleType').html(data.settleType);
-		  			}
-			  	});
+				// $.ajax({
+			  	// 	url:'/mcht/agencyRate/get/'+selected,
+			  	// 	method: 'GET',
+			  	// 	dataType: 'json',
+			  	// 	success: function(data){
+			  	// 		$('.agencySettleType').html(data.settleType);
+		  		// 	}
+			  	// });
 			}
 			
 			var selected = $('#salesType').find("option:selected").val();
@@ -853,14 +858,14 @@
 				$('#salesType').append('<option value="" id="salesSelect" selected>--- 선택 (기본 M+10) ---</option>');
 				$('#salesType').selectpicker('refresh');
 			} else {
-				$.ajax({
-			  		url:'/mcht/salesRate/get/'+selected,
-			  		method: 'GET',
-			  		dataType: 'json',
-			  		success: function(data){
-			  			$('.salesSettleType').html(data.settleType);
-		  			}
-			  	});
+				// $.ajax({
+			  	// 	url:'/mcht/salesRate/get/'+selected,
+			  	// 	method: 'GET',
+			  	// 	dataType: 'json',
+			  	// 	success: function(data){
+			  	// 		$('.salesSettleType').html(data.settleType);
+		  		// 	}
+			  	// });
 			}
 			
 			var selected = $('select[name="feeType"]').find("option:selected").val();
