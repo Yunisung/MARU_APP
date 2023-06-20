@@ -1506,7 +1506,9 @@ public class MchtController {
 		request.setAttribute("DATASVCMAP", new MchtSvcDAO().getByMchtId(mchtId));
 		request.setAttribute("DISTMNGTYPE", new DistMngDAO().getDistMngByPayType(result.getString("distId"), "가상계좌").getRows());
     	request.setAttribute("AGENCYMNGTYPE", new AgencyMngDAO().getAgencyMngByPayType(result.getString("agencyId"), "가상계좌").getRows());
-    	request.setAttribute("SALESMNGTYPE", new MemberSalesMngDAO().getSalesMngByPayType(result.getString("salesId"), "가상계좌").getRows());
+		//230620 지사 테이블에 trxType이 없어 에러생김 -> 가상계좌 값을 가지는 값이 없어 object로 변경
+//    	request.setAttribute("SALESMNGTYPE", new MemberSalesMngDAO().getSalesMngByPayType(result.getString("salesId"), "가상계좌").getRows());
+    	request.setAttribute("SALESMNGTYPE", new ArrayList());
 		return new ModelAndView("/mcht/vact/add", "DATAMAP", new MchtVactDAO().getByMchtId(mchtId));
 	}
 
@@ -1551,7 +1553,9 @@ public class MchtController {
 		request.setAttribute("DATASVCMAP", new MchtSvcDAO().getByMchtId(mchtId));
 		request.setAttribute("DISTMNGTYPE", new DistMngDAO().getDistMngByPayType(result.getString("distId"), "가상계좌").getRows());
     	request.setAttribute("AGENCYMNGTYPE", new AgencyMngDAO().getAgencyMngByPayType(result.getString("agencyId"), "가상계좌").getRows());
-    	request.setAttribute("SALESMNGTYPE", new MemberSalesMngDAO().getSalesMngByPayType(result.getString("salesId"), "가상계좌").getRows());
+		//230620 지사 테이블에 trxType이 없어 에러생김 -> 가상계좌 값을 가지는 값이 없어 object로 변경
+//    	request.setAttribute("SALESMNGTYPE", new MemberSalesMngDAO().getSalesMngByPayType(result.getString("salesId"), "가상계좌").getRows());
+    	request.setAttribute("SALESMNGTYPE", new ArrayList());
     	request.setAttribute("DATAMAP", sharedMap);
 	  return new ModelAndView("/mcht/vact/modify");
 	}
