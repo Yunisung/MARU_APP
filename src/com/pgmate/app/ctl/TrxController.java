@@ -939,7 +939,9 @@ public class TrxController {
 
 		PispDAO pispDAO = new PispDAO();
 		//KJM : 거래내역 리스트 가져옴
-		RecordSet rset = pispDAO.list(cpRequest.data, cpRequest.page);
+//		RecordSet rset = pispDAO.list(cpRequest.data, cpRequest.page);
+		//230621 테이블 미존재로 빈값 넘겨주게 수정
+		RecordSet rset = new RecordSet();
 		//KJM : 가져온 데이터 view에 넘겨줌
 		return new CPRUtil(cpRequest).dataList(rset, pispDAO).setView(request, "/trx/pisp/list", "");
 	}
@@ -950,7 +952,9 @@ public class TrxController {
 		SessionUtil.setSearchGrade(request, cpRequest);
 
 		PispFcsDAO pispFcsDAO = new PispFcsDAO();
-		RecordSet rset = pispFcsDAO.list(cpRequest.data, cpRequest.page);  
+		//230621 테이블 미존재로 빈값 넘겨주게 수정
+//		RecordSet rset = pispFcsDAO.list(cpRequest.data, cpRequest.page);
+		RecordSet rset = new RecordSet();
 		return new CPRUtil(cpRequest).dataList(rset, pispFcsDAO).setView(request, "/trx/pisp/fcs/list", "");
 	}
 
