@@ -1802,9 +1802,11 @@ public class MchtController {
 		}
 		
 		
-		request.setAttribute("AUTHKEY", key.toString()); 
-		return new ModelAndView("/mcht/pisp/add", "DATAMAP", new MchtPispDAO().getByMchtId(mchtId));
-	} 
+		request.setAttribute("AUTHKEY", key.toString());
+		//230621 테이블 미존재로 빈값 리턴하게 수정
+//		return new ModelAndView("/mcht/pisp/add", "DATAMAP", new MchtPispDAO().getByMchtId(mchtId));
+		return new ModelAndView("/mcht/pisp/add", "DATAMAP", new SharedMap<String,Object>());
+	}
 
 	@RequestMapping(value = {"/mcht/pisp/insert"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody CPResponse pispInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
@@ -1816,15 +1818,18 @@ public class MchtController {
 		cpRequest.setData("account",map.getString("account"));
 		cpRequest.setData("issueId",map.getString("issueId"));
 		
-		
-		
-		if (cpDAO.insert("PG_MCHT_MNG_PISP", SessionUtil.getUserId(request), cpRequest.data)) {
+		//230621 테이블 미존재로 주석처리 , 에러 리턴
+		/*if (cpDAO.insert("PG_MCHT_MNG_PISP", SessionUtil.getUserId(request), cpRequest.data)) {
 			return new CPRUtil(cpRequest).resultOK("지급이체대행 정보가 등록되었습니다.").cpResponse();
 		} else {
 			return new CPRUtil(cpRequest)
 		        		.resultNOK("지급이체대행 정보 변경에 실패하였습니다.",cpDAO.getError())
 		        		.cpResponse();
-		} 
+		}*/
+
+		return new CPRUtil(cpRequest)
+				.resultNOK("지급이체대행 정보 변경에 실패하였습니다.",cpDAO.getError())
+				.cpResponse();
 	}
 	
 	@RequestMapping(value = "/mcht/pisp/modify/{mchtId}", method = RequestMethod.GET)
