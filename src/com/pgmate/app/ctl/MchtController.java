@@ -637,9 +637,7 @@ public class MchtController {
     	
     	AgencyMngDAO agencyDAO = new AgencyMngDAO();
     	DistDAO DistDAO = new DistDAO();
-    	
-    	System.out.println(new AgencyDAO().getById(mchtId).getRowFirst().get("agencyId") + ":290");
-    	
+
     	agencyDAO.setTable("PG_MAM_AGENCY_MNG");
 		agencyDAO.setColumns("count(1) as cnt");
 		agencyDAO.addWhere("agencyId", result.get("agencyId").toString(), DAO.eq);
@@ -1752,9 +1750,7 @@ public class MchtController {
     	
     	AgencyMngDAO agencyDAO = new AgencyMngDAO();
     	DistDAO DistDAO = new DistDAO();
-    	
-    	System.out.println(new AgencyDAO().getById(mchtId).getRowFirst().get("agencyId") + ":290");
-    	
+
     	agencyDAO.setTable("PG_MAM_AGENCY_MNG");
 		agencyDAO.setColumns("count(1) as cnt");
 		agencyDAO.addWhere("agencyId", result.get("agencyId").toString(), DAO.eq);
