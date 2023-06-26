@@ -66,6 +66,7 @@
 						<c:choose>
 							<c:when test="${entry.vactBankCd eq '089'}"><td>케이뱅크</td></c:when>
 							<c:when test="${entry.vactBankCd eq '039'}"><td>경남은행</td></c:when>
+							<c:otherwise><td></td></c:otherwise>
 						</c:choose>
 						<td><fmt:formatNumber type="number" value="${entry.amount}" pattern="#,##0" /></td>
 						<td><fmt:formatNumber type="number" value="${entry.fee}" pattern="#,##0" /></td>
