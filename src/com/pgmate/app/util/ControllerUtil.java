@@ -17,7 +17,6 @@ import com.pgmate.lib.util.map.SharedMap;
 public class ControllerUtil {
 	static public String identityMasking(String orgStr){
 		//주민번호
-		System.out.println(orgStr);
 		if(orgStr.matches("^\\d{6}\\-[1-4]\\d{6}$")){
 			orgStr = orgStr.substring(0, 8) + "******";
 		}

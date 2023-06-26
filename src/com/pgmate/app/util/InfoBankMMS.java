@@ -115,9 +115,7 @@ public class InfoBankMMS{
 		jsonMap.put("fileKey", fileKey); //MMS 발송 시 파일 키
 		
 		String json = jsonMap.toJson();
-		
-		System.out.println(json);
-		
+
 		try {
 			URL url = new URL(SMS_URL);
 			HttpURLConnection con = (HttpURLConnection)url.openConnection();

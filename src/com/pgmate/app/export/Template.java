@@ -39,7 +39,7 @@ public class Template {
 				byte[] read = new FileIO().getBytes(CPUtil.getCanonicalTemplatePath()+File.separator+stylesheet);
 				styleMap.put(stylesheet, new String(read, "utf-8"));
 			}catch(Exception e){
-				System.out.println(e.getMessage());
+				logger.error(e.getMessage());
 			}	
 		}
 	}
