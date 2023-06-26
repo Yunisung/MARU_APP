@@ -31,8 +31,6 @@ public class Daemon extends Thread {
 				super.setDaemon(true);
 				super.setName(configBean.getPidName());
 				start();
-				System.out.println("TRUSTMATE REALTIMEDAEMON START = "+ CommonUtil.getCurrentDate() +" Version = 1.2 , Update=2014-06-02");
-				System.out.println("CLASSNAME =["+ configBean.getClassName()+"] INTERVAL=["+configBean.getInterval()+"]");
 				logger.debug("TRUSTMATE REALTIMEDAEMON START = "+ CommonUtil.getCurrentDate() +" Version = 1.2 , Update=2014-06-02");
 				logger.debug("CLASSNAME =["+ configBean.getClassName()+"] INTERVAL=["+configBean.getInterval()+"]");
 				while(true){
@@ -83,7 +81,6 @@ public class Daemon extends Thread {
 				configBean = ConfigLoader.getConfig().daemon;
 			}
 		}catch(Exception e){
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 			logger.debug("Daemon Configuration load error : {} "+CommonUtil.getExceptionMessage(e));
 		}

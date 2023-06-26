@@ -17,18 +17,20 @@ import com.pgmate.pay.bean.Refund;
 import com.pgmate.pay.bean.Request;
 import com.pgmate.pay.bean.Response;
 import com.pgmate.pay.bean.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Administrator
  *
  */
 public class RefundUtil {
-
+	private static Logger logger = LoggerFactory.getLogger(com.pgmate.app.util.RefundUtil.class);
 	/**
 	 * 
 	 */
 	public RefundUtil() {
-	
+
 	}
 	
 	
@@ -153,7 +155,8 @@ public class RefundUtil {
 		
 		long time = System.currentTimeMillis();
 		try {
-			System.out.println("LOCAL >> PAYMENT ["+request+"]");
+
+			logger.info("LOCAL >> PAYMENT ["+request+"]");
 			url = new URL(paymentUrl);
 			
 			
@@ -188,11 +191,11 @@ public class RefundUtil {
 
 		} catch(Exception e) {
 			result.append("CONNECT ERROR ["+e.getMessage()+"] "+paymentUrl);
-			System.out.println("PAYMENT URL REQUEST ERROR =["+e.getMessage()+"]");
+			logger.error("PAYMENT URL REQUEST ERROR =["+e.getMessage()+"]");
 			
 		}finally{
-			System.out.println("ElapsedTime : "+(long)(System.currentTimeMillis()-time)+"msec");
-			System.out.println("LOCAL << PAYMENT ["+result.toString()+"]");
+			logger.info("ElapsedTime : "+(long)(System.currentTimeMillis()-time)+"msec");
+			logger.info("LOCAL << PAYMENT ["+result.toString()+"]");
 			conn.disconnect();
 		}
 		return result.toString();
@@ -267,7 +270,8 @@ public class RefundUtil {
 		
 		long time = System.currentTimeMillis();
 		try {
-			System.out.println("LOCAL >> PAYMENT ["+request+"]");
+
+			logger.info("LOCAL >> PAYMENT ["+request+"]");
 			url = new URL(paymentUrl);
 			
 			conn = (HttpURLConnection) url.openConnection();
@@ -298,11 +302,11 @@ public class RefundUtil {
 
 		} catch(Exception e) {
 			result.append("CONNECT ERROR ["+e.getMessage()+"] "+paymentUrl);
-			System.out.println("PAYMENT URL REQUEST ERROR =["+e.getMessage()+"]");
+			logger.error("PAYMENT URL REQUEST ERROR =["+e.getMessage()+"]");
 			
 		}finally{
-			System.out.println("ElapsedTime : "+(long)(System.currentTimeMillis()-time)+"msec");
-			System.out.println("LOCAL << PAYMENT ["+result.toString()+"]");
+			logger.info("ElapsedTime : "+(long)(System.currentTimeMillis()-time)+"msec");
+			logger.info("LOCAL << PAYMENT ["+result.toString()+"]");
 			conn.disconnect();
 		}
 		return result.toString();
