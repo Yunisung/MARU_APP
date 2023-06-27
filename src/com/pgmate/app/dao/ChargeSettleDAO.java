@@ -52,7 +52,9 @@ public class ChargeSettleDAO extends DAO{
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 
-		super.setTable("(SELECT A.*, CASE WHEN A.trxType = '입금' THEN B.bankCd WHEN A.trxType = '출금' THEN C.bankCd END AS vactBankCd " +
+		super.setTable("(SELECT A.*, CASE WHEN A.trxType = '입금' THEN B.bankCd WHEN A.trxType = '출금' THEN C.bankCd END AS vactBankCd, " +
+				"CASE WHEN ((A.trxType = '입금' AND B.bankCd = '089') OR (A.trxType = '출금' AND C.bankCd = '089')) THEN '케이뱅크' " +
+				"WHEN ((A.trxType = '입금' AND B.bankCd = '039') OR (A.trxType = '출금' AND C.bankCd = '039')) THEN '경남은행' END AS vactBankName " +
 				"FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN PG_VACT_TRX B ON A.trxId = B.vactId AND A.mchtId = B.mchtId AND A.trxType = '입금' AND A.trxUnit = '가상계좌정산' " +
 				"LEFT OUTER JOIN PG_FIRM_TRX C ON A.refId = C.idx AND A.trxType = '출금' AND A.trxUnit = '펌뱅킹') D");
 		super.setColumns("D.*");
