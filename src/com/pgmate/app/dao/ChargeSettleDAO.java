@@ -52,10 +52,11 @@ public class ChargeSettleDAO extends DAO{
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 
-		super.setTable("(SELECT A.*, CASE WHEN A.trxType = '입금' THEN B.bankCd WHEN A.trxType = '출금' THEN C.bankCd END AS vactBankCd " +
+		super.setTable("(SELECT D.*, (SELECT codeName FROM PG_CODE WHERE alias='BANK' AND code=D.vactBankCd) AS vactBankName " +
+				"FROM (SELECT A.*, CASE WHEN A.trxType = '입금' THEN B.bankCd WHEN A.trxType = '출금' THEN C.bankCd END AS vactBankCd " +
 				"FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN PG_VACT_TRX B ON A.trxId = B.vactId AND A.mchtId = B.mchtId AND A.trxType = '입금' AND A.trxUnit = '가상계좌정산' " +
-				"LEFT OUTER JOIN PG_FIRM_TRX C ON A.refId = C.idx AND A.trxType = '출금' AND A.trxUnit = '펌뱅킹') D");
-		super.setColumns("D.*");
+				"LEFT OUTER JOIN PG_FIRM_TRX C ON A.refId = C.idx AND A.trxType = '출금' AND A.trxUnit = '펌뱅킹') D) E");
+		super.setColumns("E.*");
 		super.setOrderBy("trxId desc");
 
 //		super.setTable("(SELECT A.*, B.vactBankCd FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN PG_MCHT_MNG_VACT B ON A.mchtId = B.mchtId) C");
