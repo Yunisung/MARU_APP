@@ -545,12 +545,12 @@ public class UserController {
     public @ResponseBody Map<String , Object> resetPassword(HttpServletRequest request, @PathVariable String userid) {
 		Map<String, Object> resMap = new HashMap<String, Object>();
 
-		String sessionId = SessionUtil.getUserId(request);
+		/*String sessionId = SessionUtil.getUserId(request);
 		if(!sessionId.equals(userid)) {
 			resMap.put("result", "NOK");
 			resMap.put("msg", "비밀번호 변경이 실패하였습니다.");
 			return resMap;
-		}
+		}*/
 
     	String passKey = String.format("%05d", new Random().nextInt(99999));
     	CPRequest cpRequest = new CPRequest();
