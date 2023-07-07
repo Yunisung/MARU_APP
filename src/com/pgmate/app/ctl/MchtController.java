@@ -642,9 +642,9 @@ public class MchtController {
     	request.setAttribute("VANMAP", new VanDAO().vanList().getRows());
     	request.setAttribute("FEE_TEMPLATE", new MchtFeeTemplateDAO().getFeeTemplete().getRows());
     	request.setAttribute("DATASVCMAP", new MchtSvcDAO().getByMchtId(mchtId));
-    	request.setAttribute("DISTMNGTYPE", new DistMngDAO().getDistMngByPayType(result.getString("distId"), "신용카드").getRows());
-    	request.setAttribute("AGENCYMNGTYPE", new AgencyMngDAO().getAgencyMngByPayType(result.getString("agencyId"), "신용카드").getRows());
-    	request.setAttribute("SALESMNGTYPE", new MemberSalesMngDAO().getSalesMngByPayType(result.getString("salesId"), "신용카드").getRows());
+//    	request.setAttribute("DISTMNGTYPE", new DistMngDAO().getDistMngByPayType(result.getString("distId"), "신용카드").getRows());
+//    	request.setAttribute("AGENCYMNGTYPE", new AgencyMngDAO().getAgencyMngByPayType(result.getString("agencyId"), "신용카드").getRows());
+//    	request.setAttribute("SALESMNGTYPE", new MemberSalesMngDAO().getSalesMngByPayType(result.getString("salesId"), "신용카드").getRows());
     	String diffType = new MchtDiffDAO().getDiffType(mchtId).getRowFirst().getString("mchtType");
     	if(CommonUtil.isNullOrSpace(diffType)) diffType = "일반";
     	request.setAttribute("DIFFTYPE", diffType);
@@ -704,9 +704,9 @@ public class MchtController {
 //    	request.setAttribute("DISTRATE_OPTION", new DistDAO().getRateOption(sharedMap.getString("distId")));
     	request.setAttribute("FEE_TEMPLATE", new MchtFeeTemplateDAO().getFeeTemplete().getRows());
     	request.setAttribute("DATASVCMAP", new MchtSvcDAO().getByMchtId(mchtId));
-    	request.setAttribute("DISTMNGTYPE", new DistMngDAO().getDistMngByPayType(new MchtDAO().getById(mchtId).getRowFirst().getString("distId"), "신용카드").getRows());
-    	request.setAttribute("AGENCYMNGTYPE", new AgencyMngDAO().getAgencyMngByPayType(new MchtDAO().getById(mchtId).getRowFirst().getString("agencyId"), "신용카드").getRows());
-    	request.setAttribute("SALESMNGTYPE", new MemberSalesMngDAO().getSalesMngByPayType(new MchtDAO().getById(mchtId).getRowFirst().getString("salesId"), "신용카드").getRows());
+//    	request.setAttribute("DISTMNGTYPE", new DistMngDAO().getDistMngByPayType(new MchtDAO().getById(mchtId).getRowFirst().getString("distId"), "신용카드").getRows());
+//    	request.setAttribute("AGENCYMNGTYPE", new AgencyMngDAO().getAgencyMngByPayType(new MchtDAO().getById(mchtId).getRowFirst().getString("agencyId"), "신용카드").getRows());
+//    	request.setAttribute("SALESMNGTYPE", new MemberSalesMngDAO().getSalesMngByPayType(new MchtDAO().getById(mchtId).getRowFirst().getString("salesId"), "신용카드").getRows());
     	if(sharedMap.isEquals("distId", "00")) {
     		return new ModelAndView("/mcht/mng/fact/modify");
     	} else {
