@@ -1186,8 +1186,9 @@ public class MchtController {
 			
 			WalletDAO walletDAO = new WalletDAO();
 			
+			// WL_USER 테이블이 존재하지 않으므로 에러발생 - 주석처리
 			// 분리정산 터미널 여부 확인
-			SharedMap<String, Object> walletMap = walletDAO.getWalletByTmnId(cpRequest.getKeyValue("tmnId"));
+			/*SharedMap<String, Object> walletMap = walletDAO.getWalletByTmnId(cpRequest.getKeyValue("tmnId"));
 			if(walletMap != null) {
 				// 월렛 기본정보 변경처리
 				String identity = cpRequest.getValue("identity");
@@ -1227,7 +1228,7 @@ public class MchtController {
 					}
 					new WalletAccntUtil().excute(cpRequest.getValue("bankCd"), cpRequest.getValue("account"), walletMap.getString("walletId"), walletMap.getString("apiKey"), method);
 				}
-			}
+			}*/
 			
 			return new CPRUtil(cpRequest)
 							.resultOK("가맹점 정보가 변경되었습니다.")
