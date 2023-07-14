@@ -3,6 +3,7 @@ package com.pgmate.app.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pgmate.app.util.SQLInjectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -75,7 +76,9 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 						DAO dao = new DAO();
 						dao.setDebug(CPUtil.CP_DEBUG);
 						logger.info("{},{},{}",request.getRequestURI(),SessionUtil.getUserId(request),SessionUtil.getParentId(request));
-						dao.update("INSERT INTO PG_USER_TODO (id,uri,todo,regDay) VALUES ('"+SessionUtil.getUserId(request)+"','"+CommonUtil.cut(request.getRequestURI(), 200)+"','접속',DATE_FORMAT(now(),'%Y%m%d'))");
+						String requestURI = SQLInjectionUtil.xssChange(request.getRequestURI());
+						logger.info("requestUri {}", requestURI);
+						dao.update("INSERT INTO PG_USER_TODO (id,uri,todo,regDay) VALUES ('"+SessionUtil.getUserId(request)+"','"+CommonUtil.cut(requestURI, 200)+"','접속',DATE_FORMAT(now(),'%Y%m%d'))");
 					}
 				}
 			}
