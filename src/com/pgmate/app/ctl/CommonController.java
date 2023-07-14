@@ -194,7 +194,6 @@ public class CommonController {
 		CPSession session = SessionUtil.get(request);
 
 		String changedKeyword = SQLInjectionUtil.xssChange(keyword);
-		dao.setDebug(true);
 		if(key.equalsIgnoreCase("mchtId")) {
 			dao.setTable("PG_MCHT");
 			dao.setColumns("mchtId as resKey");
