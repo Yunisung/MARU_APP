@@ -55,7 +55,7 @@
 									<form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/vact/reg/blackList/list"
 									 method="post">
 										<input type="hidden" data-reg="false" name="reason" value="출금계좌 블랙리스트">
-										<input type="hidden" data-reg="false" name="thead" value="bankCd:출금은행코드,bankNm:출금은행명,account:츌금계좌번호,regDate:등록일시">
+										<input type="hidden" data-reg="false" name="thead" value="bankCd:출금은행코드,bankNm:출금은행명,account:츌금계좌번호,reason:등록사유,regDate:등록일시">
 										<div class="form-body">
 											<div class="row">
 												<div class="form-group pg-form-group">
