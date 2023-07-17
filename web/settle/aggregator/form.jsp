@@ -28,7 +28,7 @@
 							<ul class="page-breadcrumb">
 									<li><a href="/">Home</a><i class="fa fa-circle"></i></li>
 									<li><span>정산관리</span><i class="fa fa-circle"></i></li>
-                  <li><span>가맹점 정산 조회</span></li>
+                  <li><span>대표가맹점 정산 조회</span></li>
 							</ul>
 							<div class="page-toolbar">
 									<div class="btn-group btn-theme-panel">
