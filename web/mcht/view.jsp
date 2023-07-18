@@ -2573,7 +2573,7 @@
 																<div class="row">
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">동일출금계좌<br>1일 입금제한횟수</label>
+																			<label class="control-label col-md-3">동일출금계좌<br>1일입금 제한횟수</label>
 																			<div class="col-md-9">
 																				<p class="form-control-static digits">${VACT_MAP.eqAccntDepositLimitCnt} 회</p>
 																			</div>
