@@ -2743,9 +2743,11 @@ public class MchtController {
 		SessionUtil.setSearchGrade(request, cpRequest);
 		//String key = "yGXMeC5TP3xHkmX5+Yk03PZ1wYZ3JbdEYnRNcmDTd64vL9V1aW4hdzSeJ86ztLSo"; //테스트키
 		String key = "6wCPEeQ0egkz3mPaE3R3MMGGW3KNoxunQBTcnow5g80VU431JHHPtYKLM0VDAgkU"; //운영키
-		
-		RecordSet rset = mchtDAO.accntSeachList(cpRequest.data, cpRequest.page);
-		
+
+		// 테이블이 존재하지 않아 빈값 처리
+		//RecordSet rset = mchtDAO.accntSeachList(cpRequest.data, cpRequest.page);
+		RecordSet rset = new RecordSet();
+
 		logger.info("accntSearchlist : " + rset.size());
 		for(int i = 0; i < rset.size(); i++) {
 			String name = rset.getRow(i).getString("name");
