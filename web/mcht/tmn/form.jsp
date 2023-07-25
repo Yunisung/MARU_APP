@@ -81,9 +81,28 @@
 														</div>
 														</c:if>
 													</div>
+
 													<div class="row search-opt">
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">VAN</label>
+															<select class="selectpicker col-lg-8 van" name="van" data-oper="eq">
+																<option value="">-- 전체 -- </option>
+																<c:forEach items="${CP_SESSION.vanList }" var="list">
+																	<option value="${list.van}">${list.van}</option>
+																</c:forEach>
+															</select>
+														</div>
+														<c:if test="${CP_SESSION.grade == '본사'}">
+															<div class="form-group pg-form-group">
+																<label class="control-label col-sm-4">VAN ID</label>
+																<select name="vanId" class="selectpicker col-lg-8 vanId" data-oper="eq">
+																	<option value="">-- 전체 -- </option>
+																</select>
+															</div>
+														</c:if>
 													</div>
 												</div>
+
 												<div class="form-actions nobg right">
 													<div class="btn folding-search-btn icon-arrow-down"></div>
 													<div class="">
@@ -121,6 +140,27 @@
 		 $('input[name="thead"]').val($('input[name="thead"]').val() + ",van:밴사,vanIdx:VAN INDEX,vanId:VAN ID,vanName: VAN 이름");
 		 </c:if>
 		$('#nav-mcht').addClass('active');
+
+
+		<c:if test="${CP_SESSION.grade == '본사'}">
+		$('.selectpicker.van').on('change', function(){
+			var selected = $(this).find("option:selected").val();
+			if(selected) {
+				$.get("/mcht/van/select/" + selected, function(data, status){
+					data = jQuery.parseJSON(data);
+					$(".selectpicker.vanId").html('<option value="">-- 전체 -- </option>').selectpicker('refresh');
+					if(data.length > 0) {
+						$.each(data, function(index, val) {
+							$(".selectpicker.vanId").append('<option value="'+val.vanId+'">('+val.vanId + ') '+ val.name+'</option>');
+						});
+						$(".selectpicker.vanId").selectpicker('refresh');
+					} else {
+						bootbox.alert('사용할 수 있는 VAN ID가 없습니다.');
+					}
+				});
+			}
+		});
+		</c:if>
 	</script>
 	<!-- 모달 생성을 위한 베이스 -->
 	<div id="pgmate-modal" class="modal fade container" data-backdrop="static" data-keyboard="false" tabindex="-1"></div>
