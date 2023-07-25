@@ -81,8 +81,7 @@
 														</div>
 														</c:if>
 													</div>
-
-													<div class="row search-opt">
+													<div class="row">
 														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">VAN</label>
 															<select class="selectpicker col-lg-8 van" name="van" data-oper="eq">
@@ -100,6 +99,10 @@
 																</select>
 															</div>
 														</c:if>
+													</div>
+
+													<div class="row search-opt">
+
 													</div>
 												</div>
 
