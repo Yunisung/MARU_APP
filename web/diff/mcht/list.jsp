@@ -46,7 +46,7 @@
 			<tbody id="list">
 				<c:if test="${CPR.result.code != 200}">
 					<tr>
-						<td colspan="9">${CPR.result.code}:&nbsp;${CPR.result.message}:&nbsp;${CPR.result.error}</td>
+						<td colspan="13">${CPR.result.code}:&nbsp;${CPR.result.message}:&nbsp;${CPR.result.error}</td>
 					</tr>
 				</c:if>
 				<c:forEach var="entry" items="${CPR.data}" varStatus="status">
