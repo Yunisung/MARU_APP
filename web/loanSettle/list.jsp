@@ -1,4 +1,4 @@
-<%@page contentType="text/html; charset=UTF-8"%>
+ㄹ<%@page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
@@ -59,7 +59,7 @@
 			<tbody id="list">
 				<c:if test="${CPR.result.code != 200}">
 					<tr>
-						<td colspan="15">${CPR.result.code}:&nbsp;${CPR.result.message}:&nbsp;${CPR.result.error}</td>
+						<td colspan="19">${CPR.result.code}:&nbsp;${CPR.result.message}:&nbsp;${CPR.result.error}</td>
 					</tr>
 				</c:if>
 				<c:forEach var="entry" items="${CPR.data}" varStatus="status">
