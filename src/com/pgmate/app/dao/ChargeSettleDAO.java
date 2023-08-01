@@ -69,6 +69,22 @@ public class ChargeSettleDAO extends DAO{
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 		
 	}
+
+	public RecordSet listWithDecAccount(List<Data> datas, Page page){
+		page = CPUtil.correctPage(page);
+
+		super.setTable("(SELECT D.*, FN_AES_DEC(account) as wAccount, FN_AES_DEC(holder) as wHolder," +
+				"(SELECT codeName FROM PG_CODE WHERE alias='BANK' AND code=D.vactBankCd) AS vactBankName " +
+				"FROM (SELECT A.*, CASE WHEN A.trxType = '입금' THEN B.bankCd WHEN A.trxType = '출금' THEN C.bankCd END AS vactBankCd " +
+				"FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN PG_VACT_TRX B ON A.trxId = B.vactId AND A.mchtId = B.mchtId AND A.trxType = '입금' AND A.trxUnit = '가상계좌정산' " +
+				"LEFT OUTER JOIN PG_FIRM_TRX C ON A.refId = C.idx AND A.trxType = '출금' AND A.trxUnit = '펌뱅킹') D) E");
+		super.setColumns("E.*");
+		super.setOrderBy("trxId desc");
+
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
+
+	}
 	
 	public RecordSet sumAmount(List<Data> datas){
 		super.setColumns("SUM(stlAmt) as stlAmt");
