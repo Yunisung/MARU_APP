@@ -73,7 +73,7 @@ public class ChargeSettleDAO extends DAO{
 	public RecordSet listWithDecAccount(List<Data> datas, Page page){
 		page = CPUtil.correctPage(page);
 
-		super.setTable("(SELECT D.*, FN_AES_DEC(account) as wAccount, FN_AES_DEC(holder) as wHolder," +
+		super.setTable("(SELECT D.*, FN_AES_DEC(account) as decAccount, FN_AES_DEC(holder) as decHolder," +
 				"(SELECT codeName FROM PG_CODE WHERE alias='BANK' AND code=D.vactBankCd) AS vactBankName " +
 				"FROM (SELECT A.*, CASE WHEN A.trxType = '입금' THEN B.bankCd WHEN A.trxType = '출금' THEN C.bankCd END AS vactBankCd " +
 				"FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN PG_VACT_TRX B ON A.trxId = B.vactId AND A.mchtId = B.mchtId AND A.trxType = '입금' AND A.trxUnit = '가상계좌정산' " +
