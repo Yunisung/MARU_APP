@@ -48,6 +48,29 @@ public class VactTrxDAO extends DAO {
 		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
 	}
 
+	/*public RecordSet listWithDecAccount(List<Data> datas,Page page){
+		page = CPUtil.correctPage(page);
+
+		super.setTable(
+				"(" +
+				"SELECT A.*,\n" +
+						"   (SELECT withdrawBankCd\n" +
+						"      FROM HT_VACT_REG WHERE trackId != '' AND regDay <= '20230714' AND account = A.account ORDER BY regDate DESC LIMIT 1 ) AS wBankCd,\n" +
+						"   (SELECT FN_AES_DEC(withdrawAccount)\n" +
+						"      FROM HT_VACT_REG WHERE trackId != '' AND regDay <= '20230714' AND account = A.account ORDER BY regDate DESC LIMIT 1 ) AS wAccount,\n" +
+						"   (SELECT holderName\n" +
+						"      FROM HT_VACT_REG WHERE trackId != '' AND regDay <= '20230714' AND account = A.account ORDER BY regDate DESC LIMIT 1 ) AS holderName   \n" +
+						"  FROM VW_VACT_TRX AS A    \n" +
+						" WHERE A.regDay = '20230714' AND A.trxType = '입금'" +
+				") AS E");
+		super.setColumns("E.*, (SELECT codeName FROM PG_CODE WHERE alias='BANK' AND code=E.wBankCd) as wBankNm");
+		super.setOrderBy("E.regDate desc");
+
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
+
+	}*/
+
 	public RecordSet trxSum(List<Data> datas,Page page) {
 		super.setColumns("SUM(amount) AS amount");
 		page = CPUtil.correctPage(page);
