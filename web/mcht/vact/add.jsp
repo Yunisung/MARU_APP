@@ -197,6 +197,24 @@
 												</div>
 											</div>
 											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">동일출금계좌<br>입금 1회한도</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency eqAccntLimitOnce comma" maxlength="10" data-oper="comma" name="eqAccntLimitOnce" placeholder="" value="0">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">동일출금계좌<br>입금 1일한도</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency eqAccntLimitDay comma" maxlength="10" data-oper="comma" name="eqAccntLimitDay" placeholder="" value="0">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
 												<div style="padding-top:45px; border-left:none;"></div>
 											</div>
 											<div class="form-group col-sm-12 form-subtitle">
