@@ -2588,6 +2588,24 @@
 																		</div>
 																	</div>
 																</div>
+																<div class="row">
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">동일출금계좌<br>입금 1회한도</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${VACT_MAP.eqAccntLimitOnce}</p> 원
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">동일출금계좌<br>입금 1일한도</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${VACT_MAP.eqAccntLimitDay}</p> 원
+																			</div>
+																		</div>
+																	</div>
+																</div>
 																<c:if test="${CP_SESSION.grade eq '본사'}">
 																	<c:if test="${VACT_MAP.settleType eq 'D+0' || VACT_MAP.settleType eq 'A+0' || VACT_MAP.settleType eq 'A+1' || VACT_MAP.settleType eq 'A+2'}">
 																		<div class="form-group col-sm-12 form-subtitle">
