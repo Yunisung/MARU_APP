@@ -89,6 +89,7 @@
 																<option value="037">전북은행</option>
 																<option value="002">한국산업은행</option>
 																<option value="050">상호저축은행</option>
+																<option value="092">토스뱅크</option>
 																<option value="051">기타외국은행</option>
 																<option value="052">모건스탠리</option>
 																<option value="054">홍콩상하이은행</option>
