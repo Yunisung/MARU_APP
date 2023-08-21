@@ -464,8 +464,7 @@ public class TrxOperController {
 		CPDAO dao = new CPDAO();
 		
 		if(requestMap.getString("distType").equalsIgnoreCase("true")) {
-			//dao.setTable("(SELECT MAX(trxDay) as endDay, taxId, mchtId, name, sum(stlAgencyFee+benefit) amt FROM VW_TRX_CAP WHERE distId ='00' and vanStatus = '입금완료' and substr(stlVanDay,1,6) ='"+requestMap.getString("trxDay")+"' group by taxId) A LEFT JOIN PG_MCHT_TAX B ON A.taxId = B.taxId LEFT JOIN PG_MCHT C ON A.mchtId = C.mchtId");
-			dao.setTable("(SELECT MAX(trxDay) as endDay, taxId, mchtId, name, sum(stlAgencyFee+benefit) amt FROM VW_TRX_CAP WHERE distId ='00' and substr(stlVanDay,1,6) ='"+requestMap.getString("trxDay")+"' group by taxId) A LEFT JOIN PG_MCHT_TAX B ON A.taxId = B.taxId LEFT JOIN PG_MCHT C ON A.mchtId = C.mchtId");
+			dao.setTable("(SELECT MAX(trxDay) as endDay, taxId, mchtId, name, sum(stlAgencyFee+benefit) amt FROM VW_TRX_CAP WHERE distId ='00' and vanStatus = '입금완료' and substr(stlVanDay,1,6) ='"+requestMap.getString("trxDay")+"' group by taxId) A LEFT JOIN PG_MCHT_TAX B ON A.taxId = B.taxId LEFT JOIN PG_MCHT C ON A.mchtId = C.mchtId");
 			dao.setColumns("A.endDay, A.taxId, A.mchtId, A.name, "
 							+ "A.taxId, A.mchtId, A.name, TRUNCATE(A.amt*10/110,0) as stlFeeVat ,(A.amt-TRUNCATE(A.amt*10/110,0)) as stlFee, "
 							+ "FN_AES_DEC(B.identity) as identity, B.ceoName, B.compName, B.addr1, B.addr2, B.email ,C.bizCategory, C.bizType");
@@ -479,7 +478,7 @@ public class TrxOperController {
 			
 			dao.setWhere("SUBSTR(A.stlVanDay,1,6) = '" + requestMap.getString("trxDay") + "'");
 			dao.addWhere("A.distId", "00", DAO.ne);
-			//dao.addWhere("vanStatus", "입금완료", DAO.eq);
+			dao.addWhere("vanStatus", "입금완료", DAO.eq);
 			dao.setGroupBy("taxId");
 			dao.setOrderBy("A.name");
 		}
