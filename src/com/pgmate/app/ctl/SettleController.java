@@ -1025,7 +1025,8 @@ public class SettleController {
 				pstmt.setLong(i++, map.getLong("vanFee"));
 				pstmt.setLong(i++, map.getLong("diffAmt"));
 				pstmt.setLong(i++, map.getLong("benefit"));
-				pstmt.setLong(i++, map.getLong("deductAmt"));
+//				pstmt.setLong(i++, map.getLong("deductAmt"));
+				pstmt.setLong(i++, 0L);
 				pstmt.setLong(i++, map.getLong("manualRelsAmt"));
 				pstmt.setLong(i++, map.getLong("manualDeductAmt"));
 				pstmt.setLong(i++, map.getLong("loanDeductAmt"));
