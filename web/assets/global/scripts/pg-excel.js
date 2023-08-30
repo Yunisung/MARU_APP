@@ -183,7 +183,8 @@ function importExcelCollectData() {
         valid = false;
         return;
       } else if(reqRow.collectId && reqRow.collectDay && reqRow.collectTime && reqRow.collectAmount) {
-        if($.isNumeric(reqRow.collectDay) && $.isNumeric(reqRow.collectTime) && $.isNumeric(reqRow.collectAmount) && reqRow.collectAmount >= 0) {
+        // if($.isNumeric(reqRow.collectDay) && $.isNumeric(reqRow.collectTime) && $.isNumeric(reqRow.collectAmount) && reqRow.collectAmount >= 0) {
+        if($.isNumeric(reqRow.collectDay) && $.isNumeric(reqRow.collectTime) && $.isNumeric(reqRow.collectAmount)) {
           valid = true;
           resultArray.push(reqRow);
         } else {
