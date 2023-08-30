@@ -277,7 +277,7 @@ public class CollectController {
 			SharedMap<String,Object> sharedMap = collectGroupDAO.getByColgId(eachMap.getString("colgId")).getRowFirst();
 			CPDAO cpDAO = new CPDAO();
 			StringBuilder sb = new StringBuilder();
-			sb.append("SELECT SUM(IF(risk != '' AND capType = '매입', 0, amount-stlVanFee)) AS kwonAmt FROM VW_TRX_CAP ");
+			sb.append("SELECT SUM(IF(risk != '' AND capType = '매입', 0, amount-stlVanFee)) AS MARUAmt FROM VW_TRX_CAP ");
 			sb.append("WHERE stlVanDay = '"+eachMap.getString("collectDay")+"' ");
 			sb.append("AND vanStatus = '입금대기' ");
 
