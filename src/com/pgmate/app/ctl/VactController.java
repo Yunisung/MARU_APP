@@ -73,7 +73,7 @@ public class VactController {
     VactTrxDAO vactTrxDAO = new VactTrxDAO();
     //KJM : 거래내역의 금액 총 합계 구해서 넘겨줌
     request.setAttribute("AMOUNT_SUM", new VactTrxDAO().trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
-    RecordSet rset = vactTrxDAO.list(cpRequest.data, cpRequest.page);
+    RecordSet rset = vactTrxDAO.joinList(cpRequest.data, cpRequest.page);
     return new CPRUtil(cpRequest).dataList(rset, vactTrxDAO).setView(request, "/vact/trx/list", "");
   }
 
