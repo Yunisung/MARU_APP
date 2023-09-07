@@ -3,17 +3,15 @@ package com.pgmate.app.export;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.format.CellFormatType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -21,6 +19,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -130,12 +129,15 @@ public class XlsExport {
 
 		add("authFee");
 		add("authFeeVat");
+
+		add("fee");
+
 	}};
 	
 	ArrayList<String> doubleArray = new ArrayList<String>() {{
-		
+
 	}};
-	
+
 	ArrayList<String> percentArray = new ArrayList<String>() {{
 		add("stlRate");
 		add("stlInterRate");
@@ -177,8 +179,12 @@ public class XlsExport {
 		add("diff1CheckSalesRate");
 		add("diff2CheckSalesRate");
 		add("diff3CheckSalesRate");
+
+		add("feeVat");
+		add("rateAmt");
+		add("rateVat");
 	}};
-	
+
 	public XlsExport(CPDocument doc) {
 		url = CPUtil.CP_UPLOAD_DIR + "/" + filePath + "/" + CommonUtil.getCurrentDate("yyyyMMdd") + "/";
 		filePath = CPUtil.getCanonicalWebPath() + File.separator + CPUtil.CP_UPLOAD_DIR + File.separator + filePath + File.separator;
