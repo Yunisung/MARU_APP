@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.pgmate.app.dao.*;
+import com.pgmate.app.util.*;
+import com.pgmate.lib.sms.SmsUtil;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +27,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.CPResponse;
-import com.pgmate.app.util.CPRUtil;
-import com.pgmate.app.util.CPUtil;
-import com.pgmate.app.util.EformUtil;
-import com.pgmate.app.util.SessionUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.gson.GsonUtil;
@@ -343,6 +341,11 @@ public class UserController {
     
 	@RequestMapping(value = {"/member/user/pwCheck/{userid}"}, method = RequestMethod.POST)
     public @ResponseBody String pwCheck(HttpServletRequest request, @PathVariable String userid, @RequestParam("pw") String pw) {
+		String sessionId = SessionUtil.getUserId(request);
+		if(!sessionId.equals(userid)) {
+			return "잘못된 요청입니다.";
+		}
+
 		UserDAO userDAO = new UserDAO();
 		SharedMap<String, Object> result = userDAO.getById(userid).getRowFirst();
 		
@@ -357,9 +360,126 @@ public class UserController {
 			return GsonUtil.toJson("비밀번호가 맞지 않습니다.");
 		}
     }
+
+	@RequestMapping(value = {"/member/user/sendSms/{userid}"}, method = RequestMethod.POST)
+	public @ResponseBody String sendSms(HttpServletRequest request, @PathVariable String userid) {
+		String sessionId = SessionUtil.getUserId(request);
+		if(!sessionId.equals(userid)) {
+			return "잘못된 요청입니다.";
+		}
+
+		UserDAO userDAO = new UserDAO();
+		SharedMap<String, Object> result = userDAO.getById(userid).getRowFirst();
+
+		String oldPassWord = CommonUtil.nToB(request.getParameter("check"));
+
+		String pwCheck =  new CPDAO().getPassword(oldPassWord);
+		if(result.getString("pw").equalsIgnoreCase(pwCheck)){
+			return "기존 비밀번호가 틀립니다";
+		}
+
+		String passKey = CommonUtil.nToB(request.getParameter("pw"));
+
+		CPRequest cpRequest = new CPRequest();
+		cpRequest.setData("id", userid, "eq", "", true);
+
+		String hashed =  new CPDAO().getPassword(passKey);
+		cpRequest.setData("pw", hashed);
+
+		CPDAO cpDAO = new CPDAO();
+
+		//과거에 사용했던 비밀번호 확인
+		cpDAO.setTable("HT_USER_PW");
+		cpDAO.setColumns("pw");
+		cpDAO.addWhere("pw", hashed, DAO.eq);
+		cpDAO.addWhere("regId", userid, DAO.eq);
+		cpDAO.setOrderBy("");
+
+		if(cpDAO.search().size() > 0)
+			return "예전에 사용한 비밀번호 입니다.";
+
+		WebCache wc = new WebCache();
+		String number = String.format("%1$" + 6 + "s", ((int) (Math.random() * 999999) + 1)).replace(' ', '0');
+		wc.setSMSKey(userid, number);
+
+		String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
+		SmsUtil smsUtil = new SmsUtil();
+		smsUtil.sendSms(smsUtil.SMS_URL, result.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+
+		return "OK";
+	}
+
+	@RequestMapping(value = {"/member/user/smsCheck/{userid}"}, method = RequestMethod.POST)
+	public @ResponseBody String smsCheck(HttpServletRequest request, @PathVariable String userid) {
+		String sessionId = SessionUtil.getUserId(request);
+		if(!sessionId.equals(userid)) {
+			return "잘못된 요청입니다.";
+		}
+
+		UserDAO userDAO = new UserDAO();
+		SharedMap<String, Object> result = userDAO.getById(userid).getRowFirst();
+
+		String oldPassWord = CommonUtil.nToB(request.getParameter("check"));
+
+		String pwCheck =  new CPDAO().getPassword(oldPassWord);
+		if(result.getString("pw").equalsIgnoreCase(pwCheck)){
+			return "기존 비밀번호가 틀립니다";
+		}
+
+		String smsNumber = CommonUtil.nToB(request.getParameter("smsNumber"));
+
+		WebCache wc = new WebCache();
+		String saveNumber = wc.getSMSKey(userid);
+
+		if(saveNumber.equals(smsNumber)) {
+			String passKey = CommonUtil.nToB(request.getParameter("pw"));
+
+			CPDAO cpDAO = new CPDAO();
+
+			CPRequest cpRequest = new CPRequest();
+			cpRequest.setData("id", userid, "eq", "", true);
+
+			String hashed =  new CPDAO().getPassword(passKey);
+			cpRequest.setData("pw", hashed);
+
+			if(cpDAO.update("PG_USER", SessionUtil.getUserId(request), cpRequest.data)){
+
+				//히스토리 테이블에 변경 전 비밀번호 저장
+				cpDAO.insert("HT_USER_PW", cpRequest.data);
+
+				cpDAO = new CPDAO();
+				//유저 비밀번호 정보 수정할 데이터 세팅
+				CPRequest cpRequestPW = new CPRequest();
+				cpRequestPW.setData("id", userid, "eq", "", true);
+				cpRequestPW.setData("pwStatus", "사용");
+				cpRequestPW.setData("pwYn", "예");	//비밀번호 변경 여부
+				cpRequestPW.setData("pwRetry", 0);	//재시도 횟수
+				cpRequestPW.setData("pwDate", CommonUtil.getCurrentTimestamp());	//최근 갱신일
+
+				//유저 비밀번호 정보 정상 수정 시
+				if(cpDAO.update("PG_USER_PW", cpRequestPW.data)){
+					//KJM : 현재 로그인 중인 계정의 세션정보의 비밀번호 변경 여부도 "예" 바꿔주기
+					SessionUtil.setPwYes(request);
+
+					//"OK" 반환
+					return "OK";
+				}
+			}
+
+			return "OK";
+		} else {
+			return "인증번호가 틀립니다";
+		}
+	}
   
     @RequestMapping(value = "/member/user/updatePassword/{userid}", method = RequestMethod.POST)
     public @ResponseBody String updatePassword(HttpServletRequest request, @PathVariable String userid) {
+
+		String sessionId = SessionUtil.getUserId(request);
+		if(!sessionId.equals(userid)) {
+			return "잘못된 요청입니다.";
+		}
+
 		UserDAO userDAO = new UserDAO();
 		SharedMap<String, Object> result = userDAO.getById(userid).getRowFirst();
 
@@ -423,8 +543,15 @@ public class UserController {
     
     @RequestMapping(value = "/member/user/resetPassword/{userid}", method = RequestMethod.GET)
     public @ResponseBody Map<String , Object> resetPassword(HttpServletRequest request, @PathVariable String userid) {
-    	Map<String, Object> resMap = new HashMap<String, Object>();
-    	
+		Map<String, Object> resMap = new HashMap<String, Object>();
+
+		/*String sessionId = SessionUtil.getUserId(request);
+		if(!sessionId.equals(userid)) {
+			resMap.put("result", "NOK");
+			resMap.put("msg", "비밀번호 변경이 실패하였습니다.");
+			return resMap;
+		}*/
+
     	String passKey = String.format("%05d", new Random().nextInt(99999));
     	CPRequest cpRequest = new CPRequest();
     	cpRequest.setData("id", userid, "eq", "", true);

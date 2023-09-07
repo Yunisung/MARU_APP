@@ -3,6 +3,7 @@ package com.pgmate.app.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pgmate.app.util.SQLInjectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,19 +22,15 @@ import com.pgmate.lib.util.lang.CommonUtil;
  *
  */
 public class SessionInterceptor extends HandlerInterceptorAdapter{
-	
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.interceptor.SessionInterceptor.class );
 	
-	
-	// KBR controller로 보내기 전에 처리하는 인터셉터
-	// 반환이 false라면 controller로 요청을 안함
+
 	@Override
     public boolean preHandle(HttpServletRequest request,HttpServletResponse response, Object handler) throws Exception {
 		if(CPUtil.CP_DEBUG){
 			logger.info("==========    START    =========");
 			logger.info("URI : {} , {}",request.getRequestURI(),request.getMethod());
 			request.setAttribute("ServletStartTime", System.currentTimeMillis());
-			
 		}
 		logger.info("{},{},{}",request.getRequestURI(),request.getMethod(),CommonUtil.nToB(request.getHeader("X-Real-IP")));
 		
@@ -49,9 +46,6 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 		
 		if(!"/check".equals(request.getRequestURI())) {
 			if(exclude == null){
-				if(request.getServletPath().equals("/test/trxInsert/notitest")) {
-					return true;
-				}
 				String contentType = CommonUtil.nToB(request.getContentType()).toLowerCase();
 				if(!SessionUtil.isLive(request)){
 					logger.debug("SESSION IS NULL : {}",contentType);
@@ -67,10 +61,9 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 						logger.debug("AJAX SESSION EXPIRED : ");
 						return false;
 					}
-
-					if (contentType.endsWith("html")) {
-							response.sendRedirect("/login/form");
-					} else {
+					if(contentType.endsWith("html")){
+						response.sendRedirect("/login/form");
+					}else{
 						response.sendRedirect("/login/expired");
 					}
 					
@@ -79,15 +72,13 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 					CPSession cpSession = SessionUtil.get(request);
 					if(cpSession.getGrade().equals("가맹점") || cpSession.getGrade().equals("지사")){
 						logger.info("{},{},{}",request.getRequestURI(),SessionUtil.getUserId(request),SessionUtil.getParentId(request));
-						
 					}else{
-						
 						DAO dao = new DAO();
 						dao.setDebug(CPUtil.CP_DEBUG);
 						logger.info("{},{},{}",request.getRequestURI(),SessionUtil.getUserId(request),SessionUtil.getParentId(request));
-						// KBR : pg_user_todo 테이블 update ( 계정 메뉴 접속 기록 )
-						dao.update("INSERT INTO PG_USER_TODO (id,uri,todo,regDay) VALUES ('"+SessionUtil.getUserId(request)+"',"
-								+ "'"+CommonUtil.cut(request.getRequestURI(), 200)+"','접속',DATE_FORMAT(now(),'%Y%m%d'))");
+						String requestURI = SQLInjectionUtil.xssChange(request.getRequestURI());
+						logger.info("requestUri {}", requestURI);
+						dao.update("INSERT INTO PG_USER_TODO (id,uri,todo,regDay) VALUES ('"+SessionUtil.getUserId(request)+"','"+CommonUtil.cut(requestURI, 200)+"','접속',DATE_FORMAT(now(),'%Y%m%d'))");
 					}
 				}
 			}
@@ -95,8 +86,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 		
         return true;
     }
-	
-	// KBR controller의 handler가 끝나면 처리됨
+ 
     @Override
     public void postHandle(HttpServletRequest request,HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
     	if(CPUtil.CP_DEBUG){
@@ -104,7 +94,6 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
     	}
     }
  
-    // KBR view까지 처리가 끝난 후에 처리됨
     @Override
     public void afterCompletion(HttpServletRequest request,HttpServletResponse response, Object handler, Exception ex) throws Exception {
     	if(CPUtil.CP_DEBUG){

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.pgmate.app.dao.*;
+import com.pgmate.app.util.SQLInjectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -185,19 +186,20 @@ public class CommonController {
 		ArrayList<String> resultArray = new ArrayList<>();
 		DAO dao = new DAO();
 		CPSession session = SessionUtil.get(request);
-		
+
+		String changedKeyword = SQLInjectionUtil.xssChange(keyword);
 		if(key.equalsIgnoreCase("mchtId")) {
 			dao.setTable("PG_MCHT");
 			dao.setColumns("mchtId as resKey");
-			dao.addWhere("mchtId", keyword, DAO.lk);
+			dao.addWhere("mchtId", changedKeyword, DAO.lk);
 		} else if(key.equalsIgnoreCase("mchtName")) {
 			dao.setTable("PG_MCHT");
 			dao.setColumns("name as resKey");
-			dao.addWhere("name", keyword, DAO.lk);
+			dao.addWhere("name", changedKeyword, DAO.lk);
 		}else if(key.equalsIgnoreCase("mchtNameId")) {
 			dao.setTable("PG_MCHT");
 			dao.setColumns("concat(name,' ||',mchtId) as resKey");
-			dao.addWhere("name", keyword, DAO.lk);
+			dao.addWhere("name", changedKeyword, DAO.lk);
 		} else {
 			return "";
 		}

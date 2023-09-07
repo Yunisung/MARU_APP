@@ -572,7 +572,7 @@ public class TrxOperController {
 			dao.setOrderBy("A.name");
 		}
 		
-		
+
 		RecordSet rset = dao.search();
 
 		if (rset.size() > 0) {

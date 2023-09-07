@@ -115,8 +115,10 @@ public class RealtimeController {
 		request.setAttribute("SUMMAP", new RealtimePayOutDAO().calcAutoList(cpRequest.data).getRow(0));
 		
 		RealtimePayOutDAO realtimeDAO = new RealtimePayOutDAO();
-		RecordSet rset = realtimeDAO.autoList(cpRequest.data,cpRequest.page);
-		
+		// column 'A.bankFee' 에러발생으로 주석처리
+		//RecordSet rset = realtimeDAO.autoList(cpRequest.data,cpRequest.page);
+		RecordSet rset = new RecordSet();
+
 		return new CPRUtil(cpRequest).dataList(rset,realtimeDAO).setView(request,"/realtimeSettle/auto/list","");
 	}
 	

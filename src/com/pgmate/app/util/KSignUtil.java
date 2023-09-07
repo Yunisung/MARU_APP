@@ -6,8 +6,12 @@ import com.ksign.securedb.api.SDBCrypto;
 import com.ksign.securedb.api.util.*;
 import com.pgmate.lib.util.map.SharedMap;
 import com.pgmate.app.model.ajax.CPRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class KSignUtil {
+	private static Logger logger = LoggerFactory.getLogger(com.pgmate.app.util.KSignUtil.class );
 
 	private KSignUtil() {}
 	
@@ -262,9 +266,7 @@ public class KSignUtil {
 	 */
 	public void Decrypt(SharedMap<String, Object> data, String key, String code) {
 		SDBCrypto crypto = null;
-		
-		System.out.println("[KSignUtil] RequestMapping : "+ code);
-		
+
 		try {
 			crypto = SDBCrypto.getInstanceDomain(DomainName, ServerIP, ServerPort);
 			
@@ -295,32 +297,33 @@ public class KSignUtil {
 	public void ShowEncLog(String key, String keyData) {
 		if (ShowLog == false)
 			return;
-		
-		System.out.println("-------------------------------");
-		System.out.println("칼럼 key : [" + key +"]");
-		System.out.println("암호화 하기전 : [" + keyData +"]");
+
+
+		logger.info("-------------------------------");
+		logger.info("칼럼 key : [" + key +"]");
+		logger.info("암호화 하기전 : [" + keyData +"]");
 	}
 	
 	public void ShowDecLog(String key, String keyData) {
 		if (ShowLog == false)
 			return;
 		
-		System.out.println("-------------------------------");
-		System.out.println("칼럼 key : [" + key +"]");
-		System.out.println("복호화 하기전 : [" + keyData +"]");
+		logger.info("-------------------------------");
+		logger.info("칼럼 key : [" + key +"]");
+		logger.info("복호화 하기전 : [" + keyData +"]");
 	}
 	
 	public void ShowResultLog(String data) {
 		if (ShowLog == false)
 			return;
 
-		System.out.println("결과 데이터 : ["+ data +"]");
+		logger.info("결과 데이터 : ["+ data +"]");
 	}
 
 	public void ShowResult(String data, String result) {
 		if (ShowLog == false)
 			return;
-		System.out.println("결과 : ["+ data +"] -> ["+ result +"]");
+		logger.info("결과 : ["+ data +"] -> ["+ result +"]");
 
 	}
 	
@@ -328,15 +331,15 @@ public class KSignUtil {
 		if (ShowLog == false)
 			return;
 		
-		System.out.println("-------------------------------");
-		System.out.println("[KSignUtil] error code = " +ex.getResultCode());
-		System.out.println("[KSignUtil] error message = "+ex.getLocalizedMessage());
-		System.out.println("-------------------------------");
+		logger.error("-------------------------------");
+		logger.error("[KSignUtil] error code = " +ex.getResultCode());
+		logger.error("[KSignUtil] error message = "+ex.getLocalizedMessage());
+		logger.error("-------------------------------");
 	}
 	
 	public void ShowCheckLog(String key) {
 		if (ShowLog == false)
 			return;
-		System.out.println("해당 칼럼이 암호화 되지 않음 : " + key);
+		logger.info("해당 칼럼이 암호화 되지 않음 : " + key);
 	}
 }

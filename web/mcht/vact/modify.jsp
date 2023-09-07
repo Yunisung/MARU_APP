@@ -153,6 +153,13 @@
 												</div>
 											</div>
 											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4">가상계좌 상태값 전달 주소(URL)</label>
+												<div class="col-sm-6">
+													<input type="text" class="form-control input-sm" maxlength="100" name="statusHookAddr" placeholder="api.example.com"
+														   value="${DATAMAP.statusHookAddr}">
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
 												<label class="control-label col-sm-4 req-label">1회한도</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
@@ -188,6 +195,43 @@
 													</div>
 												</div>
 											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">동일출금계좌<br>1일입금 제한횟수</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency eqAccntDepositLimitCnt" maxlength="3" name="eqAccntDepositLimitCnt" placeholder="" value="${DATAMAP.eqAccntDepositLimitCnt}">
+														<span class="input-group-addon">회</span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">동일출금계좌<br>발급제한횟수</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency eqAccntIssueLimitCnt" maxlength="3" name="eqAccntIssueLimitCnt" placeholder="" value="${DATAMAP.eqAccntIssueLimitCnt}">
+														<span class="input-group-addon">회</span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">동일출금계좌<br>입금 1회한도</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency eqAccntLimitOnce comma" maxlength="10" data-oper="comma" name="eqAccntLimitOnce" placeholder="" value="${DATAMAP.eqAccntLimitOnce}">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">동일출금계좌<br>입금 1일한도</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency eqAccntLimitDay comma" maxlength="10" data-oper="comma" name="eqAccntLimitDay" placeholder="" value="${DATAMAP.eqAccntLimitDay}">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+
 											<div class="form-group col-sm-6">
 												<div style="padding-top:45px; border-left:none;"></div>
 											</div>

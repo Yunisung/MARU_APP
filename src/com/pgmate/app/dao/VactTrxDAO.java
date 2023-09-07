@@ -55,6 +55,29 @@ public class VactTrxDAO extends DAO {
 		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
 	}
 
+	/*public RecordSet listWithDecAccount(List<Data> datas,Page page){
+		page = CPUtil.correctPage(page);
+
+		super.setTable(
+				"(" +
+				"SELECT A.*,\n" +
+						"   (SELECT withdrawBankCd\n" +
+						"      FROM HT_VACT_REG WHERE trackId != '' AND regDay <= '20230714' AND account = A.account ORDER BY regDate DESC LIMIT 1 ) AS wBankCd,\n" +
+						"   (SELECT FN_AES_DEC(withdrawAccount)\n" +
+						"      FROM HT_VACT_REG WHERE trackId != '' AND regDay <= '20230714' AND account = A.account ORDER BY regDate DESC LIMIT 1 ) AS wAccount,\n" +
+						"   (SELECT holderName\n" +
+						"      FROM HT_VACT_REG WHERE trackId != '' AND regDay <= '20230714' AND account = A.account ORDER BY regDate DESC LIMIT 1 ) AS holderName   \n" +
+						"  FROM VW_VACT_TRX AS A    \n" +
+						" WHERE A.regDay = '20230714' AND A.trxType = '입금'" +
+				") AS E");
+		super.setColumns("E.*, (SELECT codeName FROM PG_CODE WHERE alias='BANK' AND code=E.wBankCd) as wBankNm");
+		super.setOrderBy("E.regDate desc");
+
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
+
+	}*/
+
 	public RecordSet trxSum(List<Data> datas,Page page) {
 		super.setColumns("SUM(amount) AS amount");
 		page = CPUtil.correctPage(page);
@@ -66,13 +89,21 @@ public class VactTrxDAO extends DAO {
 	 * 인증수수료 관련
 	 */
 	public RecordSet authList(List<Data> datas, Page page) {
-		//23.06.13 인증수수료 조회 > 가상계좌 모계좌 은행 검색 되도록 쿼리 수정
-		super.setTable("(SELECT a.*, b.vactBankCd FROM PG_TOTAL_AUTH a INNER JOIN PG_MCHT_MNG_VACT b ON a.mchtId = b.mchtId) c");
-		super.setColumns("c.*");
+		super.setTable("PG_TOTAL_AUTH");
 
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas); //DATA to CONDITION
 		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
+	}
+
+	public SharedMap<String,Object> getTotalAuth(String authId) {
+		super.setTable("PG_TOTAL_AUTH a, PG_CODE b");
+		super.setColumns("FN_AES_DEC(bankAccount) AS withdrawAccountDec, bankCd as withdrawBankCd, b.codeName as withdrawBankNm, holderName");
+		super.addWhere("a.bankCd = b.code and b.alias = 'BANK'");
+		super.addWhere("authId", authId);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst();
 	}
 
 	public RecordSet getVactAuth(String totalAuthId) {
@@ -230,5 +261,17 @@ public class VactTrxDAO extends DAO {
 		super.initRecord();
 		return rset.getRowFirst();
 	}
+
+	public int countVactStatusNotiFail(String mchtId) {
+		super.setTable("PG_VACT_STATUS_NOTI");
+		super.setColumns("COUNT(*) AS cnt");
+		super.addWhere("status = '전송실패'");
+		super.addWhere("vactAccount IN (SELECT account FROM PG_VACT_DTL WHERE mchtId = '" + mchtId + "')");
+		super.addWhere("mchtId", mchtId);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst().getInt("cnt");
+	}
+
 }
 

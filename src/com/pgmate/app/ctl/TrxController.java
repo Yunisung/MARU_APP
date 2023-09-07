@@ -1,7 +1,6 @@
 package com.pgmate.app.ctl;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,37 +66,27 @@ import com.pgmate.pay.bean.Card;
 public class TrxController {
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.ctl.TrxController.class );
 
-	//KJM : 거래관리 > 승인내역조회 리스트
 	@RequestMapping(value = "/trx/pay/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView payList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
-		//KJM : 로그인 중인 계정 소속 파악
 		SessionUtil.setSearchGrade(request, cpRequest);
-		//KJM : 리스트 총 금액 합계 정보 넘겨줌
 		request.setAttribute("AMOUNT_SUM", new TrxPayDAO().trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
 
 		TrxPayDAO trxPayDAO = new TrxPayDAO();
 		RecordSet rset = trxPayDAO.list(cpRequest.data,cpRequest.page);
-		//KJM : 조회 된 리스트를 view에 넘겨줌
 		return new CPRUtil(cpRequest).dataList(rset,trxPayDAO).setView(request,"/trx/pay/list","");
 	}
-	
-	//KJM : 거래관리 > 승인내역조회 > 상세정보
+
 	@RequestMapping(value = "/trx/pay/view/{trxId}", method = RequestMethod.GET)
     public ModelAndView payView(HttpServletRequest request, @PathVariable String trxId) {
 		request.setAttribute("DATAMAP", new TrxPayDAO().getByTrxId(trxId).getRow(0));
         return new ModelAndView("/trx/pay/modal");
     }
-	
-	//KJM : 거래관리 > 승인실패조회 리스트
+
 	@RequestMapping(value = "/trx/err/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView errList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
-		//KJM : 로그인 계정 소속 파악
 		SessionUtil.setSearchGrade(request, cpRequest);
 		TrxErrDAO trxErrDAO = new TrxErrDAO();
-		//KJM : 승인실패내역 리스트 가져옴
 		RecordSet rset = trxErrDAO.list(cpRequest.data,cpRequest.page);
-		
-		//KJM : 조회 된 리스트들 view에 넘겨줌
 		return new CPRUtil(cpRequest).dataList(rset,trxErrDAO).setView(request,"/trx/err/list","");
 	}
 	
@@ -107,51 +96,38 @@ public class TrxController {
         return new ModelAndView("/trx/err/modal");
     }
 	
-	
-	//KJM : 거래관리 > 매입현황조회 리스트
+
 	@RequestMapping(value = "/trx/cap/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView capList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
-		//KJM : 로그인 중인 계정 소속 파악
 		SessionUtil.setSearchGrade(request, cpRequest);
+
 		cpRequest.replaceKeyName("amount", "abs(amount)");
-		/*
-		 * KJM : 결과 금액 합계 "AMOUNT SUM"이라는 이름으로 /trx/cap/list 페이지에 뿌려줌
-		 * trxSum(cpRequest.data,null) : 금액의 총 합계 구해옴
-		 * getRowFirst().getString("amount") : amount컬럼명의 첫번째 값 가져옴
-		 */ 
+
 		request.setAttribute("AMOUNT_SUM", new TrxCapDAO().trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
-		
-		//KJM : 매입내역 가져온 후 해당 url에 뿌려준다
+
 		TrxCapDAO trxCapDAO = new TrxCapDAO();
 //		cpRequest.setData("capId", "", "", "desc", false);
 		RecordSet rset = trxCapDAO.list(cpRequest.data,cpRequest.page);
 		return new CPRUtil(cpRequest).dataList(rset,trxCapDAO).setView(request,"/trx/cap/list","");
 	}
 
-	//KJM : 거래관리 > 매입현황조회 > 매입내역 상세정보
+
+
 	@RequestMapping(value = "/trx/cap/view/{capId}", method = RequestMethod.GET)
-	public ModelAndView capView(HttpServletRequest request, @PathVariable String capId) {
-		
-		//KJM : 매입번호의 정보 가져옴
+    public ModelAndView capView(HttpServletRequest request, @PathVariable String capId) {
 		SharedMap<String, Object> res =  new TrxCapDAO().getByCapId(capId).getRow(0);
 		
 		// 다날 영수증 조회용 param
-		//KJM : van == DANAL 일 때
 		if("DANAL".equals(res.getString("van"))){
-			//KJM : danalParam : vanId|vanTrxId(van사 거래번호)|amount
 			res.put("danalParam", Base64.encodeString(res.getString("vanID")+"|"+res.getString("vanTrxId")+"|"+res.getString("amount")));
 		}
 
 		// 올앳 영수증 조회용 거래번호
-		//KJM : van이 ALLAT으로 시작할 때
 		if(res.startsWith("van", "ALLAT")){
 			AllatUtil allatUtil = new AllatUtil();
-			//KJM : 매입취소유형이 부분(부분취소)일 때
 			if(res.getString("rfdType").equals("부분")) {
-				//KJM : 매입내역의 취소원거래번호에 대한 정보 가져옴
 				res = new TrxCapDAO().getByCapId2(res.getString("rootTrxId")).getRow(0);
 			}
-			//KJM : 매입건일 때
 			if(res.getString("capType").equals("매입")){
 				RecordSet rset = new TrxReqDAO().getTrxId(res.getString("trxId"));
 				if(rset.size() > 0) {
@@ -201,94 +177,62 @@ public class TrxController {
 		}
 		
 		request.setAttribute("DATAMAP", res);
-		//KJM : 취소된 거래번호의 매입내역 정보
 		request.setAttribute("DATAREFMAP", new TrxCapDAO().getByRootTrxId(res.getString("trxId")).getRow(0));
-		//KJM : 터미널 정보
+
 		request.setAttribute("DATATMNMAP", new MchtTmnDAO().getById(res.getString("tmnId")).getRow(0));
 		
 		request.setAttribute("IQR_MAP", new TrxIqrDAO().getByCapId(capId).getRows());
         return new ModelAndView("/trx/cap/modal");
-//    }	
-//		
-//		//KJM : 매입 상담이력 리스트
-//		request.setAttribute("IQR_MAP", IQR_MAP);
-//		
-//		// KBR : 취소가능 금액 (21/12/31 추가)
-//		long rfdMnt =  Integer.parseInt(res.getString("amount")) + new TrxCapDAO().getRfdAmtBytrxId(res.getString("trxId")) ;
-//		request.setAttribute("DATAREFMNT", rfdMnt ); 
-//		
-//		return new ModelAndView("/trx/cap/modal");
-	}	
-	
-	//KJM : 거래관리 > 승인IO조회
+    }
+
 	@RequestMapping(value = "/trx/io/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView ioList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
-		//KJM : 로그인 중인 계정 소속 구분
 		SessionUtil.setSearchGrade(request, cpRequest);
 		TrxIODAO trxIODAO = new TrxIODAO();
-		//KJM : 거래 IO 리스트 가져옴
 		RecordSet rset = trxIODAO.list(cpRequest.data,cpRequest.page);
-		
-		//KJM : 조회된 리스트 지정된 url에 보내줌
 		return new CPRUtil(cpRequest).dataList(rset,trxIODAO).setView(request,"/trx/io/list","");
 	}
-	
-	//KJM : 거래관리 > 승인IO조회 > 전문확인
+
 	@RequestMapping(value = "/trx/io/view/{trxId}", method = RequestMethod.GET)
-	public ModelAndView ioView(HttpServletRequest request, @PathVariable String trxId) {
-		//KJM : 해당 거래번호의 통신이력 정보 가져옴
+  public ModelAndView ioView(HttpServletRequest request, @PathVariable String trxId) {
 		SharedMap<String, Object> map = new TrxIODAO().getByTrxId(trxId).getRow(0);
-		//KJM : 요청 데이터(json 형식으로 되어있음)
 		String regData = map.getString("regData");
-		
-		//KJM : 해당 문자열들을 치환 (특수문자 숫자로 표현했을 때)
 		regData = regData.replaceAll("&#39;", "'");
 		regData = regData.replaceAll("&#34;", "\"");
-		//KJM : SharedMap<String, Object>라는 type 선언
 		Type type = new TypeToken<SharedMap<String, Object>>(){}.getType();
-		//KJM : 요청 데이터(json)를 -> type(SharedMap)형으로 변환
 		SharedMap<String, Object> myMap = new Gson().fromJson(regData, type);
-		//KJM : pay => 주문정보?가 존재할 때
 		if (myMap.get("pay") != null) {
-			//KJM : 요청 데이터의 pay 정보 가져옴
 			LinkedTreeMap<String, Object> pay = (LinkedTreeMap<String, Object>) myMap.get("pay");
-			//KJM : 가져온 pay 정보에서 card 정보 가져옴
 			LinkedTreeMap<String, Object> card = (LinkedTreeMap<String, Object>) pay.get("card");
-			//KJM : number = 카드번호가 null이거나 빈값이 아닐 때
 			String number = (String)card.get("number");
 			if(!CommonUtil.isNullOrSpace(number)) {
-				//KJM : 카드번호 정보를 수정해 준다 "000000******0000"
 				card.put("number", number.substring(0, 6) + "******" + (number.length() > 12 ? number.substring(12) : ""));
 			}
-			//KJM : 수정한 데이터들 순차적으로 바꿔줌 card > pay > regData
 			pay.put("card", card);
 			myMap.put("pay", pay);
 			map.put("regData", myMap.toJson());
 		}
-		//KJM : json 형식의 데이터 넘겨줌 (요청데이터, 응답데이터)
 		request.setAttribute("DATAMAP", map);
 		return new ModelAndView("/trx/io/modal");
-	}
-	
-	//KJM : 거래관리 > 미반영 거래
+  }
+
 	@RequestMapping(value = "/trx/wh/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView whList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
 		cpRequest.replaceKeyValue("startDate", cpRequest.getKeyValue("startDate")+"000000");
 		cpRequest.replaceKeyValue("endDate", cpRequest.getKeyValue("endDate")+"235959");
 		cpRequest.replaceKeyName("startDate", "regDate");
 		cpRequest.replaceKeyName("endDate", "regDate");
+
 		TrxWHFailDAO trxWHDAO = new TrxWHFailDAO();
-		//KJM : 미반영 거래 리스트 가져옴
 		RecordSet rset = trxWHDAO.list(cpRequest.data,cpRequest.page);
-		//KJM : 조회된 리스트 지정된 url에 보내줌
 		return new CPRUtil(cpRequest).dataList(rset,trxWHDAO).setView(request,"/trx/wh/list","");
 	}
 
 	@RequestMapping(value = "/trx/wh/view/{vanTrxId}", method = RequestMethod.GET)
-	public ModelAndView whView(HttpServletRequest request, @PathVariable String vanTrxId) {
+    public ModelAndView whView(HttpServletRequest request, @PathVariable String vanTrxId) {
 		request.setAttribute("DATAMAP", new TrxWHDAO().getByVanTrxId(vanTrxId).getRow(0));
-		return new ModelAndView("/trx/wh/modal");
-	}
+        return new ModelAndView("/trx/wh/modal");
+    }
 	
     @RequestMapping(value = "/trx/cap/cancel/{trxId}", method = RequestMethod.GET)
     public @ResponseBody String cancelCap(HttpServletRequest request, @PathVariable String trxId) {
@@ -318,11 +262,11 @@ public class TrxController {
 			return new FirstPayUtil().trxRetry(resMap.getString("orgData"),trxId);
 		}
 
-		return DanalUtil.trxRetry(url.toString(), resMap.getString("orgData"), resMap.getString("van"),resMap.getString("vanId"));
-	}
+        return DanalUtil.trxRetry(url.toString(), resMap.getString("orgData"), resMap.getString("van"),resMap.getString("vanId"));
+    }
 
-	@RequestMapping(value = "/trx/wh/retry", method = RequestMethod.GET)
-	public @ResponseBody String whAll(HttpServletRequest request) {
+    @RequestMapping(value = "/trx/wh/retry", method = RequestMethod.GET)
+    public @ResponseBody String whAll(HttpServletRequest request) {
 		CPDAO dao = new CPDAO();
 		List<SharedMap<String, Object>> resMap = dao.query("SELECT * FROM PG_TRX_WH WHERE SUBSTR(vanTrxId,1,8) > '20170305' GROUP BY vanTrxId ORDER BY vanTrxId ASC " ).getRows();
 		//vanTrxId NOT IN (SELECT vanTrxId FROM PG_TRX_PAY) AND vanTrxId NOT IN (SELECT vanTrxId FROM PG_TRX_RFD) 
@@ -335,9 +279,9 @@ public class TrxController {
 		}
 
 		return CommonUtil.toString(i);
-	}
+    }
 
-	@RequestMapping(value = "/trx/aggregator/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/trx/aggregator/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView aggregatorList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
 		SessionUtil.setSearchGrade(request, cpRequest);
 		TrxCapSubDAO trxCapSubDAO = new TrxCapSubDAO();
@@ -347,50 +291,41 @@ public class TrxController {
 	}
 
 	@RequestMapping(value = "/trx/aggregator/view/{capId}", method = RequestMethod.GET)
-	public ModelAndView aggregatorView(HttpServletRequest request, @PathVariable String capId) {
+    public ModelAndView aggregatorView(HttpServletRequest request, @PathVariable String capId) {
 		SharedMap<String, Object> res =  new TrxCapSubDAO().getByCapId(capId).getRow(0);
 		request.setAttribute("DATAMAP", res);
 		request.setAttribute("DATAREFMAP", new TrxCapSubDAO().getByRootTrxId(res.getString("trxId")).getRow(0));
-		return new ModelAndView("/trx/aggregator/modal");
-	}
-	
-	//KJM : 거래관리 > 승인취소내역조회
+        return new ModelAndView("/trx/aggregator/modal");
+    }
+
 	@RequestMapping(value = "/trx/rfd/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView refund(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
 		SessionUtil.setSearchGrade(request, cpRequest);
-		//KJM : 승인취소내역조회 리스트의 금액 총 합계
 		request.setAttribute("AMOUNT_SUM", new TrxRfdDAO().trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
 
 		TrxRfdDAO trxPayDAO = new TrxRfdDAO();
 		RecordSet rset = trxPayDAO.list(cpRequest.data,cpRequest.page);
 		return new CPRUtil(cpRequest).dataList(rset,trxPayDAO).setView(request,"/trx/rfd/list","");
 	}
-	
-	//KJM : 취소내역 관리 > 승인취소내역조회 > 상세정보
-	@RequestMapping(value = "/trx/rfd/view/{trxId}", method = RequestMethod.GET)
-	public ModelAndView refundView(HttpServletRequest request, @PathVariable String trxId) {
-		//KJM : 결제 취소 내역 정보
-		SharedMap<String, Object> res =  new TrxRfdDAO().getByTrxId(trxId).getRow(0);
-		return new ModelAndView("/trx/rfd/modal", "DATAMAP", res);
-	}
 
-	//KJM : 거래관리 > 관리자 취소내역조회
+	@RequestMapping(value = "/trx/rfd/view/{trxId}", method = RequestMethod.GET)
+    public ModelAndView refundView(HttpServletRequest request, @PathVariable String trxId) {
+		SharedMap<String, Object> res =  new TrxRfdDAO().getByTrxId(trxId).getRow(0);
+        return new ModelAndView("/trx/rfd/modal", "DATAMAP", res);
+    }
+
 	@RequestMapping(value = "/trx/admin_cancel/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView adminCancel(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
-		//KJM : 로그인 중인 계정 소속 구분
 		SessionUtil.setSearchGrade(request, cpRequest);
-		//KJM : 관리자 취소내역 리스트에 대한 금액 총 합계
 		request.setAttribute("AMOUNT_SUM", new TrxAdminCancelDAO().trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
 
 		TrxAdminCancelDAO trxPayDAO = new TrxAdminCancelDAO();
-		//KJM : 관리자 취소내역 리스트 가져옴
 		RecordSet rset = trxPayDAO.list(cpRequest.data,cpRequest.page);
-		//KJM : 조회된 리스트 지정된 url에 보내줌
 		return new CPRUtil(cpRequest).dataList(rset,trxPayDAO).setView(request,"/trx/admin_cancel/list","");
 	}
 
 	@RequestMapping(value = "/trx/today", method = RequestMethod.GET)
-	public @ResponseBody SharedMap<String, Object> today(HttpServletRequest request) {
+    public @ResponseBody SharedMap<String, Object> today(HttpServletRequest request) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("DATE_FORMAT(NOW(),'%Y%m%d') as today,");
 		sb.append("FORMAT(SUM(IF(status = '승인' AND regDay = DATE_FORMAT(NOW(),'%Y%m%d'), amount, 0)),0) AS dayPay,");
@@ -410,15 +345,15 @@ public class TrxController {
 	
 	// RISK
 	@RequestMapping(value = "/trx/risk/status", method = RequestMethod.POST)
-	public @ResponseBody String whForm(HttpServletRequest request, 
-			@RequestParam(value="idx") String idx, 
-			@RequestParam(value="status") String status) {
+    public @ResponseBody String whForm(HttpServletRequest request,
+    		@RequestParam(value="idx") String idx,
+    		@RequestParam(value="status") String status) {
 		if(new DAO().update("UPDATE PG_TRX_RISK SET status='"+status+"' WHERE idx='"+idx+"'")) {
 			return "OK";
 		} else {
 			return "NOK||파일 상태변경에 실패했습니다.";
 		}
-	}
+    }
 
 	@RequestMapping(value = "/trx/risk/check/{trxId}", method = RequestMethod.GET)
 	public @ResponseBody String riskCheck(HttpServletRequest request, @PathVariable String trxId) {
@@ -429,7 +364,7 @@ public class TrxController {
 
 	// 카드번호 수기입력
 	@RequestMapping(value = "/trx/card/scan", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<SharedMap<String, Object>> cardScan(HttpServletRequest request, @RequestBody List<SharedMap<String, String>> resMapList) {
+    public @ResponseBody List<SharedMap<String, Object>> cardScan(HttpServletRequest request, @RequestBody List<SharedMap<String, String>> resMapList) {
 		SharedMap<String, String> last4Map = new SharedMap<>();
 		TrxPayDAO payDAO = new TrxPayDAO();
 		StringBuffer sb = new StringBuffer();
@@ -441,16 +376,15 @@ public class TrxController {
 		tidStr = tidStr.substring(0, tidStr.length()-1);
 		RecordSet rset = (RecordSet)new TrxPayDAO().isUnknownCardNoTrx(tidStr);
 		List<SharedMap<String,Object>> trxMap = rset.getRows();
-		
 		if(trxMap != null && trxMap.size() > 0) {
 			for(SharedMap<String, Object> each: trxMap) {
 				each.put("last4", last4Map.getString(each.getString("vanTrxId")));
 			}
 		}
 		return trxMap;
-	}
+    }
 	@RequestMapping(value = "/trx/card/update", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody SharedMap<String, Object> cardUpdate(HttpServletRequest request, @RequestBody List<SharedMap<String, Object>> resMapList) {
+    public @ResponseBody SharedMap<String, Object> cardUpdate(HttpServletRequest request, @RequestBody List<SharedMap<String, Object>> resMapList) {
 		SharedMap<String, Object> result = new SharedMap<>();
 		result.put("result", "OK");
 		if(resMapList != null && resMapList.size() > 0) {
@@ -471,48 +405,33 @@ public class TrxController {
 		} else {
 			result.put("result", "NOK");
 		}
+
 		return result;
-	}
-	
-	//KJM : 거래관리 > 리스크 관리 (리스트)
+    }
+
 	@RequestMapping(value = "/trx/status/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView statusList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
-		//KJM : 로그인 중인 계정 소속 구분
 		SessionUtil.setSearchGrade(request, cpRequest);
-		
-		/* KJM : trxcapdao 중복 생성으로 코드 수정
+
 		TrxCapDAO trxCapDAO1 = new TrxCapDAO();
-		//KJM : 리스크가 있는 매입건
 		trxCapDAO1.addWhere("risk != '' AND capType='매입'");
-		//KJM : 리스크있는 매입건 리스트에 대한 전체 금액 합계 구함
 		request.setAttribute("AMOUNT_SUM", trxCapDAO1.trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
-		*/
 		
 		TrxCapDAO trxCapDAO = new TrxCapDAO();
-		//KJM : 리스크가 있는 매입건
-		trxCapDAO.addWhere("risk != '' AND capType='매입'");
-		//KJM : 리스크있는 매입건 리스트에 대한 전체 금액 합계 구함
-		request.setAttribute("AMOUNT_SUM", trxCapDAO.trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
-		
-		//TrxCapDAO trxCapDAO = new TrxCapDAO();
-		//KJM : 리스크 매입건에 대한 리스트 들고옴
 		trxCapDAO.addWhere("risk != '' AND capType='매입'");
 		RecordSet rset = trxCapDAO.list(cpRequest.data,cpRequest.page);
-		//KJM : 조회된 리스트 지정된 url로 보내준다
 		return new CPRUtil(cpRequest).dataList(rset,trxCapDAO).setView(request,"/trx/status/list","");
 	}
 
 	@RequestMapping(value = "/trx/cap/status/{capId}", method = RequestMethod.GET)
-	public ModelAndView capStlStatus(HttpServletRequest request, @PathVariable String capId) {
+    public ModelAndView capStlStatus(HttpServletRequest request, @PathVariable String capId) {
 		SharedMap<String, Object> res =  new TrxCapDAO().getByCapId(capId).getRow(0);
 		request.setAttribute("DATAMAP", res);
-		return new ModelAndView("/trx/cap/stlModal");
-	}
-	
-	//KJM : 리스크 변경 ajax 통신
+        return new ModelAndView("/trx/cap/stlModal");
+    }
+
 	@RequestMapping(value = "/trx/cap/risk", method = RequestMethod.POST)
 	public @ResponseBody String capChangeStlStatus(HttpServletRequest request) {
-		//KJM : 매입번호 1~n개, 리스크, 변경 사유 1개
 		String risk 	= CommonUtil.nToB(request.getParameter("risk"));
 		String capArray = CommonUtil.nToB(request.getParameter("capId"));
 		String summary 	= CommonUtil.nToB(request.getParameter("summary"));
@@ -521,61 +440,46 @@ public class TrxController {
 		logger.debug("capId: [{}] , risk: [{}], {}", capArray, risk, summary);
 
 		TrxIqrDAO iqrDAO = new TrxIqrDAO();
-		
-		//KJM : 넘어온 데이터에 매입번호가 없을 경우
+
 		if(CommonUtil.isNullOrSpace(capArray)) {
-			//KJM : "NOK..." 보내줌
 			return result;
 		}
-		
-		//KJM : 매입번호배열에 ','제외한 매입번호들이 들어감
+
 		String[] capIdArray = CommonUtil.split(capArray, ",",true);
 
 		ControllerUtil util = new ControllerUtil();
 		
-		//KJM : 리스크 상태 변경 -> 매입 상담이력 히스토리 정상적으로 추가 되었는지 확인하는 변수
-		int success = 0;	//KJM : 성공
-		int failure  = 0;	//KJM : 실패
+		int success = 0;
+		int failure  = 0;
 
-		//KJM : 리스크 수정 결과들 담을 변수 -> view단으로 보내줌
 		StringBuilder rowResult = new StringBuilder();
-		//KJM : 리스크에 값이 ""일 경우 리스크 해제
 		if(CommonUtil.isNullOrSpace(risk)){	//리스크 해지
-			//KJM : 매입번호 개수만큼 반복
 			for(String capId : capIdArray) {
-				//KJM : setCaptureToRisk() : 매입 히스토리 수정 후 "OK | NOK"로 시작하는 문자열 반환받음
 				String t = util.setRiskToNormal(capId.replaceAll("'", ""));
-				//KJM : 매입 히스토리 정상적으로 수정 되었을 때
 				if(t.startsWith("OK")){
-					//KJM : 해당 내역 매입 상담이력 히스토리에 추가
 					iqrDAO.insertRisk(capId.replaceAll("'", ""), t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
 					success++;
 				}else{
 					failure++;
 				}
-				//KJM : 매입 히스토리 수정 결과 저장
 				rowResult.append(t.replaceAll("NOK:", "").replaceAll("OK:", "")).append("<br/>");
+
+
 			}
-		//KJM : 리스크에 값이 있을 경우 리스크 변경
 		}else{								//리스크 설정
-			//KJM : 매입번호 개수만큼 반복
 			for(String capId : capIdArray) {
-				//KJM : setCaptureToRisk() : 매입 히스토리 수정 후 "OK | NOK"로 시작하는 문자열 반환받음
-				String t = util.setCaptureToRisk(capId.replaceAll("'", ""),risk);  
-				//KJM : 매입 히스토리 정상적으로 수정 되었을 때
+				String t = util.setCaptureToRisk(capId.replaceAll("'", ""),risk);
 				if(t.startsWith("OK")){
-					//KJM : 해당 내역 매입 상담이력 히스토리에 추가
 					iqrDAO.insertRisk(capId.replaceAll("'", ""), t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
 					success++;
 				}else{
 					failure++;
 				}
-				//KJM : 매입 히스토리 수정 결과 저장
 				rowResult.append(t.replaceAll("NOK:", "").replaceAll("OK:", "")).append("<br/>");
+
 			}
 		}
-		
-		//KJM : rowResult문자열의 0번째에 해당 문자열을 넣는다
+
 		rowResult.insert(0, "OK:성공건수 :"+success+", 실패건수 :"+failure+"<br/>");
 
 		/*
@@ -589,23 +493,21 @@ public class TrxController {
 			if(new DAO().insert(sb.toString())) {
 				result = "OK";
 			}*/
-		//result = "OK";
-		
-		//KJM : 수행결과를 string객체로 반환해줌
+			//result = "OK";
+
 		return rowResult.toString();
 	}
 
 
-	//KJM : 매입현황조회 > 매입내역 상세정보 모달 > 상담이력 변경 ajax 통신
+
 	@RequestMapping(value = "/trx/cap/iqr/{capId}", method = RequestMethod.POST)
 	public @ResponseBody String capChangeStlStatus(HttpServletRequest request, @PathVariable String capId) {
-		//KJM : 상담이력 내용, 전화번호가 null이면 ""(빈칸) 반환
+
 		String summary = CommonUtil.nToB(request.getParameter("summary"));
 		String telNo = CommonUtil.nToB(request.getParameter("telNo"));
 		
 		TrxIqrDAO iqrDAO = new TrxIqrDAO();
-		
-		//KJM : 정상적으로 insert 되었으면 OK | 아니면 NOK 반환
+
 		if(iqrDAO.insertNormal(capId, summary, telNo, SessionUtil.getUserId(request))){
 			return "OK";
 		}else{
@@ -613,90 +515,72 @@ public class TrxController {
 		}
 
 	}
-	
-	//KJM : 거래관리 > 매입삭제 form 이동
+
 	@RequestMapping(value = "/trx/capdel/form", method = RequestMethod.GET)
 	public ModelAndView capDelForm(HttpServletRequest request) {
-		//KJM : 오늘 날짜 보내줌
 		request.setAttribute("TODAY", CommonUtil.getCurrentDate("yyyyMMdd"));
 
 		return new ModelAndView("/trx/capdel/form");
 	}
 
-	//KJM : 거래관리 > 매입삭제 - 매입건 리스트
+
 	@RequestMapping(value = "/trx/capdel/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView capDelList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
-		//KJM : 로그인 중인 계정 소속 구분
 		SessionUtil.setSearchGrade(request, cpRequest);
-		
-		//KJM : 매입리스트의 금액 총 합계
+
 		request.setAttribute("AMOUNT_SUM", new TrxCapDAO().trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
 		TrxCapDAO trxCapDAO = new TrxCapDAO();
-		//KJM : capId를 기준으로 내림차순 정렬 세팅
 		cpRequest.setData("capId", "", "", "desc", false);
-		//KJM : 매입건 리스트 가져옴
 		RecordSet rset = trxCapDAO.list(cpRequest.data,cpRequest.page);
-		//KJM : 조회된 리스트 지정된 url에 보내준다
 		return new CPRUtil(cpRequest).dataList(rset,trxCapDAO).setView(request,"/trx/capdel/list","");
 	}
-	
-	//KJM : 매입 삭제 ajax
+
 	@RequestMapping(value = "/trx/capdel/action", method = RequestMethod.POST)
 	public @ResponseBody String capdelAction(HttpServletRequest request) {
-		//KJM : capId(매입번호)는 1~n, summary는 1개 받음
 		String capArray = CommonUtil.nToB(request.getParameter("capId"));
 		String summary 	= CommonUtil.nToB(request.getParameter("summary"));
 		String result = "NOK:선택된 거래가 없습니다.";
-		
-		//KJM : 삭제하는 매입건의 매입번호와 변경 사유 디버그로 확인
+
 		logger.debug("DELETE capId: [{}] , {},{}", capArray, summary,SessionUtil.getUserId(request));
 
-		//KJM : 받아온 매입번호가 없을 경우
+
 		if(CommonUtil.isNullOrSpace(capArray)) {
-			//KJM : 'NOK...' 반환 (에러)
 			return result;
 		}
-		
-		//KJM : sql문이 잘 실행 되었다면 true, 아니면 false
+
 		if(new TrxDAO().deleteTrxCap(capArray)){
-			//KJM : "OK..." ajax 반환
-			//KJM : ajax에서 수행 결과 판단하는 용도로 쓰임("OK", "NOK")
 			return "OK:데이터가 삭제되었습니다.";
 		}else{
 			return "NOK:데이터가 삭제되지 않았습니다. 관리자에 문의 바랍니다.";
 		}
+
 	}
 	
-	//KJM : 매입내역 상세정보 > 정산일자 변경 ajax 통신
+
 	@RequestMapping(value = "/trx/cap/daychange/{capId}", method = RequestMethod.POST)
 	public @ResponseBody String capDayChange(HttpServletRequest request, @PathVariable String capId) {
 
-		String summary = CommonUtil.nToB(request.getParameter("daysummary"));	//KJM : 변경 이력 내용
-		String stlDay = CommonUtil.nToB(request.getParameter("stlDay")).trim();	//가맹점 정산 예정일자
-		String oldStlDay = CommonUtil.nToB(request.getParameter("oldStlDay"));	//원래 정산 예정일자
-		String stlVanDay = CommonUtil.nToB(request.getParameter("stlVanDay")).trim(); //입금 예정일자
-		String oldStlVanDay = CommonUtil.nToB(request.getParameter("oldStlVanDay"));  //원래 입금 예정일자
+		String summary = CommonUtil.nToB(request.getParameter("daysummary"));
+		String stlDay = CommonUtil.nToB(request.getParameter("stlDay")).trim();
+		String oldStlDay = CommonUtil.nToB(request.getParameter("oldStlDay"));
+		String stlVanDay = CommonUtil.nToB(request.getParameter("stlVanDay")).trim();
+		String oldStlVanDay = CommonUtil.nToB(request.getParameter("oldStlVanDay"));
 
 		DAO dao = new DAO();
-		dao.setTable("PG_CODE_HOLIDAY");						//KJM : 휴일관리 테이블
+		dao.setTable("PG_CODE_HOLIDAY");
 		dao.addWhere("days in ('"+stlDay+"','"+stlVanDay+"')");
 		dao.setOrderBy("days asc");
 		RecordSet rset = dao.search();
-		//KJM : 정산일자와 입금일자가 같을 때 (select의 결과값은 1개만 나와야 함)
 		if(stlDay.equals(stlVanDay)){
-			//KJM : select 결과 값의 크기가 1이 아닐 때
 			if(rset.size() != 1){
 				return "날짜 포맷이 잘못되었거나 유효하지 않은 날짜입니다.";
 			}
 		}else{
-			//KJM : select 결과 값의 크기가 2가 아닐 때 (2개만 나와야 함)
-			System.out.println("select 결과 값 : " + rset.size());
 			if(rset.size() != 2){
 				return "날짜 포맷이 잘못되었거나 유효하지 않은 날짜입니다.";
 			}
 		}
-		
-		//KJM : 변경 안내 메시지 세팅
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("가맹점 정산일 기존 : "+oldStlDay+" 변경 :"+stlDay);
 		sb.append("<br/>카드사 정산일 기존 : "+oldStlVanDay+" 변경 :"+stlVanDay);
@@ -704,15 +588,16 @@ public class TrxController {
 		sb.append("<br/>"+summary);
 
 
-		//KJM : 변경 이력 추가
+
 		new TrxIqrDAO().insertNormal(capId, sb.toString(), "", SessionUtil.getUserId(request));
-		//KJM : update 쿼리문 정상 수행 시
 		if(new TrxDAO().updateDay(capId, stlDay, stlVanDay)){
-			//KJM : 변경 안내 반환
 			return sb.toString();
 		}else{
 			return "변경 실패 ";
 		}
+
+
+
 	}
 
 	/*@RequestMapping(value = "    ", method = RequestMethod.GET)
@@ -727,12 +612,12 @@ public class TrxController {
     } */
 
 	@RequestMapping(value = "/trx/cap/collect/temp/{stlVanDay}/{mchtId}/{vanId}", method = RequestMethod.GET)
-	public ModelAndView dayMchtIdAndVanIdForm(HttpServletRequest request, @PathVariable String stlVanDay, @PathVariable String mchtId, @PathVariable String vanId) {
+    public ModelAndView dayMchtIdAndVanIdForm(HttpServletRequest request, @PathVariable String stlVanDay, @PathVariable String mchtId, @PathVariable String vanId) {
 		request.setAttribute("SEARCH_STL_VAN_DAY", stlVanDay);
 		request.setAttribute("SEARCH_VAN_ID", vanId);
 		request.setAttribute("SEARCH_MCHT_ID", mchtId);
-		return new ModelAndView("/trx/collect/form");
-	}
+        return new ModelAndView("/trx/collect/form");
+    }
 	@RequestMapping(value = "/trx/cap/diff/temp/{stlDiffVanDay}/{mchtId}/{vanId}", method = RequestMethod.GET)
 	public ModelAndView dayMchtIdAndVanIdDiffForm(HttpServletRequest request, @PathVariable String stlDiffVanDay, @PathVariable String mchtId, @PathVariable String vanId) {
 		request.setAttribute("SEARCH_STL_DIFF_VAN_DAY", stlDiffVanDay);
@@ -742,20 +627,20 @@ public class TrxController {
 	}
 
 	@RequestMapping(value = "/trx/cap/collect/{stlVanDay}/{mchtId}", method = RequestMethod.GET)
-	public ModelAndView dayMchtIdForm(HttpServletRequest request, @PathVariable String stlVanDay, @PathVariable String mchtId) {
+    public ModelAndView dayMchtIdForm(HttpServletRequest request, @PathVariable String stlVanDay, @PathVariable String mchtId) {
 		request.setAttribute("FIX_SEARCH", true);
 		request.setAttribute("SEARCH_STL_VAN_DAY", stlVanDay);
 		request.setAttribute("SEARCH_MCHT_ID", mchtId);
-		return new ModelAndView("/trx/cap/form");
-	}
+        return new ModelAndView("/trx/cap/form");
+    }
 
 	@RequestMapping(value = "/trx/cap/collect/maded/{collectId}/{mchtId}", method = RequestMethod.GET)
-	public ModelAndView madedMchtIdForm(HttpServletRequest request, @PathVariable String collectId, @PathVariable String mchtId) {
+    public ModelAndView madedMchtIdForm(HttpServletRequest request, @PathVariable String collectId, @PathVariable String mchtId) {
 		request.setAttribute("FIX_SEARCH", true);
 		request.setAttribute("SEARCH_COLLECT_ID", collectId);
 		request.setAttribute("SEARCH_MCHT_ID", mchtId);
-		return new ModelAndView("/trx/collect/form");
-	}
+        return new ModelAndView("/trx/collect/form");
+    }
 
 	@RequestMapping(value = "/trx/cap/diff/maded/{collectId}/{mchtId}", method = RequestMethod.GET)
 	public ModelAndView madedDiffMchtIdForm(HttpServletRequest request, @PathVariable String collectId, @PathVariable String mchtId) {
@@ -782,8 +667,7 @@ public class TrxController {
 		RecordSet rset = trxiqrDAO.list(cpRequest.data,cpRequest.page);
 		return new CPRUtil(cpRequest).dataList(rset,trxiqrDAO).setView(request,"/system/risk/list","");
 	}
-	
-	//KJM : 카드 번호 등록
+
 	@RequestMapping(value = "/trx/cap/binupdate/{capId}", method = RequestMethod.POST)
 	public @ResponseBody String binUpdate(HttpServletRequest request, @PathVariable String capId) {
 
@@ -822,9 +706,11 @@ public class TrxController {
 		}else{
 			return "카드번호 변경 실패 "+trxDAO.getError();
 		}
+
+
+
 	}
-	
-	//KJM : 카드 타입 변경
+
 	@RequestMapping(value = "/trx/cap/cardTypeUpdate/{capId}", method = RequestMethod.POST)
 	public @ResponseBody String cardTypeUpdate(HttpServletRequest request, @PathVariable String capId) {
 
@@ -834,17 +720,6 @@ public class TrxController {
 
 		SharedMap<String,Object> rootMap = new TrxCapDAO().getByCapId(capId).getRowFirst();
 		SharedMap<String,Object> mchtMap = new MchtDAO().getById(rootMap.getString("mchtId")).getRowFirst();
-		
-		//KJM : MCHT 복호화
-		List<String> keyList = new ArrayList<>();
-		keyList.add("tel1"); //사업장 전화번호
-		keyList.add("tel2"); //사업장 전화번호2
-		keyList.add("ceoPhone"); //대표자 휴대폰
-		keyList.add("ceoTel"); //대표자 집 전화번호
-		keyList.add("managerPhone"); //대표자 식별정보
-		keyList.add("ceoName"); //대표자이름
-		keyList.add("managerName"); //대표자이름
-		
 		if(cardType.equals(newCardType)){
 			return "카드타입 변경 실패 (같은 유형의 카드 타입입니다.)";
 		}else if(rootMap == null || rootMap.size() == 0){
@@ -889,6 +764,9 @@ public class TrxController {
 
 		}
 
+
+
+
 	}
 
 	@RequestMapping(value = "/trx/collect/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
@@ -931,11 +809,9 @@ public class TrxController {
 		return new CPRUtil(cpRequest).dataList(rset,trxCapDAO).setView(request,"/trx/cap/list","");
 	}
 
-	//KJM : 거래관리 > 지급대행 관리 > 거래내역 조회 리스트
-	@RequestMapping(value = "/trx/pisp/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
-	public ModelAndView pispList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
-		//KJM : 로그인 중 계정 소속 구분
-		SessionUtil.setSearchGrade(request, cpRequest);
+	  @RequestMapping(value = "/trx/pisp/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	  public ModelAndView pispList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+	    SessionUtil.setSearchGrade(request, cpRequest);
 
 		PispDAO pispDAO = new PispDAO();
 		//KJM : 거래내역 리스트 가져옴
@@ -959,122 +835,170 @@ public class TrxController {
 	}
 
 
-	// 영수증 조회 양식 추가
-	@RequestMapping(value = "/receiptForm", method = RequestMethod.GET)
-	@SessionExclude
-	public String receiptForm(){
-		return"/trx/cap/receiptForm";
-	}
-
-	// 영수증 조회 추가
-	@SuppressWarnings("finally")
-	// 파라미터 값으로 영수증 조회(kspay, allat)
-	@RequestMapping(value = "/receipt", method = RequestMethod.GET)
-	@SessionExclude
-	public ModelAndView receipt(HttpServletRequest request,
-			@RequestParam(value="trxId", required=false, defaultValue="0") String trxId,
-			@RequestParam(value="mchtId", required=false, defaultValue="0") String mchtId,
-			@RequestParam(value="tmnId", required=false, defaultValue="0") String tmnId,
-			@RequestParam(value="trackId", required=false, defaultValue="0") String trackId,
-			@RequestParam(value="authCd", required=false, defaultValue="0") String authCd,
-			@RequestParam(value="amount", required=false, defaultValue="0") String amount,
-			@RequestParam(value="regDay", required=false, defaultValue="0") String regDay
-			) {
-
-		//		  // 금액이 음수일 경우 양수로 바꿈
-		//		  if(!amount.equals("0") && amount.startsWith("-")) {
-		//			  amount = amount.substring(1);
-		//		  }
-
-		// trxId로만 영수증 조회
-		if(!trxId.equals("0")) {
-			// 금액이 음수일 경우 양수로 바꿈
-			if(!amount.equals("0") && amount.startsWith("-")) {
-				amount = amount.substring(1);
-			}
-
-			try {
-
-				SharedMap<String, Object> rfd = new TrxCapDAO().getByTrxIdRfd(trxId).getRow(0);
-				// 취소 원짱의 trxId가 입력될 경우 원거래 번호를 담는다.
-				if(rfd != null) {
-					trxId = rfd.getString("rootTrxId");
-				}
-
-				SharedMap<String, Object> res = new TrxCapDAO().getByTrxId2(trxId).getRow(0);
-				
-				// 올앳 영수증 조회용 거래번호
-				if(res.startsWith("van", "ALLAT")){
-					AllatUtil allatUtil = new AllatUtil();
-
-					if(new TrxReqDAO().isTrxType(res.getString("trxId"), "WHTR")){
-						res.put("allatParam", allatUtil.getParam(res.getString("vanId"), res.getString("trackId"),res.getString("amount")));
-					} else {
-						res.put("allatParam", allatUtil.getParam(res.getString("vanId"),res.getString("trxId"),res.getString("amount")));
-					}
-
-				}
-				request.setAttribute("DATAMAP", res); 
-
-			} catch (NullPointerException e) {
-				throw e;
-			} finally {
-				return new ModelAndView("/trx/cap/receipt");
-			}
-
-
-		}else {
-			// 6가지로 영수증 조회
-			try {
-
-				SharedMap<String, Object> res = new SharedMap<String, Object>();
-
-				if(!mchtId.equals("0") && tmnId.equals("0")) {
-					res =  new TrxCapDAO().getByMchtId(mchtId, trackId, authCd, amount, regDay).getRow(0);
-
-					if(res == null) {
-						res = new TrxCapDAO().getByMchtIdRfd(mchtId, trackId, authCd, amount, regDay).getRow(0);
-					}
-
-				} else if(mchtId.equals("0") && !tmnId.equals("0")) {
-					res =  new TrxCapDAO().getByTmnId(tmnId, trackId, authCd, amount, regDay).getRow(0);
-
-					if(res == null) {
-						res = new TrxCapDAO().getByTmnIdRfd(tmnId, trackId, authCd, amount, regDay).getRow(0);
-					}
-				} else {
-					res =  new TrxCapDAO().getBySix(mchtId, tmnId, trackId, authCd, amount, regDay).getRow(0);
-
-					if(res == null) {
-						res = new TrxCapDAO().getBySixRfd(mchtId, tmnId, trackId, authCd, amount, regDay).getRow(0);
-					}
-				}
-				
-				// 올앳 영수증 조회용 거래번호
-				if(res.startsWith("van", "ALLAT")){
-					AllatUtil allatUtil = new AllatUtil();
-
-					if(new TrxReqDAO().isTrxType(res.getString("trxId"), "WHTR")){
-						res.put("allatParam", allatUtil.getParam(res.getString("vanId"), res.getString("trackId"),res.getString("amount")));
-					} else {
-						res.put("allatParam", allatUtil.getParam(res.getString("vanId"),res.getString("trxId"),res.getString("amount")));
-					}
-				}
-				
-				
-				request.setAttribute("DATAMAP", res);
-			} catch (NullPointerException e) {
-				throw e;
-			} finally {
-				return new ModelAndView("/trx/cap/receipt");
-			}
+	  // 영수증 조회 양식 추가
+	  @RequestMapping(value = "/receiptForm", method = RequestMethod.GET)
+	  @SessionExclude
+	  public String receiptForm(){
+		    return"/trx/cap/receiptForm";
 		}
-	}
+
+	  // 영수증 조회 추가
+	  @SuppressWarnings("finally")
+	  // 파라미터 값으로 영수증 조회(kspay, allat)
+	  @RequestMapping(value = "/receipt", method = RequestMethod.GET)
+	  @SessionExclude
+	  public ModelAndView receipt(HttpServletRequest request,
+			  @RequestParam(value="trxId", required=false, defaultValue="0") String trxId,
+			  @RequestParam(value="mchtId", required=false, defaultValue="0") String mchtId,
+			  @RequestParam(value="tmnId", required=false, defaultValue="0") String tmnId,
+			  @RequestParam(value="trackId", required=false, defaultValue="0") String trackId,
+			  @RequestParam(value="authCd", required=false, defaultValue="0") String authCd,
+			  @RequestParam(value="amount", required=false, defaultValue="0") String amount,
+			  @RequestParam(value="regDay", required=false, defaultValue="0") String regDay
+	  ) {
+
+//		  // 금액이 음수일 경우 양수로 바꿈
+//		  if(!amount.equals("0") && amount.startsWith("-")) {
+//			  amount = amount.substring(1);
+//		  }
+
+		  // trxId로만 영수증 조회
+		  if(!trxId.equals("0")) {
+			  // 금액이 음수일 경우 양수로 바꿈
+			  if(!amount.equals("0") && amount.startsWith("-")) {
+				  amount = amount.substring(1);
+			  }
+
+			  try {
+
+				  SharedMap<String, Object> rfd = new TrxCapDAO().getByTrxIdRfd(trxId).getRow(0);
+				  // 취소 원짱의 trxId가 입력될 경우 원거래 번호를 담는다.
+				  if(rfd != null) {
+					  trxId = rfd.getString("rootTrxId");
+				  }
+
+				  SharedMap<String, Object> res = new TrxCapDAO().getByTrxId2(trxId).getRow(0);
+
+				  // 올앳 영수증 조회용 거래번호
+				  if(res.startsWith("van", "ALLAT")){
+					  AllatUtil allatUtil = new AllatUtil();
+
+					  RecordSet rset = new TrxReqDAO().getTrxId(res.getString("trxId"));
+					  if(rset.size() > 0) {
+						  SharedMap<String, Object> reqMap =rset.getRowFirst();
+						  if(reqMap.isEquals("trxType", "WHTR")){
+							  res.put("allatParam", allatUtil.getParam(res.getString("vanId"), res.getString("trackId"),res.getString("amount")));
+						  } else {
+							  res.put("allatParam", allatUtil.getParam(res.getString("vanId"),res.getString("trxId"),res.getString("amount")));
+						  }
+					  }
+
+				  }
+				  request.setAttribute("DATAMAP", res);
+
+			  } catch (NullPointerException e) {
+				  throw e;
+			  } finally {
+				  return new ModelAndView("/trx/cap/receipt");
+			  }
+
+
+		  }else {
+			// 6가지로 영수증 조회
+			  try {
+
+				  SharedMap<String, Object> res = new SharedMap<String, Object>();
+
+				  if(!mchtId.equals("0") && tmnId.equals("0")) {
+					  res =  new TrxCapDAO().getByMchtId(mchtId, trackId, authCd, amount, regDay).getRow(0);
+
+					  if(res == null) {
+						 res = new TrxCapDAO().getByMchtIdRfd(mchtId, trackId, authCd, amount, regDay).getRow(0);
+					  }
+
+				  } else if(mchtId.equals("0") && !tmnId.equals("0")) {
+					  res =  new TrxCapDAO().getByTmnId(tmnId, trackId, authCd, amount, regDay).getRow(0);
+
+					  if(res == null) {
+						 res = new TrxCapDAO().getByTmnIdRfd(tmnId, trackId, authCd, amount, regDay).getRow(0);
+					  }
+				  } else {
+					  res =  new TrxCapDAO().getBySix(mchtId, tmnId, trackId, authCd, amount, regDay).getRow(0);
+
+					  if(res == null) {
+						 res = new TrxCapDAO().getBySixRfd(mchtId, tmnId, trackId, authCd, amount, regDay).getRow(0);
+					  }
+				  }
+
+				  // 올앳 영수증 조회용 거래번호
+				  if(res.startsWith("van", "ALLAT")){
+					  AllatUtil allatUtil = new AllatUtil();
+
+					  RecordSet rset = new TrxReqDAO().getTrxId(res.getString("trxId"));
+					  if(rset.size() > 0) {
+						  SharedMap<String, Object> reqMap =rset.getRowFirst();
+						  if(reqMap.isEquals("trxType", "WHTR")){
+							  res.put("allatParam", allatUtil.getParam(res.getString("vanId"), res.getString("trackId"),res.getString("amount")));
+						  } else {
+							  res.put("allatParam", allatUtil.getParam(res.getString("vanId"),res.getString("trxId"),res.getString("amount")));
+						  }
+					  }
+				  }
+
+				  request.setAttribute("DATAMAP", res);
+			  } catch (NullPointerException e) {
+				  throw e;
+			  } finally {
+				  return new ModelAndView("/trx/cap/receipt");
+			  }
+		  }
+	  }
+
+	  @RequestMapping(value = "/trx/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	  public ModelAndView search(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+	    SessionUtil.setSearchGrade(request, cpRequest);
+
+	    TrxCapDAO dao = new TrxCapDAO();
+	    RecordSet rset = dao.getTrxMchtList(cpRequest.data, cpRequest.page);
+	    return new CPRUtil(cpRequest).dataList(rset, dao).setView(request, "/trx/excel/list", "");
+	  }
+
+	  @RequestMapping(value = "/trx/excel/search", method = RequestMethod.POST)
+	  public ModelAndView excelSearch(HttpServletRequest request, @RequestBody List<SharedMap<String, String>> requestList) {
+			RecordSet rset = new RecordSet();
+			TrxCapDAO dao = new TrxCapDAO();
+			CPRequest cpRequest = new CPRequest();
+
+			logger.info("거래내역 가맹점 정보 조회수 : {}", requestList.size());
+
+			if(requestList.size() > 0) {
+				cpRequest.type = "list";
+
+				for(SharedMap<String, String> eachMap : requestList) {
+					String trxDay = eachMap.getString("trxDay");
+					String authCd = eachMap.getString("authCd");
+					String vanTrxId = eachMap.getString("vanTrxId");
+
+					SharedMap<String, Object> data = dao.getTrxMchtData(trxDay, authCd);
+
+					if(!data.isEmpty()) {
+						rset.addRow();
+						rset.put("trxDay", trxDay);
+						rset.put("authCd", authCd);
+						rset.put("vanTrxId", vanTrxId);
+						rset.put("mchtId", data.getString("mchtId"));
+						rset.put("mchtName", data.getString("name"));
+						rset.put("tmnId", data.getString("tmnId"));
+						rset.put("tmnDesc", data.getString("tmnDesc"));
+
+						logger.info("매출일자 : [{}], 승인번호 : [{}], 거래번호 : [{}], 가맹점ID : [{}], 가맹점명 : [{}], 터미널ID : [{}], 추가정보 : [{}]",
+								trxDay, authCd, vanTrxId, data.getString("mchtId"), data.getString("name"), data.getString("tmnId"), data.getString("tmnDesc"));
+					}else {
+						logger.info("거래내역 가맹점 정보 조회 오류 내역 : [{}], [{}], [{}]", trxDay, authCd, vanTrxId);
+					}
+				}
+			}
+
+			return new CPRUtil(cpRequest).dataList2(rset).setView(request,"/trx/excel/list","");
+	  }
 }
-
-
-
-
-
-
-

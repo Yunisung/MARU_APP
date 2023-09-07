@@ -54,7 +54,7 @@
                                 <form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/vact/auth/list"
                                       method="post">
                                     <input type="hidden" data-reg="false" name="reason" value="가상계좌 인증수수료내역">
-                                    <input type="hidden" data-reg="false" name="thead" value="regDate:인증일시,authId:인증수수료ID,mchtName:가맹점명,mchtId:가맹점ID,authType:인증수단,bankName:은행,holderName:예금주,resultMsg:인증결과,authFee:인증수수료,authFeeVat:인증수수료VAT,stlStatus:인증수수료정산결과,stlId:정산번호,stlDay:정산예정일,stlType:정산유형, summary:비고">
+                                    <input type="hidden" data-reg="false" name="thead" value="regDate:인증일시,authId:인증수수료ID,mchtName:가맹점명,mchtId:가맹점ID,vactAccount:가상계좌,authType:인증수단,bankName:은행,holderName:예금주,resultMsg:인증결과,authFee:인증수수료,authFeeVat:인증수수료VAT,stlStatus:인증수수료정산결과,stlId:정산번호,stlDay:정산예정일,stlType:정산유형, summary:비고">
 
                                     <div class="form-body">
                                         <div class="row">

@@ -32,7 +32,6 @@ public class NotiExcelUploadDAO{
 		List<CPRequest> csvList = new ArrayList<CPRequest>();
 		String path = fileName;
 		logger.info("[FILE PATH ] => " + path);
-		System.out.println("path : " + path);
 		BufferedReader br = null;
 		String line = "";
 			
@@ -118,7 +117,6 @@ public class NotiExcelUploadDAO{
 					if("승인 성공".equals(lineArr[29])) {
 						lineArr[28] = "승인";
 					}
-					System.out.println("10" +lineArr[11]);
 					map.setData("trnType", convert(lineArr[29]));
 					map.setData("vanTrxId", convert(lineArr[8]));
 					map.setData("rootTrxId", convert(lineArr[11]));

@@ -127,18 +127,21 @@
 																<option value="288">카카오페이증권</option>
 															</select>
 														</div>
-														<div class="form-group col-sm-6">
-															<label class="control-label input-sm col-sm-4 req-label">출금계좌번호
+														<div class="form-group col-sm-8">
+															<label class="control-label input-sm col-sm-2 req-label">출금계좌번호
 															</label>
-															<div class="col-sm-6">
-																<div class="col-sm-10">
+															<div class="col-sm-8">
+																<div class="col-sm-6">
 																	<input type="text" class="form-control input-sm numberHypen" maxlength="14" id="account" name="account" value="">
 																</div>
-																<div class="col-sm-2">
-																	<a class="btn btn-sm green link_modal" onclick="showModal('/vact/reg/blackList/withdrawAccount')">가상계좌번호로 조회</a>
+																<div class="col-sm-6">
+																	<a class="btn btn-sm green link_modal" onclick="showModal('/vact/reg/blackList/searchAccountModal')">가상계좌번호로 조회</a>
+																	<a class="btn btn-sm green link_modal" onclick="showModal('/vact/reg/blackList/searchAuthIdModal')">인증ID로 조회</a>
 																</div>
 															</div>
 														</div>
+													</div>
+													<div class="form-body row">
 														<div class="form-group col-sm-4">
 															<label class="control-label input-sm col-sm-4 req-label">등록사유</label>
 															<div class="col-sm-8">

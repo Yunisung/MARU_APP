@@ -137,6 +137,12 @@
 												</div>
 											</div>
 											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4">가상계좌 상태값 전달 주소(URL)</label>
+												<div class="col-sm-6">
+													<input type="text" class="form-control input-sm" maxlength="100" name="statusHookAddr" placeholder="api.example.com" value="">
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
 												<label class="control-label col-sm-4 req-label">1회한도</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
@@ -168,6 +174,42 @@
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
 														<input type="text" class="form-control currency limitAmount comma" maxlength="14" data-oper="comma" name="limitAmount" placeholder="" value="0">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">동일출금계좌<br>1일입금 제한횟수</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency eqAccntDepositLimitCnt" maxlength="3" name="eqAccntDepositLimitCnt" placeholder="" value="0">
+														<span class="input-group-addon">회</span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">동일출금계좌<br>발급제한횟수</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency eqAccntIssueLimitCnt" maxlength="3" name="eqAccntIssueLimitCnt" placeholder="" value="0">
+														<span class="input-group-addon">회</span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">동일출금계좌<br>입금 1회한도</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency eqAccntLimitOnce comma" maxlength="10" data-oper="comma" name="eqAccntLimitOnce" placeholder="" value="0">
+														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">동일출금계좌<br>입금 1일한도</label>
+												<div class="col-sm-6">
+													<div class="input-group input-group-sm">
+														<input type="text" class="form-control currency eqAccntLimitDay comma" maxlength="10" data-oper="comma" name="eqAccntLimitDay" placeholder="" value="0">
 														<span class="input-group-addon"><i class="fa fa-krw"></i></span>
 													</div>
 												</div>

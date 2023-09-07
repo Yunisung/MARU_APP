@@ -291,6 +291,10 @@ public class MchtController {
 //		if (svcMap.getString("pisp").equals("사용")) {
 //			request.setAttribute("PISP_MAP", new MchtPispDAO().getByMchtId(mchtId));
 //		}
+
+		if(svcMap.getString("rebill").equals("사용")) {
+			request.setAttribute("REBILL_MAP", new MchtRebillDAO().getByMchtId(mchtId));
+		}
 		
 		//가맹점 휴대폰 결제 정보
 		request.setAttribute("DATAPHONEMAP", new PhoneDAO().getByMchtId(mchtId));
@@ -637,9 +641,7 @@ public class MchtController {
     	
     	AgencyMngDAO agencyDAO = new AgencyMngDAO();
     	DistDAO DistDAO = new DistDAO();
-    	
-    	System.out.println(new AgencyDAO().getById(mchtId).getRowFirst().get("agencyId") + ":290");
-    	
+
     	agencyDAO.setTable("PG_MAM_AGENCY_MNG");
 		agencyDAO.setColumns("count(1) as cnt");
 		agencyDAO.addWhere("agencyId", result.get("agencyId").toString(), DAO.eq);
@@ -681,9 +683,9 @@ public class MchtController {
     	request.setAttribute("VANMAP", new VanDAO().vanList().getRows());
     	request.setAttribute("FEE_TEMPLATE", new MchtFeeTemplateDAO().getFeeTemplete().getRows());
     	request.setAttribute("DATASVCMAP", new MchtSvcDAO().getByMchtId(mchtId));
-    	request.setAttribute("DISTMNGTYPE", new DistMngDAO().getDistMngByPayType(result.getString("distId"), "신용카드").getRows());
-    	request.setAttribute("AGENCYMNGTYPE", new AgencyMngDAO().getAgencyMngByPayType(result.getString("agencyId"), "신용카드").getRows());
-    	request.setAttribute("SALESMNGTYPE", new MemberSalesMngDAO().getSalesMngByPayType(result.getString("salesId"), "신용카드").getRows());
+//    	request.setAttribute("DISTMNGTYPE", new DistMngDAO().getDistMngByPayType(result.getString("distId"), "신용카드").getRows());
+//    	request.setAttribute("AGENCYMNGTYPE", new AgencyMngDAO().getAgencyMngByPayType(result.getString("agencyId"), "신용카드").getRows());
+//    	request.setAttribute("SALESMNGTYPE", new MemberSalesMngDAO().getSalesMngByPayType(result.getString("salesId"), "신용카드").getRows());
     	String diffType = new MchtDiffDAO().getDiffType(mchtId).getRowFirst().getString("mchtType");
     	if(CommonUtil.isNullOrSpace(diffType)) diffType = "일반";
     	request.setAttribute("DIFFTYPE", diffType);
@@ -743,9 +745,9 @@ public class MchtController {
 //    	request.setAttribute("DISTRATE_OPTION", new DistDAO().getRateOption(sharedMap.getString("distId")));
     	request.setAttribute("FEE_TEMPLATE", new MchtFeeTemplateDAO().getFeeTemplete().getRows());
     	request.setAttribute("DATASVCMAP", new MchtSvcDAO().getByMchtId(mchtId));
-    	request.setAttribute("DISTMNGTYPE", new DistMngDAO().getDistMngByPayType(new MchtDAO().getById(mchtId).getRowFirst().getString("distId"), "신용카드").getRows());
-    	request.setAttribute("AGENCYMNGTYPE", new AgencyMngDAO().getAgencyMngByPayType(new MchtDAO().getById(mchtId).getRowFirst().getString("agencyId"), "신용카드").getRows());
-    	request.setAttribute("SALESMNGTYPE", new MemberSalesMngDAO().getSalesMngByPayType(new MchtDAO().getById(mchtId).getRowFirst().getString("salesId"), "신용카드").getRows());
+//    	request.setAttribute("DISTMNGTYPE", new DistMngDAO().getDistMngByPayType(new MchtDAO().getById(mchtId).getRowFirst().getString("distId"), "신용카드").getRows());
+//    	request.setAttribute("AGENCYMNGTYPE", new AgencyMngDAO().getAgencyMngByPayType(new MchtDAO().getById(mchtId).getRowFirst().getString("agencyId"), "신용카드").getRows());
+//    	request.setAttribute("SALESMNGTYPE", new MemberSalesMngDAO().getSalesMngByPayType(new MchtDAO().getById(mchtId).getRowFirst().getString("salesId"), "신용카드").getRows());
     	if(sharedMap.isEquals("distId", "00")) {
     		return new ModelAndView("/mcht/mng/fact/modify");
     	} else {
@@ -1188,8 +1190,9 @@ public class MchtController {
 			
 			WalletDAO walletDAO = new WalletDAO();
 			
+			// WL_USER 테이블이 존재하지 않으므로 에러발생 - 주석처리
 			// 분리정산 터미널 여부 확인
-			SharedMap<String, Object> walletMap = walletDAO.getWalletByTmnId(cpRequest.getKeyValue("tmnId"));
+			/*SharedMap<String, Object> walletMap = walletDAO.getWalletByTmnId(cpRequest.getKeyValue("tmnId"));
 			if(walletMap != null) {
 				// 월렛 기본정보 변경처리
 				String identity = cpRequest.getValue("identity");
@@ -1229,7 +1232,7 @@ public class MchtController {
 					}
 					new WalletAccntUtil().excute(cpRequest.getValue("bankCd"), cpRequest.getValue("account"), walletMap.getString("walletId"), walletMap.getString("apiKey"), method);
 				}
-			}
+			}*/
 			
 			return new CPRUtil(cpRequest)
 							.resultOK("가맹점 정보가 변경되었습니다.")
@@ -1672,6 +1675,12 @@ public class MchtController {
 		dao.setWhere(" bankCd = '"+vactBankCd+"'");
 		request.setAttribute("UNUSED_ACCNT_MAP", dao.search().getRows());
 		//return new ModelAndView("/mcht/vact/issue/list", "DATAMAP", vartDtlList);
+
+		// 계좌상태 노티실패건
+		VactTrxDAO vactTrxDAO = new VactTrxDAO();
+		int notiFailCount = vactTrxDAO.countVactStatusNotiFail(cpRequest.getKeyValue("mchtId"));
+		request.setAttribute("VACT_STATUS_NOTI_FAIL_CNT", notiFailCount);
+
 		return new CPRUtil(cpRequest).dataList(rset,vactDtlDAO).setView(request,"/mcht/vact/issue/list","");
 	}
 	
@@ -1746,9 +1755,7 @@ public class MchtController {
     	
     	AgencyMngDAO agencyDAO = new AgencyMngDAO();
     	DistDAO DistDAO = new DistDAO();
-    	
-    	System.out.println(new AgencyDAO().getById(mchtId).getRowFirst().get("agencyId") + ":290");
-    	
+
     	agencyDAO.setTable("PG_MAM_AGENCY_MNG");
 		agencyDAO.setColumns("count(1) as cnt");
 		agencyDAO.addWhere("agencyId", result.get("agencyId").toString(), DAO.eq);
@@ -2779,9 +2786,11 @@ public class MchtController {
 		SessionUtil.setSearchGrade(request, cpRequest);
 		//String key = "yGXMeC5TP3xHkmX5+Yk03PZ1wYZ3JbdEYnRNcmDTd64vL9V1aW4hdzSeJ86ztLSo"; //테스트키
 		String key = "6wCPEeQ0egkz3mPaE3R3MMGGW3KNoxunQBTcnow5g80VU431JHHPtYKLM0VDAgkU"; //운영키
-		
-		RecordSet rset = mchtDAO.accntSeachList(cpRequest.data, cpRequest.page);
-		
+
+		// 테이블이 존재하지 않아 빈값 처리
+		//RecordSet rset = mchtDAO.accntSeachList(cpRequest.data, cpRequest.page);
+		RecordSet rset = new RecordSet();
+
 		logger.info("accntSearchlist : " + rset.size());
 		for(int i = 0; i < rset.size(); i++) {
 			String name = rset.getRow(i).getString("name");
@@ -2901,7 +2910,7 @@ public class MchtController {
 		}
 		return true;
 	}
-
+	
 	@RequestMapping(value = "/mcht/balance/modify/{mchtId}", method = RequestMethod.GET)
 	public ModelAndView modifyBalance(HttpServletRequest request, @PathVariable String mchtId) {
 		request.setAttribute("MCHTMAP", new MchtDAO().getById(mchtId).getRowFirst());
@@ -3166,4 +3175,52 @@ public class MchtController {
 		resultMap.put("tax", sb.toString());
         return resultMap;
     }
+
+	@RequestMapping(value = {"/mcht/rebill/add/{mchtId}"})
+	public ModelAndView rebillAdd(HttpServletRequest request, @PathVariable String mchtId) {
+		SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
+
+		request.setAttribute("DATAMAP", result);
+
+		return new ModelAndView("/mcht/rebill/add", "MCHT_MAP", result);
+	}
+
+	@RequestMapping(value = {"/mcht/rebill/insert"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse rebillInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+
+		if(cpDAO.insertByOper("PG_MCHT_REBILL", SessionUtil.getUserId(request), cpRequest.data)){
+			SessionUtil.initSessionData(request);
+			return new CPRUtil(cpRequest)
+					.resultOK(CPUtil.RESULT_DATA_INSERTED).redirect(cpRequest.redirect)
+					.cpResponse();
+		}else{
+			return new CPRUtil(cpRequest)
+					.resultNOK(CPUtil.RESULT_DATA_INFAIL,cpDAO.getError())
+					.cpResponse();
+		}
+	}
+
+	@RequestMapping(value = "/mcht/rebill/modify/{mchtId}", method = RequestMethod.GET)
+	public ModelAndView rebillModify(HttpServletRequest request, @PathVariable String mchtId) {
+		SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
+		SharedMap<String,Object> rebillMap = new MchtRebillDAO().getByMchtId(mchtId);
+		request.setAttribute("DATAMAP", result);
+		request.setAttribute("REBILLMAP", rebillMap);
+
+		return new ModelAndView("/mcht/rebill/modify","MCHT_MAP",result);
+	}
+
+	@RequestMapping(value = {"/mcht/rebill/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse rebillUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+		if (cpDAO.updateAndBackByOper("PG_MCHT_REBILL", SessionUtil.getUserId(request), cpRequest.data)) {
+			return new CPRUtil(cpRequest).resultOK("정기결제 정보가 변경되었습니다.").cpResponse();
+		} else {
+			return new CPRUtil(cpRequest).resultNOK("정기결제 정보 변경에 실패하였습니다.",cpDAO.getError())
+					.cpResponse();
+		}
+
+	}
+
 }

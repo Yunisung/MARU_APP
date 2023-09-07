@@ -36,7 +36,8 @@ public class ChargeSettleController {
 	public ModelAndView trxList(HttpServletRequest request, HttpServletResponse response,@RequestBody CPRequest cpRequest) {
 		SessionUtil.setSearchGrade(request, cpRequest);
 		ChargeSettleDAO dao = new ChargeSettleDAO();
-		RecordSet rset = dao.list(cpRequest.data,cpRequest.page);
+//		RecordSet rset = dao.list(cpRequest.data,cpRequest.page);
+		RecordSet rset = dao.listWithDecAccount(cpRequest.data,cpRequest.page);
 		return new CPRUtil(cpRequest).dataList(rset,dao).setView(request,"/chargeSettle/list","");
 		
 	}

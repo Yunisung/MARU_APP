@@ -82,6 +82,9 @@
 														<c:if test="${DATASVCMAP.pisp eq '사용'}">
 															<li class="tab_pisp"><a href="#tab_pisp" data-toggle="tab" aria-expanded="false"> 지급대행 </a></li>
 														</c:if>
+														<c:if test="${DATASVCMAP.rebill eq '사용'}">
+															<li class="tab_rebill"><a href="#tab_rebill" data-toggle="tab" aria-expanded="false"> 정기결제 </a></li>
+														</c:if>
 													</c:if>
 													<c:if test="${CP_SESSION.grade ne '터미널' }">
 														<li class="tab_trx"><a href="#tab_trx" data-toggle="tab" aria-expanded="false"> 최근 매입 </a></li>
@@ -1881,6 +1884,14 @@
 																	</div>
 																</div>
 																<!--/span-->
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3">정기결제</label>
+																		<div class="col-md-9">
+																			<p class="form-control-static">${DATASVCMAP.rebill}</p>
+																		</div>
+																	</div>
+																</div>
 															</div>
 															<div class="form-actions">
 																<div class="row">
@@ -2150,6 +2161,14 @@
 																				<label class="control-label col-md-3">ARS인증 수수료</label>
 																				<div class="col-md-9">
 																					<p class="form-control-static">${TOTALAUTH_MAP.arsAuthFee}</p>원
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">계좌별 1일인증 제한횟수</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.limitDayCnt}</p>회
 																				</div>
 																			</div>
 																		</div>
@@ -2487,6 +2506,22 @@
 																		</div>
 																	</div>
 																</div>
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3">가상계좌 상태값 전달 주소(URL)</label>
+																		<div class="col-md-9">
+																			<p class="form-control-static">${VACT_MAP.statusHookAddr}</p>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3"></label>
+																		<div class="col-md-9">
+																			<p class="form-control-static"></p>
+																		</div>
+																	</div>
+																</div>
 																<c:if test="${VACT_MAP.issueType eq '영구'}">
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
@@ -2533,7 +2568,7 @@
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">가상계좌별<br>1일입금 제한횟수</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static digits">${VACT_MAP.limitDayCnt}</p>
+																				<p class="form-control-static digits">${VACT_MAP.limitDayCnt} 회</p>
 																			</div>
 																		</div>
 																	</div>
@@ -2541,7 +2576,43 @@
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">입금단위제한</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static digits">${VACT_MAP.limitAmount}</p>
+																				<p class="form-control-static digits">${VACT_MAP.limitAmount} 원</p>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="row">
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">동일출금계좌<br>1일입금 제한횟수</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${VACT_MAP.eqAccntDepositLimitCnt} 회</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">동일출금계좌<br>발급제한횟수</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${VACT_MAP.eqAccntIssueLimitCnt} 회</p>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="row">
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">동일출금계좌<br>입금 1회한도</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${VACT_MAP.eqAccntLimitOnce}</p> 원
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">동일출금계좌<br>입금 1일한도</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${VACT_MAP.eqAccntLimitDay}</p> 원
 																			</div>
 																		</div>
 																	</div>
@@ -2890,6 +2961,87 @@
 																		<div class="col-md-6"></div> 
 																	</div>
 																</div>  
+															</c:if>
+														</form>
+													</div>
+
+													<!-- 정기결제 탭 시작 -->
+													<div class="tab-pane" id="tab_rebill">
+														<form class="form-horizontal form" role="form">
+															<c:if test="${not empty REBILL_MAP}">
+																<div class="form-body row">
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">상태</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static">${REBILL_MAP.status}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">정기결제금액</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static currency amount comma">${REBILL_MAP.amount}원</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">정기결제주기</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static">매달 ${REBILL_MAP.rebillCycle}일</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">시작일</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static date">${REBILL_MAP.activeDate}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">만료일</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static date">${REBILL_MAP.expireDate}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">거래전달 주소(URL)</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static">${REBILL_MAP.hookAddr}</p>
+																			</div>
+																		</div>
+																	</div>
+
+																</div>
+																<div class="form-actions">
+																	<div class="row">
+																		<div class="col-md-12">
+																			<button type="button" class="btn btn-sm green pull-right" onclick="location.href='/mcht/rebill/modify/${DATAMAP.mchtId}';">
+																				<i class="fa fa-pencil"></i> 정기결제 수정
+																			</button>
+																		</div>
+																		<div class="col-md-6"></div>
+																	</div>
+																</div>
+															</c:if>
+															<c:if test="${empty REBILL_MAP}">
+																<div class="form-actions">
+																	<div class="row">
+																		<div class="col-md-12">
+																			<button type="button" class="btn btn-sm green pull-right" onclick="location.href='/mcht/rebill/add/${DATAMAP.mchtId}';">
+																				<i class="fa fa-pencil"></i> 정기결제 설정
+																			</button>
+																		</div>
+																		<div class="col-md-6"></div>
+																	</div>
+																</div>
 															</c:if>
 														</form>
 													</div>

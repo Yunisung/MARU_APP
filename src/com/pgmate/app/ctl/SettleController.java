@@ -1859,7 +1859,9 @@ public class SettleController {
 	@RequestMapping(value = "/settle/pisp/form", method = RequestMethod.GET)
 	public ModelAndView settleForm(HttpServletRequest request) {
 		DAO dao = new DAO();
-		List<SharedMap<String,Object>> months = dao.query("SELECT substr(regDay,1,6) as settleMonth FROM PG_TRX_PISP GROUP BY substr(regDay,1,6) ORDER BY  substr(regDay,1,6)").getRows();
+		// PG_TRX_PISP 존재하지 않아 주석처리
+		//List<SharedMap<String,Object>> months = dao.query("SELECT substr(regDay,1,6) as settleMonth FROM PG_TRX_PISP GROUP BY substr(regDay,1,6) ORDER BY  substr(regDay,1,6)").getRows();
+		List<SharedMap<String,Object>> months = new ArrayList();
 		List<String> monthList = new ArrayList<String>();
 		for(SharedMap<String,Object> m : months) {
 			monthList.add(m.getString("settleMonth"));
@@ -1896,7 +1898,9 @@ public class SettleController {
 	@RequestMapping(value = "/settle/pisp/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView settlePispList(HttpServletRequest request, HttpServletResponse response,@RequestBody CPRequest cpRequest) {
 		PispSettleDAO pispStlDAO = new PispSettleDAO();
-		RecordSet rset = pispStlDAO.list(cpRequest.data,cpRequest.page);  
+		// VW_TRX_PISP_SETTLE 존재하지 않아 주석처리
+//		RecordSet rset = pispStlDAO.list(cpRequest.data,cpRequest.page);
+		RecordSet rset = new RecordSet();
 		return new CPRUtil(cpRequest).dataList(rset,pispStlDAO).setView(request,"/settle/pisp/list","");
 	}
 

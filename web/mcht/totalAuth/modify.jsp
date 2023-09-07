@@ -74,7 +74,8 @@
                                                 <label class="control-label col-sm-4 req-label">실명인증
                                                 </label>
                                                 <select id="ownerAuth" name="ownerAuth" class="selectpicker col-sm-6">
-                                                    <option value="Y">Y</option>
+                                                    <option value="Y" selected>Y</option>
+                                                    <option value="N">N</option>
                                                 </select>
                                             </div>
                                             <script type="text/javascript">
@@ -129,6 +130,15 @@
                                                     <div class="input-group input-group-sm">
                                                         <input type="text" class="form-control currency arsAuthFee comma" maxlength="10" data-oper="comma" name="arsAuthFee" placeholder="" value="${DATAMAP.arsAuthFee}">
                                                         <span class="input-group-addon"><i class="fa fa-krw"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4 req-label">계좌별<br>1일인증 제한횟수</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control currency limitDayCnt" maxlength="3" name="limitDayCnt" placeholder="" value="${DATAMAP.limitDayCnt}">
+                                                        <span class="input-group-addon">회</span>
                                                     </div>
                                                 </div>
                                             </div>

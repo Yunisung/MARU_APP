@@ -2,6 +2,7 @@ package com.pgmate.app.ctl;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.pgmate.app.dao.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -13,10 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.pgmate.app.dao.CPDAO;
-import com.pgmate.app.dao.MchtTmnDAO;
-import com.pgmate.app.dao.VactDtlDAO;
-import com.pgmate.app.dao.VactTrxDAO;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.CPResponse;
 import com.pgmate.app.model.ajax.Data;
@@ -34,7 +31,6 @@ import com.pgmate.lib.util.map.SharedMap;
 public class VactController {
   private static Logger logger = LoggerFactory.getLogger(com.pgmate.app.ctl.VactController.class);
 
-  //KJM : 거래관리 > 가상계좌관리 > 발행내역 조회 리스트
   @RequestMapping(value = "/vact/dtl/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
   public ModelAndView dtlList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 	SessionUtil.setSearchGrade(request, cpRequest);
@@ -49,13 +45,10 @@ public class VactController {
 	}
 	
     VactDtlDAO vactDtlDAO = new VactDtlDAO();
-    //KJM : select 쿼리 수행 후 가상계좌 발행 내역 가져옴
     RecordSet rset = vactDtlDAO.list(cpRequest.data, cpRequest.page);
-    //KJM : 가져온 데이터 view에 넘겨줌
     return new CPRUtil(cpRequest).dataList(rset, vactDtlDAO).setView(request, "/vact/dtl/list", "");
   }
   
-  //KJM : 거래관리 > 가상계좌 거래내역 조회 리스트
   @RequestMapping(value = "/vact/trx/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
   public ModelAndView trxList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
     SessionUtil.setSearchGrade(request, cpRequest);
@@ -69,11 +62,10 @@ public class VactController {
 		cpRequest.replaceKeyValue("mchtId",	map.getString("mchtId"));
     }
 	
-
     VactTrxDAO vactTrxDAO = new VactTrxDAO();
-    //KJM : 거래내역의 금액 총 합계 구해서 넘겨줌
     request.setAttribute("AMOUNT_SUM", new VactTrxDAO().trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
     RecordSet rset = vactTrxDAO.joinList(cpRequest.data, cpRequest.page);
+//    RecordSet rset = vactTrxDAO.listWithDecAccount(cpRequest.data, cpRequest.page);
     return new CPRUtil(cpRequest).dataList(rset, vactTrxDAO).setView(request, "/vact/trx/list", "");
   }
 
@@ -97,19 +89,23 @@ public class VactController {
         }
 
         VactTrxDAO vactTrxDAO = new VactTrxDAO();
+        RecordSet rset = vactTrxDAO.authList(cpRequest.data, cpRequest.page);
+/*
 
         //가상계좌 은행이름, 계좌번호 세팅
         //나중에 PAY쪽에서 가상계좌 발행할때 update하는 방법도 괜춘할듯.
         //230306_PYS : 출금계좌은행, 예금주 표시
-        RecordSet rset = vactTrxDAO.authList(cpRequest.data, cpRequest.page);
+
         for(SharedMap<String,Object>  data : rset.getRows()) {
             String totalAuthId = data.getString("totalAuthId");
             RecordSet recordSet = vactTrxDAO.getVactAuth(totalAuthId);
             if(recordSet.size() != 0) {
 
-                /*String bankCd = recordSet.getRowFirst().getString("vactBankCd");
+                */
+/*String bankCd = recordSet.getRowFirst().getString("vactBankCd");
                 String bankName = vactTrxDAO.getBankName(bankCd).getString("codeName");
-                data.put("vactBank", bankName);*/
+                data.put("vactBank", bankName);*//*
+
 
                 String account = recordSet.getRowFirst().getString("vactAccount");
                 data.put("vactAccount", account);
@@ -121,6 +117,7 @@ public class VactController {
             }
         }
 
+*/
 
         //수수료 건수, 수수료 총금액 표시
         if(cpSession.getGrade().equals("본사")) {
@@ -235,7 +232,7 @@ public class VactController {
     SharedMap<String, Object> resMap = new SharedMap<String, Object>();
     resMap.put("result", "NOK");
     DAO dao = new DAO();
-    if (dao.update("UPDATE PG_VACT_TRX SET hookStatus='전송실패', hookRetry='1' WHERE vactId ='" + vactId + "'")) {
+    if (dao.update("UPDATE PG_VACT_TRX SET hookStatus='전송장애', hookRetry='1' WHERE vactId ='" + vactId + "'")) {
       resMap.put("result", "OK");
     } else {
       resMap.put("msg", "재전송에 실패했습니다. 관리자에게 문의해주세요.");
@@ -266,7 +263,31 @@ public class VactController {
         }
         return resMap;
     }
-  
+
+    @RequestMapping(value = "/vact/withdrawAccountByAuthId/{authId}", method = RequestMethod.GET)
+    public @ResponseBody SharedMap<String, Object> withdrawAccountByAuthId(HttpServletRequest request, @PathVariable String authId) {
+        SharedMap<String, Object> resMap = new SharedMap<String, Object>();
+
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+        SharedMap<String, Object> sharedMap = vactTrxDAO.getTotalAuth(authId);
+        String withdrawAccountDec = sharedMap.getString("withdrawAccountDec");
+        String withdrawBankCd = sharedMap.getString("withdrawBankCd");
+        String withdrawBankNm = sharedMap.getString("withdrawBankNm");
+        String holderName = sharedMap.getString("holderName");
+
+        if (!CommonUtil.isNullOrSpace(withdrawAccountDec)) {
+            resMap.put("msg", "[" + withdrawBankNm + "/" + withdrawAccountDec + "/" + holderName + "]");
+            resMap.put("withdrawAccount", withdrawAccountDec);
+            resMap.put("withdrawBankCd", withdrawBankCd);
+            resMap.put("holderName", holderName);
+            resMap.put("result", "OK");
+        } else {
+            resMap.put("msg", "계좌번호가 존재하지 않습니다.");
+            resMap.put("result", "NOK");
+        }
+        return resMap;
+    }
+
   @RequestMapping(value = {"/vact/reg/blackList/add"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
   public @ResponseBody CPResponse blackListInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
@@ -294,9 +315,14 @@ public class VactController {
 	        	.cpResponse();
   }
 
-    @RequestMapping(value = "/vact/reg/blackList/withdrawAccount", method = RequestMethod.GET)
-    public ModelAndView withdrawAccountView(HttpServletRequest request) {
-        return new ModelAndView("/vact/blackList/modal");
+    @RequestMapping(value = "/vact/reg/blackList/searchAccountModal", method = RequestMethod.GET)
+    public ModelAndView searchAccountModal(HttpServletRequest request) {
+        return new ModelAndView("/vact/blackList/search_account_modal");
+    }
+
+    @RequestMapping(value = "/vact/reg/blackList/searchAuthIdModal", method = RequestMethod.GET)
+    public ModelAndView searchAuthIdModal(HttpServletRequest request) {
+        return new ModelAndView("/vact/blackList/search_authid_modal");
     }
   
   
