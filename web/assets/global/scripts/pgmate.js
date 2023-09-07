@@ -48,7 +48,13 @@ var PGmate = function() {
 		//추가 - 어제 날짜로 초기화
 		var yesterday = new Date();
 		yesterday.setDate(yesterday.getDate()-1);
-		
+
+		//PYS : 정기결제 만료일 추가
+		var now = new Date();
+		var rebillExpireDate = new Date(now.setFullYear(now.getFullYear() + 1));
+		rebillExpireDate.setDate(rebillExpireDate.getDate() - 1);
+
+
 		$('.input-daterange').find('input.from').datepicker('setDate', new Date());
 		$('.input-daterange').find('input.to').datepicker('setDate', new Date());
 		$('.input-daterange').find('input.now-date').datepicker('setDate', new Date());
@@ -56,7 +62,8 @@ var PGmate = function() {
 		$('.input-daterange').find('input.month-first-date').datepicker('setDate', monthFirstDate);
 		$('.input-daterange').find('input.month-last-date').datepicker('setDate', monthLastDate);
 		$('.input-daterange').find('input.last-month-date').datepicker('setDate', settingDate);
-		$('.input-daterange').find('input:not(.from)input:not(.to)input:not(.now-date)input:not(.yesterday-date)input:not(.last-month-date)input:not(.month-first-date)input:not(.month-last-date)').val('');
+		$('.input-daterange').find('input.rebill-expire-date').datepicker('setDate', rebillExpireDate);
+		$('.input-daterange').find('input:not(.from)input:not(.to)input:not(.now-date)input:not(.yesterday-date)input:not(.last-month-date)input:not(.month-first-date)input:not(.month-last-date)input:not(.rebill-expire-date)').val('');
 		
 		$('.datepicker.from').datepicker('setDate', new Date());
 		$('.datepicker.to').datepicker('setDate', new Date());
@@ -65,6 +72,7 @@ var PGmate = function() {
 		$('.datepicker.last-month-date').datepicker('setDate', settingDate);
 		$('.datepicker.month-first-date').datepicker('setDate', monthFirstDate);
 		$('.datepicker.month-last-date').datepicker('setDate', monthLastDate);
+		$('.datepicker.rebill-expire-date').datepicker('setDate', rebillExpireDate);
 
 		// 마스크
 		textMask();
