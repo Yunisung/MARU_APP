@@ -251,6 +251,10 @@ public class MchtController {
 //		if (svcMap.getString("pisp").equals("사용")) {
 //			request.setAttribute("PISP_MAP", new MchtPispDAO().getByMchtId(mchtId));
 //		}
+
+		if(svcMap.getString("rebill").equals("사용")) {
+			request.setAttribute("REBILL_MAP", new MchtRebillDAO().getByMchtId(mchtId));
+		}
 		
 		//가맹점 휴대폰 결제 정보
 		request.setAttribute("DATAPHONEMAP", new PhoneDAO().getByMchtId(mchtId));
@@ -3138,4 +3142,52 @@ public class MchtController {
 		resultMap.put("tax", sb.toString());
         return resultMap;
     }
+
+	@RequestMapping(value = {"/mcht/rebill/add/{mchtId}"})
+	public ModelAndView rebillAdd(HttpServletRequest request, @PathVariable String mchtId) {
+		SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
+
+		request.setAttribute("DATAMAP", result);
+
+		return new ModelAndView("/mcht/rebill/add", "MCHT_MAP", result);
+	}
+
+	@RequestMapping(value = {"/mcht/rebill/insert"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse rebillInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+
+		if(cpDAO.insertByOper("PG_MCHT_REBILL", SessionUtil.getUserId(request), cpRequest.data)){
+			SessionUtil.initSessionData(request);
+			return new CPRUtil(cpRequest)
+					.resultOK(CPUtil.RESULT_DATA_INSERTED).redirect(cpRequest.redirect)
+					.cpResponse();
+		}else{
+			return new CPRUtil(cpRequest)
+					.resultNOK(CPUtil.RESULT_DATA_INFAIL,cpDAO.getError())
+					.cpResponse();
+		}
+	}
+
+	@RequestMapping(value = "/mcht/rebill/modify/{mchtId}", method = RequestMethod.GET)
+	public ModelAndView rebillModify(HttpServletRequest request, @PathVariable String mchtId) {
+		SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
+		SharedMap<String,Object> rebillMap = new MchtRebillDAO().getByMchtId(mchtId);
+		request.setAttribute("DATAMAP", result);
+		request.setAttribute("REBILLMAP", rebillMap);
+
+		return new ModelAndView("/mcht/rebill/modify","MCHT_MAP",result);
+	}
+
+	@RequestMapping(value = {"/mcht/rebill/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody CPResponse rebillUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		CPDAO cpDAO = new CPDAO();
+		if (cpDAO.updateAndBackByOper("PG_MCHT_REBILL", SessionUtil.getUserId(request), cpRequest.data)) {
+			return new CPRUtil(cpRequest).resultOK("정기결제 정보가 변경되었습니다.").cpResponse();
+		} else {
+			return new CPRUtil(cpRequest).resultNOK("정기결제 정보 변경에 실패하였습니다.",cpDAO.getError())
+					.cpResponse();
+		}
+
+	}
+
 }
