@@ -3,17 +3,15 @@ package com.pgmate.app.export;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.format.CellFormatType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -21,6 +19,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -131,6 +130,9 @@ public class XlsExport {
 
 		add("authFee");
 		add("authFeeVat");
+
+		add("fee");
+
 	}};
 	
 	ArrayList<String> doubleArray = new ArrayList<String>() {{
@@ -174,6 +176,10 @@ public class XlsExport {
 		add("diff1CheckSalesRate");
 		add("diff2CheckSalesRate");
 		add("diff3CheckSalesRate");
+
+		add("feeVat");
+		add("rateAmt");
+		add("rateVat");
 	}};
 	
 	//KJM : 파일 경로의 폴더? 확인 및 생성 및 문서 타이틀,설명,작성자 셋팅
@@ -205,6 +211,7 @@ public class XlsExport {
 		//KJM : 셀 설정 변수
 		CellStyle titleCellStyle = workbook.createCellStyle();
 		CellStyle contentCellStyle = workbook.createCellStyle();
+		CellStyle numberCellStyle = workbook.createCellStyle();
 		//KJM : 시트 생성
 		Sheet sheet = workbook.createSheet("Sheet1");
 		Row row;
@@ -279,8 +286,13 @@ public class XlsExport {
 				cell = row.createCell(columnCnt++);
 				cell.setCellStyle(contentCellStyle);
 				Object data = datas.get(key);
+				if(data.equals("fee")) {
+					logger.info("fee ::: {}" , data);
+				}
 				if(numberArray.indexOf(key) > -1) {
 					cell.setCellValue(CommonUtil.parseLong(data));
+//					numberCellStyle.setDataFormat(workbook.createDataFormat().getFormat("#,##0"));
+//					cell.setCellStyle(numberCellStyle);
 				} else if (doubleArray.indexOf(key) > -1) {
 					cell.setCellValue(CommonUtil.parseDouble(data));
 				} else if (data instanceof java.lang.Integer) {
