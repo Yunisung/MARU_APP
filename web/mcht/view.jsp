@@ -82,9 +82,9 @@
 														<c:if test="${DATASVCMAP.pisp eq '사용'}">
 															<li class="tab_pisp"><a href="#tab_pisp" data-toggle="tab" aria-expanded="false"> 지급대행 </a></li>
 														</c:if>
-														<c:if test="${DATASVCMAP.rebill eq '사용'}">
+														<%--<c:if test="${DATASVCMAP.rebill eq '사용'}">
 															<li class="tab_rebill"><a href="#tab_rebill" data-toggle="tab" aria-expanded="false"> 정기결제 </a></li>
-														</c:if>
+														</c:if>--%>
 													</c:if>
 													<c:if test="${CP_SESSION.grade ne '터미널' }">
 														<li class="tab_trx"><a href="#tab_trx" data-toggle="tab" aria-expanded="false"> 최근 매입 </a></li>
@@ -2982,7 +2982,7 @@
 													</div>
 
 													<!-- 정기결제 탭 시작 -->
-													<div class="tab-pane" id="tab_rebill">
+													<%--<div class="tab-pane" id="tab_rebill">
 														<form class="form-horizontal form" role="form">
 															<c:if test="${not empty REBILL_MAP}">
 																<div class="form-body row">
@@ -3060,7 +3060,7 @@
 																</div>
 															</c:if>
 														</form>
-													</div>
+													</div>--%>
 												
 													<!-- 차액정산 탭 시작 -->
 													<div class="tab-pane" id="tab_diff">
