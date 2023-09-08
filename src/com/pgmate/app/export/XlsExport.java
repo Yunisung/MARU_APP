@@ -41,7 +41,6 @@ public class XlsExport {
 	private String author = "system";
 	private String url = "";
 	private boolean rotate = false;
-	
 	ArrayList<String> numberArray = new ArrayList<String>() {{
 		add("amount");
 		add("vat");
@@ -136,6 +135,10 @@ public class XlsExport {
 	}};
 	
 	ArrayList<String> doubleArray = new ArrayList<String>() {{
+
+	}};
+
+	ArrayList<String> percentArray = new ArrayList<String>() {{
 		add("stlRate");
 		add("stlInterRate");
 		add("stlLoanRate");
@@ -160,14 +163,14 @@ public class XlsExport {
 		add("diff1CheckDistRate");
 		add("diff2CheckDistRate");
 		add("diff3CheckDistRate");
-		add("diff0SalesRate");
-		add("diff1SalesRate");
-		add("diff2SalesRate");
-		add("diff3SalesRate");
-		add("diff0CheckSalesRate");
-		add("diff1CheckSalesRate");
-		add("diff2CheckSalesRate");
-		add("diff3CheckSalesRate");
+		add("diff0AgencyRate");
+		add("diff1AgencyRate");
+		add("diff2AgencyRate");
+		add("diff3AgencyRate");
+		add("diff0CheckAgencyRate");
+		add("diff1CheckAgencyRate");
+		add("diff2CheckAgencyRate");
+		add("diff3CheckAgencyRate");
 		add("diff0SalesRate");
 		add("diff1SalesRate");
 		add("diff2SalesRate");
@@ -181,17 +184,11 @@ public class XlsExport {
 		add("rateAmt");
 		add("rateVat");
 	}};
-	
-	//KJM : 파일 경로의 폴더? 확인 및 생성 및 문서 타이틀,설명,작성자 셋팅
+
 	public XlsExport(CPDocument doc) {
-		//KJM : url : /upload/webexport/yyyyMMdd/
 		url = CPUtil.CP_UPLOAD_DIR + "/" + filePath + "/" + CommonUtil.getCurrentDate("yyyyMMdd") + "/";
-		//KJM : filePath : C:\git\creditop\web\/upload\webexport\
-		//KJM : File.separator : 운영체제별로 파일 경로 구분자 더해줌 "/ or \"
 		filePath = CPUtil.getCanonicalWebPath() + File.separator + CPUtil.CP_UPLOAD_DIR + File.separator + filePath + File.separator;
-		//KJM : 해당경로에 파일있는지 확인 후 없을 시 폴더 생성
 		CPUtil.setTemplateDirectory(filePath);
-		//KJM : filePath : C:\git\creditop\web\/upload\webexport\yyyyMMdd\
 		filePath = filePath + File.separator + CommonUtil.getCurrentDate("yyyyMMdd") + File.separator;
 
 		if (doc != null) {
@@ -200,24 +197,16 @@ public class XlsExport {
 			doc = new CPDocument("AutoExport", "Export DATA", "SYSTEM");
 		}
 	}
-	
-	// KBR 
-	//KJM : 엑셀파일 만들어줌
-	//KJM : 컬럼명, 리스트, true, true
+
 	public String makeExcel(LinkedHashMap<String, String> thead, RecordSet rset, boolean showHeader, boolean headerStyle) {
-		//KJM : SXSSFWorkbook : 대용량 엑셀 다운로드 용
-		//KJM : 워크북 생성
 		SXSSFWorkbook workbook = new SXSSFWorkbook(1000);
-		//KJM : 셀 설정 변수
+		CellStyle percentCellStyle = workbook.createCellStyle();
 		CellStyle titleCellStyle = workbook.createCellStyle();
 		CellStyle contentCellStyle = workbook.createCellStyle();
-		CellStyle numberCellStyle = workbook.createCellStyle();
-		//KJM : 시트 생성
 		Sheet sheet = workbook.createSheet("Sheet1");
 		Row row;
 		Cell cell;
-		
-		//KJM : 행 / 열 count
+
 		int rowCnt = 0;
 		int columnCnt = 0;
 		// 헤더 생성
@@ -229,15 +218,12 @@ public class XlsExport {
 				cell.setCellValue("");
 }
 			sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, thead.size()-1));*/
-			
-			//KJM : 행 추가
+
 			row = sheet.createRow(rowCnt++);
 			columnCnt = 0;
 
 			if (headerStyle) {
-				//KJM : 행 높이 지정
 				row.setHeight((short) 500);
-				//테이블 스타일 설정
 				titleCellStyle.setBorderBottom(CellStyle.BORDER_THIN);
 				titleCellStyle.setBottomBorderColor(HSSFColor.GREY_50_PERCENT.index);
 				titleCellStyle.setBorderLeft(CellStyle.BORDER_NONE);
@@ -255,11 +241,11 @@ public class XlsExport {
 			}
 
 			for (Entry<String, String> entry : thead.entrySet()) {
-				cell = row.createCell(columnCnt++); // 추가한 행에 셀 객체 추가
+				cell = row.createCell(columnCnt++);
 				if (headerStyle) {
-					cell.setCellStyle(titleCellStyle); // 셀에 스타일 지정
+					cell.setCellStyle(titleCellStyle);
 				}
-				cell.setCellValue(entry.getValue()); // 데이터 입력
+				cell.setCellValue(entry.getValue());
 			}
 
 			if (headerStyle) {
@@ -269,6 +255,12 @@ public class XlsExport {
 				contentCellStyle.setBorderTop(CellStyle.BORDER_NONE);
 				contentCellStyle.setAlignment(CellStyle.ALIGN_LEFT);
 				contentCellStyle.setAlignment(CellStyle.VERTICAL_CENTER);
+				percentCellStyle.setBorderBottom(CellStyle.BORDER_THIN);
+				percentCellStyle.setBorderLeft(CellStyle.BORDER_NONE);
+				percentCellStyle.setBorderRight(CellStyle.BORDER_NONE);
+				percentCellStyle.setBorderTop(CellStyle.BORDER_NONE);
+				percentCellStyle.setAlignment(CellStyle.ALIGN_LEFT);
+				percentCellStyle.setAlignment(CellStyle.VERTICAL_CENTER);
 			}
 		}
 
@@ -276,6 +268,7 @@ public class XlsExport {
 		bodyFont.setFontName("Arial");
 		bodyFont.setFontHeightInPoints((short)10);
 		contentCellStyle.setFont(bodyFont);
+		percentCellStyle.setFont(bodyFont);
 		// 바디 생성
 		for (SharedMap<String, Object> datas : rset.getRows()) {
 			row = sheet.createRow(rowCnt++);
@@ -286,14 +279,13 @@ public class XlsExport {
 				cell = row.createCell(columnCnt++);
 				cell.setCellStyle(contentCellStyle);
 				Object data = datas.get(key);
-				if(data.equals("fee")) {
-					logger.info("fee ::: {}" , data);
-				}
 				if(numberArray.indexOf(key) > -1) {
 					cell.setCellValue(CommonUtil.parseLong(data));
-//					numberCellStyle.setDataFormat(workbook.createDataFormat().getFormat("#,##0"));
-//					cell.setCellStyle(numberCellStyle);
 				} else if (doubleArray.indexOf(key) > -1) {
+					cell.setCellValue(CommonUtil.parseDouble(data));
+				} else if (percentArray.indexOf(key) > -1) {
+					percentCellStyle.setDataFormat(workbook.createDataFormat().getFormat("0.000%"));
+					cell.setCellStyle(percentCellStyle);
 					cell.setCellValue(CommonUtil.parseDouble(data));
 				} else if (data instanceof java.lang.Integer) {
 					cell.setCellValue(CommonUtil.parseInt(data));
@@ -319,7 +311,6 @@ public class XlsExport {
 		}
 
 		TplExport export = new TplExport();
-		
 		String fileLink = "";
 		try {
 			fileLink = export.textToExl(doc.title, workbook);
