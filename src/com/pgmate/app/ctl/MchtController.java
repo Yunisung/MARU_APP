@@ -292,9 +292,9 @@ public class MchtController {
 //			request.setAttribute("PISP_MAP", new MchtPispDAO().getByMchtId(mchtId));
 //		}
 
-		if(svcMap.getString("rebill").equals("사용")) {
-			request.setAttribute("REBILL_MAP", new MchtRebillDAO().getByMchtId(mchtId));
-		}
+//		if(svcMap.getString("rebill").equals("사용")) {
+//			request.setAttribute("REBILL_MAP", new MchtRebillDAO().getByMchtId(mchtId));
+//		}
 		
 		//가맹점 휴대폰 결제 정보
 		request.setAttribute("DATAPHONEMAP", new PhoneDAO().getByMchtId(mchtId));
@@ -3176,6 +3176,7 @@ public class MchtController {
         return resultMap;
     }
 
+	/*
 	@RequestMapping(value = {"/mcht/rebill/add/{mchtId}"})
 	public ModelAndView rebillAdd(HttpServletRequest request, @PathVariable String mchtId) {
 		SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
@@ -3222,5 +3223,6 @@ public class MchtController {
 		}
 
 	}
+	*/
 
 }
