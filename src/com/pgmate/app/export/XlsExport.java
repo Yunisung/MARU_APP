@@ -135,7 +135,9 @@ public class XlsExport {
 	}};
 	
 	ArrayList<String> doubleArray = new ArrayList<String>() {{
-
+		add("feeVat");
+		add("rateAmt");
+		add("rateVat");
 	}};
 
 	ArrayList<String> percentArray = new ArrayList<String>() {{
@@ -180,9 +182,6 @@ public class XlsExport {
 		add("diff2CheckSalesRate");
 		add("diff3CheckSalesRate");
 
-		add("feeVat");
-		add("rateAmt");
-		add("rateVat");
 	}};
 
 	public XlsExport(CPDocument doc) {
