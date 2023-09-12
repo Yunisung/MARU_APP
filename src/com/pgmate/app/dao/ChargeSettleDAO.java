@@ -197,11 +197,8 @@ public class ChargeSettleDAO extends DAO{
 		return rset.getRowFirst();
 	}
 
-	public RecordSet depositSum(List<Data> datas, Page page) {
+	public RecordSet depositSum(List<Data> datas) {
 		super.setColumns("SUM(if(trxType='출금',amount,0)) AS depositAmt, SUM(if(trxType='입금',amount,0)) AS withdrawAmt");
-		super.setOrderBy("");
-		super.setLimit(0);
-		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION
 		RecordSet rset = super.search();
 		super.initRecord();
