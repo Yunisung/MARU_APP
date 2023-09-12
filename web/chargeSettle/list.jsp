@@ -8,6 +8,10 @@
 		<i class="icon-share font-red-sunglo"></i>
 		<span class="caption-subject bold uppercase"> Result </span>
 		<span class="caption-helper"><span id="page-total">${CPR.page.total}</span> 건</span>
+		<span class="caption-helper amount_sum" style="color:#00a2ff;font-weight:600;">
+			출금 금액 합계: <fmt:formatNumber type="number" value="${SUMMAP.depositAmt }" pattern="#,##0" /> 원 /
+			입금 금액 합계: <fmt:formatNumber type="number" value="${SUMMAP.withdrawAmt }" pattern="#,##0" /> 원
+		</span>
 	</div>
 	<div class="actions">
 		<a class="btn btn-circle btn-icon-only btn-default" href="javascript:searchForExcel();">
