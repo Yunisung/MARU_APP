@@ -18,10 +18,6 @@ import com.pgmate.app.util.CPRUtil;
 import com.pgmate.app.util.SessionUtil;
 import com.pgmate.lib.dao.RecordSet;
 
-
-/* KBR 
- * 충전정산
- * */
 @Controller
 public class ChargeSettleController {
 	
@@ -34,7 +30,7 @@ public class ChargeSettleController {
 		SessionUtil.setSearchGrade(request, cpRequest);
 		ChargeSettleDAO dao = new ChargeSettleDAO();
 
-		request.setAttribute("SUMMAP", dao.depositSum(cpRequest.data,null).getRow(0));
+		request.setAttribute("SUMMAP", dao.depositSum(cpRequest.data).getRow(0));
 
 //		RecordSet rset = dao.list(cpRequest.data,cpRequest.page);
 		RecordSet rset = dao.listWithDecAccount(cpRequest.data,cpRequest.page);

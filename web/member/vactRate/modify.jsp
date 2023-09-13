@@ -207,7 +207,7 @@
 			submitHandler: function (form) {
 				// 수수료 유형이 정액일 때
 				if($('select[name="feeType"]').val()=='0'){
-					if(Number($('.fee').val()) < Number($('.distFee').val()) + Number($('.agencyFee').val()) + Number($('.salesFee').val())){
+					if(Number($('.fee').val()) < Number($('.distFee').val()) + Number($('.agencyFee').val()) + Number($('.salesFee').val()) ){
 						var error1Str = '<button class="close" data-close="alert"></button>';
 						error1Str += "대행사, 에이전시, 지사 수수료의 합이 가맹점 수수료 보다 큽니다. 확인해 주시기 바랍니다.";
 						error1.html(error1Str);
@@ -277,6 +277,7 @@
 						});
 					}
 				}
+
 			}
 		});
 

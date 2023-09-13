@@ -35,42 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.pgmate.app.dao.AgencyDAO;
-import com.pgmate.app.dao.AgencyMngDAO;
-import com.pgmate.app.dao.CPDAO;
-import com.pgmate.app.dao.ChargeSettleDAO;
-import com.pgmate.app.dao.CodeDAO;
-import com.pgmate.app.dao.DistDAO;
-import com.pgmate.app.dao.DistMngDAO;
-import com.pgmate.app.dao.FileDAO;
-import com.pgmate.app.dao.HTDAO;
-import com.pgmate.app.dao.LoanDAO;
-import com.pgmate.app.dao.LoanSettleDAO;
-import com.pgmate.app.dao.MchtChargeSettleDAO;
-import com.pgmate.app.dao.MchtDAO;
-import com.pgmate.app.dao.MchtDdctDAO;
-import com.pgmate.app.dao.MchtDiffDAO;
-import com.pgmate.app.dao.MchtFeeTemplateDAO;
-import com.pgmate.app.dao.MchtInterTemplateDAO;
-import com.pgmate.app.dao.MchtInterestDAO;
-import com.pgmate.app.dao.MchtMngDAO;
-import com.pgmate.app.dao.MchtPispDAO;
-import com.pgmate.app.dao.MchtSvcDAO;
-import com.pgmate.app.dao.MchtTaxDAO;
-import com.pgmate.app.dao.MchtTmnDAO;
-import com.pgmate.app.dao.MchtVactDAO;
-import com.pgmate.app.dao.MemberSalesDAO;
-import com.pgmate.app.dao.MemberSalesMngDAO;
-import com.pgmate.app.dao.OrgFeeDAO;
-import com.pgmate.app.dao.OrgInterFeeDAO;
-import com.pgmate.app.dao.PhoneDAO;
 //import com.pgmate.app.dao.SimpleDAO;
-import com.pgmate.app.dao.TotCapDAO;
-import com.pgmate.app.dao.TrxCapDAO;
-import com.pgmate.app.dao.UserDAO;
-import com.pgmate.app.dao.VactDtlDAO;
-import com.pgmate.app.dao.VanDAO;
-import com.pgmate.app.dao.WalletDAO;
 import com.pgmate.app.interceptor.SessionExclude;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.CPResponse;
@@ -78,11 +43,6 @@ import com.pgmate.app.model.ajax.Data;
 import com.pgmate.app.model.ajax.Interest;
 import com.pgmate.app.model.ajax.TmnList;
 import com.pgmate.app.session.CPSession;
-import com.pgmate.app.util.CPRUtil;
-import com.pgmate.app.util.CPUtil;
-import com.pgmate.app.util.SQLInjectionUtil;
-import com.pgmate.app.util.SessionUtil;
-import com.pgmate.app.util.WalletAccntUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.key.CPKEY;
@@ -335,6 +295,7 @@ public class MchtController {
 		request.setAttribute("HT_TAX_MAP", mchtTaxDAO.getHtByMchtId(mchtId).getRows());
 		request.setAttribute("HT_TMN_MAP", mchtTmnDAO.getHtByMchtId(mchtId).getRows());
 		request.setAttribute("HT_VACT_MNG_MAP", mchtTmnDAO.getHtVactByMchtId(mchtId).getRows());
+
 
 		//230112_PYS : 통합인증 탭 추가
 		request.setAttribute("TOTALAUTH_MAP", new MchtTotalAuthDAO().getByMchtId(mchtId));
@@ -1519,30 +1480,30 @@ public class MchtController {
 		    request.setAttribute("MCHT", new MchtDAO().getById(mchtId).getRowFirst());
 	        return new ModelAndView("/mcht/svc/modify","DATAMAP",new MchtSvcDAO().getByMchtId(mchtId));
 	}
-
-	@RequestMapping(value = {"/mcht/svc/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody CPResponse svcUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
-		CPDAO cpDAO = new CPDAO();
-		MchtDAO mchtDAO = new MchtDAO();
-
-		//identity 입력시 암호화하여 넣어야함.
-		if(cpDAO.update("PG_MCHT_SVC", SessionUtil.getUserId(request), cpRequest.data)){
-			String checkSimple = cpRequest.getValue("simpleBill");
-			String mchtId = cpRequest.getValue("mchtId");
-
-			//간편결제 사용시 타 결제 수단 미사용
-			if(checkSimple.equals("미사용")) {
-				mchtDAO.updateSimpleStatus(mchtId);
+	 
+	 @RequestMapping(value = {"/mcht/svc/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+		public @ResponseBody CPResponse svcUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+			CPDAO cpDAO = new CPDAO();
+			MchtDAO mchtDAO = new MchtDAO();
+			
+			//identity 입력시 암호화하여 넣어야함.
+			if(cpDAO.update("PG_MCHT_SVC", SessionUtil.getUserId(request), cpRequest.data)){
+				String checkSimple = cpRequest.getValue("simpleBill");
+				String mchtId = cpRequest.getValue("mchtId");
+				
+				//간편결제 사용시 타 결제 수단 미사용
+				if(checkSimple.equals("미사용")) {
+					mchtDAO.updateSimpleStatus(mchtId);
+				}
+				
+				return new CPRUtil(cpRequest)
+		        		.resultOK("가맹점 서비스 정보가 변경되었습니다.")
+		        		.cpResponse();
+			}else{
+				return new CPRUtil(cpRequest)
+		        		.resultNOK("가맹점 서비스 정보 변경에 실패하였습니다.",cpDAO.getError())
+		        		.cpResponse();
 			}
-
-			return new CPRUtil(cpRequest)
-					.resultOK("가맹점 서비스 정보가 변경되었습니다.")
-					.cpResponse();
-		}else{
-			return new CPRUtil(cpRequest)
-					.resultNOK("가맹점 서비스 정보 변경에 실패하였습니다.",cpDAO.getError())
-					.cpResponse();
-		}
 	}
 	
 	@RequestMapping(value = "/mcht/vact/add/{mchtId}", method = RequestMethod.GET)
@@ -2830,7 +2791,7 @@ public class MchtController {
 					.cpResponse();
 		}
 	}
-	
+
 	@RequestMapping(value = "/mcht/chargeMng/modify/{mchtId}", method = RequestMethod.GET)
 	public ModelAndView chargeMngModify(HttpServletRequest request, @PathVariable String mchtId) {
 		SharedMap<String,Object> sharedMap = new MchtChargeSettleDAO().getById(mchtId).getRowFirst();

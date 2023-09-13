@@ -220,7 +220,7 @@ public class VactController {
 
         return resMap;
     }
-  
+
   @RequestMapping(value = "/vact/trx/view/{vactId}", method = RequestMethod.GET)
   public ModelAndView trxView(HttpServletRequest request, @PathVariable String vactId) {
     VactTrxDAO vactTrxDAO = new VactTrxDAO();

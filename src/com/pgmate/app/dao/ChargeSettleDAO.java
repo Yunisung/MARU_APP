@@ -65,8 +65,8 @@ public class ChargeSettleDAO extends DAO{
 //		super.setColumns("trxId, name, mchtId, trxType, trxUnit, trxDay, trxTime, amount, fee, feeVat, bankFee, netAmount, balance, trackId, refId, bankCd, bankName, "
 //				+ "FN_AES_DEC(account) as account, FN_AES_DEC(holder) as holder, recordInfo, summary, regId, regDay, regDate, vactBankCd");
 
-		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
-		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
 		
 	}
 
@@ -197,11 +197,8 @@ public class ChargeSettleDAO extends DAO{
 		return rset.getRowFirst();
 	}
 
-	public RecordSet depositSum(List<Data> datas, Page page) {
+	public RecordSet depositSum(List<Data> datas) {
 		super.setColumns("SUM(if(trxType='출금',amount,0)) AS depositAmt, SUM(if(trxType='입금',amount,0)) AS withdrawAmt");
-		super.setOrderBy("");
-		super.setLimit(0);
-		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION
 		RecordSet rset = super.search();
 		super.initRecord();
