@@ -72,6 +72,9 @@
 														</c:if>
 													</c:if>
 													<c:if test="${CP_SESSION.grade eq '본사'}">
+														<c:if test="${DATASVCMAP.rent eq '사용'}">
+															<li class="tab_rent"><a href="#tab_rent" data-toggle="tab" aria-expanded="false"> 월세앱 </a></li>
+														</c:if>
 														<li class="tab_svc"><a href="#tab_svc" data-toggle="tab" aria-expanded="false"> 서비스 </a></li>
 														
 <%--														<li class="tab_phone"><a href="#tab_phone" data-toggle="tab" aria-expanded="false"> 휴대폰결제 </a></li>--%>
@@ -1886,6 +1889,15 @@
 																<!--/span-->
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3">월세앱</label>
+																		<div class="col-md-9">
+																			<p class="form-control-static">${DATASVCMAP.rent}</p>
+																		</div>
+																	</div>
+																</div>
+																<!--/span-->
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
 																		<label class="control-label col-md-3">정기결제</label>
 																		<div class="col-md-9">
 																			<p class="form-control-static">${DATASVCMAP.rebill}</p>
@@ -3045,7 +3057,119 @@
 															</c:if>
 														</form>
 													</div>
-												
+
+													<!-- 월세앱 탭 시작 -->
+													<div class="tab-pane" id="tab_rent">
+														<form class="form-horizontal form" role="form">
+															<c:if test="${not empty RENT_MAP}">
+																<div class="form-body row">
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">월세 원금</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static">${RENT_MAP.rentAmount}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">보증금 원금</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static currency amount comma">${RENT_MAP.depositAmount}원</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">정산방식</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static">${RENT_MAP.settleType}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">계약구분</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static">${RENT_MAP.contractType}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">이체예정일</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static date">${RENT_MAP.transferDay}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">계약검토상태</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static">${RENT_MAP.contractStatus}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">월세 1회한도</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${RENT_MAP.rentLimitOnce}</p> 원
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">월세 월한도</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${RENT_MAP.rentLimitMonth}</p> 원
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">보증금 1회한도</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${RENT_MAP.depositLimitOnce}</p> 원
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">보증금 월한도</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static digits">${RENT_MAP.depositLimitMonth}</p> 원
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="form-actions">
+																	<div class="row">
+																		<div class="col-md-12">
+																			<button type="button" class="btn btn-sm green pull-right" onclick="location.href='/mcht/rent/modify/${DATAMAP.mchtId}';">
+																				<i class="fa fa-pencil"></i> 월세앱 수정
+																			</button>
+																		</div>
+																		<div class="col-md-6"></div>
+																	</div>
+																</div>
+															</c:if>
+															<c:if test="${empty RENT_MAP}">
+																<div class="form-actions">
+																	<div class="row">
+																		<div class="col-md-12">
+																			<button type="button" class="btn btn-sm green pull-right" onclick="location.href='/mcht/rent/add/${DATAMAP.mchtId}';">
+																				<i class="fa fa-pencil"></i> 월세앱 설정
+																			</button>
+																		</div>
+																		<div class="col-md-6"></div>
+																	</div>
+																</div>
+															</c:if>
+														</form>
+													</div>
+
 													<!-- 차액정산 탭 시작 -->
 													<div class="tab-pane" id="tab_diff">
 														<div class="portlet light portlet-form">
