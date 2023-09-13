@@ -255,6 +255,10 @@ public class MchtController {
 //		if(svcMap.getString("rebill").equals("사용")) {
 //			request.setAttribute("REBILL_MAP", new MchtRebillDAO().getByMchtId(mchtId));
 //		}
+
+		if(svcMap.getString("rent").equals("사용")) {
+			request.setAttribute("RENT_MAP", new MchtRentDAO().getByMchtId(mchtId));
+		}
 		
 		//가맹점 휴대폰 결제 정보
 		request.setAttribute("DATAPHONEMAP", new PhoneDAO().getByMchtId(mchtId));
@@ -1476,22 +1480,22 @@ public class MchtController {
 		    request.setAttribute("MCHT", new MchtDAO().getById(mchtId).getRowFirst());
 	        return new ModelAndView("/mcht/svc/modify","DATAMAP",new MchtSvcDAO().getByMchtId(mchtId));
 	}
-	 
+
 	 @RequestMapping(value = {"/mcht/svc/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 		public @ResponseBody CPResponse svcUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 			CPDAO cpDAO = new CPDAO();
 			MchtDAO mchtDAO = new MchtDAO();
-			
+
 			//identity 입력시 암호화하여 넣어야함.
 			if(cpDAO.update("PG_MCHT_SVC", SessionUtil.getUserId(request), cpRequest.data)){
 				String checkSimple = cpRequest.getValue("simpleBill");
 				String mchtId = cpRequest.getValue("mchtId");
-				
+
 				//간편결제 사용시 타 결제 수단 미사용
 				if(checkSimple.equals("미사용")) {
 					mchtDAO.updateSimpleStatus(mchtId);
 				}
-				
+
 				return new CPRUtil(cpRequest)
 		        		.resultOK("가맹점 서비스 정보가 변경되었습니다.")
 		        		.cpResponse();
@@ -3143,7 +3147,6 @@ public class MchtController {
         return resultMap;
     }
 
-	/*
 	@RequestMapping(value = {"/mcht/rebill/add/{mchtId}"})
 	public ModelAndView rebillAdd(HttpServletRequest request, @PathVariable String mchtId) {
 		SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
@@ -3190,6 +3193,5 @@ public class MchtController {
 		}
 
 	}
-	*/
 
 }
