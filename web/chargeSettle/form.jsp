@@ -126,6 +126,7 @@
 																<option value="">-- 전체 -- </option>
 																<option value="089">케이뱅크</option>
 																<option value="039">경남은행</option>
+																<option value="034">광주은행</option>
 															</select>
 														</div>
 													</div>
