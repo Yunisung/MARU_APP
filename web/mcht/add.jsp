@@ -95,8 +95,8 @@
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label input-sm col-sm-4 req-label">상태</label>
                                                 <select name="status" class="selectpicker col-sm-6">
-															<option value="예비" selected>예비</option>
-														</select>
+                                                    <option value="예비" selected>예비</option>
+                                                </select>
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4">업태</label>

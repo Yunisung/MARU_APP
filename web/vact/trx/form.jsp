@@ -177,6 +177,7 @@
 													<select class="selectpicker col-lg-8" name="issuerBank" data-oper="eq">
 														<option value="">-- 전체 -- </option>
 														<option value="경남은행">경남은행</option>
+														<option value="광주은행">광주은행</option>
 														<option value="수협은행">수협은행</option>
 														<option value="케이뱅크">케이뱅크</option>
 														<option value="부산은행">부산은행</option>

@@ -87,6 +87,7 @@
 												<select name="vactBankCd" class="selectpicker col-sm-6">
 													<option value="089" selected>케이뱅크</option>
 													<option value="039">경남은행</option>
+													<option value="034">광주은행</option>
 												</select>
 												<script type="text/javascript">
 													document.forms.writeFrm.vactBankCd.value = '${DATAMAP.vactBankCd}'
