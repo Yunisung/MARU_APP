@@ -1889,18 +1889,18 @@
 																<!--/span-->
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">월세앱</label>
+																		<label class="control-label col-md-3">정기결제</label>
 																		<div class="col-md-9">
-																			<p class="form-control-static">${DATASVCMAP.rent}</p>
+																			<p class="form-control-static">${DATASVCMAP.rebill}</p>
 																		</div>
 																	</div>
 																</div>
 																<!--/span-->
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
-																		<label class="control-label col-md-3">정기결제</label>
+																		<label class="control-label col-md-3">월세앱</label>
 																		<div class="col-md-9">
-																			<p class="form-control-static">${DATASVCMAP.rebill}</p>
+																			<p class="form-control-static">${DATASVCMAP.rent}</p>
 																		</div>
 																	</div>
 																</div>
@@ -3067,7 +3067,7 @@
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">월세 원금</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static">${RENT_MAP.rentAmount}</p>
+																				<p class="form-control-static currency amount comma">${RENT_MAP.rentAmount}</p> 원
 																			</div>
 																		</div>
 																	</div>
@@ -3075,7 +3075,7 @@
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">보증금 원금</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static currency amount comma">${RENT_MAP.depositAmount}원</p>
+																				<p class="form-control-static currency amount comma">${RENT_MAP.depositAmount}</p> 원
 																			</div>
 																		</div>
 																	</div>
