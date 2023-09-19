@@ -122,6 +122,9 @@
 													<option value="Y">Y</option>
 													<option value="N">N</option>
 												</select>
+												<script type="text/javascript">
+													document.forms.writeFrm.settleTarget.value = '${DATAMAP.settleTarget}'
+												</script>
 											</div>
 											<div class="form-group col-sm-6">
 												<label class="control-label col-sm-4 req-label">수수료유형</label>
@@ -238,6 +241,9 @@
 													<option value="Y">Y</option>
 													<option value="N" selected="selected">N</option>
 												</select>
+												<script type="text/javascript">
+													document.forms.writeFrm.holderCheck.value = '${DATAMAP.holderCheck}'
+												</script>
 											</div>
 
 											<div class="form-group col-sm-6">
