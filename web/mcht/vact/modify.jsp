@@ -232,6 +232,13 @@
 													</div>
 												</div>
 											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">예금주 확인</label>
+												<select name="holderCheck" class="selectpicker col-sm-6">
+													<option value="Y">Y</option>
+													<option value="N" selected="selected">N</option>
+												</select>
+											</div>
 
 											<div class="form-group col-sm-6">
 												<div style="padding-top:45px; border-left:none;"></div>
