@@ -70,7 +70,7 @@
 																<option value="08970022000000008" selected="selected">케이뱅크(70022000000008)</option>
 																<%--<option value="0392070158564301">경남은행(2070158564301)</option>--%>
 																<option value="0392070158563707">경남은행(2070158563707)</option>
-                                                                <option value="0342070158563707">광주은행(019107542861)</option>
+                                                                <option value="034019107542861">광주은행(019107542861)</option>
 															</select>
 														</div>  
  														<div class="form-group pg-form-group">
