@@ -59,7 +59,7 @@
 																<option value="08970022000000008" selected="selected">케이뱅크(70022000000008)</option>
 																<%--<option value="0392070158564301">경남은행(2070158564301)</option>--%>
 																<option value="0392070158563707">경남은행(2070158563707)</option>
-																<option value="034019107542861">광주은행(019107542861)</option>
+																<option value="0341107021617089">광주은행(1107021617089)</option>
 															</select>
 														</div>  
 														
