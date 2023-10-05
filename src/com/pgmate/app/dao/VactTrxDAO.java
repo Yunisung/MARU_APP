@@ -49,7 +49,7 @@ public class VactTrxDAO extends DAO {
 	}
 
 	public RecordSet joinList(List<Data> datas, Page page) {
-		super.setTable("(SELECT B.fee, B.rate, (B.fee * 0.1) AS feeVat, (A.amount * B.rate) AS rateAmt, (A.amount * B.rate) * 0.1 rateVat, A.* FROM VW_VACT_TRX A LEFT JOIN PG_MCHT_MNG_VACT B ON A.mchtId = B.mchtId) C");
+		super.setTable("(SELECT B.fee, B.rate, (B.fee * 0.1) AS feeVat, (A.amount * B.rate) AS rateAmt, TRUNCATE(((A.amount * B.rate) * 0.1),0) rateVat, A.* FROM VW_VACT_TRX A LEFT JOIN PG_MCHT_MNG_VACT B ON A.mchtId = B.mchtId) C");
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas); //DATA to CONDITION
 		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
