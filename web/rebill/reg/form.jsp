@@ -70,11 +70,9 @@
                                                 <label class="control-label col-lg-4">상태</label>
                                                 <select class="selectpicker col-lg-8" name="status" data-oper="eq">
                                                     <option value="">-- 전체 -- </option>
-                                                    <option value="승인">승인</option>
-                                                    <option value="실패">실패</option>
-                                                    <option value="일시정지">일시정지</option>
-                                                    <option value="해지">해지</option>
+                                                    <option value="사용">사용</option>
                                                     <option value="완료">완료</option>
+                                                    <option value="해지">해지</option>
                                                 </select>
                                             </div>
                                         </div>

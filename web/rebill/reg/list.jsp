@@ -27,9 +27,6 @@
             <thead>
             <tr>
                 <th>No</th>
-                <c:if test="${ (CP_SESSION.grade eq '본사') && CP_SESSION.role != '일반'}">
-                    <th><input type="checkbox" class="all-check" id="check_all" class="checkbox-style" /><label for="check_all"></label></th>
-                </c:if>
                 <th style="min-width: 140px">정기결제ID</th>
                 <th>가맹점ID</th>
                 <th>터미널ID</th>
@@ -40,7 +37,6 @@
                 <th>상품명</th>
                 <th>결제주기</th>
                 <th>결제횟수</th>
-                <th>SMS사용</th>
                 <th>다음결제일자</th>
                 <th>만료일자</th>
                 <th>등록일자</th>
@@ -55,11 +51,6 @@
             <c:forEach var="entry" items="${CPR.data}" varStatus="status">
                 <tr data-rebillId="${entry.rebillId}">
                     <td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
-                    <c:if test="${ (CP_SESSION.grade eq '본사') && CP_SESSION.role != '일반'}">
-                        <td class="btn-td">
-                            <input type="checkbox" class="row-check" id="${entry.authId}_check" class="checkbox-style" /><label for="${entry.rebillId}_check"></label>
-                        </td>
-                    </c:if>
                     <td>${entry.rebillId}</td>
                     <td>${entry.mchtId}</td>
                     <td>${entry.tmnId}</td>
@@ -68,11 +59,10 @@
                     <td>${entry.payerName}</td>
                     <td>${entry.payerTel}</td>
                     <td>${entry.productName}</td>
-                    <td>${entry.rebillCycleType}</td>
+                    <td>매월 ${entry.rebillDays}일</td>
                     <td>${entry.rebillCount}</td>
-                    <td>${entry.rebillSmsUse}</td>
-                    <td class="date">${entry.nextPayDay}</td>
-                    <td class="date">${entry.expireDay}</td>
+                    <td class="date">${entry.nextPayDate}</td>
+                    <td class="date">${entry.expireDate}</td>
                     <td class="date">${entry.regDay}</td>
                 </tr>
             </c:forEach>
