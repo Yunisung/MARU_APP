@@ -91,9 +91,8 @@
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4 req-label">이체예정일</label>
                                                 <div class="col-md-4 col-sm-6">
-                                                    <input type="text" class="form-control input-sm datepicker activeDate now-date" maxlength="10" name="transferDay" placeholder="" value="">
+                                                    <input type="text" class="form-control input-sm datepicker " maxlength="10" name="transferDay" placeholder="" value="${RENTMAP.transferDay}">
                                                 </div>
-                                                <script type="text/javascript"> document.forms.writeFrm.transferDay.value = '${RENTMAP.transferDay}' </script>
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4">계약검토상태</label>
@@ -137,6 +136,48 @@
                                                         <input type="text" class="form-control input-sm limitMonth currency" maxlength="15" name="depositLimitMonth" placeholder="" value="${RENTMAP.depositLimitMonth}">
                                                         <span class="input-group-addon"><i class="fa fa-krw"></i></span>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4">월세 이용수수료율</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control rate percent" maxlength="9" data-oper="percent" name="rentRate" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="${RENTMAP.rentRate}">
+                                                        <span class="input-group-addon"> % (VAT 별도)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4">보증금 이용수수료율</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control rate percent" maxlength="9" data-oper="percent" name="depositRate" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="${RENTMAP.depositRate}">
+                                                        <span class="input-group-addon"> % (VAT 별도)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4">대행사 월세 수수료율</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control rate percent" maxlength="9" data-oper="percent" name="distRentRate" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="${RENTMAP.distRentRate}">
+                                                        <span class="input-group-addon"> % (VAT 별도)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6" id="rateDiv">
+                                                <label class="control-label col-sm-4">대행사 보증금 수수료율</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control rate percent" maxlength="9" data-oper="percent" name="distDepositRate" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="${RENTMAP.distDepositRate}">
+                                                        <span class="input-group-addon"> % (VAT 별도)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label input-sm col-sm-4 req-label">송금자명</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control input-sm sender" maxlength="100" name="sender" value="${RENTMAP.sender}">
                                                 </div>
                                             </div>
                                         </div>
