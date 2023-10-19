@@ -3094,7 +3094,7 @@
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">월세 원금</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static currency amount comma">${RENT_MAP.rentAmount}</p> 원
+																				<p class="form-control-static digits">${RENT_MAP.rentAmount}</p> 원
 																			</div>
 																		</div>
 																	</div>
@@ -3102,7 +3102,7 @@
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">보증금 원금</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static currency amount comma">${RENT_MAP.depositAmount}</p> 원
+																				<p class="form-control-static digits">${RENT_MAP.depositAmount}</p> 원
 																			</div>
 																		</div>
 																	</div>
@@ -3167,6 +3167,46 @@
 																			<label class="control-label col-md-3">보증금 월한도</label>
 																			<div class="col-md-9">
 																				<p class="form-control-static digits">${RENT_MAP.depositLimitMonth}</p> 원
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">월세 이용수수료율</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static"><fmt:formatNumber value="${RENT_MAP.rentRate * 100}" pattern="0.000"/> % (VAT별도)</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">보증금 이용수수료율</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static"><fmt:formatNumber value="${RENT_MAP.depositRate * 100}" pattern="0.000"/> % (VAT별도)</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">대행사 월세 수수료율</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static"><fmt:formatNumber value="${RENT_MAP.distRentRate * 100}" pattern="0.000"/> % (VAT별도)</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">대행사 보증금 수수료율</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static"><fmt:formatNumber value="${RENT_MAP.distDepositRate * 100}" pattern="0.000"/> % (VAT별도)</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">송금자명</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static">${RENT_MAP.sender}</p>
 																			</div>
 																		</div>
 																	</div>
