@@ -168,6 +168,10 @@ public enum CPKEY {
 	REBILL {
 		@Override
 		public String toString() { return "rb_"; }
+	},
+	RENT {
+		@Override
+		public String toString() { return "rent_"; }
 	}
 	
 	
