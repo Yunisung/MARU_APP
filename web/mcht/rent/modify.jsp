@@ -91,7 +91,7 @@
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label input-sm col-sm-4">이체예정일</label>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control input-sm transferDay" maxlength="100" name="transferDay" onkeyup="commas(this)" value="${RENTMAP.transferDay}">
+                                                    <input type="text" class="form-control input-sm transferDay" maxlength="2" name="transferDay" onkeyup="commas(this)" value="${RENTMAP.transferDay}">
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
