@@ -87,9 +87,9 @@
                                                 </select>
                                             </div>
                                             <div class="form-group col-sm-6">
-                                                <label class="control-label col-sm-4 req-label">이체예정일</label>
+                                                <label class="control-label input-sm col-sm-4">이체예정일</label>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control input-sm transferDay" maxlength="50" name="transferDay" placeholder="" value="">
+                                                    <input type="text" class="form-control input-sm transferDay" maxlength="100" name="transferDay" value="">
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
