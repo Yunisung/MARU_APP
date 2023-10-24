@@ -3232,9 +3232,9 @@ public class MchtController {
 	public @ResponseBody CPResponse rentUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
 		if (cpDAO.updateAndBackByOper("PG_MCHT_RENT", SessionUtil.getUserId(request), cpRequest.data)) {
-			return new CPRUtil(cpRequest).resultOK("정기결제 정보가 변경되었습니다.").cpResponse();
+			return new CPRUtil(cpRequest).resultOK("월세앱 정보가 변경되었습니다.").cpResponse();
 		} else {
-			return new CPRUtil(cpRequest).resultNOK("정기결제 정보 변경에 실패하였습니다.",cpDAO.getError())
+			return new CPRUtil(cpRequest).resultNOK("월세앱 정보 변경에 실패하였습니다.",cpDAO.getError())
 					.cpResponse();
 		}
 

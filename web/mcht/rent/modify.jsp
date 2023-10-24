@@ -89,9 +89,9 @@
                                                 <script type="text/javascript"> document.forms.writeFrm.contractType.value = '${RENTMAP.contractType}' </script>
                                             </div>
                                             <div class="form-group col-sm-6">
-                                                <label class="control-label col-sm-4 req-label">이체예정일</label>
-                                                <div class="col-md-4 col-sm-6">
-                                                    <input type="text" class="form-control input-sm datepicker " maxlength="10" name="transferDay" placeholder="" value="${RENTMAP.transferDay}">
+                                                <label class="control-label input-sm col-sm-4">이체예정일</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control input-sm transferDay" maxlength="100" name="transferDay" onkeyup="commas(this)" value="${RENTMAP.transferDay}">
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
@@ -175,9 +175,15 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
-                                                <label class="control-label input-sm col-sm-4 req-label">송금자명</label>
+                                                <label class="control-label input-sm col-sm-4">송금자명</label>
                                                 <div class="col-sm-6">
                                                     <input type="text" class="form-control input-sm sender" maxlength="100" name="sender" value="${RENTMAP.sender}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4">보류노티 주소(URL)</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" class="form-control input-sm" maxlength="100" name="riskNotiAddr" placeholder="api.example.com" value="${RENT_MAP.riskNotiAddr}">
                                                 </div>
                                             </div>
                                         </div>
@@ -204,6 +210,25 @@
 <c:import url="/include/javascript.jsp" />
 <!-- BEGIN FORM JAVASCRIPT -->
 <script type="text/javascript">
+
+    function commas(t) {
+        // 콤마 빼고
+        var x = t.value;
+        x = x.replace(/,/gi, '');
+
+        // 숫자 정규식 확인
+        var regexp = /^[0-9]*$/;
+
+        if(!regexp.test(x)){
+            $(t).val("");
+            alert("숫자만 입력 가능합니다.");
+        } else {
+            x = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            $(t).val(x);
+        }
+    }
+
     var form1 = $('#writeFrm');
     var error1 = $('.alert-danger', form1);
     form1.validate({

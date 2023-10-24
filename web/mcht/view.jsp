@@ -3126,7 +3126,7 @@
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">이체예정일</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static date">${RENT_MAP.transferDay}</p>
+																				<p class="form-control-static date">${RENT_MAP.transferDay}</p> 일
 																			</div>
 																		</div>
 																	</div>
@@ -3207,6 +3207,14 @@
 																			<label class="control-label col-md-3">송금자명</label>
 																			<div class="col-md-9">
 																				<p class="form-control-static">${RENT_MAP.sender}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">보류노티 주소(URL)</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static">${RENT_MAP.riskNotiAddr}</p>
 																			</div>
 																		</div>
 																	</div>
