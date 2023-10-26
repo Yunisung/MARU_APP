@@ -2558,7 +2558,7 @@
 																	<!--/span-->
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">1일한도</label>
+																			<label class="control-label col-md-3">1일한도(가맹점별)</label>
 																			<div class="col-md-9">
 																				<p class="form-control-static digits">${VACT_MAP.limitDay}</p> 원
 																			</div>
