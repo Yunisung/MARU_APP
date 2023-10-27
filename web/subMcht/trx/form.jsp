@@ -51,7 +51,7 @@
 										<div class="portlet-body form light">
 											<form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/subMcht/trx/list" method="post">
 												<input type="hidden" data-reg="false" name="reason" value="매입거래내역">
-												<input type="hidden" data-reg="false" name="thead" value="capId:매입번호,dtlName:가맹점,tmnId:터미널ID,capType:매입구분,rfdType:취소구분,rootTrxId:원거래번호,amount:금액,stlAmount:정산예정금액,stlRate:MDR,stlFee:수수료,stlFeeVat:수수료부가세,authCd:승인번호,trxDay:거래일,regTime:거래시간">
+												<input type="hidden" data-reg="false" name="thead" value="capId:매입번호,dtlName:가맹점,tmnId:터미널ID,capType:매입구분,rfdType:취소구분,rootTrxId:원거래번호,amount:금액,authCd:승인번호,trxDay:거래일,regTime:거래시간">
 												<div class="form-body">
 													<div class="row">
 														<div class="form-group pg-form-group">
