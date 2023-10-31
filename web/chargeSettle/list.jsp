@@ -46,7 +46,9 @@
 						<th>은행수수료</th>
 					</c:if>
 					<th>계정실출금액</th>
-					<th>거래후잔액</th>
+					<c:if test="${CP_SESSION.grade == '본사'}">
+						<th>거래후잔액</th>
+					</c:if>
 					<th>등록자</th>
 					<th style="min-width:140px;">거래일시</th>
 				</tr>
@@ -75,7 +77,9 @@
 							<td><fmt:formatNumber type="number" value="${entry.bankFee}" pattern="#,##0" /></td>
 						</c:if>
 						<td><fmt:formatNumber type="number" value="${entry.netAmount}" pattern="#,##0" /></td>
-						<td><fmt:formatNumber type="number" value="${entry.balance}" pattern="#,##0" /></td>
+						<c:if test="${CP_SESSION.grade == '본사'}">
+							<td><fmt:formatNumber type="number" value="${entry.balance}" pattern="#,##0" /></td>
+						</c:if>
 						<td>${entry.regId}</td>
 						<td class="date">${entry.trxDay}${entry.trxTime}</td>
 					</tr>
