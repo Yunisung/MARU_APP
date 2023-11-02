@@ -552,16 +552,16 @@ public class TrxDAO extends DAO {
 			pstmt.setString(1,ntsMap.getString("mchtId"));
 			pstmt.setString(2,ntsMap.getString("capId"));
 			pstmt.setString(3,ntsMap.getString("capType"));
-			pstmt.setString(4,ntsMap.getString("amount"));
+			pstmt.setLong(4,ntsMap.getLong("amount"));
 			pstmt.setString(5,ntsMap.getString("authCd"));
-			pstmt.setInt(6,ntsMap.getInt("risk"));
+			pstmt.setString(6,ntsMap.getString("risk"));
 			pstmt.setString(7,ntsMap.getString("trxDay"));
-			pstmt.setInt(8,ntsMap.getInt("hookAddr"));
-			pstmt.setString(9,ntsMap.getString("retry"));
+			pstmt.setString(8,ntsMap.getString("hookAddr"));
+			pstmt.setInt(9,ntsMap.getInt("retry"));
 			pstmt.setString(10,ntsMap.getString("status"));
-			pstmt.setString(11,ntsMap.getString("code"));
+			pstmt.setInt(11,ntsMap.getInt("code"));
 			pstmt.setString(12,ntsMap.getString("resData"));
-			pstmt.setString(13,ntsMap.getString("sentDate"));
+			pstmt.setTimestamp(13,ntsMap.getTimestamp("sentDate"));
 			pstmt.setString(14,ntsMap.getString("regDay"));
 			pstmt.setString(15,ntsMap.getString("regTime"));
 
