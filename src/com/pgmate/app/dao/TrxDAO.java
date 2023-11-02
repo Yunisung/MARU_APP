@@ -537,5 +537,66 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return rset;
 	}
+
+	public SharedMap<String,Object> isRentCap(String capId) {
+		super.setTable("VW_TRX_CAP");
+		super.addWhere("capId", capId);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst();
+	}
+
+	public String getHookAddr(String mchtId) {
+		super.setTable("PG_MCHT_RENT");
+		super.setColumns("riskChangeNotiAddr as hookAddr");
+		super.addWhere("mchtId", mchtId);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRow(0).getString("hookAddr");
+	}
+
+	public boolean insertRiskChangeNoti(SharedMap<String,Object> ntsMap) {
+		int result = 0;
+		String query = "INSERT INTO `PG_RISK_CHANGE_NOTI` (`mchtId`, `capId`, `capType`, `amount`, `authCd`, `risk`, `trxDay`, `hookAddr`, `retry`, `status`, `code`,`resData`, `sentDate`, `regDay`, `regTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		DBManager db 	= null;
+		PreparedStatement pstmt	= null;
+		Connection conn			= null;
+		ResultSet rset			= null;
+
+		try{
+			db 		= DBFactory.getInstance();
+			conn	= db.getConnection();
+			pstmt	= conn.prepareStatement(query);
+			pstmt.setString(1,ntsMap.getString("mchtId"));
+			pstmt.setString(2,ntsMap.getString("capId"));
+			pstmt.setString(3,ntsMap.getString("capType"));
+			pstmt.setString(4,ntsMap.getString("amount"));
+			pstmt.setString(5,ntsMap.getString("authCd"));
+			pstmt.setInt(6,ntsMap.getInt("risk"));
+			pstmt.setString(7,ntsMap.getString("trxDay"));
+			pstmt.setInt(8,ntsMap.getInt("hookAddr"));
+			pstmt.setString(9,ntsMap.getString("retry"));
+			pstmt.setString(9,ntsMap.getString("status"));
+			pstmt.setString(9,ntsMap.getString("code"));
+			pstmt.setString(9,ntsMap.getString("resData"));
+			pstmt.setString(9,ntsMap.getString("sentDate"));
+			pstmt.setString(9,ntsMap.getString("regDay"));
+			pstmt.setString(9,ntsMap.getString("regTime"));
+
+			result = pstmt.executeUpdate();
+			conn.commit();
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("insertRiskResetNoti ERROR : {}, query : {}", e.getMessage(), query);
+		}finally{
+			db.close(conn,pstmt,rset);
+		}
+
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	
 }
