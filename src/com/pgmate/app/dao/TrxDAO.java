@@ -69,7 +69,7 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return rset.getRow(0).getString("days");
 	}
-	
+
 	public boolean updateTrxCapDtl(SharedMap<String,Object> updateMap){
 		super.setTable("PG_TRX_CAP_DTL");
 		super.setRecord("stlRate"	, updateMap.getDouble("stlRate"));
@@ -86,7 +86,7 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return updated;
 	}
-	
+
 	public boolean updateTrxCapDtlToRisk(SharedMap<String,Object> updateMap){
 		super.setTable("PG_TRX_CAP_DTL");
 		//super.setRecord("stlRate"	, updateMap.getDouble("stlRate"));
@@ -100,7 +100,7 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return updated;
 	}
-	
+
 	public boolean updateTrxCapDtlWithAgency(SharedMap<String,Object> updateMap){
 		super.setTable("PG_TRX_CAP_DTL");
 		super.setRecord("stlRate"	, updateMap.getDouble("stlRate"));
@@ -133,30 +133,30 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return updated;
 	}
-	
+
 	public boolean deleteTrxCap(String capId){
 		super.setTable("PG_TRX_CAP");
 		super.addWhere("capId", capId,in);
-		
+
 		boolean updated = super.delete();
 		super.initRecord();
 		return updated;
 	}
 	
 	
-	
+
 	public boolean updateDay(String capId,String stlDay,String stlVanDay){
 		super.setTable("PG_TRX_CAP_DTL");
 		super.setRecord("stlDay"	, stlDay);
 		super.setRecord("stlVanDay"	, stlVanDay);
 		super.addWhere("capId", capId);
-		
+
 		boolean updated = super.update();
 		super.initRecord();
 		return updated;
 	}
 	
-	
+
 	public long insertTrxLoad(SharedMap<String,Object> map){
 		super.setTable("PG_TRX_LOAD");
 		super.setRecord("mchtId"	, map.getString("mchtId"));
@@ -171,7 +171,7 @@ public class TrxDAO extends DAO {
 		super.setRecord("summary"	, map.getString("summary"));
 		super.setRecord("regId"		, map.getString("regId"));
 		super.setRecord("regDay"	, map.getString("regDay"));
-		
+
 		long idx = super.insertAndLastIdx();
 		super.initRecord();
 		return idx;
@@ -194,7 +194,7 @@ public class TrxDAO extends DAO {
 		
 		return deleted;
 	}
-	
+
 	public boolean insertTrxLoadDtl(SharedMap<String,Object> map){
 		super.setTable("PG_TRX_LOAD_DTL");
 		super.setRecord("batchIdx"	, map.getLong("batchIdx"));
@@ -215,7 +215,7 @@ public class TrxDAO extends DAO {
 		super.setRecord("exeStatus"	, map.getString("exeStatus"));
 		super.setRecord("regId"		, map.getString("regId"));
 		super.setRecord("regDay"	, map.getString("regDay"));
-		
+
 		boolean updated = super.insert();
 		super.initRecord();
 		return updated;
@@ -328,9 +328,9 @@ public class TrxDAO extends DAO {
 			super.addWhere("trxId", id);
 		}else if(table.equals("PG_TRX_CAP")){
 			super.addWhere("capId", id);
-		} 
+		}
 		
-		
+
 		boolean updated = super.update();
 		super.initRecord();
 		return updated;
@@ -369,7 +369,7 @@ public class TrxDAO extends DAO {
 	public synchronized static String getSettleId() {
 		return "S" + getFunction("FN_NEXTVAL2", "SETTLE");
 	}
-	
+
 	public synchronized static String getHoldId() {
 		return "S" + getFunction("FN_NEXTVAL2", "HOLD");
 	}
@@ -516,4 +516,66 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return rset;
 	}
+
+	public SharedMap<String,Object> isRentCap(String capId) {
+		super.setTable("VW_TRX_CAP");
+		super.addWhere("capId", capId);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst();
+	}
+
+	public String getHookAddr(String mchtId) {
+		super.setTable("PG_MCHT_RENT");
+		super.setColumns("riskChangeNotiAddr as hookAddr");
+		super.addWhere("mchtId", mchtId);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRow(0).getString("hookAddr");
+	}
+
+	public boolean insertRiskChangeNoti(SharedMap<String,Object> ntsMap) {
+		int result = 0;
+		String query = "INSERT INTO `PG_RISK_CHANGE_NOTI` (`mchtId`, `capId`, `capType`, `amount`, `authCd`, `risk`, `trxDay`, `hookAddr`, `retry`, `status`, `code`,`resData`, `sentDate`, `regDay`, `regTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		DBManager db 	= null;
+		PreparedStatement pstmt	= null;
+		Connection conn			= null;
+		ResultSet rset			= null;
+
+		try{
+			db 		= DBFactory.getInstance();
+			conn	= db.getConnection();
+			pstmt	= conn.prepareStatement(query);
+			pstmt.setString(1,ntsMap.getString("mchtId"));
+			pstmt.setString(2,ntsMap.getString("capId"));
+			pstmt.setString(3,ntsMap.getString("capType"));
+			pstmt.setString(4,ntsMap.getString("amount"));
+			pstmt.setString(5,ntsMap.getString("authCd"));
+			pstmt.setInt(6,ntsMap.getInt("risk"));
+			pstmt.setString(7,ntsMap.getString("trxDay"));
+			pstmt.setInt(8,ntsMap.getInt("hookAddr"));
+			pstmt.setString(9,ntsMap.getString("retry"));
+			pstmt.setString(10,ntsMap.getString("status"));
+			pstmt.setString(11,ntsMap.getString("code"));
+			pstmt.setString(12,ntsMap.getString("resData"));
+			pstmt.setString(13,ntsMap.getString("sentDate"));
+			pstmt.setString(14,ntsMap.getString("regDay"));
+			pstmt.setString(15,ntsMap.getString("regTime"));
+
+			result = pstmt.executeUpdate();
+			conn.commit();
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("insertRiskChangeNoti ERROR : {}, query : {}", e.getMessage(), query);
+		}finally{
+			db.close(conn,pstmt,rset);
+		}
+
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
 }
