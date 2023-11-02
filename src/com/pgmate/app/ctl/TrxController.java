@@ -463,7 +463,7 @@ public class TrxController {
 					SharedMap<String, Object> capMap = trxDAO.isRentCap(capId);
 					if(capMap.getString("serviceType").equals("월세앱")) {
 						String hookAddr = trxDAO.getHookAddr(capMap.getString("mchtId"));
-						new RiskChangeHook(hookAddr, capMap, trxDAO, "0").start();
+						new RiskChangeHook(hookAddr, capMap, "0").start();
 					}
 					iqrDAO.insertRisk(capId.replaceAll("'", ""), t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
 					success++;

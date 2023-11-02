@@ -27,7 +27,7 @@ public class RiskChangeHook extends Thread{
     }
 
     // 보류해제 노티 전송
-    public RiskChangeHook(String hookAddr,SharedMap<String,Object> sharedMap,TrxDAO dao,String retry) {
+    public RiskChangeHook(String hookAddr, SharedMap<String,Object> sharedMap, String retry) {
         this.hookAddr = hookAddr;
         this.sharedMap = sharedMap;
         this.dao = new TrxDAO();

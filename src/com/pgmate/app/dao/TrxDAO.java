@@ -20,9 +20,7 @@ import com.pgmate.pay.bean.Card;
  * @author Administrator
  *
  */
-//KJM : 매입건에 대한 기능 (기본 테이블, 컬럼 안정해져있음)
 public class TrxDAO extends DAO {
-	
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.TrxDAO.class );
 	
 	public TrxDAO() {
@@ -71,29 +69,24 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return rset.getRow(0).getString("days");
 	}
-	
-	//KJM : 매입히스토리 수정
-	//KJM : vanId가 FACTORING이 아닐 때
+
 	public boolean updateTrxCapDtl(SharedMap<String,Object> updateMap){
 		super.setTable("PG_TRX_CAP_DTL");
-		super.setRecord("stlRate"	, updateMap.getDouble("stlRate"));	//KJM : 선정산 수수료
-		super.setRecord("stlFee"	, updateMap.getLong("stlFee"));		//가맹점 수수료
-		super.setRecord("stlFeeVat"	, updateMap.getLong("stlFeeVat"));	//가맹점 수수료 VAT
-		super.setRecord("stlAmount"	, updateMap.getLong("stlAmount"));	//가맹점 정산금액
+		super.setRecord("stlRate"	, updateMap.getDouble("stlRate"));
+		super.setRecord("stlFee"	, updateMap.getLong("stlFee"));
+		super.setRecord("stlFeeVat"	, updateMap.getLong("stlFeeVat"));
+		super.setRecord("stlAmount"	, updateMap.getLong("stlAmount"));
 		/*
 		if(!updateMap.isNullOrSpace("stlDay")){
 			super.setRecord("stlDay"	, updateMap.getString("stlDay"));
 		}*/
-		super.setRecord("risk"	, updateMap.getString("risk"));		//리스크
-		super.addWhere("capId", updateMap.getString("capId"));		//매입거래번호
-		//KJM : update 쿼리문 수행
+		super.setRecord("risk"	, updateMap.getString("risk"));
+		super.addWhere("capId", updateMap.getString("capId"));
 		boolean updated = super.update();
 		super.initRecord();
 		return updated;
 	}
-	
-	//KJM : 매입히스토리 수정
-	//KJM : 가맹점 정산 유형이 D+1이 아닐 때
+
 	public boolean updateTrxCapDtlToRisk(SharedMap<String,Object> updateMap){
 		super.setTable("PG_TRX_CAP_DTL");
 		//super.setRecord("stlRate"	, updateMap.getDouble("stlRate"));
@@ -107,23 +100,20 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return updated;
 	}
-	
-	//KJM : 매입히스토리 수정
-	//KJM : vanId가 FACTORING일 때
+
 	public boolean updateTrxCapDtlWithAgency(SharedMap<String,Object> updateMap){
 		super.setTable("PG_TRX_CAP_DTL");
-		super.setRecord("stlRate"	, updateMap.getDouble("stlRate"));	//KJM : 선정산 수수료
-		super.setRecord("stlFee"	, updateMap.getLong("stlFee"));		//가맹점 수수료
-		super.setRecord("stlFeeVat"	, updateMap.getLong("stlFeeVat"));	//가맹점 수수료 VAT
-		super.setRecord("stlAmount"	, updateMap.getLong("stlAmount"));	//가맹점 정산금액
-		super.setRecord("stlAgencyFee"	, updateMap.getLong("stlAgencyFee"));	//대리점 수수료
+		super.setRecord("stlRate"	, updateMap.getDouble("stlRate"));
+		super.setRecord("stlFee"	, updateMap.getLong("stlFee"));
+		super.setRecord("stlFeeVat"	, updateMap.getLong("stlFeeVat"));
+		super.setRecord("stlAmount"	, updateMap.getLong("stlAmount"));
+		super.setRecord("stlAgencyFee"	, updateMap.getLong("stlAgencyFee"));
 		/*
 		if(!updateMap.isNullOrSpace("stlDay")){
 			super.setRecord("stlDay"	, updateMap.getString("stlDay"));
 		}*/
-		super.setRecord("risk"	, updateMap.getString("risk"));		//리스크
-		super.addWhere("capId", updateMap.getString("capId"));		//매입거래번호
-		//KJM : update 쿼리문 수행
+		super.setRecord("risk"	, updateMap.getString("risk"));
+		super.addWhere("capId", updateMap.getString("capId"));
 		boolean updated = super.update();
 		super.initRecord();
 		return updated;
@@ -143,39 +133,32 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return updated;
 	}
-	
-	//KJM : 매입 삭제
+
 	public boolean deleteTrxCap(String capId){
-		//KJM : DELETE FROM PG_TRX_CAP WHERE capId IN (값1,값2,...)
 		super.setTable("PG_TRX_CAP");
 		super.addWhere("capId", capId,in);
-		
-		//KJM : 쿼리문 수행결과에 따라 true, false 반환값 받음
+
 		boolean updated = super.delete();
 		super.initRecord();
 		return updated;
 	}
 	
 	
-	//KJM : 정산일자 변경
+
 	public boolean updateDay(String capId,String stlDay,String stlVanDay){
 		super.setTable("PG_TRX_CAP_DTL");
 		super.setRecord("stlDay"	, stlDay);
 		super.setRecord("stlVanDay"	, stlVanDay);
 		super.addWhere("capId", capId);
-		
-		//KJM : update 쿼리문 수행
+
 		boolean updated = super.update();
 		super.initRecord();
 		return updated;
 	}
 	
-	//KJM : ONLINE 거래 생성 INSERT
+
 	public long insertTrxLoad(SharedMap<String,Object> map){
-		
-		
 		super.setTable("PG_TRX_LOAD");
-		
 		super.setRecord("mchtId"	, map.getString("mchtId"));
 		super.setRecord("tmnId"		, map.getString("tmnId"));
 		super.setRecord("amount"	, map.getLong("amount"));
@@ -188,8 +171,7 @@ public class TrxDAO extends DAO {
 		super.setRecord("summary"	, map.getString("summary"));
 		super.setRecord("regId"		, map.getString("regId"));
 		super.setRecord("regDay"	, map.getString("regDay"));
-		
-		//KJM : 추가된 인덱스 값
+
 		long idx = super.insertAndLastIdx();
 		super.initRecord();
 		return idx;
@@ -212,11 +194,10 @@ public class TrxDAO extends DAO {
 		
 		return deleted;
 	}
-	
-	//KJM : ONLINE 거래 생성 상세정보 INSERT
+
 	public boolean insertTrxLoadDtl(SharedMap<String,Object> map){
 		super.setTable("PG_TRX_LOAD_DTL");
-		super.setRecord("batchIdx"	, map.getLong("batchIdx"));	
+		super.setRecord("batchIdx"	, map.getLong("batchIdx"));
 		super.setRecord("trnType"	, map.getString("trnType"));
 		super.setRecord("trackId"	, map.getString("trackId"));
 		super.setRecord("amount"	, map.getLong("amount"));
@@ -234,8 +215,7 @@ public class TrxDAO extends DAO {
 		super.setRecord("exeStatus"	, map.getString("exeStatus"));
 		super.setRecord("regId"		, map.getString("regId"));
 		super.setRecord("regDay"	, map.getString("regDay"));
-		
-		//KJM : insert 수행 후 정상수행(true), 실패(flase) 반환
+
 		boolean updated = super.insert();
 		super.initRecord();
 		return updated;
@@ -348,7 +328,7 @@ public class TrxDAO extends DAO {
 		}else if(table.equals("PG_TRX_CAP")){
 			super.addWhere("capId", id);
 		}
-		
+
 		boolean updated = super.update();
 		super.initRecord();
 		return updated;
@@ -383,14 +363,11 @@ public class TrxDAO extends DAO {
 		}
 		return returnVal;
 	}
-	
-	//KJM : 정산번호 생성 후 리턴
+
 	public synchronized static String getSettleId() {
 		return "S" + getFunction("FN_NEXTVAL2", "SETTLE");
-		//KJM : FN_NEXTVAL2 함수 => 오늘날짜(000000), 6자리의 자동 증가값(000000)을 합쳐서 리턴해줌
 	}
-	
-	//KJM : 지급보류아이디 생성 후 리턴
+
 	public synchronized static String getHoldId() {
 		return "S" + getFunction("FN_NEXTVAL2", "HOLD");
 	}
@@ -570,24 +547,24 @@ public class TrxDAO extends DAO {
 			pstmt.setString(1,ntsMap.getString("mchtId"));
 			pstmt.setString(2,ntsMap.getString("capId"));
 			pstmt.setString(3,ntsMap.getString("capType"));
-			pstmt.setString(4,ntsMap.getString("amount"));
+			pstmt.setLong(4,ntsMap.getLong("amount"));
 			pstmt.setString(5,ntsMap.getString("authCd"));
-			pstmt.setInt(6,ntsMap.getInt("risk"));
+			pstmt.setString(6,ntsMap.getString("risk"));
 			pstmt.setString(7,ntsMap.getString("trxDay"));
-			pstmt.setInt(8,ntsMap.getInt("hookAddr"));
-			pstmt.setString(9,ntsMap.getString("retry"));
-			pstmt.setString(9,ntsMap.getString("status"));
-			pstmt.setString(9,ntsMap.getString("code"));
-			pstmt.setString(9,ntsMap.getString("resData"));
-			pstmt.setString(9,ntsMap.getString("sentDate"));
-			pstmt.setString(9,ntsMap.getString("regDay"));
-			pstmt.setString(9,ntsMap.getString("regTime"));
+			pstmt.setString(8,ntsMap.getString("hookAddr"));
+			pstmt.setInt(9,ntsMap.getInt("retry"));
+			pstmt.setString(10,ntsMap.getString("status"));
+			pstmt.setInt(11,ntsMap.getInt("code"));
+			pstmt.setString(12,ntsMap.getString("resData"));
+			pstmt.setTimestamp(13,ntsMap.getTimestamp("sentDate"));
+			pstmt.setString(14,ntsMap.getString("regDay"));
+			pstmt.setString(15,ntsMap.getString("regTime"));
 
 			result = pstmt.executeUpdate();
 			conn.commit();
 		}catch(Exception e){
 			e.printStackTrace();
-			logger.error("insertRiskResetNoti ERROR : {}, query : {}", e.getMessage(), query);
+			logger.error("insertRiskChangeNoti ERROR : {}, query : {}", e.getMessage(), query);
 		}finally{
 			db.close(conn,pstmt,rset);
 		}
@@ -598,5 +575,5 @@ public class TrxDAO extends DAO {
 			return false;
 		}
 	}
-	
+
 }
