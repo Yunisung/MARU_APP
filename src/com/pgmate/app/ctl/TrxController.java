@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.pgmate.app.hook.RiskChangeHook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -440,6 +441,7 @@ public class TrxController {
 		logger.debug("capId: [{}] , risk: [{}], {}", capArray, risk, summary);
 
 		TrxIqrDAO iqrDAO = new TrxIqrDAO();
+		TrxDAO trxDAO = new TrxDAO();
 
 		if(CommonUtil.isNullOrSpace(capArray)) {
 			return result;
@@ -457,6 +459,12 @@ public class TrxController {
 			for(String capId : capIdArray) {
 				String t = util.setRiskToNormal(capId.replaceAll("'", ""));
 				if(t.startsWith("OK")){
+					// 23.11.02 월세앱 리스크 해제 노티 전송 추가
+					SharedMap<String, Object> capMap = trxDAO.isRentCap(capId);
+					if(capMap.getString("serviceType").equals("월세앱")) {
+						String hookAddr = trxDAO.getHookAddr(capMap.getString("mchtId"));
+						new RiskChangeHook(hookAddr, capMap, trxDAO, "0").start();
+					}
 					iqrDAO.insertRisk(capId.replaceAll("'", ""), t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
 					success++;
 				}else{

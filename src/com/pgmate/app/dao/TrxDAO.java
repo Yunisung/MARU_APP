@@ -72,7 +72,7 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return rset.getRow(0).getString("days");
 	}
-	
+
 	public boolean updateTrxCapDtl(SharedMap<String,Object> updateMap){
 		super.setTable("PG_TRX_CAP_DTL");
 		super.setRecord("stlRate"	, updateMap.getDouble("stlRate"));
@@ -89,7 +89,7 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return updated;
 	}
-	
+
 	public boolean updateTrxCapDtlToRisk(SharedMap<String,Object> updateMap){
 		super.setTable("PG_TRX_CAP_DTL");
 		//super.setRecord("stlRate"	, updateMap.getDouble("stlRate"));
@@ -103,7 +103,7 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return updated;
 	}
-	
+
 	public boolean updateTrxCapDtlWithAgency(SharedMap<String,Object> updateMap){
 		super.setTable("PG_TRX_CAP_DTL");
 		super.setRecord("stlRate"	, updateMap.getDouble("stlRate"));
@@ -136,30 +136,30 @@ public class TrxDAO extends DAO {
 		super.initRecord();
 		return updated;
 	}
-	
+
 	public boolean deleteTrxCap(String capId){
 		super.setTable("PG_TRX_CAP");
 		super.addWhere("capId", capId,in);
-		
+
 		boolean updated = super.delete();
 		super.initRecord();
 		return updated;
 	}
 	
 	
-	
+
 	public boolean updateDay(String capId,String stlDay,String stlVanDay){
 		super.setTable("PG_TRX_CAP_DTL");
 		super.setRecord("stlDay"	, stlDay);
 		super.setRecord("stlVanDay"	, stlVanDay);
 		super.addWhere("capId", capId);
-		
+
 		boolean updated = super.update();
 		super.initRecord();
 		return updated;
 	}
 	
-	
+
 	public long insertTrxLoad(SharedMap<String,Object> map){
 		super.setTable("PG_TRX_LOAD");
 		super.setRecord("mchtId"	, map.getString("mchtId"));
@@ -174,7 +174,7 @@ public class TrxDAO extends DAO {
 		super.setRecord("summary"	, map.getString("summary"));
 		super.setRecord("regId"		, map.getString("regId"));
 		super.setRecord("regDay"	, map.getString("regDay"));
-		
+
 		long idx = super.insertAndLastIdx();
 		super.initRecord();
 		return idx;
@@ -197,7 +197,7 @@ public class TrxDAO extends DAO {
 		
 		return deleted;
 	}
-	
+
 	public boolean insertTrxLoadDtl(SharedMap<String,Object> map){
 		super.setTable("PG_TRX_LOAD_DTL");
 		super.setRecord("batchIdx"	, map.getLong("batchIdx"));
@@ -218,7 +218,7 @@ public class TrxDAO extends DAO {
 		super.setRecord("exeStatus"	, map.getString("exeStatus"));
 		super.setRecord("regId"		, map.getString("regId"));
 		super.setRecord("regDay"	, map.getString("regDay"));
-		
+
 		boolean updated = super.insert();
 		super.initRecord();
 		return updated;
@@ -331,9 +331,9 @@ public class TrxDAO extends DAO {
 			super.addWhere("trxId", id);
 		}else if(table.equals("PG_TRX_CAP")){
 			super.addWhere("capId", id);
-		} 
+		}
 		
-		
+
 		boolean updated = super.update();
 		super.initRecord();
 		return updated;
@@ -372,7 +372,7 @@ public class TrxDAO extends DAO {
 	public synchronized static String getSettleId() {
 		return "S" + getFunction("FN_NEXTVAL2", "SETTLE");
 	}
-	
+
 	public synchronized static String getHoldId() {
 		return "S" + getFunction("FN_NEXTVAL2", "HOLD");
 	}
@@ -520,12 +520,9 @@ public class TrxDAO extends DAO {
 		return rset;
 	}
 
-	public SharedMap<String,Object> getRentCapById(String capId) {
+	public SharedMap<String,Object> isRentCap(String capId) {
 		super.setTable("VW_TRX_CAP");
 		super.addWhere("capId", capId);
-		super.addWhere("serviceType", "월세앱");
-		super.addWhere("stlStatus", "정산대기");
-
 		RecordSet rset = super.search();
 		super.initRecord();
 		return rset.getRowFirst();
@@ -542,30 +539,31 @@ public class TrxDAO extends DAO {
 
 	public boolean insertRiskChangeNoti(SharedMap<String,Object> ntsMap) {
 		int result = 0;
-		String query = "INSERT INTO `PG_RISK_CHANGE_NOTI` (`mchtId`, `capId`, `trackId`, `risk`, `trxDay`, `hookAddr`, `retry`, `status`, `code`, `payLoad`, `resData`, `sentDate`, `regDay`, `regTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		String query = "INSERT INTO `PG_RISK_CHANGE_NOTI` (`mchtId`, `capId`, `capType`, `amount`, `authCd`, `risk`, `trxDay`, `hookAddr`, `retry`, `status`, `code`,`resData`, `sentDate`, `regDay`, `regTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		DBManager db 	= null;
 		PreparedStatement pstmt	= null;
 		Connection conn			= null;
 		ResultSet rset			= null;
-		int i = 1;
+
 		try{
 			db 		= DBFactory.getInstance();
 			conn	= db.getConnection();
 			pstmt	= conn.prepareStatement(query);
-			pstmt.setString(i++,ntsMap.getString("mchtId"));
-			pstmt.setString(i++,ntsMap.getString("capId"));
-			pstmt.setString(i++,ntsMap.getString("trackId"));
-			pstmt.setString(i++,ntsMap.getString("risk"));
-			pstmt.setString(i++,ntsMap.getString("trxDay"));
-			pstmt.setString(i++,ntsMap.getString("hookAddr"));
-			pstmt.setInt(i++,ntsMap.getInt("retry"));
-			pstmt.setString(i++,ntsMap.getString("status"));
-			pstmt.setInt(i++,ntsMap.getInt("code"));
-			pstmt.setString(i++,ntsMap.getString("payLoad"));
-			pstmt.setString(i++,ntsMap.getString("resData"));
-			pstmt.setTimestamp(i++,ntsMap.getTimestamp("sentDate"));
-			pstmt.setString(i++,ntsMap.getString("regDay"));
-			pstmt.setString(i++,ntsMap.getString("regTime"));
+			pstmt.setString(1,ntsMap.getString("mchtId"));
+			pstmt.setString(2,ntsMap.getString("capId"));
+			pstmt.setString(3,ntsMap.getString("capType"));
+			pstmt.setString(4,ntsMap.getString("amount"));
+			pstmt.setString(5,ntsMap.getString("authCd"));
+			pstmt.setInt(6,ntsMap.getInt("risk"));
+			pstmt.setString(7,ntsMap.getString("trxDay"));
+			pstmt.setInt(8,ntsMap.getInt("hookAddr"));
+			pstmt.setString(9,ntsMap.getString("retry"));
+			pstmt.setString(10,ntsMap.getString("status"));
+			pstmt.setString(11,ntsMap.getString("code"));
+			pstmt.setString(12,ntsMap.getString("resData"));
+			pstmt.setString(13,ntsMap.getString("sentDate"));
+			pstmt.setString(14,ntsMap.getString("regDay"));
+			pstmt.setString(15,ntsMap.getString("regTime"));
 
 			result = pstmt.executeUpdate();
 			conn.commit();
@@ -583,13 +581,4 @@ public class TrxDAO extends DAO {
 		}
 	}
 
-	public RecordSet getTrxNotiList(List<Data> datas, Page page){
-		super.setTable("VW_TRX_NTS_PG");
-		super.setColumns("*");
-		super.setOrderBy("regDate desc");
-
-		page = CPUtil.correctPage(page);
-		CPUtil.setDAO(this, datas);				//DATA to CONDITION
-		return super.searchList(page.current, page.size,page.hash);
-	}
 }
