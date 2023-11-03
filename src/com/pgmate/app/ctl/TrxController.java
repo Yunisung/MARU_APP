@@ -463,6 +463,8 @@ public class TrxController {
 					SharedMap<String, Object> capMap = trxDAO.getRentCapById(capId);
 					String hookAddr = trxDAO.getHookAddr(capMap.getString("mchtId"));
 					if (!CommonUtil.isNullOrSpace(hookAddr)) {
+						String payLoad = setPayLoad(capMap, "완료", "0000", "정상처리");
+						capMap.put("payLoad", payLoad);
 						new RiskChangeHook(hookAddr, capMap, "0").start();
 					}
 					iqrDAO.insertRisk(capId.replaceAll("'", ""), t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
@@ -1009,4 +1011,23 @@ public class TrxController {
 
 			return new CPRUtil(cpRequest).dataList2(rset).setView(request,"/trx/excel/list","");
 	  }
+
+	public String setPayLoad(SharedMap<String, Object> sharedMap, String status, String resultCd, String resultMsg){
+		SharedMap<String, String> payLoadMap = new SharedMap<String, String>();
+
+		payLoadMap.put("mchtId",sharedMap.getString("mchtId"));
+		payLoadMap.put("capId",sharedMap.getString("capId"));
+		payLoadMap.put("capType", sharedMap.getString("capType"));
+		payLoadMap.put("amount",sharedMap.getString("amount"));
+		payLoadMap.put("authCd", sharedMap.getString("authCd"));
+		payLoadMap.put("risk", sharedMap.getString("risk"));
+		payLoadMap.put("trxDay",CommonUtil.getCurrentDate("yyyyMMdd"));
+		payLoadMap.put("trxTime",CommonUtil.getCurrentDate("HHmmss"));
+		payLoadMap.put("status",status);
+		payLoadMap.put("trackId",sharedMap.getString("trackId"));
+		payLoadMap.put("resultCd",resultCd);
+		payLoadMap.put("resultMsg",resultMsg);
+		String payLoad = CommonUtil.toQueryString(payLoadMap,"UTF-8");
+		return payLoad;
+	}
 }

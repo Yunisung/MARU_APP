@@ -42,11 +42,10 @@ public class RiskChangeHook extends Thread{
         logger.info("RiskResetHook   : {}",ntsMap.getString("hookAddr"));
         ntsMap.put("mchtId", sharedMap.getString("mchtId"));
         ntsMap.put("capId", sharedMap.getString("capId"));
-        ntsMap.put("capType", sharedMap.getString("capType"));
-        ntsMap.put("amount", sharedMap.getString("amount"));
-        ntsMap.put("authCd", sharedMap.getString("authCd"));
+        ntsMap.put("trackId", sharedMap.getString("trackId"));
         ntsMap.put("risk", sharedMap.getString("risk"));
         ntsMap.put("trxDay", sharedMap.getString("trxDay"));
+        ntsMap.put("payLoad", sharedMap.getString("payLoad"));
         ntsMap.put("regDay"		, CommonUtil.getCurrentDate("yyyyMMdd"));
         ntsMap.put("regTime"	, CommonUtil.getCurrentDate("HHmmss"));
 
@@ -66,8 +65,8 @@ public class RiskChangeHook extends Thread{
             conn.setConnectTimeout(10000);
             conn.setReadTimeout(10000);
             OutputStream os = conn.getOutputStream();
-            String contractStatus = ntsMap.getString("contractStatus");
-            os.write(contractStatus.getBytes("UTF-8"));
+            String payLoad = ntsMap.getString("payLoad");
+            os.write(payLoad.getBytes("UTF-8"));
             os.flush();
             os.close();
             StringBuilder sb = new StringBuilder();

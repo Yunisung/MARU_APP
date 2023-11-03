@@ -537,31 +537,30 @@ public class TrxDAO extends DAO {
 
 	public boolean insertRiskChangeNoti(SharedMap<String,Object> ntsMap) {
 		int result = 0;
-		String query = "INSERT INTO `PG_RISK_CHANGE_NOTI` (`mchtId`, `capId`, `capType`, `amount`, `authCd`, `risk`, `trxDay`, `hookAddr`, `retry`, `status`, `code`,`resData`, `sentDate`, `regDay`, `regTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		String query = "INSERT INTO `PG_RISK_CHANGE_NOTI` (`mchtId`, `capId`, `trackId`, `risk`, `trxDay`, `hookAddr`, `retry`, `status`, `code`, `payLoad`, `resData`, `sentDate`, `regDay`, `regTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		DBManager db 	= null;
 		PreparedStatement pstmt	= null;
 		Connection conn			= null;
 		ResultSet rset			= null;
-
+		int i = 1;
 		try{
 			db 		= DBFactory.getInstance();
 			conn	= db.getConnection();
 			pstmt	= conn.prepareStatement(query);
-			pstmt.setString(1,ntsMap.getString("mchtId"));
-			pstmt.setString(2,ntsMap.getString("capId"));
-			pstmt.setString(3,ntsMap.getString("capType"));
-			pstmt.setLong(4,ntsMap.getLong("amount"));
-			pstmt.setString(5,ntsMap.getString("authCd"));
-			pstmt.setString(6,ntsMap.getString("risk"));
-			pstmt.setString(7,ntsMap.getString("trxDay"));
-			pstmt.setString(8,ntsMap.getString("hookAddr"));
-			pstmt.setInt(9,ntsMap.getInt("retry"));
-			pstmt.setString(10,ntsMap.getString("status"));
-			pstmt.setInt(11,ntsMap.getInt("code"));
-			pstmt.setString(12,ntsMap.getString("resData"));
-			pstmt.setTimestamp(13,ntsMap.getTimestamp("sentDate"));
-			pstmt.setString(14,ntsMap.getString("regDay"));
-			pstmt.setString(15,ntsMap.getString("regTime"));
+			pstmt.setString(i++,ntsMap.getString("mchtId"));
+			pstmt.setString(i++,ntsMap.getString("capId"));
+			pstmt.setString(i++,ntsMap.getString("trackId"));
+			pstmt.setString(i++,ntsMap.getString("risk"));
+			pstmt.setString(i++,ntsMap.getString("trxDay"));
+			pstmt.setString(i++,ntsMap.getString("hookAddr"));
+			pstmt.setInt(i++,ntsMap.getInt("retry"));
+			pstmt.setString(i++,ntsMap.getString("status"));
+			pstmt.setInt(i++,ntsMap.getInt("code"));
+			pstmt.setString(i++,ntsMap.getString("payLoad"));
+			pstmt.setString(i++,ntsMap.getString("resData"));
+			pstmt.setTimestamp(i++,ntsMap.getTimestamp("sentDate"));
+			pstmt.setString(i++,ntsMap.getString("regDay"));
+			pstmt.setString(i++,ntsMap.getString("regTime"));
 
 			result = pstmt.executeUpdate();
 			conn.commit();

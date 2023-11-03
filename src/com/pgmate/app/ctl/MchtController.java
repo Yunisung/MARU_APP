@@ -3231,6 +3231,5 @@ public class MchtController {
 			return new CPRUtil(cpRequest).resultNOK("월세앱 정보 변경에 실패하였습니다.",cpDAO.getError())
 					.cpResponse();
 		}
-
 	}
 }
