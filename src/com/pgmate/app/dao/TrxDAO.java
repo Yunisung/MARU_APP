@@ -520,9 +520,12 @@ public class TrxDAO extends DAO {
 		return rset;
 	}
 
-	public SharedMap<String,Object> isRentCap(String capId) {
+	public SharedMap<String,Object> getRentCapById(String capId) {
 		super.setTable("VW_TRX_CAP");
 		super.addWhere("capId", capId);
+		super.addWhere("serviceType", "월세앱");
+		super.addWhere("stlStatus", "정산대기");
+
 		RecordSet rset = super.search();
 		super.initRecord();
 		return rset.getRowFirst();
