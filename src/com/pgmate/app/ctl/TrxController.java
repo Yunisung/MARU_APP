@@ -460,9 +460,9 @@ public class TrxController {
 				String t = util.setRiskToNormal(capId.replaceAll("'", ""));
 				if(t.startsWith("OK")){
 					// 23.11.02 월세앱 리스크 해제 노티 전송 추가
-					SharedMap<String, Object> capMap = trxDAO.isRentCap(capId);
-					if(capMap.getString("serviceType").equals("월세앱")) {
-						String hookAddr = trxDAO.getHookAddr(capMap.getString("mchtId"));
+					SharedMap<String, Object> capMap = trxDAO.getRentCapById(capId);
+					String hookAddr = trxDAO.getHookAddr(capMap.getString("mchtId"));
+					if (!CommonUtil.isNullOrSpace(hookAddr)) {
 						new RiskChangeHook(hookAddr, capMap, "0").start();
 					}
 					iqrDAO.insertRisk(capId.replaceAll("'", ""), t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
