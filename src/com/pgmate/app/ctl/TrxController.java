@@ -463,6 +463,8 @@ public class TrxController {
 					SharedMap<String, Object> capMap = trxDAO.getRentCapById(capId);
 					String hookAddr = trxDAO.getHookAddr(capMap.getString("mchtId"));
 					if (!CommonUtil.isNullOrSpace(hookAddr)) {
+						String payLoad = setPayLoad(capMap, "완료", "0000", "정상처리");
+						capMap.put("payLoad", payLoad);
 						new RiskChangeHook(hookAddr, capMap, "0").start();
 					}
 					iqrDAO.insertRisk(capId.replaceAll("'", ""), t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
@@ -1029,31 +1031,5 @@ public class TrxController {
 		return payLoad;
 	}
 
-	@RequestMapping(value = "/trx/noti/list", method = RequestMethod.POST)
-	public ModelAndView notiList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
-		TrxDAO trxDAO = new TrxDAO();
-		RecordSet rset = trxDAO.getTrxNotiList(cpRequest.data,cpRequest.page);
 
-		return new CPRUtil(cpRequest).dataList(rset,trxDAO).setView(request,"/trx/noti/list","");
-	}
-
-	@RequestMapping(value = {"/trx/noti/retry/{idx}"}, method = RequestMethod.POST)
-	public @ResponseBody SharedMap<String, Object> notiRetry(HttpServletRequest request, @PathVariable String idx) {
-		SharedMap<String, Object> resultMap = new SharedMap<>();
-		logger.info("idx : {}", idx);
-		CPDAO dao = new CPDAO();
-		dao.setTable("PG_TRX_NTS_PG");
-		dao.setRecord("retry", 0);
-		dao.setRecord("status", "전송실패");
-		dao.addWhere("idx", idx, DAO.in);
-
-		if(dao.update()) {
-			resultMap.put("result", "OK");
-		} else {
-			resultMap.put("result", "NOK");
-			resultMap.put("msg", "재전송 실패했습니다.");
-		}
-
-		return resultMap;
-	}
 }
