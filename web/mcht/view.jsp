@@ -3214,7 +3214,23 @@
 																		<div class="form-group pg-view-group">
 																			<label class="control-label col-md-3">보류노티 주소(URL)</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static">${RENT_MAP.riskNotiAddr}</p>
+																				<p class="form-control-static">${RENT_MAP.riskChangeNotiAddr}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">가맹점정산 노티 주소(URL)</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static">${RENT_MAP.mchtSettleNotiAddr}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">영업라인정산 노티 주소(URL)</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static">${RENT_MAP.memSettleNotiAddr}</p>
 																			</div>
 																		</div>
 																	</div>
