@@ -189,7 +189,30 @@
         </c:if>
     </ul>
 </li>
-<!-- 매출 관리 시작 -->
+<!-- 월세앱 관리 시작 -->
+<li class="nav-item start " id="nav-rent">
+    <a href="javascript:;" class="nav-link nav-toggle"><i class="icon-check"></i>
+        <span class="title">월세앱 관리</span><span class="arrow"></span></a>
+    <ul class="sub-menu">
+        <li class="nav-item start ">
+            <a href="/rent/mcht/form.jsp" class="nav-link ">
+                <span class="title">가맹점조회</span></a>
+        </li>
+        <li class="nav-item start ">
+            <a href="/rent/cap/form.jsp" class="nav-link ">
+                <span class="title">매입현황조회</span></a>
+        </li>
+        <li class="nav-item start ">
+            <a href="/rent/trx/form.jsp" class="nav-link ">
+                <span class="title">거래내역</span></a>
+        </li>
+        <li class="nav-item start ">
+            <a href="/rent/settle/form.jsp" class="nav-link ">
+                <span class="title">가맹점정산(예약이체)</span></a>
+        </li>
+    </ul>
+</li>
+    <!-- 매출 관리 시작 -->
 <li class="nav-item start " id="nav-sales">
     <a href="javascript:;" class="nav-link nav-toggle"><i class="icon-paper-clip"></i>
 							<span class="title">매출 관리</span><span class="arrow"></span></a>

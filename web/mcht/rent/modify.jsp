@@ -69,7 +69,7 @@
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4 req-label">가맹점 정산유형</label>
-                                                <select name="settleType" class="selectpicker col-sm-6">
+                                                <select name="settleType" class="selectpicker col-sm-6" >
                                                     <option value="C+0">실시간 충전정산</option>
                                                     <option value="B+1">1일 후 자동충전정산</option>
                                                     <option value="C+1">1일 후 충전정산</option>
@@ -96,7 +96,7 @@
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4">계약검토상태</label>
-                                                <select name="contractStatus" class="selectpicker col-sm-6">
+                                                <select name="contractStatus" class="selectpicker col-sm-6" disabled="disabled">
                                                     <option value="대기" selected>대기</option>
                                                     <option value="완료" selected>완료</option>
                                                 </select>
