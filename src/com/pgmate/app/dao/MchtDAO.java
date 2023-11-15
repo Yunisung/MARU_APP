@@ -226,5 +226,29 @@ public class MchtDAO extends DAO{
 		String q = "UPDATE PG_MCHT_SVC SET card3D = '미사용' WHERE mchtId = '"+id.toLowerCase()+"'";
 		super.update(q);
 	}
+
+	/**
+	 * 충전정산 잔액조회
+	 * @param mchtId
+	 * @return
+	 */
+	public SharedMap<String, Object> getMchtBalance(String mchtId){
+		super.setTable("PG_MCHT_BALANCE");
+		super.setColumns("*");
+		super.addWhere("mchtId",mchtId,eq);
+		super.setOrderBy("");
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst();
+	}
+
+	public SharedMap<String, Object> getMchtTaxByTaxId(String taxId) {
+		super.setTable("PG_MCHT_TAX");
+		super.setColumns("*");
+		super.addWhere("taxId", taxId, eq);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst();
+	}
 	
 }

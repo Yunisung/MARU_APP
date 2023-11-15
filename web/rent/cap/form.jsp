@@ -446,7 +446,7 @@
 		
 		gradeSelector('searchForm', '${CP_SESSION.grade}');
 		setTimeout(function(){ searchForList(); }, 100); //검색 실행
-		$('#nav-trx').addClass('active');
+		$('#nav-rent').addClass('active');
 		
 		$('.formOptionSelect').on('change',function(e) {
 			var valR = $( ".formOptionSelect option:selected" ).val();

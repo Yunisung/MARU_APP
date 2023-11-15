@@ -2,6 +2,7 @@ package com.pgmate.app.dao;
 
 import java.util.List;
 
+import com.pgmate.lib.util.map.SharedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,5 +67,24 @@ public class SettleDAO extends DAO{
 		super.delete();
 		super.initRecord();
 		
+	}
+
+	public List<SharedMap<String,Object>> getRentStlByStlId(String stlId) {
+		super.setTable("VW_TRX_CAP");
+		super.addWhere("stlDistId IN ( "+ stlId + ")");
+		super.addWhere("serviceType", "월세앱");
+
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRows();
+	}
+
+	public String getHookAddr(String mchtId) {
+		super.setTable("PG_MCHT_RENT");
+		super.setColumns("memSettleNotiAddr as hookAddr");
+		super.addWhere("mchtId", mchtId);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRow(0).getString("hookAddr");
 	}
 }

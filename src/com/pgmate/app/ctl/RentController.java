@@ -28,13 +28,14 @@ public class RentController {
 
     private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.ctl.RentController.class );
 
+    // 가맹점 조회
     @RequestMapping(value = {"/rent/mcht/form"})
-    public ModelAndView form(HttpServletRequest request) {
+    public ModelAndView mchtForm(HttpServletRequest request) {
         return new ModelAndView("/rent/mcht/form");
     }
 
     @RequestMapping(value = "/rent/mcht/list", method = RequestMethod.POST,produces= MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView list(HttpServletRequest request, HttpServletResponse response, @RequestBody CPRequest cpRequest) {
+    public ModelAndView mchtList(HttpServletRequest request, HttpServletResponse response, @RequestBody CPRequest cpRequest) {
         RentDAO rentDAO = new RentDAO();
         SessionUtil.setSearchGrade(request, cpRequest);
         cpRequest.replaceKeyValue("identity",rentDAO.getAESEnc(cpRequest.getKeyValue("identity")));
@@ -43,18 +44,23 @@ public class RentController {
         return new CPRUtil(cpRequest).dataList(rset,rentDAO).setView(request,"/rent/mcht/list","");
     }
 
-    @RequestMapping(value = "/rent/cap/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    // 매입현황조회
+    @RequestMapping(value = {"/rent/cap/form"})
+    public ModelAndView capForm(HttpServletRequest request) {
+        return new ModelAndView("/rent/cap/form");
+    }
+
+   @RequestMapping(value = "/rent/cap/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView capList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
+        RentDAO rentDAO = new RentDAO();
         SessionUtil.setSearchGrade(request, cpRequest);
 
         cpRequest.replaceKeyName("amount", "abs(amount)");
 
-        request.setAttribute("AMOUNT_SUM", new TrxCapDAO().trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
+        request.setAttribute("AMOUNT_SUM", rentDAO.trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
 
-        TrxCapDAO trxCapDAO = new TrxCapDAO();
-//		cpRequest.setData("capId", "", "", "desc", false);
-        RecordSet rset = trxCapDAO.list(cpRequest.data,cpRequest.page);
-        return new CPRUtil(cpRequest).dataList(rset,trxCapDAO).setView(request,"/rent/cap/list","");
+        RecordSet rset = rentDAO.list(cpRequest.data,cpRequest.page);
+        return new CPRUtil(cpRequest).dataList(rset,rentDAO).setView(request,"/rent/cap/list","");
     }
 
     @RequestMapping(value = "/rent/cap/view/{capId}", method = RequestMethod.GET)

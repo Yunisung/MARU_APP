@@ -184,7 +184,7 @@
 		gradeSelector('searchForm', '${CP_SESSION.grade}');
 		searchForList();//검색 실행
 		
-		$('#nav-mcht').addClass('active');
+		$('#nav-rent').addClass('active');
 		
 		<%--
 		$('select[name="pgOrFactoring"]').on('change', function() {

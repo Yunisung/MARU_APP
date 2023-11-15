@@ -13,7 +13,7 @@ import java.util.List;
 public class RentDAO extends DAO {
     private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.RentDAO.class );
     private static final String TABLE = "VW_MCHT";
-    private static final String COLUMNS = "mchtId,name,nick,status,bizType,bizCategory,distId,agencyId,salesId,idType,FN_MASK_IDENTIFY(identity) as identity,tel1,tel2,fax,zip,addr1,addr2,lat,lng,ceoName,FN_MASK_IDENTIFY(ceoIdentity) as ceoIdentity,ceoPhone,ceoTel,ceoZip,ceoAddr1,ceoAddr2,managerName,managerPhone,deposit,regId,regDay,regDate,salesName,agencyName,distName,aggregator,FN_AES_DEC(identity) AS decIdentity, mchtActiveDate";
+    private static final String COLUMNS = "*";
 
     public RentDAO() {
         super(TABLE,CPUtil.CP_DEBUG);
@@ -37,6 +37,30 @@ public class RentDAO extends DAO {
                 "D.holderName, D.status as vactStatus,D.issueType,D.expireSet,D.startDay,IF(D.settleTarget = 'Y', '사용', IF(D.settleTarget = 'N', '중지', '')) AS settleTarget, IF(D.feeType = '0', '정액', IF(D.feeType = '1', '정률', ''))as feeType, D.settleType as vactSettleType,D.fee,D.rate as vactRate, D.distSettleType,D.distFee,D.distRate as vactDistRate,D.agencySettleType,D.agencyFee,D.agencyRate as vactAgencyRate,D.salesSettleType,D.salesFee,D.salesRate as vactSalesRate,D.hookType,D.hookAddr,D.payOutFee as vactPayOutFee,D.transferInterval,E.contractType, E.contractStatus " +
                 "FROM VW_MCHT A LEFT JOIN PG_MCHT_MNG B ON A.mchtId = B.mchtId LEFT JOIN PG_MCHT_TAX C ON A.mchtId = C.mchtId AND C.taxStatus = '사용' LEFT JOIN PG_MCHT_MNG_VACT D ON A.mchtId = D.mchtId LEFT JOIN PG_MCHT_RENT E ON A.mchtId = E.mchtId LEFT JOIN PG_MCHT_SVC F ON A.mchtId = F.mchtId WHERE F.rent = '사용') T");
         super.setColumns("T.*, FN_MASK_IDENTIFY(T.identity) as maskidentity, FN_AES_DEC(T.identity) as decidentity,(T.rate + T.loanRate) as sumRate");
+        page = CPUtil.correctPage(page);
+        CPUtil.setDAO(this, datas);				//DATA to CONDITION
+        return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
+    }
+
+
+    public RecordSet trxSum(List<Data> datas,Page page) {
+        super.setDebug(true);
+        super.setTable("VW_TRX_CAP_LIST");
+        super.setColumns("SUM(amount) AS amount");
+        super.setWhere("serviceType='월세앱'");
+        page = CPUtil.correctPage(page);
+        CPUtil.setDAO(this, datas);				//DATA to CONDITION
+        RecordSet rset = super.search();
+        super.initRecord();
+        return rset;	//LIST PAGING 검색
+    }
+
+    public RecordSet list(List<Data> datas,Page page){
+        logger.info("=================================");
+        super.setDebug(true);
+        super.setTable("VW_TRX_CAP_LIST");
+        super.setColumns("*");
+        super.setWhere("serviceType='월세앱'");
         page = CPUtil.correctPage(page);
         CPUtil.setDAO(this, datas);				//DATA to CONDITION
         return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
