@@ -69,6 +69,14 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
+                                                <label class="control-label input-sm col-sm-4 req-label">상태</label>
+                                                <select id="status" name="status" class="selectpicker col-sm-6">
+                                                    <option value="Y" selected>Y</option>
+                                                    <option value="N">N</option>
+                                                </select>
+                                                <script type="text/javascript"> document.forms.writeFrm.status.value = '${DATAMAP.status}'</script>
+                                            </div>
+                                            <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4 req-label">전달주소</label>
                                                 <div class="col-sm-6">
                                                     <input type="text" class="form-control input-sm phone" maxlength="100" name="hookUrl" placeholder="https://" value="${DATAMAP.hookUrl}">

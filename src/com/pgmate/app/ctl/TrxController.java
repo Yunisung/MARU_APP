@@ -1001,4 +1001,51 @@ public class TrxController {
 
 			return new CPRUtil(cpRequest).dataList2(rset).setView(request,"/trx/excel/list","");
 	  }
+
+	public String setPayLoad(SharedMap<String, Object> sharedMap, String status, String resultCd, String resultMsg){
+		SharedMap<String, String> payLoadMap = new SharedMap<String, String>();
+
+		payLoadMap.put("mchtId",sharedMap.getString("mchtId"));
+		payLoadMap.put("capId",sharedMap.getString("capId"));
+		payLoadMap.put("capType", sharedMap.getString("capType"));
+		payLoadMap.put("amount",sharedMap.getString("amount"));
+		payLoadMap.put("authCd", sharedMap.getString("authCd"));
+		payLoadMap.put("risk", sharedMap.getString("risk"));
+		payLoadMap.put("trxDay",CommonUtil.getCurrentDate("yyyyMMdd"));
+		payLoadMap.put("trxTime",CommonUtil.getCurrentDate("HHmmss"));
+		payLoadMap.put("status",status);
+		payLoadMap.put("trackId",sharedMap.getString("trackId"));
+		payLoadMap.put("resultCd",resultCd);
+		payLoadMap.put("resultMsg",resultMsg);
+		String payLoad = CommonUtil.toQueryString(payLoadMap,"UTF-8");
+		return payLoad;
+	}
+
+	@RequestMapping(value = "/trx/noti/list", method = RequestMethod.POST)
+	public ModelAndView notiList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		TrxDAO trxDAO = new TrxDAO();
+		RecordSet rset = trxDAO.getTrxNotiList(cpRequest.data,cpRequest.page);
+
+		return new CPRUtil(cpRequest).dataList(rset,trxDAO).setView(request,"/trx/noti/list","");
+	}
+
+	@RequestMapping(value = {"/trx/noti/retry/{idx}"}, method = RequestMethod.POST)
+	public @ResponseBody SharedMap<String, Object> notiRetry(HttpServletRequest request, @PathVariable String idx) {
+		SharedMap<String, Object> resultMap = new SharedMap<>();
+		logger.info("idx : {}", idx);
+		CPDAO dao = new CPDAO();
+		dao.setTable("PG_TRX_NTS_PG");
+		dao.setRecord("retry", 0);
+		dao.setRecord("status", "전송실패");
+		dao.addWhere("idx", idx, DAO.in);
+
+		if(dao.update()) {
+			resultMap.put("result", "OK");
+		} else {
+			resultMap.put("result", "NOK");
+			resultMap.put("msg", "재전송 실패했습니다.");
+		}
+
+		return resultMap;
+	}
 }

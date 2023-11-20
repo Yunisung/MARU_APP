@@ -186,6 +186,10 @@
                 <a href="/trxoper/load/form.jsp" class="nav-link ">
                       <span class="title">거래생성 조회</span></a>
             </li>
+            <li class="nav-item start ">
+                <a href="/trx/noti/form.jsp" class="nav-link ">
+                    <span class="title">노티내역 조회</span></a>
+            </li>
         </c:if>
     </ul>
 </li>
