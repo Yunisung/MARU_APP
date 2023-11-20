@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
+import com.pgmate.app.model.ajax.Data;
+import com.pgmate.app.model.ajax.Page;
+import com.pgmate.app.util.CPUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -515,5 +518,78 @@ public class TrxDAO extends DAO {
 		RecordSet rset = super.search();
 		super.initRecord();
 		return rset;
+	}
+
+	public SharedMap<String,Object> getRentCapById(String capId) {
+		super.setTable("VW_TRX_CAP");
+		super.addWhere("capId", capId);
+		super.addWhere("serviceType", "월세앱");
+		super.addWhere("stlStatus", "정산대기");
+
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst();
+	}
+
+	public String getHookAddr(String mchtId) {
+		super.setTable("PG_MCHT_RENT");
+		super.setColumns("riskChangeNotiAddr as hookAddr");
+		super.addWhere("mchtId", mchtId);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRow(0).getString("hookAddr");
+	}
+
+	public boolean insertRiskChangeNoti(SharedMap<String,Object> ntsMap) {
+		int result = 0;
+		String query = "INSERT INTO `PG_RISK_CHANGE_NOTI` (`mchtId`, `capId`, `trackId`, `risk`, `trxDay`, `hookAddr`, `retry`, `status`, `code`, `payLoad`, `resData`, `sentDate`, `regDay`, `regTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		DBManager db 	= null;
+		PreparedStatement pstmt	= null;
+		Connection conn			= null;
+		ResultSet rset			= null;
+		int i = 1;
+		try{
+			db 		= DBFactory.getInstance();
+			conn	= db.getConnection();
+			pstmt	= conn.prepareStatement(query);
+			pstmt.setString(i++,ntsMap.getString("mchtId"));
+			pstmt.setString(i++,ntsMap.getString("capId"));
+			pstmt.setString(i++,ntsMap.getString("trackId"));
+			pstmt.setString(i++,ntsMap.getString("risk"));
+			pstmt.setString(i++,ntsMap.getString("trxDay"));
+			pstmt.setString(i++,ntsMap.getString("hookAddr"));
+			pstmt.setInt(i++,ntsMap.getInt("retry"));
+			pstmt.setString(i++,ntsMap.getString("status"));
+			pstmt.setInt(i++,ntsMap.getInt("code"));
+			pstmt.setString(i++,ntsMap.getString("payLoad"));
+			pstmt.setString(i++,ntsMap.getString("resData"));
+			pstmt.setTimestamp(i++,ntsMap.getTimestamp("sentDate"));
+			pstmt.setString(i++,ntsMap.getString("regDay"));
+			pstmt.setString(i++,ntsMap.getString("regTime"));
+
+			result = pstmt.executeUpdate();
+			conn.commit();
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("insertRiskChangeNoti ERROR : {}, query : {}", e.getMessage(), query);
+		}finally{
+			db.close(conn,pstmt,rset);
+		}
+
+		if(result > 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public RecordSet getTrxNotiList(List<Data> datas, Page page){
+		super.setTable("VW_TRX_NTS_PG");
+		super.setColumns("*");
+		super.setOrderBy("regDate desc");
+
+		page = CPUtil.correctPage(page);
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		return super.searchList(page.current, page.size,page.hash);
 	}
 }
