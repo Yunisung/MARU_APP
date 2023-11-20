@@ -500,5 +500,37 @@ function pad(n, width, z) {
 	return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
+function trxNotiRetry(idx) {
+	console.log('trxNotiRetry:', idx);
+
+	bootbox.confirm('선택된 항목을 재전송 하시겠습니까?', function(result) {
+		if (result) {
+			$.ajax({
+				url : '/trx/noti/retry/'+ idx,
+				type : 'POST',
+				dataType : "text",
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader("Content-type",
+						"application/json;charset=utf-8");
+				},
+				data : idx,
+				success : function(json, textStatus) {
+					json = JSON.parse(json);
+					if (json.result == 'OK') {
+						bootbox.alert("재전송 완료했습니다.");
+					} else {
+						bootbox.alert(json.msg);
+					}
+				},
+				error : function(xhr, status, error) {
+					bootbox.alert("재전송 실패했습니다.");
+				},
+				complete : function(data) {
+					searchForList();
+				}
+			});
+		}
+	});
+}
 
 
