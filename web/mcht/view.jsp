@@ -1380,6 +1380,7 @@
 																				<c:when test="${PG_VACT_MNG_MAP.vactBankCd eq '089'}"><td>케이뱅크</td></c:when>
 																				<c:when test="${PG_VACT_MNG_MAP.vactBankCd eq '039'}"><td>경남은행</td></c:when>
 																				<c:when test="${PG_VACT_MNG_MAP.vactBankCd eq '034'}"><td>광주은행</td></c:when>
+																				<c:when test="${PG_VACT_MNG_MAP.vactBankCd eq '007'}"><td>수협은행</td></c:when>
 																			</c:choose>
 																			<td>${PG_VACT_MNG_MAP.settleType}</td>
 																			<c:choose>
@@ -1409,6 +1410,7 @@
 																					<c:when test="${entry.vactBankCd eq '089'}"><td>케이뱅크</td></c:when>
 																					<c:when test="${entry.vactBankCd eq '039'}"><td>경남은행</td></c:when>
 																					<c:when test="${entry.vactBankCd eq '034'}"><td>광주은행</td></c:when>
+																					<c:when test="${entry.vactBankCd eq '007'}"><td>수협은행</td></c:when>
 																				</c:choose>
 																				<td>${entry.settleType}</td>
 																				<c:choose>
@@ -2235,6 +2237,7 @@
 																				<c:if test="${VACT_MAP.vactBankCd == '089'}">케이뱅크</c:if>
 																				<c:if test="${VACT_MAP.vactBankCd == '039'}">경남은행</c:if>
 																				<c:if test="${VACT_MAP.vactBankCd == '034'}">광주은행</c:if>
+																				<c:if test="${VACT_MAP.vactBankCd == '007'}">수협은행</c:if>
 																		</div>
 																	</div>
 																</div>
