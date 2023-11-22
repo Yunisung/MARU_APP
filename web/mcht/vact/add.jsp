@@ -87,6 +87,7 @@
 													<option value="089" selected>케이뱅크</option>
 													<option value="039">경남은행</option>
 													<option value="034">광주은행</option>
+													<option value="007">수협은행</option>
 												</select>
 											</div>
 											<div class="form-group col-sm-6">
