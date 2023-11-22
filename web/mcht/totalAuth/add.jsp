@@ -55,6 +55,8 @@
                                                 <select id="settleType" name="settleType" class="selectpicker col-sm-6">
                                                     <option value="B+1" selected>B+1</option>
                                                     <option value="D+1">D+1</option>
+                                                    <option value="A+0">당일정산(영업일)</option>
+                                                    <option value="A+2">당일정산(365)</option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-sm-6">
