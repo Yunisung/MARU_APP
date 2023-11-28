@@ -1060,7 +1060,7 @@ public class TrxController {
 			return new CPRUtil(cpRequest).dataList2(rset).setView(request,"/trx/excel/list","");
 	  }
 
-	public String setPayLoad(SharedMap<String, Object> sharedMap, String status, String resultCd, String resultMsg){
+	public String setPayLoad(SharedMap<String, Object> sharedMap, String risk, String status, String resultCd, String resultMsg){
 		SharedMap<String, String> payLoadMap = new SharedMap<String, String>();
 
 		payLoadMap.put("mchtId",sharedMap.getString("mchtId"));
@@ -1068,7 +1068,7 @@ public class TrxController {
 		payLoadMap.put("capType", sharedMap.getString("capType"));
 		payLoadMap.put("amount",sharedMap.getString("amount"));
 		payLoadMap.put("authCd", sharedMap.getString("authCd"));
-		payLoadMap.put("risk", sharedMap.getString("risk"));
+		payLoadMap.put("risk", risk);
 		payLoadMap.put("trxDay",CommonUtil.getCurrentDate("yyyyMMdd"));
 		payLoadMap.put("trxTime",CommonUtil.getCurrentDate("HHmmss"));
 		payLoadMap.put("status",status);
