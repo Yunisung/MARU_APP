@@ -6,8 +6,11 @@
 <div class="portlet-title">
 	<div class="caption font-red-sunglo">
 		<i class="icon-share font-red-sunglo"></i>
-		<span class="caption-subject bold uppercase"> RESULT </span>
-		<span class="caption-helper"><span id="page-total">${CPR.page.total}</span> 건 조회됨.</span>
+		<span class="caption-subject bold uppercase"> Result </span>
+		<span class="caption-helper"><span id="page-total">${CPR.page.total}</span> 건</span>
+		<span class="caption-helper amount_sum" style="color:#00a2ff;font-weight:600;">
+			결과 금액 합계: <fmt:formatNumber type="number" value="${SUMMAP.amount }" pattern="#,##0" /> 원
+		</span>
 	</div>
 	<div class="actions">
 		<a class="btn btn-circle btn-icon-only btn-default" href="javascript:searchForExcel();">
@@ -27,60 +30,65 @@
 			<thead>
 				<tr>
 					<th>No</th>
-					<th data-sort="string">아이디</th>
-					<th data-sort="string">이름</th>
-					<th data-sort="string">사업자(주민)번호</th>
-					<th data-sort="string">대표자이름</th>
-					<th data-sort="string">상태</th>
-					<c:if test="${CP_SESSION.grade eq '본사' || ((CP_SESSION.grade eq '대행사' || CP_SESSION.grade eq '에이전시' || CP_SESSION.grade eq '지사') && CP_SESSION.loanSettleStatus == 'Y')}">
-					<th data-sort="string">대출정산</th>
-					</c:if>
-					<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '대행사'}"><th data-sort="string">대행사</th></c:if>
-					<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '에이전시'}"><th data-sort="string">에이전시</th></c:if>
-					<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '에이전시'|| CP_SESSION.grade eq '지사'}"><th data-sort="string">지사</th></c:if>
-					<th data-sort="string">예수금</th>
-					<th data-sort="string">정산주기</th>
-					<th data-sort="string">계약구분</th>
-					<th data-sort="string">계약검토상태</th>
+					<th style="min-width:140px;">가맹점</th>
+					<th>가맹점아이디</th>
+					<th>주문번호</th>
+					<th>거래번호</th>
+					<th>원거래번호</th>
+					<th>참조번호</th>
+					<th>결제유형</th>
+					<th>납부구분</th>
+					<th>입출금원금</th>
+					<th>수수료</th>
+					<th>수수료부가세</th>
 					<c:if test="${CP_SESSION.grade == '본사'}">
-						<th data-sort="string" style="min-width:60px;">수수료</th>
+						<th>은행수수료</th>
 					</c:if>
-					<th data-sort="string">등록자</th>
-					<th data-sort="string">시작일자</th>
-					<th data-sort="string">등록일시</th>
+					<th>계정실출금액</th>
+					<th style="min-width:140px;">거래일시</th>
+					<th>지급예정일</th>
+					<th>지급완료일</th>
+					<th>지급상태</th>
+					<th>계좌번호</th>
+					<th>예금주</th>
+					<th style="min-width:100px;">은행</th>
+					<th>이체재시도</th>
 				</tr>
 			</thead>
 			<tbody id="list">
 				<c:if test="${CPR.result.code != 200}">
 					<tr>
-						<td colspan="18">${CPR.result.code}:&nbsp;${CPR.result.message}:&nbsp;${CPR.result.error}</td>
+						<td colspan="22">${CPR.result.code}:&nbsp;${CPR.result.message}:&nbsp;${CPR.result.error}</td>
 					</tr>
 				</c:if>
 				<c:forEach var="entry" items="${CPR.data}" varStatus="status">
-					<tr>
+					<tr data-trxId="${entry.trxId}">
 						<td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
-						<td class="link" data-url="/mcht/view/${entry.mchtId}/tab_basic">${entry.mchtId}</td>
-						<td class="link" data-url="/mcht/view/${entry.mchtId}/tab_basic">${entry.name}</td>
-						<td>${entry.maskidentity}</td>
-						<td>${entry.ceoName}</td>
-						<td><c:if test="${entry.status eq '대기'}">승인</c:if>${entry.status}</td>
-						<c:if test="${CP_SESSION.grade eq '본사' || ((CP_SESSION.grade eq '대행사' || CP_SESSION.grade eq '에이전시' || CP_SESSION.grade eq '지사') && CP_SESSION.loanSettleStatus == 'Y')}">
-						<td>${entry.loanSettleStatus}</td>
-						</c:if>
-						<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '대행사'}"><td>${entry.distName}</td></c:if>
-						<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '에이전시'}"><td>${entry.agencyName}</td></c:if>
-						<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '에이전시'|| CP_SESSION.grade eq '지사'}"><td>${entry.salesName}</td></c:if>
-						<td class="digits link" data-url="/deposit/form/${entry.mchtId}">${entry.deposit}</td>
-						<td>${entry.settleType}</td>
-						<td>${entry.contractType}</td>
-						<td>${entry.contractStatus}</td>
+						<td>${entry.name}</td>
+						<td>${entry.mchtId}</td>
+						<td>${entry.trackId}</td>
+						<td>${entry.trxId}</td>
+						<td>${entry.rootTrxId}</td>
+						<td>${entry.refId}</td>
+						<td>${entry.billingType}</td>
+						<td>${entry.billingMethod}</td>
+						<td><fmt:formatNumber type="number" value="${entry.amount}" pattern="#,##0" /></td>
+						<td><fmt:formatNumber type="number" value="${entry.fee}" pattern="#,##0" /></td>
+						<td><fmt:formatNumber type="number" value="${entry.feeVat}" pattern="#,##0" /></td>
 						<c:if test="${CP_SESSION.grade == '본사'}">
-						<td><fmt:formatNumber value="${entry.rate * 100}" pattern="0.000"/> %</td>
-						<%--<td><fmt:formatNumber value="${entry.loanRate * 100}" pattern="0.000"/> %</td>--%>
+							<td><fmt:formatNumber type="number" value="${entry.bankFee}" pattern="#,##0" /></td>
 						</c:if>
-						<td>${entry.regId}</td>
-						<td>${entry.mchtActiveDate}</td>
-						<td class="date">${entry.regDate}</td>
+						<td><fmt:formatNumber type="number" value="${entry.netAmount}" pattern="#,##0" /></td>
+						<td class="date">${entry.payDay}${entry.payTime}</td>
+						<td>${entry.pubDay}</td>
+						<td>${entry.trxDay}</td>	<!-- == payOutDay -->
+						<td>${entry.status}</td>
+						<td>${entry.decAccount}</td>
+						<td>${entry.decHolder}</td>
+						<td>${entry.bankName}</td>
+						<c:if test="${entry.status eq '실패' && entry.rootTrxId eq ''}">
+							<td class="btn-td"><a class="btn green btn-sm" href="javascript:retryPayOut('${entry.trxId}')">이체</a></td>
+						</c:if>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -124,5 +132,22 @@
 			</span>
 		</div>
 	</div>
+
+	<script type="text/javascript">
+		function retryPayOut(trxId, amount) {
+			var $modal = $('#pgmate-modal');
+			if ($modal.children().length < 1) {
+				$modal.empty();
+			}
+			var url = '/rent/settle/retry/view/' + trxId;
+
+			$modal.load(url, '', function(responseTxt, statusTxt, xhr) {
+				if (statusTxt == "success") {
+					$modal.modal();
+					textMask();
+				}
+			});
+		}
+	</script>
 </div>
 <!-- 리스트 페이징 종료 -->

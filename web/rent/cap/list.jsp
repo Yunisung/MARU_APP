@@ -23,6 +23,18 @@
 						<i class="fa fa-check-square-o"></i> 리스크 해제
 					</a>
 				</li>
+				<li><a href="javascript:;" class="trx-stl-status-change" data-status="월세 최초결제">
+					<i class="fa fa-check-square-o"></i> 월세 최초결제
+				</a>
+				</li>
+				<li><a href="javascript:;" class="trx-stl-status-change" data-status="월세 1회한도">
+					<i class="fa fa-check-square-o"></i> 월세 1회한도
+				</a>
+				</li>
+				<li><a href="javascript:;" class="trx-stl-status-change" data-status="월세 월한도">
+					<i class="fa fa-check-square-o"></i> 월세 월한도
+				</a>
+				</li>
 				<li><a href="javascript:;" class="trx-stl-status-change" data-status="건한도">
 						<i class="fa fa-check-square-o"></i> 건한도
 					</a>
@@ -131,7 +143,7 @@
 						<td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
 						<td class="date">${entry.trxDay}${entry.regTime}</td>
 						<td>${entry.authCd}</td>
-						<td class="link_modal" data-url="/trx/cap/view/${entry.capId}">${entry.capId} </td>
+						<td class="link_modal" data-url="/rent/cap/view/${entry.capId}">${entry.capId} </td>
 						<td>${entry.trxId}</td>
 						<td title="${entry.mchtId } <c:choose><c:when test="${CP_SESSION.grade == '본사'}">${entry.distName} &lt;${entry.agencyName}
 						</c:when><c:when test="${CP_SESSION.grade == '대행사'}"> &lt;${entry.agencyName}</c:when><c:when test="${CP_SESSION.grade == '에이전시'}">${entry.salesName}</c:when><c:otherwise>${entry.agencyName}</c:otherwise></c:choose>">

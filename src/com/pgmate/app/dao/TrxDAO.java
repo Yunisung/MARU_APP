@@ -518,6 +518,7 @@ public class TrxDAO extends DAO {
 	public SharedMap<String,Object> getRentCapById(String capId) {
 		super.setTable("VW_TRX_CAP");
 		logger.info("capId ::: {}", capId);
+		super.setColumns("*");
 		super.addWhere("capId", capId);
 		super.addWhere("serviceType", "월세앱");
 		super.addWhere("stlStatus", "정산대기");

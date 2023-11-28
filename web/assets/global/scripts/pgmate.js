@@ -290,7 +290,7 @@ var PGmate = function() {
 				});
 			}
 		});
-		
+
 		// 정산 지급 상태 변경
 		//KJM : 가맹점 정산 조회 > 정산상태 변경
 		$(document).on('click', '.settle-mcht-payout', function() {

@@ -27,7 +27,7 @@
 						<div class="page-bar">
 							<ul class="page-breadcrumb">
 									<li><a href="/">Home</a><i class="fa fa-circle"></i></li>
-									<li><span>거래관리</span><i class="fa fa-circle"></i></li>
+									<li><span>월세앱 관리</span><i class="fa fa-circle"></i></li>
                   <li><span>매입현황조회</span></li>
 							</ul>
 							<div class="page-toolbar">
@@ -151,37 +151,20 @@
 															</div>
 														</div>
 														<div class="form-group pg-form-group">
-															<label class="control-label col-lg-4">리스크</label>
-															<select class="selectpicker col-lg-8" name="risk" data-oper="eq">
-																<option value="">-- 전체 -- </option>
-																<option value="건한도">건한도</option>
-																<option value="중복">중복</option>
-																<option value="고액">고액</option>
-																<option value="최소금액">최소금액</option>
-																<option value="야간할부">야간할부</option>
-																<option value="1일중복">1일중복</option>
-																<option value="주간할부">주간할부</option>
-																<option value="야간건한도">야간건한도</option>
-																<option value="위험">위험</option>
-																<option value="관리자 설정">관리자 설정</option>
-															</select>
-														</div>
-														<div class="form-group pg-form-group">
-															<label class="control-label col-lg-4">월세 리스크</label>
-															<select class="selectpicker col-lg-8" name="risk" data-oper="eq">
-																<option value="">-- 전체 -- </option>
-																<option value="건한도">월세 최초결제</option>
-																<option value="중복">월세 1회한도</option>
-																<option value="고액">월세 월한도</option>
-															</select>
-														</div>
-													</div>
-													<div class="row">
-														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">터미널 번호</label>
 															<div class="col-lg-8">
 																<input type="text" class="form-control input-sm" name="tmnId" data-oper="lk" placeholder="터미널번호">
 															</div>
+														</div>
+													</div>
+													<div class="row">
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">신용/체크</label>
+															<select class="selectpicker col-lg-8" name="cardType" data-oper="eq">
+																<option value="">-- 전체 -- </option>
+																<option value="신용">신용</option>
+																<option value="체크">체크</option>
+															</select>
 														</div>
 														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">카드 BIN</label>
@@ -249,24 +232,30 @@
 																<option value="'01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','36','48','60'">할부</option>
 															</select>
 														</div>
-														<c:if test="${CP_SESSION.grade == '본사'}">
 														<div class="form-group pg-form-group">
-															<label class="control-label col-lg-4">PG/선정산</label>
-															<select class="selectpicker col-lg-8" name="pgOrFactoring" data-reg="false">
-																	<option value="" selected>-- 전체 -- </option>
-																	<option value="선정산">선정산</option>
-																	<option value="PG">PG</option>
-															</select>
-															<input id="pgOrFactoring" type="hidden" name="distId" data-oper="eq" data-reg="false" value="00">
-														</div>
-														</c:if>
-														<div class="form-group pg-form-group">
-															<label class="control-label col-lg-4">신용/체크</label>
-															<select class="selectpicker col-lg-8" name="cardType" data-oper="eq">
+															<label class="control-label col-lg-4">리스크</label>
+															<select class="selectpicker col-lg-8" name="risk" data-oper="eq">
 																<option value="">-- 전체 -- </option>
-																	<option value="신용">신용</option>
-																	<option value="체크">체크</option>
-																</select>
+																<option value="건한도">건한도</option>
+																<option value="중복">중복</option>
+																<option value="고액">고액</option>
+																<option value="최소금액">최소금액</option>
+																<option value="야간할부">야간할부</option>
+																<option value="1일중복">1일중복</option>
+																<option value="주간할부">주간할부</option>
+																<option value="야간건한도">야간건한도</option>
+																<option value="위험">위험</option>
+																<option value="관리자 설정">관리자 설정</option>
+															</select>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">월세 리스크</label>
+															<select class="selectpicker col-lg-8" name="risk" data-oper="eq">
+																<option value="">-- 전체 -- </option>
+																<option value="월세 최초결제">월세 최초결제</option>
+																<option value="월세 1회한도">월세 1회한도</option>
+																<option value="월세 월한도">월세 월한도</option>
+															</select>
 														</div>
 													</div>
 													
