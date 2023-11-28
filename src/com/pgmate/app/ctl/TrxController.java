@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.pgmate.app.dao.*;
 import com.pgmate.app.hook.RiskChangeHook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,23 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
-import com.pgmate.app.dao.CPDAO;
-import com.pgmate.app.dao.MchtDAO;
-import com.pgmate.app.dao.MchtTmnDAO;
-import com.pgmate.app.dao.PispDAO;
-import com.pgmate.app.dao.PispFcsDAO;
-import com.pgmate.app.dao.TrxAdminCancelDAO;
-import com.pgmate.app.dao.TrxCapDAO;
-import com.pgmate.app.dao.TrxCapSubDAO;
-import com.pgmate.app.dao.TrxDAO;
-import com.pgmate.app.dao.TrxErrDAO;
-import com.pgmate.app.dao.TrxIODAO;
-import com.pgmate.app.dao.TrxIqrDAO;
-import com.pgmate.app.dao.TrxPayDAO;
-import com.pgmate.app.dao.TrxReqDAO;
-import com.pgmate.app.dao.TrxRfdDAO;
-import com.pgmate.app.dao.TrxWHDAO;
-import com.pgmate.app.dao.TrxWHFailDAO;
 import com.pgmate.app.interceptor.SessionExclude;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.Data;
@@ -442,6 +426,8 @@ public class TrxController {
 
 		TrxIqrDAO iqrDAO = new TrxIqrDAO();
 		TrxDAO trxDAO = new TrxDAO();
+		MchtDAO mchtDAO = new MchtDAO();
+		ChargeSettleDAO chargeSettleDAO = new ChargeSettleDAO();
 
 		if(CommonUtil.isNullOrSpace(capArray)) {
 			return result;
@@ -457,17 +443,32 @@ public class TrxController {
 		StringBuilder rowResult = new StringBuilder();
 		if(CommonUtil.isNullOrSpace(risk)){	//리스크 해지
 			for(String capId : capIdArray) {
-				String t = util.setRiskToNormal(capId.replaceAll("'", ""));
+				capId = capId.replaceAll("'", "");
+				String t = util.setRiskToNormal(capId);
 				if(t.startsWith("OK")){
 					// 23.11.02 월세앱 리스크 해제 노티 전송 추가
 					SharedMap<String, Object> capMap = trxDAO.getRentCapById(capId);
-					String hookAddr = trxDAO.getHookAddr(capMap.getString("mchtId"));
-					if (!CommonUtil.isNullOrSpace(hookAddr)) {
-						String payLoad = setPayLoad(capMap, "완료", "0000", "정상처리");
-						capMap.put("payLoad", payLoad);
-						new RiskChangeHook(hookAddr, capMap, "0").start();
+					if(capMap != null) {
+						logger.info("월세앱 거래건 있음");
+						// 예약이체 insert
+						boolean isExistRfdTrx = trxDAO.isExistsRfdTrx(capId);
+						if(!isExistRfdTrx) {
+							if (!"분납".equals(capMap.getString("billingMethod"))) {
+								logger.info("충전정산 대상");
+								SharedMap<String, Object> mchtTaxMap = mchtDAO.getMchtTaxByTaxId(capMap.getString("taxId"));
+								SharedMap<String, Object> chargeSettleFirmMap = createChargeSettleFirmMap(capMap, trxDAO.getSender(capMap.getString("mchtId")), mchtTaxMap);
+								chargeSettleDAO.insertChargeSettleFirm(chargeSettleFirmMap);
+							}
+						}
+						// 노티전송
+						String hookAddr = trxDAO.getHookAddr(capMap.getString("mchtId"));
+						if (!CommonUtil.isNullOrSpace(hookAddr)) {
+							String payLoad = setPayLoad(capMap, risk, "완료", "0000", "정상처리");
+							capMap.put("payLoad", payLoad);
+							new RiskChangeHook(hookAddr, capMap, "0").start();
+						}
 					}
-					iqrDAO.insertRisk(capId.replaceAll("'", ""), t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
+					iqrDAO.insertRisk(capId, t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
 					success++;
 				}else{
 					failure++;
@@ -476,11 +477,23 @@ public class TrxController {
 
 
 			}
-		}else{								//리스크 설정
+		//리스크 설정
+		}else{
 			for(String capId : capIdArray) {
-				String t = util.setCaptureToRisk(capId.replaceAll("'", ""),risk);
+				capId = capId.replaceAll("'", "");
+				String t = util.setCaptureToRisk(capId,risk);
 				if(t.startsWith("OK")){
-					iqrDAO.insertRisk(capId.replaceAll("'", ""), t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
+					SharedMap<String, Object> capMap = trxDAO.getRentCapById(capId);
+					if(capMap != null) {
+						chargeSettleDAO.deleteStlFirmReserve(capMap);
+						String hookAddr = trxDAO.getHookAddr(capMap.getString("mchtId"));
+						if (!CommonUtil.isNullOrSpace(hookAddr)) {
+							String payLoad = setPayLoad(capMap, risk, "완료", "0000", "정상처리");
+							capMap.put("payLoad", payLoad);
+							new RiskChangeHook(hookAddr, capMap, "0").start();
+						}
+					}
+					iqrDAO.insertRisk(capId, t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
 					success++;
 				}else{
 					failure++;
@@ -508,7 +521,42 @@ public class TrxController {
 		return rowResult.toString();
 	}
 
+	private SharedMap<String,Object> createChargeSettleFirmMap(SharedMap<String,Object> trxCapMap, String sender, SharedMap<String,Object> mchtTaxMap) {
+		MchtDAO mchtDAO = new MchtDAO();
+		SharedMap<String,Object> chargeSettleFirmMap = new SharedMap<String,Object>();
+		String regDate = CommonUtil.getCurrentDate("yyyyMMddHHmmss");
+		String pubTime = "004000";
 
+		chargeSettleFirmMap.put("trxId"		, trxCapMap.getString("trxId"));
+		chargeSettleFirmMap.put("transferType"	, "예약");
+		chargeSettleFirmMap.put("mchtId"	, trxCapMap.getString("mchtId"));
+		chargeSettleFirmMap.put("trackId"	, trxCapMap.getString("trackId"));
+		chargeSettleFirmMap.put("pubDay"	, trxCapMap.getString("transferDay"));
+		chargeSettleFirmMap.put("pubTime"	, pubTime);
+		chargeSettleFirmMap.put("status"	, "대기");
+		chargeSettleFirmMap.put("retry"		, 0);
+		chargeSettleFirmMap.put("trxDay"	, regDate.substring(0, 8));
+		chargeSettleFirmMap.put("trxTime"	, regDate.substring(8));
+		chargeSettleFirmMap.put("amount"	, Math.abs(trxCapMap.getLong("amount")));
+		chargeSettleFirmMap.put("fee"		, Math.abs(trxCapMap.getLong("stlFee")));
+		chargeSettleFirmMap.put("feeVat"	, Math.abs(trxCapMap.getLong("stlFeeVat")));
+		chargeSettleFirmMap.put("bankFee"	, 0);
+		chargeSettleFirmMap.put("netAmount"	, Math.abs(trxCapMap.getLong("stlAmount")));
+		chargeSettleFirmMap.put("balance"	, mchtDAO.getMchtBalance(trxCapMap.getString("mchtId")).getLong("balance")+Math.abs(trxCapMap.getLong("stlAmount")));
+		chargeSettleFirmMap.put("resultCd"	, "");
+		chargeSettleFirmMap.put("resultMsg"	, "");
+		chargeSettleFirmMap.put("refId"		, trxCapMap.getString("capId"));
+		chargeSettleFirmMap.put("rootTrxId"	, "");
+		chargeSettleFirmMap.put("account"	, mchtTaxMap.getString("account"));
+		chargeSettleFirmMap.put("bankCd"	, mchtTaxMap.getString("bankCd"));
+		chargeSettleFirmMap.put("bankName"	, mchtTaxMap.getString("bankName"));
+		chargeSettleFirmMap.put("holder"	, mchtTaxMap.getString("accntHolder"));
+		chargeSettleFirmMap.put("recordInfo", sender);
+		chargeSettleFirmMap.put("regId"		, trxCapMap.getString("mchtId"));
+		chargeSettleFirmMap.put("regDay"	, regDate.substring(0, 8));
+
+		return chargeSettleFirmMap;
+	}
 
 	@RequestMapping(value = "/trx/cap/iqr/{capId}", method = RequestMethod.POST)
 	public @ResponseBody String capChangeStlStatus(HttpServletRequest request, @PathVariable String capId) {
