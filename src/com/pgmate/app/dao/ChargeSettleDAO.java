@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
+import com.pgmate.lib.util.lang.CommonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -203,6 +204,97 @@ public class ChargeSettleDAO extends DAO{
 		RecordSet rset = super.search();
 		super.initRecord();
 		return rset;
+	}
+
+	public int insertChargeSettleFirm(SharedMap<String,Object> insertChargeSettleFirm){
+		int inserted = 0;
+		String query = "insert into PG_CHARGE_SETTLE_FIRM_RESERVE (trxId, transferType, mchtId, trackId, pubDay, pubTime, status, retry, trxDay, trxTime, amount, fee, feeVat, bankFee, netAmount, balance, resultCd, resultMsg, refId, rootTrxId, account, bankCd, bankName, holder, recordInfo, regId, regDay)  values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+		DBManager db = null ;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int result      =0;
+
+		try{
+			db 		= DBFactory.getInstance();
+			conn	= db.getConnection();
+			pstmt	= conn.prepareStatement(query);
+
+			int batchSize = 100;
+			int count = 0;
+
+			int i=1;
+			pstmt.setString(i++, insertChargeSettleFirm.getString("trxId"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("transferType"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("mchtId"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("trackId"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("pubDay"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("pubTime"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("status"));
+			pstmt.setInt(i++   , insertChargeSettleFirm.getInt("retry"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("trxDay"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("trxTime"));
+			pstmt.setLong(i++  , insertChargeSettleFirm.getLong("amount"));
+			pstmt.setLong(i++  , insertChargeSettleFirm.getLong("fee"));
+			pstmt.setLong(i++  , insertChargeSettleFirm.getLong("feeVat"));
+			pstmt.setLong(i++  , insertChargeSettleFirm.getLong("bankFee"));
+			pstmt.setLong(i++  , insertChargeSettleFirm.getLong("netAmount"));
+			pstmt.setLong(i++  , insertChargeSettleFirm.getLong("balance"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("resultCd"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("resultMsg"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("refId"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("rootTrxId"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("account"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("bankCd"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("bankName"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("holder"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("recordInfo"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("regId"));
+			pstmt.setString(i++, insertChargeSettleFirm.getString("regDay"));
+
+			result = pstmt.executeUpdate();
+			conn.commit();
+		}catch(Exception e){
+			logger.debug("insert batch chargeSettleFirm error : {}", CommonUtil.getExceptionMessage(e));
+		}finally{
+			db.close(pstmt);
+			db.close(conn);
+		}
+
+		return result;
+	}
+
+	public int deleteStlFirmReserve(SharedMap<String,Object> capMap) {
+		int deleted = 0;
+		DBManager db = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		logger.info("delete PG_CHARGE_SETTLE_FIRM_RESERVE batch : {} )", capMap.size());
+		String query = "DELETE FROM PG_CHARGE_SETTLE_FIRM_RESERVE WHERE trxId=?";
+
+		try {
+			int batchSize = 100;
+			int count = 0;
+
+			db = DBFactory.getInstance();
+			conn = db.getConnection();
+			conn.setAutoCommit(false);
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, capMap.getString("trxId"));
+			pstmt.addBatch();
+			if (++count % batchSize == 0) {
+				deleted += pstmt.executeBatch().length;
+			}
+			deleted += pstmt.executeBatch().length;
+			conn.commit();
+		} catch (Exception e) {
+			logger.debug("delete batch PG_CHARGE_SETTLE_FIRM_RESERVE error : {})", com.pgmate.lib.util.lang.CommonUtil.getExceptionMessage(e));
+		} finally {
+			db.close(pstmt);
+			db.close(conn);
+		}
+		return deleted;
 	}
 
 }
