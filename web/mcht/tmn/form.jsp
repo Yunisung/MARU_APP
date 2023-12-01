@@ -102,7 +102,8 @@
 													</div>
 
 													<div class="row search-opt">
-
+														<c:import url="/common/selectGrade.jsp" />
+														<input type="hidden" id="grade_search" name="parentId" data-oper="eq" value=""/>
 													</div>
 												</div>
 
@@ -138,6 +139,7 @@
 	<c:import url="/include/javascript.jsp" />
 
 	<script type="text/javascript">
+		gradeSelector('searchForm', '${CP_SESSION.grade}');
 		searchForList();//검색 실행
 		 <c:if test="${CP_SESSION.grade eq '본사'}">
 		 $('input[name="thead"]').val($('input[name="thead"]').val() + ",van:밴사,vanIdx:VAN INDEX,vanId:VAN ID,vanName: VAN 이름");
