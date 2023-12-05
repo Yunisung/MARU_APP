@@ -264,7 +264,7 @@ var PGmate = function() {
 				});
 			}
 		});
-		
+
 		// 정산 지급 상태 변경
 		$(document).on('click', '.settle-mcht-payout', function() {
 			var status = $(this).attr("data-status");

@@ -315,7 +315,6 @@ public class TrxDAO extends DAO {
 		super.setRecord("value", value);
 		super.insert();
 		super.initRecord();
-
 	}
 	
 	
@@ -332,7 +331,6 @@ public class TrxDAO extends DAO {
 		}else if(table.equals("PG_TRX_CAP")){
 			super.addWhere("capId", id);
 		}
-		
 
 		boolean updated = super.update();
 		super.initRecord();
@@ -522,6 +520,8 @@ public class TrxDAO extends DAO {
 
 	public SharedMap<String,Object> getRentCapById(String capId) {
 		super.setTable("VW_TRX_CAP");
+		logger.info("capId ::: {}", capId);
+		super.setColumns("*");
 		super.addWhere("capId", capId);
 		super.addWhere("serviceType", "월세앱");
 		super.addWhere("stlStatus", "정산대기");
@@ -581,6 +581,26 @@ public class TrxDAO extends DAO {
 		}else {
 			return false;
 		}
+	}
+
+	public boolean isExistsRfdTrx(String capId) {
+		super.setTable("VW_TRX_CAP");
+		super.setColumns("capId");
+		super.addWhere("rootTrxId",capId,eq);
+		super.addWhere("capType","매입취소",eq);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.size() > 0;
+	}
+
+	public String getSender(String mchtId) {
+		super.setTable("PG_MCHT_RENT");
+		super.setColumns("sender");
+		super.addWhere("mchtId", mchtId);
+
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRow(0).getString("sender");
 	}
 
 	public RecordSet getTrxNotiList(List<Data> datas, Page page){
