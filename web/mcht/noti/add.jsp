@@ -87,7 +87,14 @@
                                                     <input type="text" class="form-control input-sm phone" maxlength="100" name="hookUrl" placeholder="https://" value="">
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="trxType" value="CARD" />
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4 req-label">거래구분
+                                                </label>
+                                                <select id="trxType" name="trxType" class="selectpicker col-sm-6">
+                                                    <option value="CARD" selected>CARD</option>
+                                                    <option value="SETTLE">SETTLE</option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="alert alert-danger display-hide"></div>
                                         <div class="form-actions right">
@@ -117,8 +124,8 @@
     form1.validate({
         rules : {
             id : {
-                minlength : 5,
-                userId : true,
+                minlength : 1,
+                // userId : true,
                 required : true,
                 remote : {
                     url : "/mcht/noti/idCheck", //make sure to return true or false with a 200 status code
@@ -128,8 +135,9 @@
                             return form1.find('input[name="id"]').val();
                         },
                         idType : function () {
-                            var selectIdType = document.getElementById("idType");
-                            return selectIdType.options[selectIdType.selectedIndex].value;
+                            return $("#idType option:selected").val();
+                            // var selectIdType = document.getElementById("idType");
+                            // return selectIdType.options[selectIdType.selectedIndex].value;
                         }
                     }
                 }

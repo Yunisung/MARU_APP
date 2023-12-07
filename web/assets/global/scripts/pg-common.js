@@ -248,6 +248,92 @@ function vactSettleDetailDownload(gradeId, stlId, isSub) {
 	});
 }
 
+// 월세 정산 확정 처리 - 통신
+function rentSettleStatusUpdate(status, stlId, isSub) {
+	bootbox.confirm('선택된 항목들을 모두 ' + status + '처리 하시겠습니까?', function (result) {
+		if (result) {
+			$.ajax({
+				url: '/rent/distSettle/status/' + (isSub ? 'sub/' : '') + status,
+				type: 'POST',
+				dataType: "text",
+				beforeSend: function (xhr) {
+					xhr.setRequestHeader("Content-type",
+						"application/json;charset=utf-8");
+				},
+				data: stlId,
+				success: function (json, textStatus) {
+					json = JSON.parse(json);
+					if (json.result == 'OK') {
+						bootbox.alert("정산 상태를 변경했습니다.");
+					} else {
+						bootbox.alert(json.msg);
+					}
+				},
+				error: function (xhr, status, error) {
+					bootbox.alert("정산 상태 변경에 실패헸습니다.");
+				},
+				complete: function (data) {
+					searchForList();
+				}
+			});
+		}
+	});
+}
+
+// 월세 정산 지급완료 처리 - 통신
+function rentSettlePayStatusUpdate(status, stlId, isSub) {
+	bootbox.confirm('선택된 항목들을 모두 ' + status + ' 처리 하시겠습니까?', function(result) {
+		if (result) {
+			$.ajax({
+				url : '/rent/distSettle/paystatus/' + (isSub ? 'sub/' : '') + status,
+				type : 'POST',
+				dataType : "text",
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader("Content-type",
+						"application/json;charset=utf-8");
+				},
+				data : stlId,
+				success : function(json, textStatus) {
+					json = JSON.parse(json);
+					if (json.result == 'OK') {
+						bootbox.alert("정산 상태를 변경했습니다.");
+					} else {
+						bootbox.alert(json.msg);
+					}
+				},
+				error : function(xhr, status, error) {
+					bootbox.alert("정산 상태 변경에 실패헸습니다.");
+				},
+				complete : function(data) {
+					searchForList();
+				}
+			});
+		}
+	});
+}
+
+// 월세 엑셀 다운
+function rentSettleDetailDownload(gradeId, stlId, isSub) {
+	$.ajax({
+		url : '/rent/distSettle/detail' + (isSub ? '/sub' : ''),
+		type : 'POST',
+		data : { 'grade' : gradeId, 'stlId' : stlId },
+		success : function(json, textStatus) {
+			if(typeof json.message == "undefined"){
+				location.href = json.file.link;
+			}else{
+				bootbox.alert(json.message);
+			}
+		},
+		error : function(xhr, status, error) {
+			bootbox.alert("엑셀 다운로드에 실패헸습니다.");
+		},
+		complete : function(data) {
+			searchForList();
+		}
+	});
+}
+
 function redirectToMain() {
 	window.top.location.href = '/'
 }
