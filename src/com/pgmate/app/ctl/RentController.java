@@ -1,10 +1,18 @@
 package com.pgmate.app.ctl;
 
 import com.pgmate.app.dao.*;
+import com.pgmate.app.export.CPDocument;
+import com.pgmate.app.export.XlsExport;
+import com.pgmate.app.hook.MemSettleHook;
+import com.pgmate.app.hook.RiskChangeHook;
 import com.pgmate.app.model.ajax.CPRequest;
+import com.pgmate.app.model.ajax.CPResponse;
+import com.pgmate.app.model.ajax.Files;
 import com.pgmate.app.util.CPRUtil;
 import com.pgmate.app.util.SessionUtil;
+import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
+import com.pgmate.lib.util.gson.GsonUtil;
 import com.pgmate.lib.util.lang.CommonUtil;
 import com.pgmate.lib.util.map.SharedMap;
 import org.slf4j.Logger;
@@ -17,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Controller
@@ -336,11 +345,267 @@ public class RentController {
             }
         }
 
-
         if(rentDAO.updateFirmReserve(trxId, transferType, pubDay, pubTime)) {
             return "OK:재전송 요청 성공하였습니다.";
         } else {
             return "NOK:재전송 요청에 실패하였습니다.";
         }
+    }
+
+    // 대행사정산
+    @RequestMapping(value = {"/rent/distSettle/form"})
+    public ModelAndView distSettleForm(HttpServletRequest request) {
+        return new ModelAndView("/rent/distSettle/form");
+    }
+
+    @RequestMapping(value = "/rent/distSettle/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView distSettleList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
+        SessionUtil.setSearchGrade(request, cpRequest);
+        RentDAO rentDAO = new RentDAO();
+
+        cpRequest.setData("grade", "대행사", "eq", "", true);
+        cpRequest.setData("stlAmt", "0", "ne", "", true);
+        cpRequest.setData("stlDay", "", "", "desc", false);
+        cpRequest.setData("memberId", "", "", "asc", false);
+        RecordSet rset = rentDAO.distSettlelist(cpRequest.data, cpRequest.page);
+        return new CPRUtil(cpRequest).dataList(rset,rentDAO).setView(request,"/rent/distSettle/list","");
+    }
+
+    // 정산정보 저장
+    @RequestMapping(value = "/rent/distSettle/save", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody SharedMap<String, Object> rentDecide(HttpServletRequest request,@RequestBody List<SharedMap<String, String>> requestList) {
+        SharedMap<String, Object> resultMap = new SharedMap<String, Object>();
+        String regId = SessionUtil.getUserId(request);
+        String regDay = CommonUtil.getCurrentDate("yyyyMMdd");
+        DAO dao = new DAO();
+
+        for(SharedMap<String, String> eachMap : requestList) {
+
+            logger.debug("SETTLE SAVE = stlId: {}", eachMap.getString("stlId"));
+            dao.setDebug(true);
+            dao.setTable("PG_RENT_SETTLE");
+            dao.setRecord("payOutAmt",eachMap.getLong("payOutAmt"));
+            dao.setRecord("summary",eachMap.getString("summary"));
+            dao.setRecord("regId",regId);
+            dao.setRecord("regDay",regDay);
+            dao.addWhere("stlId", eachMap.getString("stlId"));
+            if(!dao.update()) {
+                resultMap.put("result", "NOK");
+                resultMap.put("msg", eachMap.getString("stlId") + " DB 업데이트에 실패했습니다.");
+                break;
+            }
+
+            dao.initRecord();
+        }
+        if(!resultMap.getString("result").equals("NOK")) {
+            resultMap.put("result", "OK");
+        }else {
+            resultMap.put("result", "NOK");
+            if(resultMap.getString("msg").length() < 1) {
+                resultMap.put("msg", "수정에 실패했습니다.");
+            }
+        }
+        return resultMap;
+    }
+
+    // 지급 완료 처리
+    @RequestMapping(value = "/rent/distSettle/paystatus/{status}", method = RequestMethod.POST)
+    public @ResponseBody SharedMap<String, Object> settlePayStatus(HttpServletRequest request, @PathVariable String status, @RequestBody String stlId) {
+        SharedMap<String, Object> resultMap = new SharedMap<String, Object>();
+        logger.debug("STLID : {}", stlId);
+        CPDAO dao = new CPDAO();
+        dao.setTable("PG_RENT_SETTLE");
+        dao.setColumns("count(1) as cnt");
+        dao.addWhere("status", "확정", DAO.ne);
+        dao.addWhere("stlId", stlId, DAO.in);
+        RentDAO rentDAO = new RentDAO();
+
+        if (dao.search().getRowFirst().getInt("cnt") == 0) {
+            if (dao.update("UPDATE PG_RENT_SETTLE SET payStatus = '" + status + "', payOutDay = '" + CommonUtil.getCurrentDate("yyyyMMdd") + "' WHERE stlId IN (" + stlId + ")")) {
+                resultMap.put("result", "OK");
+
+
+                // 정산 완료 노티 전송
+                String[] stlIdArray = CommonUtil.split(stlId, ",",true);
+                for(String id : stlIdArray) {
+                    id = id.replaceAll("'", "");
+                    SharedMap<String,Object> stlMap = rentDAO.getStlMapByStlId(id);
+
+                    String hookAddr = rentDAO.getHookAddr(stlMap.getString("memberId"));
+                    if(!CommonUtil.isNullOrSpace(hookAddr)) {
+                        String payLoad = setPayLoad(stlMap,"완료", "0000", "정상처리");
+                        stlMap.put("payLoad", payLoad);
+                        new MemSettleHook(hookAddr, stlMap, "0").start();
+                    }
+                }
+            } else {
+                resultMap.put("result", "NOK");
+            }
+        } else {
+            resultMap.put("result", "NOK");
+            resultMap.put("msg", "확정 또는 지불 상태를 확인해주세요.");
+        }
+        return resultMap;
+    }
+
+    public String setPayLoad(SharedMap<String, Object> sharedMap, String status, String resultCd, String resultMsg){
+        SharedMap<String, String> payLoadMap = new SharedMap<String, String>();
+
+        payLoadMap.put("distId",sharedMap.getString("memberId"));
+        payLoadMap.put("stlId", sharedMap.getString("stlId"));
+        payLoadMap.put("memberName",sharedMap.getString("memberName"));
+        payLoadMap.put("status", status);
+        payLoadMap.put("resultCd", resultCd);
+        payLoadMap.put("resultMsg",resultMsg);
+        payLoadMap.put("stlDay",sharedMap.getString("stlDay"));
+        payLoadMap.put("payOutDate",CommonUtil.getCurrentDate("yyyyMMdd"));
+        payLoadMap.put("payCnt",sharedMap.getString("payCnt"));
+        payLoadMap.put("rfdCnt",sharedMap.getString("rfdCnt"));
+        payLoadMap.put("payAmt",sharedMap.getString("payAmt"));
+        payLoadMap.put("rfdAmt",sharedMap.getString("rfdAmt"));
+        payLoadMap.put("stlAmt",sharedMap.getString("stlAmt"));
+        payLoadMap.put("bankName",sharedMap.getString("bankName"));
+        payLoadMap.put("account",sharedMap.getString("account"));
+        payLoadMap.put("accntHolder",sharedMap.getString("accntHolder"));
+        String payLoad = CommonUtil.toQueryString(payLoadMap,"UTF-8");
+        return payLoad;
+    }
+
+    // 정산 상태 변경
+    @RequestMapping(value = "/rent/distSettle/status/{status}", method = RequestMethod.POST)
+    public @ResponseBody SharedMap<String, Object> rentSettleStatus(HttpServletRequest request, @PathVariable String status, @RequestBody String stlId) {
+        SharedMap<String, Object> resultMap = new SharedMap<String, Object>();
+        logger.debug("STLID : {}", stlId);
+        CPDAO dao = new CPDAO();
+        dao.setTable("PG_RENT_SETTLE");
+        dao.setColumns("count(1) as cnt");
+        dao.addWhere("stlId", stlId, DAO.in);
+
+        if (status.equals("확정") || status.equals("보류")) {
+            dao.addWhere("status", "대기", DAO.ne);
+        } else if (status.equals("대기")) {
+            dao.addWhere("payStatus", "대기", DAO.ne);
+        } else {
+            logger.error("정산 상태 변경 요청 이상 => {}", status);
+            resultMap.put("result", "NOK");
+            resultMap.put("msg", "정산 상태 변경에 실패하였습니다.");
+            return resultMap;
+        }
+
+        if (dao.search().getRowFirst().getInt("cnt") == 0) {
+            if (dao.update("UPDATE PG_RENT_SETTLE SET status = '" + status + "' WHERE stlId IN (" + stlId + ")")) {
+                resultMap.put("result", "OK");
+            } else {
+                resultMap.put("result", "NOK");
+                resultMap.put("msg", "정산 상태 변경에 실패하였습니다.");
+
+            }
+        } else {
+            resultMap.put("result", "NOK");
+            resultMap.put("msg", "'대기' 상태가 아닌 항목이 포함되어 있습니다. <br>항목을 다시 확인해주세요.");
+        }
+        return resultMap;
+    }
+
+    // 정산 엑셀 데이터
+    @RequestMapping(value = "/rent/distSettle/detail", method = RequestMethod.POST)
+    public ModelAndView detail(HttpServletRequest request, @RequestParam String grade, @RequestParam String stlId) throws Exception {
+        String columns = "capId,trxId,mchtId,name,tmnId,trackId,capType,rfdType,rootTrxId,amount,vat,issuer,authCd,trxDay,regTime,stlType";
+        LinkedHashMap<String, String> thead = new LinkedHashMap<String, String>();
+        thead.put("capId", "매입번호");
+        thead.put("trxId", "거래번호");
+        thead.put("mchtId", "가맹점ID");
+
+        thead.put("name", "가맹점");
+        if (grade.equals("stlDistId")) {
+            columns += ", distName";
+            thead.put("distName", "대행사");
+        } else if (grade.equals("stlAgencyId")) {
+            columns += ", agencyName";
+            thead.put("agencyName", "에이전시");
+        } else if (grade.equals("stlSalesId")) {
+            columns += ", salesName";
+            thead.put("salesName", "지사");
+        }
+
+        thead.put("tmnId", "터미널ID");
+        thead.put("trackId", "거래추적번호");
+        thead.put("capType", "매입구분");
+        thead.put("rfdType", "취소구분");
+        thead.put("rootTrxId", "원거래번호");
+        thead.put("amount", "금액");
+        thead.put("vat", "VAT");
+        thead.put("issuer", "매입사");
+        thead.put("authCd", "승인번호");
+        thead.put("stlType", "정산일 기준");
+
+        if (grade.equals("stlDistId")) {
+            columns += ", stlDistFee, stlDistRate, stlDiffDistFee, stlDiffDistRate,stlDistDay, stlDistId";
+            thead.put("stlDistFee", "정산 수수료");
+            thead.put("stlDistRate", "정산 기준 수수료율");
+            thead.put("stlDiffDistFee", "차액정산 수수료");
+            thead.put("stlDiffDistRate", "차액정산 기준 수수료율");
+            thead.put("stlDistDay", "정산예정일");
+            thead.put("stlDistId", "정산 ID");
+        } else if (grade.equals("stlAgencyId")) {
+            columns += ", stlAgencyFee, stlAgencyRate, stlDiffAgencyFee, stlDiffAgencyRate, stlAgencyDay, stlAgencyId";
+            thead.put("stlAgencyFee", "정산 수수료");
+            thead.put("stlAgencyRate", "정산 기준 수수료율");
+            thead.put("stlDiffAgencyFee", "차액정산 수수료");
+            thead.put("stlDiffAgencyRate", "차액정산 기준 수수료율");
+            thead.put("stlAgencyDay", "정산예정일");
+            thead.put("stlAgencyId", "정산 ID");
+        } else if (grade.equals("stlSalesId")) {
+            columns += ", stlSalesFee, stlSalesRate, stlDiffSalesFee, stlDiffSalesRate, stlSalesDay, stlSalesId";
+            thead.put("stlSalesFee", "정산 수수료");
+            thead.put("stlSalesRate", "정산 기준 수수료율");
+            thead.put("stlDiffSalesFee", "차액정산 수수료");
+            thead.put("stlDiffSalesRate", "차액정산 기준 수수료율");
+            thead.put("stlSalesDay", "정산예정일");
+            thead.put("stlSalesId", "정산 ID");
+        } else if (grade.equals("stlId")) {
+            columns += ",stlAmount, stlRate, stlFee, stlFeeVat, stlDay, stlId";
+            thead.put("stlAmount", "정산 금액");
+            thead.put("stlFee", "정산 수수료");
+            thead.put("stlFeeVat", "정산 수수료 VAT");
+            thead.put("stlRate", "정산 기준 수수료율");
+            thead.put("stlDay", "정산예정일");
+            thead.put("stlId", "정산 ID");
+        }
+
+        thead.put("trxDay", "거래일");
+        thead.put("regTime", "거래시간");
+
+        CPDAO dao = new CPDAO();
+        dao.setTable("VW_TRX_CAP_LIST");
+        dao.setColumns(columns);
+        dao.addWhere(grade, stlId, CPDAO.eq);
+
+        RecordSet recordSet = dao.search();
+        if (recordSet.size() > 0) {
+//			String filePath = "webexport";
+//			filePath = CPUtil.getCanonicalWebPath() + File.separator + CPUtil.getUploadDir() + File.separator + filePath + File.separator;
+//			CPUtil.setTemplateDirectory(filePath);
+//			filePath = filePath + File.separator + CommonUtil.getCurrentDate("yyyyMMdd") + File.separator;
+
+            CPDocument doc = new CPDocument();
+            doc.title = "정산 대상 거래";
+            XlsExport export = new XlsExport(doc);
+            String link = "";
+
+            try {
+                link = export.makeExcel(thead, recordSet, true, true);
+            } catch (Exception e) {
+                link = e.getMessage();
+            }
+
+            CPResponse cpResponse = new CPResponse();
+            Files file = new Files();
+            file.link = link;
+            cpResponse.file = file;
+
+            return new ModelAndView("/common/jsonResponse", "message", GsonUtil.toJson(cpResponse));
+        }
+        return new ModelAndView();
     }
 }
