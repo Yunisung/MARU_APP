@@ -214,6 +214,10 @@
             <a href="/rent/settle/form.jsp" class="nav-link ">
                 <span class="title">가맹점정산(예약이체)</span></a>
         </li>
+        <li class="nav-item start ">
+            <a href="/rent/distSettle/form.jsp" class="nav-link ">
+                <span class="title">대행사정산</span></a>
+        </li>
     </ul>
 </li>
 <!-- 매출 관리 시작 -->
