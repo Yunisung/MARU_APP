@@ -116,8 +116,9 @@ public class RealtimeController {
 		
 		RealtimePayOutDAO realtimeDAO = new RealtimePayOutDAO();
 		// column 'A.bankFee' 에러발생으로 주석처리
-		//RecordSet rset = realtimeDAO.autoList(cpRequest.data,cpRequest.page);
-		RecordSet rset = new RecordSet();
+		//231207_PYS : 주석처리 해제
+		RecordSet rset = realtimeDAO.autoList(cpRequest.data,cpRequest.page);
+		//RecordSet rset = new RecordSet();
 
 		return new CPRUtil(cpRequest).dataList(rset,realtimeDAO).setView(request,"/realtimeSettle/auto/list","");
 	}
@@ -223,10 +224,10 @@ public class RealtimeController {
 				
 		SharedMap<String,Object> mchtTaxMap	= dao.getMchtTaxByMchtId(reqMap.getString("mchtId"));
 		
-		FirmBean firmBean = new FirmUtil().transfer("089",mchtTaxMap.getString("bankCd"), mchtTaxMap.getString("account").replace("-", "").trim(), reqMap.getLong("amount"), reqMap.getString("stlId"), "");
-		//FirmBean firmBean = new FirmBean();
-		//firmBean.resultCd = "0000";
-		//firmBean.resultMsg = "이체성공~~";
+		//FirmBean firmBean = new FirmUtil().transfer("089",mchtTaxMap.getString("bankCd"), mchtTaxMap.getString("account").replace("-", "").trim(), reqMap.getLong("amount"), reqMap.getString("stlId"), "");
+		FirmBean firmBean = new FirmBean();
+		firmBean.resultCd = "0000";
+		firmBean.resultMsg = "성공";
 		
 		if(!firmBean.resultCd.equals("0000") ) {
 			stlStatus = "지급실패";
@@ -242,7 +243,8 @@ public class RealtimeController {
 			return resMap;
 		}else {
 			//자동정산출금 결과 매입테이블 업데이트
-			dao.updateAutoPayOutCapUpdate(reqMap.getString("stlId"), reqMap.getString("stlDay"), reqMap.getString("stlType"), reqMap.getString("mchtId"), CommonUtil.getCurrentDate("yyyyMMdd"), "정산완료");
+			//231207_PYS : 필요없는 로직 주석
+			//dao.updateAutoPayOutCapUpdate(reqMap.getString("stlId"), reqMap.getString("stlDay"), reqMap.getString("stlType"), reqMap.getString("mchtId"), CommonUtil.getCurrentDate("yyyyMMdd"), "정산완료");
 			
 			//자동정산출금 결과 저장
 			dao.updateAutoPayOutRes(reqMap.getString("stlId"), stlStatus, CommonUtil.getCurrentDate("yyyyMMdd"), CommonUtil.getCurrentDate("HHmmss"), mchtTaxMap.getString("bankCd"), 

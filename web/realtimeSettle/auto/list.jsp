@@ -12,7 +12,8 @@
 	 		<span class="caption-detail"> 결제금액 합계: <fmt:formatNumber type="number" value="${SUMMAP.amtSum}" pattern="#,##0" />원,</span>  
 	 		<span class="caption-detail"> 가맹점 수수료 합계 금액: <fmt:formatNumber type="number" value="${SUMMAP.vatSum}" pattern="#,##0" />원,</span>  
 	 		<span class="caption-detail"> 출금 수수료 합계 금액: <fmt:formatNumber type="number" value="${SUMMAP.payOutVatSum}" pattern="#,##0" />원,</span>  
-	 		<span class="caption-detail"> 차감금액 합계 금액: <fmt:formatNumber type="number" value="${SUMMAP.minusAmtSum}" pattern="#,##0" />원,</span>  
+	 		<span class="caption-detail"> 인증 수수료 합계 금액: <fmt:formatNumber type="number" value="${SUMMAP.authFeeSum}" pattern="#,##0" />원,</span>
+			<span class="caption-detail"> 차감금액 합계 금액: <fmt:formatNumber type="number" value="${SUMMAP.minusAmtSum}" pattern="#,##0" />원,</span>
 	 		<span class="caption-detail"> 예수금 합계 금액: <fmt:formatNumber type="number" value="${SUMMAP.deductAmtSum}" pattern="#,##0" />원,</span>  
 	 		<span class="caption-detail"> 실출금액 합계 금액: <fmt:formatNumber type="number" value="${SUMMAP.payOutAmountSum}" pattern="#,##0" />원</span>  
 		 </span>
@@ -54,6 +55,7 @@
 					<th>가맹점수수료</th>
 					<th>출금수수료</th>
 					<th>은행수수료</th>
+					<th>인증수수료</th>
 					<th>정산예정금액</th>
 					<th>차감금액</th>
 					<th>예수금</th>
@@ -98,10 +100,11 @@
 				<c:set var="var20" value="0"/>
 				<c:set var="var21" value="0"/>
 				<c:set var="var22" value="0"/>
+				<c:set var="var23" value="0"/>
 				<c:if test="${CP_SESSION.grade == '본사'}">
-					<c:set var="var23" value="0"/>
 					<c:set var="var24" value="0"/>
 					<c:set var="var25" value="0"/>
+					<c:set var="var26" value="0"/>
 				</c:if>
 				
 				<c:forEach var="entry" items="${CPR.data}" varStatus="status">
@@ -123,27 +126,35 @@
 						<td class="text-right digits">${entry.payAmt + entry.rfdAmt}</td>
 						<td class="text-right digits">${(entry.payFee + entry.payVat) + (entry.rfdFee + entry.rfdVat)}</td>
 						<td class="text-right digits">
-							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt == 0}">
+							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee == 0}">
 								0
 							</c:if>
-							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt != 0}">
+							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee != 0}">
 								${entry.payOutFee + entry.payOutFeeVat}
 							</c:if>
 						</td>
 						<td class="text-right digits">
-							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt == 0}">
+							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee == 0}">
 								0
 							</c:if>
-							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt != 0}">
+							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee != 0}">
 								${entry.bankFee}
 							</c:if>
 						</td>
 						<td class="text-right digits">
-							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt == 0}">
-								${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee)}
+							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee == 0}">
+								0
 							</c:if>
-							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt != 0}">
-								${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - (entry.payOutFee + entry.payOutFeeVat)}
+							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee != 0}">
+								${entry.authFee}
+							</c:if>
+						</td>
+						<td class="text-right digits">
+							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee == 0}">
+								${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.authFee}
+							</c:if>
+							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee != 0}">
+								${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - (entry.payOutFee + entry.payOutFeeVat) - entry.authFee}
 							</c:if>
 						</td>
 						<td>
@@ -155,17 +166,17 @@
 							</c:if>
 							<c:if test="${entry.resultCd != '0000'}">
 								<c:if test="${entry.minusAmt == 0}">
-									<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt == 0}">
+									<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee == 0}">
 										<span onclick="inputMinusAmt('${entry.stlId}','0')" style="cursor:pointer">
 										<fmt:formatNumber type="number" value="${entry.minusAmt}" pattern="#,##0" /></span>
 									</c:if>
-									<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt != 0}">
-										<span onclick="inputMinusAmt('${entry.stlId}','${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - (entry.payOutFee + entry.payOutFeeVat) + entry.deductAmt}')" style="cursor:pointer">
+									<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee != 0}">
+										<span onclick="inputMinusAmt('${entry.stlId}','${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - (entry.payOutFee + entry.payOutFeeVat) + entry.deductAmt  - entry.authFee}')" style="cursor:pointer">
 										<fmt:formatNumber type="number" value="${entry.minusAmt}" pattern="#,##0" /></span>
 									</c:if>
 								</c:if>
 								<c:if test="${entry.minusAmt != 0}">
-									<span onclick="modifiMinusAmt('${entry.stlId}','${entry.minusAmt}','${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - (entry.payOutFee + entry.payOutFeeVat) + entry.deductAmt}')" style="cursor:pointer">
+									<span onclick="modifiMinusAmt('${entry.stlId}','${entry.minusAmt}','${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - (entry.payOutFee + entry.payOutFeeVat) + entry.deductAmt - entry.authFee}')" style="cursor:pointer">
 									<fmt:formatNumber type="number" value="${entry.minusAmt}" pattern="#,##0" /></span>
 								</c:if>
 							</c:if>
@@ -195,22 +206,22 @@
 							</c:if>
 						</td>
 						<td class="text-right digits">
-							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt == 0}">
-								${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt}
+							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee == 0}">
+								${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee}
 							</c:if>
-							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt != 0}">
-								${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - (entry.payOutFee + entry.payOutFeeVat) - entry.minusAmt + entry.deductAmt}
+							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee != 0}">
+								${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - (entry.payOutFee + entry.payOutFeeVat) - entry.minusAmt + entry.deductAmt - entry.authFee}
 							</c:if>
 						</td>
 						<td class="text-right digits">
-							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt == 0}">
+							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee == 0}">
 								0
 							</c:if>
-							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt != 0}">
-								<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) == 0}">
+							<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.minusAmt + entry.deductAmt - entry.authFee != 0}">
+								<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.authFee == 0}">
 									${entry.deductAmt - entry.minusAmt - (entry.payOutFee + entry.payOutFeeVat)}
 								</c:if>
-								<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) != 0}">
+								<c:if test="${(entry.payAmt - entry.payFee - entry.payVat) + (entry.rfdAmt - entry.rfdVat - entry.rfdFee) - entry.authFee != 0}">
 									${entry.deductAmt - entry.minusAmt}
 								</c:if>
 							</c:if>
