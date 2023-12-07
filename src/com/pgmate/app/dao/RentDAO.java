@@ -204,10 +204,10 @@ public class RentDAO extends DAO {
         return "T" + getFunction("FN_NEXTVAL2", "TRN");
     }
 
+
     /*ublic static String getTrackId() {
         return
     }*/
-
     public long getFeeSum(String trxIdList) {
         super.setTable("VW_TRX_CAP");
         super.setColumns("SUM(stlFee) as feeSum");
@@ -369,5 +369,73 @@ public class RentDAO extends DAO {
         boolean result = super.update();
         super.initRecord();
         return result;
+    }
+
+    public RecordSet distSettlelist(List<Data> data, Page page) {
+        super.setTable("PG_RENT_SETTLE A LEFT OUTER JOIN PG_MAM_DIST B ON A.memberId=B.distId");
+        super.setColumns("(A.payCnt+A.rfdCnt) AS totalCnt,(A.payAmt+A.rfdAmt) AS totalAmt, B.name as memberName, A.*");
+        page = CPUtil.correctPage(page);
+        CPUtil.setDAO(this, data);				//DATA to CONDITION
+        return super.searchList(page.current, page.size,page.hash);
+    }
+
+    public SharedMap<String, Object> getStlMapByStlId(String id) {
+        super.setTable("PG_RENT_SETTLE A LEFT OUTER JOIN PG_MAM_DIST B ON A.memberId=B.distId");
+        super.setColumns("(A.payCnt+A.rfdCnt) AS totalCnt,(A.payAmt+A.rfdAmt) AS totalAmt, B.name as memberName, A.*");
+        super.addWhere("A.stlId", id);
+        RecordSet rset = super.search();
+        super.initRecord();
+        return rset.getRowFirst();
+    }
+
+    public String getHookAddr(String memberId) {
+        super.setTable("PG_MCHT_WEBHOOK");
+        super.setColumns("hookUrl");
+        super.addWhere("id", memberId);
+        super.addWhere("trxType", "SETTLE");
+        super.addWhere("status", "Y");
+        RecordSet rset = super.search();
+        super.initRecord();
+        return rset.getRowFirst().getString("hookUrl");
+    }
+
+    public boolean insertMemSettleNoti(SharedMap<String, Object> ntsMap) {
+        int result = 0;
+        logger.info("insertRentSettleNoti batch : {}", ntsMap.size());
+        String query = "INSERT INTO `PG_RENT_SETTLE_NOTI` (`stlId`, `memberId`, `hookAddr`, `retry`, `status`, `code`, `payLoad`, `resData`, `regDay`, `regTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        DBManager db 	= null;
+        PreparedStatement pstmt	= null;
+        Connection conn			= null;
+        ResultSet rset			= null;
+        int i = 1;
+        try{
+            db 		= DBFactory.getInstance();
+            conn	= db.getConnection();
+            pstmt	= conn.prepareStatement(query);
+            pstmt.setString(i++,ntsMap.getString("stlId"));
+            pstmt.setString(i++,ntsMap.getString("memberId"));
+            pstmt.setString(i++,ntsMap.getString("hookAddr"));
+            pstmt.setInt(i++,ntsMap.getInt("retry"));
+            pstmt.setString(i++,ntsMap.getString("status"));
+            pstmt.setInt(i++,ntsMap.getInt("code"));
+            pstmt.setString(i++,ntsMap.getString("payLoad"));
+            pstmt.setString(i++,ntsMap.getString("resData"));
+            pstmt.setString(i++,ntsMap.getString("regDay"));
+            pstmt.setString(i++,ntsMap.getString("regTime"));
+
+            result = pstmt.executeUpdate();
+            conn.commit();
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.error("insertRiskChangeNoti ERROR : {}, query : {}", e.getMessage(), query);
+        }finally{
+            db.close(conn,pstmt,rset);
+        }
+
+        if(result > 0) {
+            return true;
+        }else {
+            return false;
+        }
     }
 }
