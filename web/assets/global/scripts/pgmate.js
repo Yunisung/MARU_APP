@@ -212,6 +212,59 @@ var PGmate = function() {
 			var gradeId = $(this).attr('data-grade');
 			vactSettleDetailDownload(gradeId, stlId, $(this).hasClass('is-sub'));
 		});
+
+		//월세 정산 지급
+		$(document).on('click', '.rent-settle-pay-out, .rent-settle-pay-hold, .rent-settle-pay-cancel ', function(){
+			console.log("rent-settle-pay-out click");
+			var status = $(this).hasClass('rent-settle-pay-out') ? '확정' : $(this).hasClass('rent-settle-pay-hold') ? '보류' : $(this).hasClass('rent-settle-pay-cancel') ? '대기' : '' ;
+			var stlId = "'" + $(this).closest('tr').attr('data-stlId') + "'" ;
+			rentSettleStatusUpdate(status, stlId, $(this).hasClass('is-sub'));
+		});
+
+		//월세 정산 확정 checkbox
+		$(document).on('click', '.rent-settle-pay-out-check', function(){
+			var stlId = '';
+			//KJM : 선택한 리스트 확인
+			$('table.pg-table>tbody>tr').each( function(i, e){
+				if($(e).find('input[type="checkbox"]').is(':checked')) {
+					stlId += "'" + $(e).attr('data-stlId') + "',";
+				}
+			});
+
+			if(stlId.length < 1) {
+				bootbox.alert("정산 확정할 대상을 체크하세요.");
+			} else {
+				stlId = stlId.substring(0, stlId.length -1);
+				//KJM : hasClass : 클래스명이 일치하는 것이 있을 경우 true 반환
+				//KJM : is-sub : 대표가맹점 구분용
+				rentSettleStatusUpdate("확정", stlId, $(this).hasClass('is-sub'));
+			}
+		});
+
+		//월세 정산 지급 완료 처리
+		$(document).on('click', '.rent-settle-pay-complete', function(){
+			var stlId = '';
+			//KJM : 선택한 리스트 확인
+			$('table.pg-table>tbody>tr').each( function(i, e){
+				if($(e).find('input[type="checkbox"]').is(':checked')) {
+					stlId += "'" + $(e).attr('data-stlId') + "',";
+				}
+			});
+
+			if(stlId.length < 1) {
+				bootbox.alert("지급완료 처리할 대상을 체크하세요.");
+			} else {
+				stlId = stlId.substring(0, stlId.length -1);
+				rentSettlePayStatusUpdate("지급완료", stlId, $(this).hasClass('is-sub'));
+			}
+		});
+
+		//월세앱 정산 대상거래 조회
+		$(document).on('click', '.rent-settle-detail', function(){
+			var stlId = $(this).closest('tr').attr('data-stlId');
+			var gradeId = $(this).attr('data-grade');
+			rentSettleDetailDownload(gradeId, stlId, $(this).hasClass('is-sub'));
+		});
 		
 		//KJM : 가맹점 정산 생성 > 정산 확정 버튼 클릭
 		$(document).on('click', '.settle-mcht-decide', function(){
