@@ -14,7 +14,7 @@
 	</div>
 	<div class="actions">
 		<c:if test="${CP_SESSION.grade == '본사'}">
-		<div class="btn-group">
+		<%--<div class="btn-group">
 			<a class="btn btn-circle btn-default " href="javascript:;" data-toggle="dropdown" aria-expanded="false">
 				&nbsp;<i class="fa fa-exclamation"></i>&nbsp; 선택항목 리스크 변경&nbsp; <i class="fa fa-angle-down"></i>
 			</a>
@@ -76,7 +76,7 @@
 					</a>
 				</li>
 			</ul>
-		</div>
+		</div>--%>
 		</c:if>
 		<a class="btn btn-circle btn-default" id="excel-click" href="" style="display:none;">Excel Download</a>
 		<!-- <a class="btn btn-circle btn-icon-only btn-default" id="excel-export" href="javascript:fnExcelReport('sortTable', '매입현황조회내역');"> -->
@@ -96,7 +96,7 @@
 			<!-- table-bordered -->
 			<thead>
 				<tr>
-					<th><input type="checkbox" class="all-check" id="check_all" class="checkbox-style" /><label for="check_all"></label></th>
+<%--					<th><input type="checkbox" class="all-check" id="check_all" class="checkbox-style" /><label for="check_all"></label></th>--%>
 					<th>No</th>
 					<th style="min-width:140px;">거래일시</th>
 					<th>승인번호</th>
@@ -137,9 +137,9 @@
 				<c:set value="0" var="amount_sum"/>
 				<c:forEach var="entry" items="${CPR.data}" varStatus="status">
 					<tr data-capId="${entry.capId}">
-						<td class="btn-td">
-							<input type="checkbox" class="row-check" id="${entry.capId}_check" class="checkbox-style" /><label for="${entry.capId}_check"></label>
-						</td>
+<%--						<td class="btn-td">--%>
+<%--							<input type="checkbox" class="row-check" id="${entry.capId}_check" class="checkbox-style" /><label for="${entry.capId}_check"></label>--%>
+<%--						</td>--%>
 						<td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
 						<td class="date">${entry.trxDay}${entry.regTime}</td>
 						<td>${entry.authCd}</td>
