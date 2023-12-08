@@ -69,6 +69,16 @@
 		<button type="button" data-dismiss="modal" class="btn btn-sm">Close</button>
 	</div>
 	<script>
+		//
+		$(function () {
+			var now = new Date();
+			var month = ('0' + (now.getMonth() + 1)).slice(-2);
+			var day = ('0' + now.getDate()).slice(-2);
+
+			$('#pubDay').val(now.getFullYear()+month+day);
+			$('#pubTime').val("004000");
+		});
+
 		function retryHook() {
 			bootbox.confirm('해당 거래를 재전송 하시겠습니까?', function(result) {
 				if (result) {
