@@ -17,9 +17,9 @@
 <%--		<a class="btn btn-circle btn-default " href="javascript:;" data-toggle="dropdown" aria-expanded="false">--%>
 <%--			&nbsp;<i class="fa fa-exclamation"></i>&nbsp; 분납 이체&nbsp; <i class="fa fa-angle-down"></i>--%>
 <%--		</a>--%>
-		<a class="btn btn-circle btn-default charge-settle-transfer" href="javascript:;" aria-expanded="false">
-			<i class="fa fa-check-square-o"></i> 분납 이체
-		</a>
+<%--		<a class="btn btn-circle btn-default charge-settle-transfer" href="javascript:;" aria-expanded="false">--%>
+<%--			<i class="fa fa-check-square-o"></i> 분납 이체--%>
+<%--		</a>--%>
 		<a class="btn btn-circle btn-icon-only btn-default" href="javascript:searchForExcel();">
 			<i class="fa fa-file-excel-o" aria-hidden="true"></i>
 		</a>
@@ -36,7 +36,7 @@
 			<!-- table-bordered -->
 			<thead>
 				<tr>
-					<th><input type="checkbox" class="all-check" id="check_all" class="checkbox-style" /><label for="check_all"></label></th>
+<%--					<th><input type="checkbox" class="all-check" id="check_all" class="checkbox-style" /><label for="check_all"></label></th>--%>
 					<th>No</th>
 					<th>거래번호</th>
 					<th>납부구분</th>
@@ -66,17 +66,17 @@
 				</c:if>
 				<c:forEach var="entry" items="${CPR.data}" varStatus="status">
 					<tr data-trxId="${entry.trxId}">
-						<td class="btn-td">
-							<c:choose>
-								<c:when test="${entry.billingMethod eq '분납' && entry.firmTrxId eq ''}">
-									<input type="checkbox" class="row-check" id="${entry.trxId}_check" class="checkbox-style" /><label for="${entry.trxId}_check"></label>
-								</c:when>
-								<c:when test="${entry.billingMethod eq '분납' && entry.firmTrxId ne ''}">
-									<input type="checkbox" class="row-check" id="${entry.trxId}_check" class="checkbox-style" disabled /><label for="${entry.trxId}_check"></label>
-								</c:when>
-								<c:otherwise></c:otherwise>
-							</c:choose>
-						</td>
+<%--						<td class="btn-td">--%>
+<%--							<c:choose>--%>
+<%--								<c:when test="${entry.billingMethod eq '분납' && entry.firmTrxId eq ''}">--%>
+<%--									<input type="checkbox" class="row-check" id="${entry.trxId}_check" class="checkbox-style" /><label for="${entry.trxId}_check"></label>--%>
+<%--								</c:when>--%>
+<%--								<c:when test="${entry.billingMethod eq '분납' && entry.firmTrxId ne ''}">--%>
+<%--									<input type="checkbox" class="row-check" id="${entry.trxId}_check" class="checkbox-style" disabled /><label for="${entry.trxId}_check"></label>--%>
+<%--								</c:when>--%>
+<%--								<c:otherwise></c:otherwise>--%>
+<%--							</c:choose>--%>
+<%--						</td>--%>
 						<td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
 						<td class="link_modal" data-url="/rent/trx/view/${entry.trxId}">${entry.trxId}</td>
 						<td>${entry.billingMethod}</td>
