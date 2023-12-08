@@ -253,6 +253,7 @@ public class TrxCapDAO extends DAO{
 	
 	//KJM : 매입현황조회 리스트 가져옴
 	public RecordSet list(List<Data> datas,Page page){
+		super.setWhere("serviceType!='월세앱'");
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION
 		//KJM : exel, pdf 파일 요청의 경우 page.size = 100000
@@ -304,6 +305,7 @@ public class TrxCapDAO extends DAO{
 	public RecordSet trxSum(List<Data> datas,Page page) {
 		//KJM : (금액)amount의 합계 결과를 amount 컬럼명으로 받겠다
 		super.setColumns("SUM(amount) AS amount");
+		super.setWhere("serviceType!='월세앱'");
 		super.setOrderBy("");
 		super.setLimit(0);
 		page = CPUtil.correctPage(page);
