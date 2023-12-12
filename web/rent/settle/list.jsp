@@ -86,9 +86,14 @@
 						<td>${entry.decAccount}</td>
 						<td>${entry.decHolder}</td>
 						<td>${entry.bankName}</td>
-						<c:if test="${entry.status eq '실패' && entry.rootTrxId eq ''}">
-							<td class="btn-td"><a class="btn green btn-sm" href="javascript:retryPayOut('${entry.trxId}')">이체</a></td>
-						</c:if>
+						<c:choose>
+							<c:when test="${entry.status eq '실패' && entry.rootTrxId eq ''}">
+								<td class="btn-td"><a class="btn green btn-sm" href="javascript:retryPayOut('${entry.trxId}')">이체</a></td>
+							</c:when>
+							<c:otherwise>
+								<td></td>
+							</c:otherwise>
+						</c:choose>
 					</tr>
 				</c:forEach>
 			</tbody>
