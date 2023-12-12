@@ -182,7 +182,11 @@
 
 		<!-- 고객센터 -->
 		<intercept-url pattern="/system/notice/form" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/system/notice/add" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/system/notice/add.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/system/faq/view" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/system/faq/add" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/system/faq/add.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/system/task/view" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
 
 		<!-- 단말기 로그인 -->
