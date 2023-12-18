@@ -87,6 +87,12 @@
 															</div>
 														</div>
 														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">터미널ID</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm" name="tmnId" data-oper="eq" placeholder="터미널ID">
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">승인금액</label>
 															<div class="col-lg-8">
 																<div class="input-group input-group-sm">

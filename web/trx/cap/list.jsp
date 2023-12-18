@@ -111,7 +111,7 @@
 						<th>할부</th>
 						<th style="min-width:100px;">정산예정일</th>
 						<th style="min-width:100px;">입금예정일</th>
-						<th>VAN</th>
+						<th>VANID</th>
 					</c:if>
 					<th style="min-width:70px;">리스크</th>
 				</tr>
@@ -170,7 +170,7 @@
 							<td>${entry.installment}</td>
 							<td class="date">${entry.stlDay}</td>
 							<td class="date">${entry.stlVanDay}</td>
-							<td>${entry.van}</td>
+							<td>${entry.vanId}</td>
 						</c:if>
 						<td>${entry.risk}</td>
 					</tr>
