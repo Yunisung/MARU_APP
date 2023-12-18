@@ -300,7 +300,7 @@ public class RentController {
         return map;
     }
 
-    // 거래내역
+    // 가맹점정산(예약이체)
     @RequestMapping(value = {"/rent/settle/form"})
     public ModelAndView settleForm(HttpServletRequest request) {
         return new ModelAndView("/rent/settle/form");
