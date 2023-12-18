@@ -3113,17 +3113,33 @@
 																	</div>
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">이체예정일</label>
+																			<label class="control-label col-md-3">계약검토상태</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static date">${RENT_MAP.transferDay}</p> 일
+																				<p class="form-control-static">${RENT_MAP.contractStatus}</p>
 																			</div>
 																		</div>
 																	</div>
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">계약검토상태</label>
+																			<label class="control-label col-md-3">수수료 부과대상</label>
 																			<div class="col-md-9">
-																				<p class="form-control-static">${RENT_MAP.contractStatus}</p>
+																				<p class="form-control-static">${RENT_MAP.chargeTarget}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">계약 시작일자</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static date">${RENT_MAP.rentStartDay}</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">계약 종료일자</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static date">${RENT_MAP.rentEndDay}</p>
 																			</div>
 																		</div>
 																	</div>
@@ -3188,6 +3204,14 @@
 																			<label class="control-label col-md-3">대행사 보증금 수수료율</label>
 																			<div class="col-md-9">
 																				<p class="form-control-static"><fmt:formatNumber value="${RENT_MAP.distDepositRate * 100}" pattern="0.000"/> % (VAT별도)</p>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">이체예정일</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static date">${RENT_MAP.transferDay}</p> 일
 																			</div>
 																		</div>
 																	</div>
