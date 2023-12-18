@@ -58,6 +58,7 @@ public class RiskChangeHook extends Thread{
             logger.info("capId       : {}",ntsMap.getString("capId"));
             url = new URL(hookAddr);
             conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestProperty("User-Agent", "Mozilla/4.0");
             conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
