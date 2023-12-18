@@ -55,6 +55,7 @@ public class MemSettleHook extends Thread{
             logger.info("stlId       : {}",ntsMap.getString("stlId"));
             url = new URL(hookAddr);
             conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestProperty("User-Agent", "Mozilla/4.0");
             conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
