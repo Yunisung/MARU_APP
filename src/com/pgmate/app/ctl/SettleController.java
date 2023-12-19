@@ -930,7 +930,7 @@ public class SettleController {
 		query.append(" MAX(T6.stlRate) as stlRate,");
 		query.append(" MAX(T6.taxId) as taxId");
 //		query.append(" FROM VW_TRX_CAP T6 left join PG_TRX_REALTIME_PAY T7 ON T6.trxId = T7.trxId WHERE T6.stlStatus='정산대기' AND T6.stlDay >='" + cpRequest.getKeyValue("stlStartDay") + "' AND T6.stlDay <='" + cpRequest.getKeyValue("stlEndDay") +"' AND T7.trxId IS null ");
-		query.append(" FROM VW_TRX_CAP T6 WHERE T6.stlStatus='정산대기' AND T6.stlType not like 'A%' AND stlType != 'D+0' AND T6.stlDay >='" + cpRequest.getKeyValue("stlStartDay") + "' AND T6.stlDay <='" + cpRequest.getKeyValue("stlEndDay") +"' ");
+		query.append(" FROM VW_TRX_CAP T6 WHERE T6.stlStatus='정산대기' AND T6.stlType not like 'A%' AND stlType != 'D+0' AND T6.serviceType != '월세앱' AND T6.stlDay >='" + cpRequest.getKeyValue("stlStartDay") + "' AND T6.stlDay <='" + cpRequest.getKeyValue("stlEndDay") +"' ");
 		if(!CommonUtil.isNullOrSpace(cpRequest.getKeyValue("stlType"))) {
 			query.append(" AND T6.stlType = '"+ cpRequest.getKeyValue("stlType")+"'");
 		}
