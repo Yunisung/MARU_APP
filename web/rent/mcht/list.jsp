@@ -29,6 +29,7 @@
 					<th>No</th>
 					<th data-sort="string">아이디</th>
 					<th data-sort="string">이름</th>
+					<th data-sort="string">가맹점명</th>
 					<th data-sort="string">사업자(주민)번호</th>
 					<th data-sort="string">대표자이름</th>
 					<th data-sort="string">상태</th>
@@ -61,6 +62,7 @@
 						<td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
 						<td class="link" data-url="/mcht/view/${entry.mchtId}/tab_basic">${entry.mchtId}</td>
 						<td class="link" data-url="/mcht/view/${entry.mchtId}/tab_basic">${entry.name}</td>
+						<td class="link" data-url="/mcht/view/${entry.mchtId}/tab_basic">${entry.nick}</td>
 						<td>${entry.maskidentity}</td>
 						<td>${entry.ceoName}</td>
 						<td><c:if test="${entry.status eq '대기'}">승인</c:if>${entry.status}</td>
