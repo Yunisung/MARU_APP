@@ -183,19 +183,19 @@
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label input-sm col-sm-4">보류노티 주소</label>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control input-sm riskChangeNotiAddr" maxlength="100" name="riskChangeNotiAddr" placeholder="api.example.com" value="${RENT_MAP.riskChangeNotiAddr}">
+                                                    <input type="text" class="form-control input-sm riskChangeNotiAddr" maxlength="100" name="riskChangeNotiAddr" placeholder="api.example.com" value="${RENTMAP.riskChangeNotiAddr}">
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label input-sm col-sm-4">가맹점정산 노티 주소</label>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control input-sm mchtSettleNotiAddr" maxlength="100" name="mchtSettleNotiAddr" placeholder="api.example.com" value="${RENT_MAP.mchtSettleNotiAddr}">
+                                                    <input type="text" class="form-control input-sm mchtSettleNotiAddr" maxlength="100" name="mchtSettleNotiAddr" placeholder="api.example.com" value="${RENTMAP.mchtSettleNotiAddr}">
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label input-sm col-sm-4">영업라인정산 노티 주소</label>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control input-sm memSettleNotiAddr" maxlength="100" name="memSettleNotiAddr" placeholder="api.example.com" value="${RENT_MAP.memSettleNotiAddr}">
+                                                    <input type="text" class="form-control input-sm memSettleNotiAddr" maxlength="100" name="memSettleNotiAddr" placeholder="api.example.com" value="${RENTMAP.memSettleNotiAddr}">
                                                 </div>
                                             </div>
                                         </div>
