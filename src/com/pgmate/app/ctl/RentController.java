@@ -364,7 +364,7 @@ public class RentController {
         RentDAO rentDAO = new RentDAO();
 
         cpRequest.setData("grade", "대행사", "eq", "", true);
-        cpRequest.setData("stlAmt", "0", "ne", "", true);
+//        cpRequest.setData("stlAmt", "0", "ne", "", true);
         cpRequest.setData("stlDay", "", "", "desc", false);
         cpRequest.setData("memberId", "", "", "asc", false);
         RecordSet rset = rentDAO.distSettlelist(cpRequest.data, cpRequest.page);
