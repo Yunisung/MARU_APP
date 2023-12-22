@@ -32,6 +32,7 @@
                 </c:if>
                 <th style="min-width: 140px">정기결제ID</th>
                 <th>가맹점ID</th>
+                <th>가맹점이름</th>
                 <th>터미널ID</th>
                 <th>금액</th>
                 <th>상태</th>
@@ -62,6 +63,7 @@
                     </c:if>
                     <td>${entry.rebillId}</td>
                     <td>${entry.mchtId}</td>
+                    <td>${entry.nick}</td>
                     <td>${entry.tmnId}</td>
                     <td>${entry.amount}</td>
                     <td>${entry.status}</td>
