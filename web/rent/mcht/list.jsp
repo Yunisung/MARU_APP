@@ -28,8 +28,8 @@
 				<tr>
 					<th>No</th>
 					<th data-sort="string">아이디</th>
-					<th data-sort="string">이름</th>
-					<th data-sort="string">가맹점명</th>
+					<th data-sort="string" style="min-width:140px;">이름</th>
+					<th data-sort="string" style="min-width:140px;">가맹점명</th>
 					<th data-sort="string">사업자(주민)번호</th>
 					<th data-sort="string">대표자이름</th>
 					<th data-sort="string">상태</th>
