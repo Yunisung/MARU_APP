@@ -12,7 +12,7 @@ public class RebillDAO extends DAO {
 
 
     public RecordSet regList(List<Data> datas, Page page) {
-        super.setTable("PG_REBILL_REG");
+        super.setTable("(SELECT A.*, B.nick FROM PG_REBILL_REG A LEFT OUTER JOIN PG_MCHT B ON A.mchtId=B.mchtId) C");
 
         page = CPUtil.correctPage(page);
         CPUtil.setDAO(this, datas); //DATA to CONDITION
