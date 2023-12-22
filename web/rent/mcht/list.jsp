@@ -44,7 +44,8 @@
 					<th data-sort="string">계약구분</th>
 					<th data-sort="string">계약검토상태</th>
 					<c:if test="${CP_SESSION.grade == '본사'}">
-						<th data-sort="string" style="min-width:60px;">수수료</th>
+						<th data-sort="string" style="min-width:60px;">월세수수료</th>
+						<th data-sort="string" style="min-width:60px;">보증금수수료</th>
 					</c:if>
 					<th data-sort="string">등록자</th>
 					<th data-sort="string">시작일자</th>
@@ -77,7 +78,8 @@
 						<td>${entry.contractType}</td>
 						<td>${entry.contractStatus}</td>
 						<c:if test="${CP_SESSION.grade == '본사'}">
-						<td><fmt:formatNumber value="${entry.rate * 100}" pattern="0.000"/> %</td>
+						<td><fmt:formatNumber value="${entry.rentRate * 100}" pattern="0.000"/> %</td>
+						<td><fmt:formatNumber value="${entry.depositRate * 100}" pattern="0.000"/> %</td>
 						<%--<td><fmt:formatNumber value="${entry.loanRate * 100}" pattern="0.000"/> %</td>--%>
 						</c:if>
 						<td>${entry.regId}</td>
