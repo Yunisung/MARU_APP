@@ -42,6 +42,7 @@
 					<th data-sort="string">예수금</th>
 					<th data-sort="string">정산주기</th>
 					<th data-sort="string">계약구분</th>
+					<th data-sort="string">수수료부과대상</th>
 					<th data-sort="string">계약검토상태</th>
 					<c:if test="${CP_SESSION.grade == '본사'}">
 						<th data-sort="string" style="min-width:60px;">월세수수료</th>
@@ -76,6 +77,7 @@
 						<td class="digits link" data-url="/deposit/form/${entry.mchtId}">${entry.deposit}</td>
 						<td>${entry.settleType}</td>
 						<td>${entry.contractType}</td>
+						<td>${entry.chargeTarget}</td>
 						<td>${entry.contractStatus}</td>
 						<c:if test="${CP_SESSION.grade == '본사'}">
 						<td><fmt:formatNumber value="${entry.rentRate * 100}" pattern="0.000"/> %</td>
