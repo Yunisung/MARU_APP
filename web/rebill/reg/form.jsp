@@ -61,6 +61,12 @@
                                                 </div>
                                             </div>
                                             <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">가맹점이름</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control input-sm" name="nick" data-oper="lk" placeholder="가맹점 이름">
+                                                </div>
+                                            </div>
+                                            <div class="form-group pg-form-group">
                                                 <label class="control-label col-lg-4">터미널ID</label>
                                                 <div class="col-lg-8">
                                                     <input type="text" class="form-control input-sm" name="tmnId" data-oper="lk" placeholder="터미널 아이디">

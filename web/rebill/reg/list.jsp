@@ -29,6 +29,7 @@
                 <th>No</th>
                 <th style="min-width: 140px">정기결제ID</th>
                 <th>가맹점ID</th>
+                <th>가맹점이름</th>
                 <th>터미널ID</th>
                 <th>금액</th>
                 <th>상태</th>
@@ -53,6 +54,7 @@
                     <td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
                     <td>${entry.rebillId}</td>
                     <td>${entry.mchtId}</td>
+                    <td>${entry.nick}</td>
                     <td>${entry.tmnId}</td>
                     <td>${entry.amount}</td>
                     <td>${entry.status}</td>
