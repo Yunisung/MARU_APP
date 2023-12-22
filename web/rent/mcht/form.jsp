@@ -72,9 +72,15 @@
 															</div>
 														</div>
 														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">이름</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm name typeahead" name="name" data-oper="lk" placeholder="이름">
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">가맹점명</label>
 															<div class="col-lg-8">
-																<input type="text" class="form-control input-sm name typeahead" name="name" data-oper="lk" data-search="mchtName" placeholder="이름">
+																<input type="text" class="form-control input-sm name typeahead" name="nick" data-oper="lk" placeholder="가맹점명">
 															</div>
 														</div>
 														<div class="form-group pg-form-group">
