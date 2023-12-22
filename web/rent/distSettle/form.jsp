@@ -57,7 +57,7 @@
 														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">대행사 명</label>
 															<div class="col-lg-8">
-																<input type="text" class="form-control input-sm memberName" name="memberName" data-oper="lk" placeholder="이름">
+																<input type="text" class="form-control input-sm name" name="name" data-oper="lk" placeholder="이름">
 															</div>
 														</div>
 														<div class="form-group pg-form-group">
