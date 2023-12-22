@@ -108,6 +108,14 @@
 															</select>
 														</div>
 														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">수수료부과대상</label>
+															<select class="selectpicker btn-sm col-lg-8 col-xs-12" name="chargeTarget" data-oper="eq">
+																<option value="" selected>전체</option>
+																<option value="임차인">임차인</option>
+																<option value="임대인">임대인</option>
+															</select>
+														</div>
+														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">계약검토상태</label>
 															<select class="selectpicker btn-sm col-lg-8 col-xs-12" name="contractStatus" data-oper="eq">
 																<option value="" selected>전체</option>
