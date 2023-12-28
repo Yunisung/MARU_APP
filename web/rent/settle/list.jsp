@@ -36,6 +36,7 @@
 					<th>거래번호</th>
 					<th>원거래번호</th>
 					<th>참조번호</th>
+					<th>거래구분</th>
 					<th>결제유형</th>
 					<th>납부구분</th>
 					<th>입출금원금</th>
@@ -53,12 +54,13 @@
 					<th>예금주</th>
 					<th style="min-width:100px;">은행</th>
 					<th>이체재시도</th>
+					<th style="min-width:100px;">등록일시</th>
 				</tr>
 			</thead>
 			<tbody id="list">
 				<c:if test="${CPR.result.code != 200}">
 					<tr>
-						<td colspan="22">${CPR.result.code}:&nbsp;${CPR.result.message}:&nbsp;${CPR.result.error}</td>
+						<td colspan="24">${CPR.result.code}:&nbsp;${CPR.result.message}:&nbsp;${CPR.result.error}</td>
 					</tr>
 				</c:if>
 				<c:forEach var="entry" items="${CPR.data}" varStatus="status">
@@ -70,6 +72,7 @@
 						<td>${entry.trxId}</td>
 						<td>${entry.rootTrxId}</td>
 						<td>${entry.refId}</td>
+						<td>${entry.trxType}</td>
 						<td>${entry.billingType}</td>
 						<td>${entry.billingMethod}</td>
 						<td><fmt:formatNumber type="number" value="${entry.amount}" pattern="#,##0" /></td>
@@ -94,6 +97,7 @@
 								<td></td>
 							</c:otherwise>
 						</c:choose>
+						<td class="date">${entry.regDate}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
