@@ -106,14 +106,16 @@ public class MchtDAO extends DAO{
 	
 	public RecordSet getHtById(String mchtId){
 		setTable("HT_MCHT");
-		setColumns("*");
+//		setColumns("*");
+		setColumns("mchtId,name,nick,status,bizType,bizCategory,distId,agencyId,salesId,idType,FN_MASK_IDENTIFY(identity) as identity,tel1,tel2,fax,zip,addr1,addr2,lat,lng,ceoName,FN_MASK_IDENTIFY(ceoIdentity) as ceoIdentity,ceoPhone,ceoTel,ceoZip,ceoAddr1,ceoAddr2,managerName,managerPhone,aggregator,regId,regDay,regDate,summary");
 		addWhere("lower(mchtId)",mchtId.toLowerCase(),eq);
 		return search();
 	}
 	
 	public RecordSet getPgById(String mchtId){
 		setTable("PG_MCHT");
-		setColumns("*");
+//		setColumns("*");
+		setColumns("mchtId,name,nick,status,bizType,bizCategory,distId,agencyId,salesId,idType,FN_MASK_IDENTIFY(identity) as identity,tel1,tel2,fax,zip,addr1,addr2,lat,lng,ceoName,FN_MASK_IDENTIFY(ceoIdentity) as ceoIdentity,ceoPhone,ceoTel,ceoZip,ceoAddr1,ceoAddr2,managerName,managerPhone,aggregator,regId,regDay,regDate,activeDate");
 		addWhere("lower(mchtId)",mchtId.toLowerCase(),eq);
 		return search();
 	}
