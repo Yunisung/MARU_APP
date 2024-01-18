@@ -232,8 +232,8 @@ public class VactDtlDAO extends DAO {
 			int count = 0;
 			String expire = (Integer.parseInt(CommonUtil.getCurrentDate("yyyy")) + 1) + CommonUtil.getCurrentDate("MMdd");
 
-			int i = 1;
 			for (String id : issueIdList) {
+				int i = 1;
 				SharedMap<String,Object> map = getVactDtl(id);
 				pstmt.setString(i++, map.getString("issueId"));
 				pstmt.setString(i++, map.getString("account"));
