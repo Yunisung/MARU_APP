@@ -2176,6 +2176,14 @@
 																				</div>
 																			</div>
 																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">증권사 계좌인증</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.useStockBank}</p>
+																				</div>
+																			</div>
+																		</div>
 																	</div>
 																</div>
 																<div class="form-actions">
