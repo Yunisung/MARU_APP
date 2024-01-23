@@ -331,7 +331,8 @@ public class RentDAO extends DAO {
 
     public RecordSet getReserveSum(List<Data> datas,Page page) {
         super.setDebug(true);
-        super.setTable("PG_CHARGE_SETTLE_FIRM_RESERVE");
+//        super.setTable("PG_CHARGE_SETTLE_FIRM_RESERVE");
+        super.setTable("(SELECT A.*, B.regDay as payDay FROM PG_CHARGE_SETTLE_FIRM_RESERVE A LEFT OUTER JOIN VW_TRX_CAP B ON A.refTrxId=B.trxId) AS C");
         super.setColumns("SUM(amount) AS amount");
         page = CPUtil.correctPage(page);
         CPUtil.setDAO(this, datas);				//DATA to CONDITION

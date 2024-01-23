@@ -77,16 +77,16 @@
 														<div class="form-group pg-form-group">
 															<div class="col-lg-4" style="padding:0;">
 																<select class="selectpicker col-lg-12" name="" id="date-selector" data-reg="false">
-																	<option value="trxDay" selected>거래일자</option>
-																	<option value="pubDay">지급예정일</option>
-																	<option value="payOutDay">지급완료일</option>
+																	<option value="pubDay" selected>지급예정일</option>
+																	<option value="trxDay">지급완료일</option>
+																	<option value="payDay">거래일자</option>
 																</select>
 															</div>
 															<div class="col-lg-8">
 																<div class="input-group input-group-sm input-daterange" data-date-format="yyyy-mm-dd">
-																	<input type="text" class="form-control date-selector-target now-date" name="trxDay" value="" data-oper="ge" readonly="readonly" style="background-color:white">
+																	<input type="text" class="form-control date-selector-target now-date" name="pubDay" value="" data-oper="ge" readonly="readonly" style="background-color:white">
 																	<span class="input-group-addon">~</span>
-																	<input type="text" class="form-control date-selector-target now-date" name="trxDay" value="" data-oper="le" readonly="readonly" style="background-color:white">
+																	<input type="text" class="form-control date-selector-target now-date" name="pubDay" value="" data-oper="le" readonly="readonly" style="background-color:white">
 																</div>
 															</div>
 														</div>
@@ -182,7 +182,6 @@
 		$('#date-selector').on('change', function() {
 			$('.date-selector-target').attr('name', $(this).val());
 		})
-
 
 	</script>
 	<!-- 모달 생성을 위한 베이스 -->
