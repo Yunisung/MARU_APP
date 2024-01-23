@@ -192,12 +192,6 @@
                                                     <input type="text" class="form-control input-sm mchtSettleNotiAddr" maxlength="100" name="mchtSettleNotiAddr" placeholder="api.example.com" value="${RENTMAP.mchtSettleNotiAddr}">
                                                 </div>
                                             </div>
-                                            <div class="form-group col-sm-6">
-                                                <label class="control-label input-sm col-sm-4">영업라인정산 노티 주소</label>
-                                                <div class="col-sm-6">
-                                                    <input type="text" class="form-control input-sm memSettleNotiAddr" maxlength="100" name="memSettleNotiAddr" placeholder="api.example.com" value="${RENTMAP.memSettleNotiAddr}">
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="alert alert-danger display-hide"></div>
                                         <div class="form-actions right">

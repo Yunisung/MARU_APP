@@ -3250,14 +3250,6 @@
 																			</div>
 																		</div>
 																	</div>
-																	<div class="col-md-6">
-																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">영업라인정산 노티 주소(URL)</label>
-																			<div class="col-md-9">
-																				<p class="form-control-static">${RENT_MAP.memSettleNotiAddr}</p>
-																			</div>
-																		</div>
-																	</div>
 																</div>
 																<div class="form-actions">
 																	<div class="row">
