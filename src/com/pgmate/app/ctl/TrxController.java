@@ -451,7 +451,8 @@ public class TrxController {
 				String t = util.setRiskToNormal(capId);
 				if(t.startsWith("OK")){
 					// 23.11.02 월세앱 리스크 해제 노티 전송 추가
-					SharedMap<String, Object> capMap = trxDAO.getRentCapById(capId);
+					// 월세앱 리스크 코드 주석처리
+					/*SharedMap<String, Object> capMap = trxDAO.getRentCapById(capId);
 					if(capMap != null) {
 						logger.info("월세앱 거래건 있음");
 						// 예약이체 insert
@@ -471,7 +472,7 @@ public class TrxController {
 							capMap.put("payLoad", payLoad);
 							new RiskChangeHook(hookAddr, capMap, "0").start();
 						}
-					}
+					}*/
 					iqrDAO.insertRisk(capId, t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
 					success++;
 				}else{
