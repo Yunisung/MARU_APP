@@ -213,7 +213,6 @@ public class TrxCapDAO extends DAO{
 	}
 	
 	public RecordSet list(List<Data> datas,Page page){
-		super.setWhere("IFNULL(serviceType, '') != '월세앱'");
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
@@ -264,7 +263,6 @@ public class TrxCapDAO extends DAO{
 	
 	public RecordSet trxSum(List<Data> datas,Page page) {
 		super.setColumns("SUM(amount) AS amount");
-		super.setWhere("IFNULL(serviceType, '') != '월세앱'");
 		super.setOrderBy("");
 		super.setLimit(0);
 		page = CPUtil.correctPage(page);
