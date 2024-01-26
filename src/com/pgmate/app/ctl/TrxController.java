@@ -399,11 +399,15 @@ public class TrxController {
 		SessionUtil.setSearchGrade(request, cpRequest);
 
 		TrxCapDAO trxCapDAO1 = new TrxCapDAO();
+		trxCapDAO1.setDebug(true);
 		trxCapDAO1.addWhere("risk != '' AND capType='매입'");
+		trxCapDAO1.addWhere("IFNULL(serviceType, '') != '월세앱'");
 		request.setAttribute("AMOUNT_SUM", trxCapDAO1.trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
 		
 		TrxCapDAO trxCapDAO = new TrxCapDAO();
+		trxCapDAO.setDebug(true);
 		trxCapDAO.addWhere("risk != '' AND capType='매입'");
+		trxCapDAO.addWhere("IFNULL(serviceType, '') != '월세앱'");
 		RecordSet rset = trxCapDAO.list(cpRequest.data,cpRequest.page);
 		return new CPRUtil(cpRequest).dataList(rset,trxCapDAO).setView(request,"/trx/status/list","");
 	}
