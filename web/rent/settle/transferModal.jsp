@@ -76,7 +76,7 @@
 			var day = ('0' + now.getDate()).slice(-2);
 
 			$('#pubDay').val(now.getFullYear()+month+day);
-			$('#pubTime').val("004000");
+			$('#pubTime').val("130000");
 		});
 
 		function retryHook() {
