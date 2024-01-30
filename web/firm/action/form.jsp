@@ -71,7 +71,7 @@
 																<%--<option value="0392070158564301">경남은행(2070158564301)</option>--%>
 <%--																<option value="0392070158563707">경남은행(2070158563707)</option>--%>
 																<option value="0398003344291839">경남은행(8003344291839)</option>
-                                                                <option value="0341107021617089">광주은행(1107021617089)</option>
+                                                                <option value="0341107021617114">광주은행(1107021617114)</option>
 															</select>
 														</div>  
  														<div class="form-group pg-form-group">
