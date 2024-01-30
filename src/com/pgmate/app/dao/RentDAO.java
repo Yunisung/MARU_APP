@@ -74,7 +74,11 @@ public class RentDAO extends DAO {
     }
 
     public RecordSet depositSum(List<Data> datas) {
-        super.setTable("(SELECT A.*, B.billingMethod FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN VW_TRX_CAP B ON A.trxId=B.trxId) C");
+        super.setDebug(true);
+//        super.setTable("(SELECT A.*, B.billingMethod FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN VW_TRX_CAP B ON A.trxId=B.trxId) C");
+        super.setTable("(SELECT A.*, B.trxId as csTrxId " +
+                "FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN PG_CHARGE_SETTLE_FIRM_RESERVE B ON A.trxId=B.trxId LEFT OUTER JOIN VW_TRX_CAP C ON A.trxId=C.trxId "
+                + "WHERE (C.serviceType = '월세앱' OR B.trxId IS NOT NULL)) D");
         super.setColumns("SUM(if(trxType='출금',amount,0)) AS depositAmt, SUM(if(trxType='입금',amount,0)) AS withdrawAmt");
         CPUtil.setDAO(this, datas);				//DATA to CONDITION
         RecordSet rset = super.search();
@@ -85,11 +89,15 @@ public class RentDAO extends DAO {
     public RecordSet listWithDecAccount(List<Data> datas, Page page){
         page = CPUtil.correctPage(page);
 
-        super.setTable("(SELECT A.*, B.billingMethod, C.trxId as firmTrxId " +
-                "FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN VW_TRX_CAP B ON A.trxId=B.trxId LEFT OUTER JOIN PG_CHARGE_SETTLE_FIRM_RESERVE C ON A.trxId=C.trxId " +
-                "WHERE B.serviceType='월세앱') D");
+        super.setDebug(true);
+//        super.setTable("(SELECT A.*, B.billingMethod, C.trxId as firmTrxId " +
+//                "FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN VW_TRX_CAP B ON A.trxId=B.trxId LEFT OUTER JOIN PG_CHARGE_SETTLE_FIRM_RESERVE C ON A.trxId=C.trxId " +
+//                "WHERE B.serviceType='월세앱') D");
+        super.setTable("(SELECT A.*, B.trxId as csTrxId " +
+                "FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN PG_CHARGE_SETTLE_FIRM_RESERVE B ON A.trxId=B.trxId LEFT OUTER JOIN VW_TRX_CAP C ON A.trxId=C.trxId " +
+                " WHERE (C.serviceType = '월세앱' OR B.trxId IS NOT NULL)) D");
         super.setColumns("D.*");
-        super.setOrderBy("trxId desc");
+        super.setOrderBy("regDate desc");
 
         CPUtil.setDAO(this, datas);				//DATA to CONDITION
         return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
