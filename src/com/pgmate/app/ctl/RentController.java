@@ -343,6 +343,9 @@ public class RentController {
             if(Integer.valueOf(pubDay) <= Integer.valueOf(toDay)) {
                 return "NOK:이체예정일자는 익일부터 가능합니다.";
             }
+        // 실시간 정산건도 이체예정일 들어가게
+        } else {
+            pubDay = CommonUtil.getCurrentDate("yyyyMMdd");
         }
 
         if(rentDAO.updateFirmReserve(trxId, transferType, pubDay, pubTime)) {
