@@ -100,13 +100,15 @@
 													</div>
 												</div>
 												<div class="alert alert-danger display-hide"></div>
-												<div class="form-actions right">
-													<div class="">
-														<button type="submit" class="btn green btn-sm loading-btn" data-loading-text="Loading...">
-															<i class="fa fa-search"></i>&nbsp;Submit
-														</button>
+												<c:if test="${CP_SESSION.grade =='본사' && CP_SESSION.role != '일반'}">
+													<div class="form-actions right">
+														<div class="">
+															<button type="submit" class="btn green btn-sm loading-btn" data-loading-text="Loading...">
+																<i class="fa fa-search"></i>&nbsp;Submit
+															</button>
+														</div>
 													</div>
-												</div>
+												</c:if>
 											</form>
 										</div>
 										<!-- END ADD FORM TABLE-->

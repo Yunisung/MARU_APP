@@ -51,6 +51,7 @@ public class CPDAO extends DAO{
 	}
 
 	public boolean insertByOperAddKey(String table, String transferKey, String regId, List<Data> datas) {
+		this.setXssChange(false);
 		this.setTable(table);
 		this.setRecord("transferKey", transferKey);
 		this.setRecord("regId", regId);

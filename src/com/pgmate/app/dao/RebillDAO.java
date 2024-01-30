@@ -30,6 +30,7 @@ public class RebillDAO extends DAO {
     public RecordSet trxSum(List<Data> datas,Page page) {
         //KJM : 금액의 합계를 amount 컬럼명으로 받겠다
         super.setColumns("SUM(amount) AS amount");
+        super.addWhere("status", "승인");
         page = CPUtil.correctPage(page);
         CPUtil.setDAO(this, datas);				//DATA to CONDITION
         RecordSet rset =  super.search();

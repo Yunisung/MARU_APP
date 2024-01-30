@@ -69,7 +69,9 @@
 																<option value="">-----&nbsp;</option>  
 																<option value="08970022000000008" selected="selected">케이뱅크(70022000000008)</option>
 																<%--<option value="0392070158564301">경남은행(2070158564301)</option>--%>
-																<option value="0392070158563707">경남은행(2070158563707)</option>
+<%--																<option value="0392070158563707">경남은행(2070158563707)</option>--%>
+																<option value="0398003344299939">경남은행(8003344299939)</option>
+                                                                <option value="034019107542861">광주은행(019107542861)</option>
 															</select>
 														</div>  
  														<div class="form-group pg-form-group">
@@ -151,6 +153,7 @@
 							if(response.resultCd == '0000'){
 								if(action == '0600300'){
 									msg+="</br>잔액: &nbsp;"+response.data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+									msg+="</br>출금가능금액: &nbsp;"+response.data.payable_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 								}else if(action == '0700100'){
 									msg+="</br>당행요청건수 : &nbsp;"+response.data.reqCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 									msg+="</br>당행요청금액 : &nbsp;"+response.data.reqAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -166,6 +169,7 @@
 									msg+="</br>타행실패금액 : &nbsp;"+response.data.oFailAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 									msg+="</br></br>당행수수료합 : &nbsp;"+response.data.fee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 									msg+="</br>타행수수료합 : &nbsp;"+response.data.oFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+									msg+="</br>타임아웃건수 : &nbsp;"+response.data.timeOutCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 								}
 							}
 							bootbox.alert(msg);

@@ -89,7 +89,7 @@
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label input-sm col-sm-4">이체예정일</label>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control input-sm transferDay" maxlength="2" name="transferDay" value="">
+                                                    <input type="text" class="form-control input-sm transferDay" maxlength="100" name="transferDay" value="">
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
@@ -187,12 +187,6 @@
                                                 <label class="control-label input-sm col-sm-4">가맹점정산 노티 주소</label>
                                                 <div class="col-sm-6">
                                                     <input type="text" class="form-control input-sm mchtSettleNotiAddr" maxlength="100" name="mchtSettleNotiAddr" value="" placeholder="api.example.com">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6">
-                                                <label class="control-label input-sm col-sm-4">영업라인정산 노티 주소</label>
-                                                <div class="col-sm-6">
-                                                    <input type="text" class="form-control input-sm memSettleNotiAddr" maxlength="100" name="memSettleNotiAddr" value="" placeholder="api.example.com">
                                                 </div>
                                             </div>
                                         </div>

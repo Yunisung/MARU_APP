@@ -68,6 +68,13 @@
 		<intercept-url pattern="/trxoper/load/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
 		<intercept-url pattern="/rebill/reg/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT', 'ROLE_TMN')"/>
 
+		<!-- 월세앱관리 -->
+		<intercept-url pattern="/rent/cap/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/rent/distSettle/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/rent/mcht/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/rent/settle/form" access="hasAnyRole('ROLE_COMP')"/>
+		<intercept-url pattern="/rent/trx/form" access="hasAnyRole('ROLE_COMP')"/>
+
 		<!-- 매출관리 -->
 		<intercept-url pattern="/sales/dailysByStlDay/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
 		<intercept-url pattern="/sales/dailysByCapDay/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
@@ -182,7 +189,11 @@
 
 		<!-- 고객센터 -->
 		<intercept-url pattern="/system/notice/form" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/system/notice/add" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/system/notice/add.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/system/faq/view" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
+		<intercept-url pattern="/system/faq/add" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/system/faq/add.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/system/task/view" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
 
 		<!-- 단말기 로그인 -->

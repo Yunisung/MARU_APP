@@ -54,6 +54,8 @@
                                                 <select id="settleType" name="settleType" class="selectpicker col-sm-6">
                                                     <option value="B+1" selected>B+1</option>
                                                     <option value="D+1">D+1</option>
+                                                    <option value="A+0">당일정산(영업일)</option>
+                                                    <option value="A+2">당일정산(365)</option>
                                                 </select>
                                             </div>
                                             <script type="text/javascript">
@@ -142,6 +144,17 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4 req-label">증권사 계좌인증
+                                                </label>
+                                                <select id="useStockBank" name="useStockBank" class="selectpicker col-sm-6">
+                                                    <option value="Y">Y</option>
+                                                    <option value="N">N</option>
+                                                </select>
+                                            </div>
+                                            <script type="text/javascript">
+                                                document.forms.writeFrm.useStockBank.value = '${DATAMAP.useStockBank}'
+                                            </script>
                                         </div>
                                         <div class="alert alert-danger display-hide"></div>
                                         <div class="form-actions right">

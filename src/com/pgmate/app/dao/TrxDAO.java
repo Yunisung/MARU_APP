@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 
+import com.pgmate.app.model.ajax.Data;
+import com.pgmate.app.model.ajax.Page;
+import com.pgmate.app.util.CPUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -600,4 +603,13 @@ public class TrxDAO extends DAO {
 		return rset.getRow(0).getString("sender");
 	}
 
+	public RecordSet getTrxNotiList(List<Data> datas, Page page){
+		super.setTable("VW_TRX_NTS_PG");
+		super.setColumns("*");
+		super.setOrderBy("regDate desc");
+
+		page = CPUtil.correctPage(page);
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		return super.searchList(page.current, page.size,page.hash);
+	}
 }

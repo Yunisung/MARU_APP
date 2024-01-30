@@ -55,6 +55,7 @@
                                       method="post">
                                     <input type="hidden" data-reg="false" name="reason" value="가상계좌 인증수수료내역">
                                     <input type="hidden" data-reg="false" name="thead" value="regDate:인증일시,authId:인증수수료ID,mchtName:가맹점명,mchtId:가맹점ID,vactAccount:가상계좌,authType:인증수단,bankName:은행,holderName:예금주,resultMsg:인증결과,authFee:인증수수료,authFeeVat:인증수수료VAT,stlStatus:인증수수료정산결과,stlId:정산번호,stlDay:정산예정일,stlType:정산유형, summary:비고">
+                                    <input type="hidden" data-reg="false" name="theadDetail" value="authId:authId,totalAuthId:totalAuthId,mchtName:mchtName,mchtId:mchtId,vactAccount:vactAccount,authType:authType,bankCd:bankCd,bankName:bankName,bankAccount:bankAccount,vactAccount:vactAccount,holderName:holderName,authNo:authNo,phoneNo:phoneNo,resultCd:resultCd,resultMsg:resultMsg,resultStatus:resultStatus,refId:refId,authFee:authFee,authFeeVat:authFeeVat,stlType:stlType,stlUnit:stlUnit,stlId:stlId,stlStatus:stlStatus,stlDay:stlDay,regTime:regTime,regDate:regDate,summary:summary">
 
                                     <div class="form-body">
                                         <div class="row">
@@ -132,6 +133,7 @@
                                                     <option value="039">경남은행</option>
                                                     <option value="089">케이뱅크</option>
                                                     <option value="034">광주은행</option>
+                                                    <option value="007">수협은행</option>
                                                 </select>
                                             </div>
                                             <div class="form-group pg-form-group">
@@ -277,6 +279,19 @@
             });
         }
     });
+
+    function searchForDetailExcel() {
+        // thead 값 가져오기
+        var theadTemp = $("input[name=thead]").val();
+
+        // thead 값 변경
+        var theadDetail = $("input[name=theadDetail]").val();
+        $("input[name=thead]").val(theadDetail);
+        searchForExcel();
+
+        // thead 값 원복
+        $("input[name=thead]").val(theadTemp);
+    }
 </script>
 <!-- 모달 생성을 위한 베이스 -->
 <div id="pgmate-modal" class="modal fade container" data-backdrop="static" data-keyboard="false" tabindex="-1"></div>

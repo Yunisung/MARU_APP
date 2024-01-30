@@ -87,6 +87,7 @@
 													<option value="089" selected>케이뱅크</option>
 													<option value="039">경남은행</option>
 													<option value="034">광주은행</option>
+													<option value="007">수협은행</option>
 												</select>
 											</div>
 											<div class="form-group col-sm-6">
@@ -153,7 +154,7 @@
 												</div>
 											</div>
 											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4 req-label">1일한도</label>
+												<label class="control-label col-sm-4 req-label">1일한도(가맹점별)</label>
 												<div class="col-sm-6">
 													<div class="input-group input-group-sm">
 														<input type="text" class="form-control currency limitDay comma" maxlength="14" data-oper="comma" name="limitDay" placeholder="" value="0">

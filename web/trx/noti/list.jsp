@@ -4,19 +4,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="portlet-title">
-    <div class="caption font-red-sunglo">
-        <i class="icon-share font-red-sunglo"></i>
-        <span class="caption-subject bold uppercase"> Result </span>
-        <span class="caption-helper" style="display:none"><span id="page-total">${CPR.page.total}</span> 건</span>
-    </div>
     <div class="actions">
-        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:searchForExcel();">
-            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-        </a>
-        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:searchForPDF();">
-            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-        </a>
-        <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;" data-original-title="" title=""> </a>
+        <c:if test="${CP_SESSION.grade eq '본사'}">
+            <div class="btn-group">
+                <a href="javascript:;" class="btn btn-circle btn-default noti-retry">
+                    <i class="fa fa-mail-reply"></i> 재전송
+                </a>
+            </div>
+        </c:if>
     </div>
 </div>
 <div class="portlet-body form light">
@@ -26,49 +21,55 @@
             <!-- table-bordered -->
             <thead>
             <tr>
-                <th>No</th>
-                <th style="min-width: 140px">정기결제ID</th>
-                <th>가맹점ID</th>
-                <th>가맹점이름</th>
-                <th>터미널ID</th>
+                <c:if test="${CP_SESSION.grade eq '본사' }">
+                    <th class="ck-th" rowspan="3"><input type="checkbox" class="all-check" id="check_all" class="checkbox-style" /><label for="check_all"></label></th>
+                </c:if>
+                <th>거래번호</th>
+                <th>가맹점</th>
+                <th>터미널</th>
+                <th>거래유형</th>
+                <th>주문번호</th>
+                <th>거래일</th>
                 <th>금액</th>
+                <th>전송URL</th>
+                <th>전송횟수</th>
                 <th>상태</th>
-                <th>성명</th>
-                <th>전화번호</th>
-                <th>상품명</th>
-                <th>결제주기</th>
-                <th>결제횟수</th>
-                <th>다음결제일자</th>
-                <th>만료일자</th>
-                <th>등록일자</th>
+                <th>보낸시간</th>
+                <th>등록일시</th>
             </tr>
             </thead>
             <tbody id="list">
             <c:if test="${CPR.result.code != 200}">
                 <tr>
-                    <td colspan="16">${CPR.result.code}:&nbsp;${CPR.result.message}:&nbsp;${CPR.result.error}</td>
+                    <td colspan="17">${CPR.result.code}:&nbsp;${CPR.result.message}:&nbsp;${CPR.result.error}</td>
                 </tr>
             </c:if>
             <c:forEach var="entry" items="${CPR.data}" varStatus="status">
-                <tr data-rebillId="${entry.rebillId}">
-                    <td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
-                    <td>${entry.rebillId}</td>
-                    <td>${entry.mchtId}</td>
-                    <td>${entry.nick}</td>
+                <tr data-notiIndex="${entry.idx}">
+                    <td class="ck-td btn-td">
+                        <input type="checkbox" class="row-check" id="${entry.idx}_check" class="checkbox-style" /><label for="${entry.idx}_check"></label>
+                    </td>
+                    <td>${entry.trxId}</td>
+                    <td title="${entry.mchtId }">${entry.name}</td>
                     <td>${entry.tmnId}</td>
-                    <td>${entry.amount}</td>
+                    <c:if test="${entry.trxType == 'pay'}">
+                        <td>승인</td>
+                    </c:if>
+                    <c:if test="${entry.trxType == 'refund'}">
+                        <td>승인취소</td>
+                    </c:if>
+                    <td>${entry.trackId}</td>
+                    <td>${entry.trxDay}</td>
+                    <td><fmt:formatNumber type="number" value="${entry.amount}" pattern="#,##0" /></td>
+                    <td>${entry.webHookUrl}</td>
+                    <td>${entry.retry}</td>
                     <td>${entry.status}</td>
-                    <td>${entry.payerName}</td>
-                    <td>${entry.payerTel}</td>
-                    <td>${entry.productName}</td>
-                    <td>매월 ${entry.rebillDays}일</td>
-                    <td>${entry.rebillCount}</td>
-                    <td class="date">${entry.nextPayDate}</td>
-                    <td class="date">${entry.expireDate}</td>
-                    <td class="date">${entry.regDay}</td>
+                    <td class="date">${entry.sentDate}</td>
+                    <td class="date">${entry.regDate}</td>
                 </tr>
             </c:forEach>
             </tbody>
+
         </table>
     </div>
     <div class="row">

@@ -17,6 +17,7 @@
     </div>
     <div class="actions">
         <c:if test="${CP_SESSION.grade == '본사'}">
+            <a class="btn green btn-sm excel-detail" href="javascript:searchForDetailExcel();">상세내역 다운로드</a>
             <div class="btn-group">
             <a class="btn btn-circle btn-default " href="javascript:;" data-toggle="dropdown" aria-expanded="false">
             <i class="fa fa-bank"></i> 정산 기능 <i class="fa fa-angle-down"></i>

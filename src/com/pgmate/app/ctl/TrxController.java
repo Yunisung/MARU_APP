@@ -399,11 +399,15 @@ public class TrxController {
 		SessionUtil.setSearchGrade(request, cpRequest);
 
 		TrxCapDAO trxCapDAO1 = new TrxCapDAO();
+		trxCapDAO1.setDebug(true);
 		trxCapDAO1.addWhere("risk != '' AND capType='매입'");
+		trxCapDAO1.addWhere("IFNULL(serviceType, '') != '월세앱'");
 		request.setAttribute("AMOUNT_SUM", trxCapDAO1.trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
 		
 		TrxCapDAO trxCapDAO = new TrxCapDAO();
+		trxCapDAO.setDebug(true);
 		trxCapDAO.addWhere("risk != '' AND capType='매입'");
+		trxCapDAO.addWhere("IFNULL(serviceType, '') != '월세앱'");
 		RecordSet rset = trxCapDAO.list(cpRequest.data,cpRequest.page);
 		return new CPRUtil(cpRequest).dataList(rset,trxCapDAO).setView(request,"/trx/status/list","");
 	}
@@ -448,7 +452,8 @@ public class TrxController {
 				String t = util.setRiskToNormal(capId);
 				if(t.startsWith("OK")){
 					// 23.11.02 월세앱 리스크 해제 노티 전송 추가
-					SharedMap<String, Object> capMap = trxDAO.getRentCapById(capId);
+					// 월세앱 리스크 코드 주석처리
+					/*SharedMap<String, Object> capMap = trxDAO.getRentCapById(capId);
 					if(capMap != null) {
 						logger.info("월세앱 거래건 있음");
 						// 예약이체 insert
@@ -468,7 +473,7 @@ public class TrxController {
 							capMap.put("payLoad", payLoad);
 							new RiskChangeHook(hookAddr, capMap, "0").start();
 						}
-					}
+					}*/
 					iqrDAO.insertRisk(capId, t.replaceAll("OK:", "")+" ,"+summary, SessionUtil.getUserId(request));
 					success++;
 				}else{
@@ -1078,5 +1083,33 @@ public class TrxController {
 		payLoadMap.put("resultMsg",resultMsg);
 		String payLoad = CommonUtil.toQueryString(payLoadMap,"UTF-8");
 		return payLoad;
+	}
+
+	@RequestMapping(value = "/trx/noti/list", method = RequestMethod.POST)
+	public ModelAndView notiList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+		TrxDAO trxDAO = new TrxDAO();
+		RecordSet rset = trxDAO.getTrxNotiList(cpRequest.data,cpRequest.page);
+
+		return new CPRUtil(cpRequest).dataList(rset,trxDAO).setView(request,"/trx/noti/list","");
+	}
+
+	@RequestMapping(value = {"/trx/noti/retry/{idx}"}, method = RequestMethod.POST)
+	public @ResponseBody SharedMap<String, Object> notiRetry(HttpServletRequest request, @PathVariable String idx) {
+		SharedMap<String, Object> resultMap = new SharedMap<>();
+		logger.info("idx : {}", idx);
+		CPDAO dao = new CPDAO();
+		dao.setTable("PG_TRX_NTS_PG");
+		dao.setRecord("retry", 0);
+		dao.setRecord("status", "전송실패");
+		dao.addWhere("idx", idx, DAO.in);
+
+		if(dao.update()) {
+			resultMap.put("result", "OK");
+		} else {
+			resultMap.put("result", "NOK");
+			resultMap.put("msg", "재전송 실패했습니다.");
+		}
+
+		return resultMap;
 	}
 }

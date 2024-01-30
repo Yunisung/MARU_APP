@@ -69,7 +69,7 @@
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4 req-label">가맹점 정산유형</label>
-                                                <select name="settleType" class="selectpicker col-sm-6" >
+                                                <select name="settleType" class="selectpicker col-sm-6">
                                                     <option value="C+0">실시간 충전정산</option>
                                                     <option value="B+1">1일 후 자동충전정산</option>
                                                     <option value="C+1">1일 후 충전정산</option>
@@ -91,12 +91,12 @@
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label input-sm col-sm-4">이체예정일</label>
                                                 <div class="col-sm-6">
-                                                    <input type="text" class="form-control input-sm transferDay" maxlength="2" name="transferDay" onkeyup="commas(this)" value="${RENTMAP.transferDay}">
+                                                    <input type="text" class="form-control input-sm transferDay" maxlength="100" name="transferDay" onkeyup="commas(this)" value="${RENTMAP.transferDay}">
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4">계약검토상태</label>
-                                                <select name="contractStatus" class="selectpicker col-sm-6" disabled="disabled">
+                                                <select name="contractStatus" class="selectpicker col-sm-6">
                                                     <option value="대기" selected>대기</option>
                                                     <option value="완료" selected>완료</option>
                                                 </select>
@@ -190,12 +190,6 @@
                                                 <label class="control-label input-sm col-sm-4">가맹점정산 노티 주소</label>
                                                 <div class="col-sm-6">
                                                     <input type="text" class="form-control input-sm mchtSettleNotiAddr" maxlength="100" name="mchtSettleNotiAddr" placeholder="api.example.com" value="${RENTMAP.mchtSettleNotiAddr}">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6">
-                                                <label class="control-label input-sm col-sm-4">영업라인정산 노티 주소</label>
-                                                <div class="col-sm-6">
-                                                    <input type="text" class="form-control input-sm memSettleNotiAddr" maxlength="100" name="memSettleNotiAddr" placeholder="api.example.com" value="${RENTMAP.memSettleNotiAddr}">
                                                 </div>
                                             </div>
                                         </div>

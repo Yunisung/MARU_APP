@@ -9,13 +9,11 @@
 <html lang="en">
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
-
 <head>
     <c:import url="/include/head.jsp" />
 </head>
 <!-- END HEAD -->
-
-<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-sidebar-fixed">
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
 <div class="page-wrapper">
     <c:import url="/include/header.jsp" />
     <!-- BEGIN CONTAINER -->
@@ -29,8 +27,8 @@
                     <div class="page-bar">
                         <ul class="page-breadcrumb">
                             <li><a href="/">Home</a><i class="fa fa-circle"></i></li>
-                            <li><span>정기결제 관리</span><i class="fa fa-circle"></i></li>
-                            <li><span>등록내역 조회</span></li>
+                            <li><span>거래관리</span><i class="fa fa-circle"></i></li>
+                            <li><span>노티내역 조회</span></li>
                         </ul>
                         <div class="page-toolbar">
                             <div class="btn-group btn-theme-panel">
@@ -46,39 +44,57 @@
                             </div>
                         </div>
                     </div>
-                    <!-- BEGIN PAGE CONTENT INNER -->
+                    <!-- END PAGE BAR -->
+                    <!-- BEGIN PAGE CONTENT - MARU - INNER -->
                     <div class="page-content-inner" id="search-container">
                         <!-- 검색 폼 시작 -->
                         <div class="portlet light portlet-form">
                             <div class="portlet-body form light">
-                                <form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/rebill/reg/list" method="post">
+                                <form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/trx/noti/list" method="post">
                                     <div class="form-body">
                                         <div class="row">
                                             <div class="form-group pg-form-group">
-                                                <label class="control-label col-lg-4">가맹점ID</label>
+                                                <label class="control-label col-lg-4">거래번호</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" class="form-control input-sm" name="mchtId" data-oper="lk" placeholder="가맹점 아이디">
+                                                    <input type="text" class="form-control input-sm" name="trxId" data-oper="eq" placeholder="거래번호">
                                                 </div>
                                             </div>
                                             <div class="form-group pg-form-group">
-                                                <label class="control-label col-lg-4">가맹점이름</label>
+                                                <label class="control-label col-lg-4">가맹점명</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" class="form-control input-sm" name="nick" data-oper="lk" placeholder="가맹점 이름">
+                                                    <input type="text" class="form-control input-sm" name="name" data-oper="lk" placeholder="가맹점명">
                                                 </div>
                                             </div>
                                             <div class="form-group pg-form-group">
-                                                <label class="control-label col-lg-4">터미널ID</label>
+                                                <label class="control-label col-lg-4">터미널</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" class="form-control input-sm" name="tmnId" data-oper="lk" placeholder="터미널 아이디">
+                                                    <input type="text" class="form-control input-sm" name="tmnId" data-oper="eq" placeholder="터미널 아이디">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">주문번호</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control input-sm" name="trackId" data-oper="eq" placeholder="주문번호">
+                                                </div>
+                                            </div>
+                                            <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">거래일자</label>
+                                                <div class=" col-lg-8">
+                                                    <div class="input-group input-group-sm input-daterange">
+                                                        <input type="text" class="form-control now-date" name="trxDay" value="" data-oper="ge">
+                                                        <span class="input-group-addon">~</span>
+                                                        <input type="text" class="form-control now-date" name="trxDay" value="" data-oper="le">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group pg-form-group">
                                                 <label class="control-label col-lg-4">상태</label>
-                                                <select class="selectpicker col-lg-8" name="status" data-oper="eq">
-                                                    <option value="">-- 전체 -- </option>
-                                                    <option value="사용">사용</option>
-                                                    <option value="완료">완료</option>
-                                                    <option value="해지">해지</option>
+                                                <select class="selectpicker btn-sm col-lg-8 col-xs-12" name="status" data-oper="eq">
+                                                    <option value="">상태</option>
+                                                    <option value="전송완료">전송완료</option>
+                                                    <option value="전송실패">전송실패</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -115,15 +131,18 @@
 <c:import url="/include/javascript.jsp" />
 
 <script type="text/javascript">
-    gradeSelector('searchForm', '가맹점');
-    setTimeout(function () {
-        searchForList();
-    }, 100); //검색 실행
-    $('#nav-trx').addClass('active');
 
-    $('#date-selector').on('change', function() {
-        $('.date-selector-target').attr('name', $(this).val());
-    })
+    //2022.06.27 현재년도 기준 5년 이전 년도 선택 불가 추가
+    var nowYear = new Date().getFullYear() - 5;
+
+    $('.now-date').datepicker({
+        format: 'yyyy-mm-dd',			// 날짜 포맷
+        startDate: new Date(nowYear.toString())		// 5년 이전 년도 선택 불가
+    });
+
+    gradeSelector('searchForm', '${CP_SESSION.grade}');
+    setTimeout(function(){ searchForList(); }, 100); //검색 실행
+    $('#nav-trx').addClass('active');
 </script>
 <!-- 모달 생성을 위한 베이스 -->
 <div id="pgmate-modal" class="modal fade container" data-backdrop="static" data-keyboard="false" tabindex="-1"></div>

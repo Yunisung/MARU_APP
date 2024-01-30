@@ -42,6 +42,7 @@ public class MchtChargeSettleDAO extends DAO{
 	}
 
 	public boolean updateTransferKey(String transferKey, String regId, String mchtId) {
+		this.setXssChange(false);
 		this.setTable("PG_MCHT_CHARGE_MNG");
 		this.setRecord("transferKey", transferKey);
 		this.setRecord("regId", regId);

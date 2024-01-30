@@ -229,6 +229,15 @@ public class MchtDAO extends DAO{
 		super.update(q);
 	}
 
+	public SharedMap<String, Object> getMchtTaxByTaxId(String taxId) {
+		super.setTable("PG_MCHT_TAX");
+		super.setColumns("*");
+		super.addWhere("taxId", taxId, eq);
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst();
+	}
+
 	/**
 	 * 충전정산 잔액조회
 	 * @param mchtId
@@ -239,15 +248,6 @@ public class MchtDAO extends DAO{
 		super.setColumns("*");
 		super.addWhere("mchtId",mchtId,eq);
 		super.setOrderBy("");
-		RecordSet rset = super.search();
-		super.initRecord();
-		return rset.getRowFirst();
-	}
-
-	public SharedMap<String, Object> getMchtTaxByTaxId(String taxId) {
-		super.setTable("PG_MCHT_TAX");
-		super.setColumns("*");
-		super.addWhere("taxId", taxId, eq);
 		RecordSet rset = super.search();
 		super.initRecord();
 		return rset.getRowFirst();

@@ -127,6 +127,88 @@ public class VactDtlDAO extends DAO {
 		return null;
 	}
 
+	public List<String> insertAppointedVact(String mchtId, List<String> accountList, String bankCd, String userId) {
+
+		String accountStr = "";
+		for(int i =0; i < accountList.size(); i++) {
+			if(accountList.size() == i + 1) {
+				accountStr = accountStr + "'" + accountList.get(i) + "'";
+			} else {
+				accountStr = accountStr + "'" + accountList.get(i) + "',";
+			}
+		}
+
+		super.setTable("VW_VACT_UNUSED");
+		super.setColumns("*");
+		super.addWhere("bankCd", bankCd);
+		super.addWhere("account IN ("+accountStr+")");
+		List<SharedMap<String, Object>> targetList = super.search().getRows();
+		super.initRecord();
+
+		super.setTable("PG_MCHT");
+		super.setColumns("name");
+		super.addWhere("mchtId", mchtId);
+		String holderName = super.search().getRow(0).getString("name");
+		super.initRecord();
+
+		int inserted = 0;
+		ArrayList<String> issueIdList = new ArrayList<>();
+
+		logger.debug("insert PG_VACT_DTL batch: {}", targetList.size());
+		String query = "INSERT INTO PG_VACT_DTL (issueId, account, vactType, status, mchtId, holderName, amount, oper, expireAt, regId, regDay) "
+				+ "VALUES (?,?,?,?,?,?,?,?,?,?,?);";
+
+		DBManager db = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			db = DBFactory.getInstance();
+			conn = db.getConnection();
+			pstmt = conn.prepareStatement(query);
+
+			int batchSize = 100;
+			int count = 0;
+			String expire = (Integer.parseInt(CommonUtil.getCurrentDate("yyyy")) + 1) + CommonUtil.getCurrentDate("MMdd");
+
+			for (SharedMap<String, Object> map : targetList) {
+				String issueId = TrxDAO.getIssueId();
+				issueIdList.add(issueId);
+				int i = 1;
+				pstmt.setString(i++, issueId);
+				pstmt.setString(i++, map.getString("account"));
+				pstmt.setString(i++, "영구");
+				pstmt.setString(i++, "대기");
+				pstmt.setString(i++, mchtId);
+				pstmt.setString(i++, holderName);
+				pstmt.setString(i++, "0");
+				pstmt.setString(i++, "ge");
+				pstmt.setString(i++, expire + "00");
+				pstmt.setString(i++, userId);
+				pstmt.setString(i++, CommonUtil.getCurrentDate("yyyyMMdd"));
+				pstmt.addBatch();
+
+				if (++count % batchSize == 0) {
+					inserted += pstmt.executeBatch().length;
+				}
+			}
+
+			inserted += pstmt.executeBatch().length;
+			conn.commit();
+		} catch (Exception e) {
+			logger.debug("insert batch PG_VACT_DTL error : {}", CommonUtil.getExceptionMessage(e));
+		} finally {
+			db.close(pstmt);
+			db.close(conn);
+		}
+
+		//insert가 정상적으로 되면 issueIdList 반환
+		if(inserted > 0) {
+			return issueIdList;
+		}
+		return null;
+	}
+
 	/**
 	 * HT_VACT_DTL테이블에 저장
 	 * @param issueId	가상계좌발급번호
@@ -152,8 +234,8 @@ public class VactDtlDAO extends DAO {
 			int count = 0;
 			String expire = (Integer.parseInt(CommonUtil.getCurrentDate("yyyy")) + 1) + CommonUtil.getCurrentDate("MMdd");
 
-			int i = 1;
 			for (String id : issueIdList) {
+				int i = 1;
 				SharedMap<String,Object> map = getVactDtl(id);
 				pstmt.setString(i++, map.getString("issueId"));
 				pstmt.setString(i++, map.getString("account"));

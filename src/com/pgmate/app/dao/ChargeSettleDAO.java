@@ -66,8 +66,8 @@ public class ChargeSettleDAO extends DAO{
 //		super.setColumns("trxId, name, mchtId, trxType, trxUnit, trxDay, trxTime, amount, fee, feeVat, bankFee, netAmount, balance, trackId, refId, bankCd, bankName, "
 //				+ "FN_AES_DEC(account) as account, FN_AES_DEC(holder) as holder, recordInfo, summary, regId, regDay, regDate, vactBankCd");
 
-		CPUtil.setDAO(this, datas);				//DATA to CONDITION
-		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
+		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 		
 	}
 
@@ -78,7 +78,7 @@ public class ChargeSettleDAO extends DAO{
 				"(SELECT codeName FROM PG_CODE WHERE alias='BANK' AND code=D.vactBankCd) AS vactBankName " +
 				"FROM (SELECT A.*, CASE WHEN A.trxType = '입금' THEN B.bankCd WHEN A.trxType = '출금' THEN C.bankCd END AS vactBankCd " +
 				"FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN PG_VACT_TRX B ON A.trxId = B.vactId AND A.mchtId = B.mchtId AND A.trxType = '입금' AND A.trxUnit = '가상계좌정산' " +
-				"LEFT OUTER JOIN PG_FIRM_TRX C ON A.refId = C.idx AND A.trxType = '출금' AND A.trxUnit = '펌뱅킹' LEFT OUTER JOIN VW_TRX_CAP_LIST F ON A.trxId=F.trxId WHERE F.serviceType != '월세앱') D) E");
+				"LEFT OUTER JOIN PG_FIRM_TRX C ON A.refId = C.idx AND A.trxType = '출금' AND A.trxUnit = '펌뱅킹' LEFT OUTER JOIN VW_TRX_CAP_LIST F ON A.trxId=F.trxId WHERE IFNULL(F.serviceType, '') != '월세앱') D) E");
 		super.setColumns("E.*");
 		super.setOrderBy("trxId desc");
 
@@ -281,11 +281,11 @@ public class ChargeSettleDAO extends DAO{
 			conn = db.getConnection();
 			conn.setAutoCommit(false);
 			pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, capMap.getString("trxId"));
-				pstmt.addBatch();
-				if (++count % batchSize == 0) {
-					deleted += pstmt.executeBatch().length;
-				}
+			pstmt.setString(1, capMap.getString("trxId"));
+			pstmt.addBatch();
+			if (++count % batchSize == 0) {
+				deleted += pstmt.executeBatch().length;
+			}
 			deleted += pstmt.executeBatch().length;
 			conn.commit();
 		} catch (Exception e) {

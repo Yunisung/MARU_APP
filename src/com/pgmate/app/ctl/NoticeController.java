@@ -52,13 +52,7 @@ public class NoticeController {
 
 	@RequestMapping(value = { "/system/notice/add" })
 	public ModelAndView add(HttpServletRequest request) {
-		CPSession session = SessionUtil.get(request);
-		if(!(session.getGrade().equals("본사") && !session.getRole().equals("일반"))) {
-			//관리자 권한이 없을때 이전 화면으로 보냄
-			return new ModelAndView("/");
-		} else {
-			return new ModelAndView("/system/notice/add");
-		}
+		return new ModelAndView("/system/notice/add");
 	}
 
 	@RequestMapping(value = "/system/notice/list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
