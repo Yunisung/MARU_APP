@@ -342,6 +342,12 @@ public class CollectController {
 		for(SharedMap<String, String> eachMap : requestList) {
 				
 			logger.debug("MCHT DECIDE = mchtId: {}, vanId: {}", eachMap.getString("mchtId"), eachMap.getString("vanId"));
+
+			// 예정금액 null일 때 0으로 치환
+			if(CommonUtil.isNullOrSpace(eachMap.getString("calcAmount"))) {
+				eachMap.put("calcAmount", "0");
+			}
+
 //			dao.setDebug(true);
 			dao.setTable("PG_COLLECT_SETTLE_DTL");
 			dao.setColumns("idx");
