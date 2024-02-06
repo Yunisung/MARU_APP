@@ -349,6 +349,8 @@ public class RentController {
         }
 
         if(rentDAO.updateFirmReserve(trxId, transferType, pubDay, pubTime)) {
+            // history 추가
+            rentDAO.insertFirmReserveHistory(trxId);
             return "OK:재전송 요청 성공하였습니다.";
         } else {
             return "NOK:재전송 요청에 실패하였습니다.";
