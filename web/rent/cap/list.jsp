@@ -121,6 +121,7 @@
 						<th>발급사</th>
 						<th>매입사</th>
 						<th>할부</th>
+						<th style="min-width:100px;">이체예정일</th>
 						<th style="min-width:100px;">정산예정일</th>
 						<th style="min-width:100px;">입금예정일</th>
 						<th>VAN</th>
@@ -180,6 +181,7 @@
 							<td>${entry.acquirer}</td>
 							
 							<td>${entry.installment}</td>
+							<td class="date">${entry.pubDay}</td>
 							<td class="date">${entry.stlDay}</td>
 							<td class="date">${entry.stlVanDay}</td>
 							<td>${entry.van}</td>

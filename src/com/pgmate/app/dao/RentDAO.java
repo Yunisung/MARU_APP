@@ -65,9 +65,8 @@ public class RentDAO extends DAO {
     public RecordSet list(List<Data> datas,Page page){
         logger.info("=================================");
         super.setDebug(true);
-        super.setTable("VW_TRX_CAP_LIST");
+        super.setTable("(SELECT B.pubDay, A.* FROM VW_TRX_CAP_LIST A LEFT OUTER JOIN PG_CHARGE_SETTLE_FIRM_RESERVE B ON A.trxId=B.refTrxId WHERE serviceType='월세앱') C");
         super.setColumns("*");
-        super.setWhere("serviceType='월세앱'");
         page = CPUtil.correctPage(page);
         CPUtil.setDAO(this, datas);				//DATA to CONDITION
         return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
