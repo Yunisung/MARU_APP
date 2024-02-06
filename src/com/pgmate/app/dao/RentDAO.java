@@ -382,6 +382,60 @@ public class RentDAO extends DAO {
         return result;
     }
 
+    public SharedMap<String,Object> getFirmReserve(String trxId) {
+        super.setTable("PG_CHARGE_SETTLE_FIRM_RESERVE");
+        super.setColumns("*");
+        super.addWhere("trxId", trxId, eq);
+
+        super.setLimit(1);
+
+        RecordSet rset = super.search();
+        super.initRecord();
+        return rset.getRowFirst();
+    }
+
+    public boolean insertFirmReserveHistory(String trxId) {
+        SharedMap<String,Object> map = getFirmReserve(trxId);
+
+        super.setTable("HT_CHARGE_SETTLE_FIRM_RESERVE");
+
+        super.setRecord("trxId",        map.getString("trxId"));
+        super.setRecord("transferType", map.getString("transferType"));
+        super.setRecord("trxType",      map.getString("trxType"));
+        super.setRecord("mchtId",       map.getString("mchtId"));
+        super.setRecord("trackId",      map.getString("trackId"));
+        super.setRecord("pubDay",       map.getString("pubDay"));
+        super.setRecord("pubTime",      map.getString("pubTime"));
+        super.setRecord("status",       map.getString("status"));
+        super.setRecord("retry",        map.getInt("retry"));
+        super.setRecord("trxDay",       map.getString("trxDay"));
+        super.setRecord("trxTime",      map.getString("trxTime"));
+        super.setRecord("amount",       map.getLong("amount"));
+        super.setRecord("fee",          map.getLong("fee"));
+        super.setRecord("feeVat",       map.getLong("feeVat"));
+        super.setRecord("bankFee",      map.getLong("bankFee"));
+        super.setRecord("netAmount",    map.getLong("netAmount"));
+        super.setRecord("balance",      map.getLong("balance"));
+        super.setRecord("resultCd",     map.getString("resultCd"));
+        super.setRecord("resultMsg",    map.getString("resultMsg"));
+        super.setRecord("refId",        map.getString("refId"));
+        super.setRecord("refTrxId",     map.getString("refTrxId"));
+        super.setRecord("rootTrxId",    map.getString("rootTrxId"));
+        super.setRecord("account",      map.getString("account"));
+        super.setRecord("bankCd",       map.getString("bankCd"));
+        super.setRecord("bankName",     map.getString("bankName"));
+        super.setRecord("holder",       map.getString("holder"));
+        super.setRecord("recordInfo",   map.getString("recordInfo"));
+        super.setRecord("regId", 		"SYSTEM");											// 등록자아이디
+        super.setRecord("regDay", 			CommonUtil.getCurrentDate("yyyyMMdd"));			// 등록일
+
+        boolean insert = super.insert();
+        logger.info("set HT_CHARGE_SETTLE_FIRM_RESERVE insert : {}", insert);
+
+        super.initRecord();
+        return insert;
+    }
+
     public RecordSet distSettlelist(List<Data> data, Page page) {
         super.setTable("PG_RENT_SETTLE A LEFT OUTER JOIN PG_MAM_DIST B ON A.memberId=B.distId");
         super.setColumns("(A.payCnt+A.rfdCnt) AS totalCnt,(A.payAmt+A.rfdAmt) AS totalAmt, B.name as memberName, A.*");
