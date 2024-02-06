@@ -117,6 +117,7 @@
 															<div class="col-lg-4" style="padding:0;">
 															<select class="selectpicker col-lg-12" name="" id="date-selector" data-reg="false">
 																<option value="regDay" selected>거래일자</option>
+																<option value="pubDay">이체예정일</option>
 																<option value="payOutDay">지급일</option>
 																<option value="stlDay">정산예정일</option>
 																<option value="stlVanDay">입금예정일</option>
