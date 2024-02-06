@@ -142,7 +142,7 @@ public class TrxController {
 		
 		
 		// 웰컴 영수증 조회용 param
-		if(res.startsWith("van", "WELCOMEO")){
+		if(res.startsWith("van", "WELCOMESUB")){
 			SharedMap<String, Object> van  = new TrxCapDAO().getByVanId(res.getString("vanId")).getRow(0);
 			try {
 				if(res.getString("capType").equals("매입")){
