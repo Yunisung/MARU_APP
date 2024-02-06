@@ -428,6 +428,7 @@ public class RentDAO extends DAO {
         super.setRecord("recordInfo",   map.getString("recordInfo"));
         super.setRecord("regId", 		"SYSTEM");											// 등록자아이디
         super.setRecord("regDay", 			CommonUtil.getCurrentDate("yyyyMMdd"));			// 등록일
+        super.setRecord("summary",   "이체 재시도");
 
         boolean insert = super.insert();
         logger.info("set HT_CHARGE_SETTLE_FIRM_RESERVE insert : {}", insert);
