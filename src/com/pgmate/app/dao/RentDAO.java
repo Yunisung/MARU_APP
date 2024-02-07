@@ -88,7 +88,6 @@ public class RentDAO extends DAO {
     public RecordSet listWithDecAccount(List<Data> datas, Page page){
         page = CPUtil.correctPage(page);
 
-        super.setDebug(true);
 //        super.setTable("(SELECT A.*, B.billingMethod, C.trxId as firmTrxId " +
 //                "FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN VW_TRX_CAP B ON A.trxId=B.trxId LEFT OUTER JOIN PG_CHARGE_SETTLE_FIRM_RESERVE C ON A.trxId=C.trxId " +
 //                "WHERE B.serviceType='월세앱') D");
