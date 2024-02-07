@@ -120,8 +120,8 @@
 																<option value="">-- 전체 -- </option>
 																<option value="대기">대기</option>
 																<option value="완료">완료</option>
-																<option value="전송">실패</option>
-<%--																<option value="실패">실패</option>--%>
+																<option value="전송">전송</option>
+																<option value="실패">실패</option>
 															</select>
 														</div>
 														<div class="form-group pg-form-group">
