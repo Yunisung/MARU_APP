@@ -97,8 +97,7 @@
 															<select class="selectpicker col-lg-8" name="trxUnit" data-oper="eq">
 																<option value="">-- 전체 -- </option>
 																	<option value="신용카드정산">신용카드정산</option>
-																	<option value="펌뱅킹">펌뱅킹</option>
-																	<option value="인증수수료">인증수수료</option>
+																	<option value="월세앱정산">월세앱정산</option>
 															</select>
 														</div>
 														<div class="form-group pg-form-group">
