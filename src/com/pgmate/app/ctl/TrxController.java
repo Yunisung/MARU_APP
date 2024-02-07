@@ -1,10 +1,17 @@
 package com.pgmate.app.ctl;
 
+import java.io.*;
 import java.lang.reflect.Type;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.List;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.pgmate.app.dao.*;
 import com.pgmate.app.hook.RiskChangeHook;
 import org.slf4j.Logger;
@@ -144,6 +151,7 @@ public class TrxController {
 		// 웰컴 영수증 조회용 param
 		if(res.startsWith("van", "WELCOMESUB")){
 			SharedMap<String, Object> van  = new TrxCapDAO().getByVanId(res.getString("vanId")).getRow(0);
+
 			try {
 				if(res.getString("capType").equals("매입")){
 					res.put("hash_value", EncryptUtil.sha256(res.getString("vanTrxId") + van.getString("cryptoKey")));
@@ -153,6 +161,53 @@ public class TrxController {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+
+
+			//온라인거래일때만, 거래정보 조회해서 영수증 ID 받기
+			if(van.getString("vanId").equals("welcome306")) {
+				String search_uri = "https://payapi.welcomepayments.co.kr/api/search/order";
+
+				String mid = van.getString("vanId");
+				String order_no = "";
+				if(res.getString("capType").equals("매입")) {
+					order_no = res.getString("trxId");
+				} else {
+					SharedMap<String, Object> orgMap = new TrxCapDAO().getByCapId2(res.getString("rootTrxId")).getRowFirst();
+					order_no = orgMap.getString("trxId");
+				}
+
+				String api_key = "59a30bd3e66d9a87c71b5d39e26ed42a";
+
+				SharedMap<String, Object> reqMap = new SharedMap<>();
+				reqMap.put("mid", mid);
+				reqMap.put("order_no", order_no);
+
+				String hash_value = "";
+				try {
+					hash_value = EncryptUtil.sha256(mid + order_no + api_key);
+					reqMap.put("hash_value", hash_value);
+				} catch (Exception e) {
+					logger.error("WELCOME 영수증 조회 오류 : {}", e.getMessage());
+				}
+
+				SharedMap<String, Object> responseMap = new SharedMap<>();
+
+				//통신
+				responseMap = searchRequest(search_uri, reqMap.toJson());
+
+				//결과값 처리
+				if(responseMap.getString("result_code").equals("0000")) {
+					String transaction_no = responseMap.getString("transaction_no");
+					res.put("vanTrxId", transaction_no);
+
+					try {
+						res.put("hash_value", EncryptUtil.sha256(res.getString("vanTrxId") + api_key));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+				}
 			}
 		}
 		
@@ -169,6 +224,118 @@ public class TrxController {
 		request.setAttribute("IQR_MAP", new TrxIqrDAO().getByCapId(capId).getRows());
         return new ModelAndView("/trx/cap/modal");
     }
+
+	private SharedMap<String, Object> searchRequest(String uri, String json) {
+		String response = sendReq(json, uri);
+		SharedMap<String, Object>  resultMap = getSearchValue(response);
+		return resultMap;
+	}
+
+	private String sendReq(String sendMsg, String uri) {
+		String result= "";
+
+		String inputLine = null;
+		StringBuffer outResult = new StringBuffer();
+
+		try {
+			logger.debug("START");
+			URL u = new URL(uri);
+			HttpsURLConnection huc = (HttpsURLConnection)u.openConnection();
+			huc.setDoOutput(true);
+			huc.setRequestMethod("POST");
+			huc.setDoInput(true);
+			huc.setRequestProperty("Content-Type", "application/json");
+			huc.setRequestProperty("Accept", "*/*");
+			huc.setRequestProperty("Accept-Charset", "UTF-8");
+
+			logger.debug("send : [{}]", sendMsg);
+			OutputStream os = huc.getOutputStream();
+			os.write(sendMsg.getBytes("UTF-8"));
+
+			os.flush();
+			os.close();
+			int responseCode = huc.getResponseCode();
+
+			InputStream is = null;
+
+			// SSL setting
+			SSLContext context = SSLContext.getInstance("TLS");
+			context.init(null, null, null);
+			// No validation for now
+			huc.setSSLSocketFactory(context.getSocketFactory());
+			// Connect to host
+			huc.connect();
+			huc.setInstanceFollowRedirects(true);
+			// Print response from host
+			if (responseCode == HttpsURLConnection.HTTP_OK) {
+				// 정상 호출 200
+				is = huc.getInputStream();
+			} else {
+				// 에러 발생
+				is = huc.getErrorStream();
+			}
+
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is,"UTF-8"));
+
+//	    	String line;
+			while((inputLine = rd.readLine()) != null ) {
+				outResult.append(inputLine);
+			}
+			result = outResult.toString();
+			rd.close();
+			huc.disconnect();
+
+			logger.debug("result : [{}]",result);
+			logger.debug("END");
+
+		} catch (UnknownHostException uhe) {
+			result = "{\"result_code\":\"E999\",\"result_message\":\"Exception:"+uhe.getMessage()+"\"}";
+			return result;
+		} catch (IOException ioe) {
+			result = "{\"result_code\":\"E999\",\"result_message\":\"Exception:"+ioe.getMessage()+"\"}";
+			return result;
+		} catch (Exception e) {
+			result = "{\"result_code\":\"E999\",\"result_message\":\"Exception:"+e.getMessage()+"\"}";
+			return result;
+		}
+		return result;
+	}
+
+	private SharedMap<String, Object> getSearchValue(String json) {
+		SharedMap<String, Object> response = new SharedMap<>();
+
+		JsonParser jsonParser = new JsonParser();
+		JsonObject jsonObject = (JsonObject) jsonParser.parse(json);
+
+		response.put("result_code", jsonObject.get("result_code").getAsString());
+		response.put("result_message", jsonObject.get("result_message").getAsString());
+
+		if(response.getString("result_code").equals("0000")) {
+			//성공
+			response.put("transaction_no", jsonObject.get("transaction_no").getAsString());
+			response.put("mid", jsonObject.get("mid").getAsString());
+			response.put("pay_type", jsonObject.get("pay_type").getAsString());
+			response.put("transaction_status", jsonObject.get("transaction_status").getAsString());
+			response.put("order_no", jsonObject.get("order_no").getAsString());
+			response.put("approval_no", jsonObject.get("approval_no").getAsString());
+			response.put("approval_ymdhms", jsonObject.get("approval_ymdhms").getAsString());
+			response.put("cancel_ymdhms", jsonObject.get("cancel_ymdhms").getAsString());
+			response.put("amount", jsonObject.get("amount").getAsString());
+			response.put("cancel_amount", jsonObject.get("cancel_amount").getAsString());
+			response.put("remain_amount", jsonObject.get("remain_amount").getAsString());
+			response.put("user_id", jsonObject.get("user_id").getAsString());
+			response.put("user_name", jsonObject.get("user_name").getAsString());
+			response.put("recipient_name", jsonObject.get("recipient_name").getAsString());
+			response.put("recipient_address", jsonObject.get("recipient_address").getAsString());
+			response.put("product_code", jsonObject.get("product_code").getAsString());
+			response.put("product_name", jsonObject.get("product_name").getAsString());
+			response.put("echo", jsonObject.get("echo").getAsString());
+			response.put("fail_code", jsonObject.get("fail_code").getAsString());
+			response.put("fail_message", jsonObject.get("fail_message").getAsString());
+		}
+
+		return response;
+	}
 
 	@RequestMapping(value = "/trx/io/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView ioList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
