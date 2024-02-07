@@ -332,6 +332,12 @@
 															</div>
 														</div>
 														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">주문번호</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm" name="trackId" data-oper="eq" placeholder="주문번호">
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">가맹점 ID</label>
 															<div class="col-lg-8">
 																<input type="text" class="form-control input-sm" name="mchtId" data-oper="eq" value=""  placeholder="가맹점 ID">
@@ -345,7 +351,8 @@
 																	<option value="입금완료">입금완료</option>
 																</select>
 														</div>
-														
+
+
 														<c:import url="/common/selectGrade.jsp" />
 														<input type="hidden" id="grade_search" name="parentId" data-oper="eq" value=""/>
 													</div>
