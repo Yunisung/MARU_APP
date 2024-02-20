@@ -246,6 +246,16 @@
 													document.forms.writeFrm.holderCheck.value = '${DATAMAP.holderCheck}'
 												</script>
 											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">미성년자 확인</label>
+												<select name="ageCheck" class="selectpicker col-sm-6">
+													<option value="Y" selected="selected">Y</option>
+													<option value="N" >N</option>
+												</select>
+												<script type="text/javascript">
+													document.forms.writeFrm.ageCheck.value = '${DATAMAP.ageCheck}'
+												</script>
+											</div>
 
 											<div class="form-group col-sm-6">
 												<div style="padding-top:45px; border-left:none;"></div>
