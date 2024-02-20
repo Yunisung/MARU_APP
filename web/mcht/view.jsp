@@ -2655,6 +2655,17 @@
 																			</div>
 																		</div>
 																	</div>
+																	<div class="col-md-6">
+																		<div class="form-group pg-view-group">
+																			<label class="control-label col-md-3">미성년자 확인</label>
+																			<div class="col-md-9">
+																				<p class="form-control-static">
+																					<c:if test="${VACT_MAP.ageCheck == 'Y'}">사용</c:if>
+																					<c:if test="${VACT_MAP.ageCheck == 'N'}">중지</c:if>
+																				</p>
+																			</div>
+																		</div>
+																	</div>
 																</div>
 																<c:if test="${CP_SESSION.grade eq '본사'}">
 																	<c:if test="${VACT_MAP.settleType eq 'D+0' || VACT_MAP.settleType eq 'A+0' || VACT_MAP.settleType eq 'A+1' || VACT_MAP.settleType eq 'A+2'}">
