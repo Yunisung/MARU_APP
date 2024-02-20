@@ -52,9 +52,10 @@ public class RentDAO extends DAO {
 
     public RecordSet trxSum(List<Data> datas,Page page) {
         super.setDebug(true);
-        super.setTable("VW_TRX_CAP_LIST");
+//        super.setTable("VW_TRX_CAP_LIST");
+        super.setTable("(SELECT B.pubDay, A.* FROM VW_TRX_CAP_LIST A LEFT OUTER JOIN PG_CHARGE_SETTLE_FIRM_RESERVE B ON A.trxId=B.refTrxId WHERE serviceType='월세앱') C");
         super.setColumns("SUM(amount) AS amount");
-        super.setWhere("serviceType='월세앱'");
+//        super.setWhere("serviceType='월세앱'");
         page = CPUtil.correctPage(page);
         CPUtil.setDAO(this, datas);				//DATA to CONDITION
         RecordSet rset = super.search();
