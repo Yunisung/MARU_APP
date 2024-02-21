@@ -155,6 +155,17 @@
                                             <script type="text/javascript">
                                                 document.forms.writeFrm.useStockBank.value = '${DATAMAP.useStockBank}'
                                             </script>
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4 req-label">미성년자 체크
+                                                </label>
+                                                <select id="ageCheck" name="ageCheck" class="selectpicker col-sm-6">
+                                                    <option value="Y">Y</option>
+                                                    <option value="N">N</option>
+                                                </select>
+                                            </div>
+                                            <script type="text/javascript">
+                                                document.forms.writeFrm.ageCheck.value = '${DATAMAP.ageCheck}'
+                                            </script>
                                         </div>
                                         <div class="alert alert-danger display-hide"></div>
                                         <div class="form-actions right">
