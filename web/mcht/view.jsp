@@ -2196,6 +2196,14 @@
 																				</div>
 																			</div>
 																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">미성년자 체크</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.ageCheck}</p>
+																				</div>
+																			</div>
+																		</div>
 																	</div>
 																</div>
 																<div class="form-actions">
@@ -2651,17 +2659,6 @@
 																				<p class="form-control-static">
 																					<c:if test="${VACT_MAP.holderCheck == 'Y'}">사용</c:if>
 																					<c:if test="${VACT_MAP.holderCheck == 'N'}">중지</c:if>
-																				</p>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="col-md-6">
-																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">미성년자 확인</label>
-																			<div class="col-md-9">
-																				<p class="form-control-static">
-																					<c:if test="${VACT_MAP.ageCheck == 'Y'}">사용</c:if>
-																					<c:if test="${VACT_MAP.ageCheck == 'N'}">중지</c:if>
 																				</p>
 																			</div>
 																		</div>

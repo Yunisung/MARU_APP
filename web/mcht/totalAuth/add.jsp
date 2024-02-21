@@ -134,6 +134,14 @@
                                                     <option value="N">N</option>
                                                 </select>
                                             </div>
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4 req-label">미성년자 체크
+                                                </label>
+                                                <select id="ageCheck" name="ageCheck" class="selectpicker col-sm-6">
+                                                    <option value="Y">Y</option>
+                                                    <option value="N">N</option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="alert alert-danger display-hide"></div>
                                         <div class="form-actions right">
