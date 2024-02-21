@@ -32,7 +32,7 @@ public class TrxCapDAO extends DAO{
 		super.setColumns(TrxCapDAO.COLUMNS);
 		super.setOrderBy("regDay desc, regTime desc");
 	}
-	
+
 
 	public RecordSet getByTrxId(String trxId){
 		addWhere("trxId",trxId,eq);
@@ -43,7 +43,7 @@ public class TrxCapDAO extends DAO{
 		addWhere("rootTrxId",capId,eq);
 		return search();
 	}
-	
+
 	public RecordSet getByRootCapId2(String capId){
 		super.setTable("VW_TRX_CAP A left join PG_TRX_RFD B on A.trxId = B.trxId");
 		super.setColumns("A.*");
@@ -61,7 +61,7 @@ public class TrxCapDAO extends DAO{
 		super.initRecord();
 		return rset;
 	}
-	
+
 	public RecordSet getByCapId(String capId){
 		addWhere("capId",capId,eq);
 		return search();
@@ -75,7 +75,7 @@ public class TrxCapDAO extends DAO{
 		return rset;
 	}
 
-	
+
 	// where 가맹점아이디, 터미널아이디, 주문번호, 승인번호, 금액, 거래일자가 일치하는 것
 	public RecordSet getBySix(String mchtId, String tmnId, String trackId, String authCd, String amount, String regDay){
 		super.setTable("PG_TRX_PAY");
@@ -163,7 +163,7 @@ public class TrxCapDAO extends DAO{
 		return rset;
 	}
 
-	
+
 	public RecordSet getByMchtId(String mchtId, long limit){
 		addWhere("mchtId",mchtId,eq);
 		setLimit(limit);
@@ -186,7 +186,7 @@ public class TrxCapDAO extends DAO{
 		CPUtil.setDAO(this, datas);			//DATA to CONDITION 
 		return super.search();				//단일 검색
 	}
-	
+
 	public List<String> salesMonthList(){
 		super.setColumns("SUBSTR(MIN(regDay),1,6) as trxMonth");
 		super.setTable("PG_TRX_CAP");
@@ -211,16 +211,16 @@ public class TrxCapDAO extends DAO{
 		super.initRecord();
 		return list;
 	}
-	
+
 	public RecordSet list(List<Data> datas,Page page){
-		super.setWhere("IFNULL(serviceType, '') != '월세앱'");
+//		super.setWhere("IFNULL(serviceType, '') != '월세앱'");
 		page = CPUtil.correctPage(page);
-		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
 	
-	
-	
+
+
 	public RecordSet calcPayList(List<Data> datas,Page page) {
 		super.setColumns("trxDay, taxId, stlDay, mchtId, name, SUM(amount) AS amount, SUM(vat) AS vat, " +
 						"SUM(stlAmount) AS stlAmount, AVG(stlRate) as stlRate, SUM(1) AS stlCount, SUM(stlFee) AS stlFee, SUM(stlFeeVat) AS stlFeeVat, " +
@@ -261,7 +261,7 @@ public class TrxCapDAO extends DAO{
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
-	
+
 	public RecordSet trxSum(List<Data> datas,Page page) {
 		super.setColumns("SUM(amount) AS amount");
 		super.setOrderBy("");
@@ -304,7 +304,7 @@ public class TrxCapDAO extends DAO{
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
-	
+
 
 	public RecordSet getByVanId(String vanId){
 		super.setTable("PG_VAN");
