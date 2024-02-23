@@ -2665,7 +2665,7 @@
 																	</div>
 																	<div class="col-md-6">
 																		<div class="form-group pg-view-group">
-																			<label class="control-label col-md-3">개인 가상계좌</label>
+																			<label class="control-label col-md-3">동일고객 1계좌 발급</label>
 																			<div class="col-md-9">
 																				<p class="form-control-static">
 																					<c:if test="${VACT_MAP.personalAccountCheck == 'Y'}">사용</c:if>
