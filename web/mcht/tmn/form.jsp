@@ -99,6 +99,12 @@
 																</select>
 															</div>
 														</c:if>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">취급품목</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm description" name="description" data-oper="lk" placeholder="취급품목">
+															</div>
+														</div>
 													</div>
 
 													<div class="row search-opt">
