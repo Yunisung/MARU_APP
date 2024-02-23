@@ -224,7 +224,7 @@
 												</select>
 											</div>
 											<div class="form-group col-sm-6">
-												<label class="control-label col-sm-4">개인 가상계좌 사용</label>
+												<label class="control-label col-sm-4">동일고객 1계좌 발급</label>
 												<select name="personalAccountCheck" class="selectpicker col-sm-6">
 													<option value="Y">Y</option>
 													<option value="N" selected>N</option>
