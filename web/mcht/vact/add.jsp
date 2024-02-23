@@ -217,6 +217,20 @@
 												</div>
 											</div>
 											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4">예금주 확인</label>
+												<select name="holderCheck" class="selectpicker col-sm-6">
+													<option value="Y">Y</option>
+													<option value="N" selected>N</option>
+												</select>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4">개인 가상계좌 사용</label>
+												<select name="personalAccountCheck" class="selectpicker col-sm-6">
+													<option value="Y">Y</option>
+													<option value="N" selected>N</option>
+												</select>
+											</div>
+											<div class="form-group col-sm-6">
 												<div style="padding-top:45px; border-left:none;"></div>
 											</div>
 											<div class="form-group col-sm-12 form-subtitle">
