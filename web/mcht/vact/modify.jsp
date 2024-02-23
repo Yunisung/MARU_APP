@@ -246,6 +246,16 @@
 													document.forms.writeFrm.holderCheck.value = '${DATAMAP.holderCheck}'
 												</script>
 											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label col-sm-4 req-label">개인 가상계좌 사용</label>
+												<select name="personalAccountCheck" class="selectpicker col-sm-6">
+													<option value="Y">Y</option>
+													<option value="N" selected="selected">N</option>
+												</select>
+												<script type="text/javascript">
+													document.forms.writeFrm.personalAccountCheck.value = '${DATAMAP.personalAccountCheck}'
+												</script>
+											</div>
 
 											<div class="form-group col-sm-6">
 												<div style="padding-top:45px; border-left:none;"></div>
