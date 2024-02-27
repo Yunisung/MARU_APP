@@ -74,7 +74,7 @@
 						<td class="differenceAmount"><fmt:formatNumber type="number" value="${entry.stlDiffVanAmt - entry.stlDiffAmt}" pattern="#,##0" /></td>
 						<td class="excel-hide">
 							<c:if test="${entry.stlDiffVanAmt <= 0}">
-								<%-- <a class="btn btn-sm green-dark" onClick="makeDiff('${entry.stlDiffVanDay}','${entry.vanId}','vanId','${entry.stlDiffAmt}','${entry.stlDiffVanAmt}')" style="margin-bottom:3px;"> VAN ID로 반영 </a>--%>
+								 <a class="btn btn-sm green-dark" onClick="makeDiff('${entry.stlDiffVanDay}','${entry.vanId}','vanId','${entry.stlDiffAmt}','${entry.stlDiffVanAmt}')" style="margin-bottom:3px;"> VAN ID로 반영 </a>
 								<a class="btn btn-sm blue-dark" onClick="makeDiff('${entry.stlDiffVanDay}','${entry.mchtId}','mcht','${entry.stlDiffAmt}','${entry.stlDiffVanAmt}')">가맹점 ID로 반영</a>
 							</c:if>
 						</td>
