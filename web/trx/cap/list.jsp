@@ -112,6 +112,7 @@
 						<th style="min-width:100px;">정산예정일</th>
 						<th style="min-width:100px;">입금예정일</th>
 						<th>VANID</th>
+						<th>차액정산입금일</th>
 					</c:if>
 					<th style="min-width:70px;">리스크</th>
 				</tr>
@@ -171,6 +172,7 @@
 							<td class="date">${entry.stlDay}</td>
 							<td class="date">${entry.stlVanDay}</td>
 							<td>${entry.vanId}</td>
+							<td class="date">${entry.stlDiffVanDay}</td>
 						</c:if>
 						<td>${entry.risk}</td>
 					</tr>

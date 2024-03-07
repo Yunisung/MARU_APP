@@ -120,6 +120,7 @@
 																<option value="payOutDay">지급일</option>
 																<option value="stlDay">정산예정일</option>
 																<option value="stlVanDay">입금예정일</option>
+																<option value="stlDiffVanDay">차액정산입금예정일</option>
 															</select>
 															</div>
 															<div class="col-lg-8">
