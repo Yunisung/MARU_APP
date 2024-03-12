@@ -32,6 +32,7 @@
 					<th>No</th>
 					<th style="min-width:140px;">가맹점</th>
 					<th>가맹점아이디</th>
+					<th>승인번호</th>
 					<th>주문번호</th>
 					<th>거래번호</th>
 					<th>원거래번호</th>
@@ -68,6 +69,7 @@
 						<td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
 						<td>${entry.name}</td>
 						<td>${entry.mchtId}</td>
+						<td>${entry.authCd}</td>
 						<td>${entry.trackId}</td>
 						<td>${entry.trxId}</td>
 						<td>${entry.rootTrxId}</td>
