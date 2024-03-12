@@ -31,6 +31,7 @@
 					<th data-sort="string">가맹점명</th>
 					<th data-sort="string">가맹점 대표자</th>
 					<th data-sort="string">터미널ID</th>
+					<th data-sort="string">상태</th>
 					<th data-sort="string">상호</th>
 					<th data-sort="string">Tax</th>
 					<c:if test="${CP_SESSION.grade eq '본사'}">
@@ -39,7 +40,6 @@
 					<th data-sort="string">웹결제창</th>
 					<th data-sort="string">수기유형</th>
 					<th data-sort="string">최대할부</th>
-					<th data-sort="string">정산후취소</th>
 					</c:if>
 					<th data-sort="string">시작일자</th>
 					<th data-sort="string">취급품목</th>
@@ -66,6 +66,7 @@
 						<td>${entry.mchtName}</td>
 						<td>${entry.ceoName}</td>
 						<td>${entry.tmnId}</td>
+						<td>${entry.status}</td>
 						<td>${entry.dtlName}</td>
 						<td>${entry.taxName}</td>
 						<c:if test="${CP_SESSION.grade eq '본사'}">
@@ -83,7 +84,6 @@
 								<c:if test="${entry.semiAuth == 'N'}">일반</c:if>
 							</td>
 							<td>${entry.apiMaxInstall}개월</td>
-							<td>${entry.refundType}</td>
 						</c:if>
 						<td class="date">${entry.activeDate}</td>
 						<td class="date">${entry.description}</td>
