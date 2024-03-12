@@ -53,10 +53,10 @@
 											<form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/rent/settle/list" method="post">
 												<input type="hidden" data-reg="false" name="reason" value="충전정산 거래내역">
 												<c:if test="${CP_SESSION.grade == '본사'}">
-													<input type="hidden" data-reg="false" name="thead" value="trxDay:이체일자,trxTime:이체시간,name:가맹점명,mchtId:가맹점아이디,trxType:거래구분,billingType:결제유형,billingMethod:납부구분,amount:입출금원금,fee:수수료,feeVat:수수료부가세,bankFee:은행수수료,netAmount:계정실출금액,payDay:거래일자,payTime:거래시간,balance:거래후잔액,trackId:주문번호,refId:참조번호,status:지급상태,bankCd:은행코드,bankName:은행이름,decAccount:계좌번호,decHolder:예금주명,recordInfo:적요,summary:기재내용,regId:등록자">
+													<input type="hidden" data-reg="false" name="thead" value="trxDay:이체일자,trxTime:이체시간,name:가맹점명,mchtId:가맹점아이디,trxType:거래구분,billingType:결제유형,billingMethod:납부구분,amount:입출금원금,fee:수수료,feeVat:수수료부가세,bankFee:은행수수료,netAmount:계정실출금액,payDay:거래일자,payTime:거래시간,balance:거래후잔액,authCd:승인번호,trackId:주문번호,refId:참조번호,status:지급상태,bankCd:은행코드,bankName:은행이름,decAccount:계좌번호,decHolder:예금주명,recordInfo:적요,summary:기재내용,regId:등록자">
 												</c:if>
 												<c:if test="${CP_SESSION.grade == '가맹점'}">
-													<input type="hidden" data-reg="false" name="thead" value="trxDay:이체일자,trxTime:이체일자,name:가맹점명,mchtId:가맹점아이디,trxType:거래구분,billingType:결제유형,billingMethod:납부구분,amount:입출금원금,fee:수수료,feeVat:수수료부가세,netAmount:계정실출금액,payDay:거래일자,payTime:거래시간,balance:거래후잔액,trackId:주문번호,refId:참조번호,status:지급상태,bankCd:은행코드,bankName:은행이름,decAccount:계좌번호,decHolder:예금주명,recordInfo:적요,summary:기재내용,regId:등록자">
+													<input type="hidden" data-reg="false" name="thead" value="trxDay:이체일자,trxTime:이체일자,name:가맹점명,mchtId:가맹점아이디,trxType:거래구분,billingType:결제유형,billingMethod:납부구분,amount:입출금원금,fee:수수료,feeVat:수수료부가세,netAmount:계정실출금액,payDay:거래일자,payTime:거래시간,balance:거래후잔액,authCd:승인번호,trackId:주문번호,refId:참조번호,status:지급상태,bankCd:은행코드,bankName:은행이름,decAccount:계좌번호,decHolder:예금주명,recordInfo:적요,summary:기재내용,regId:등록자">
 												</c:if>
 												<div class="form-body">
 													<div class="row">
@@ -88,6 +88,12 @@
 																	<span class="input-group-addon">~</span>
 																	<input type="text" class="form-control date-selector-target now-date" name="pubDay" value="" data-oper="le" readonly="readonly" style="background-color:white">
 																</div>
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">승인번호</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm" name="authCd" data-oper="eq" placeholder="승인번호">
 															</div>
 														</div>
 														<div class="form-group pg-form-group">
