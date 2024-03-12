@@ -351,7 +351,7 @@ public class RentDAO extends DAO {
     public RecordSet getRentSettleList(List<Data> data, Page page) {
 //        super.setDebug(true);
         super.setTable("(SELECT A.*, FN_AES_DEC(A.account) as decAccount, FN_AES_DEC(A.holder) as decHolder, C.name, " +
-                "B.billingType, B.billingMethod, B.regDay as payDay, B.regTime as payTime FROM PG_CHARGE_SETTLE_FIRM_RESERVE A " +
+                "B.billingType, B.billingMethod, B.authCd, B.regDay as payDay, B.regTime as payTime FROM PG_CHARGE_SETTLE_FIRM_RESERVE A " +
                 "LEFT OUTER JOIN VW_TRX_CAP B ON A.refTrxId=B.trxId LEFT OUTER JOIN PG_MCHT C ON A.mchtId=C.mchtId) AS D");
         super.setColumns("*");
         page = CPUtil.correctPage(page);
