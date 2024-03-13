@@ -137,6 +137,7 @@
 	                                                	<select name="vanName" class="selectpicker col-sm-6">
 															<option value="KSNET" selected>KSNET</option>
 															<option value="GALAXIA">GALAXIA</option>
+															<option value="WELCOME">WELCOME</option>
 														</select>
 													</div>
 												</div>

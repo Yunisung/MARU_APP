@@ -140,9 +140,15 @@
 				                                                    <option value="KSNET" selected>KSNET</option>
 																	<option value="GALAXIA">GALAXIA</option>
 			                                                    </c:when>
+																<c:when test="${DATAMAP.vanName eq 'GALAXIA'}">
+																	<option value="KSNET">KSNET</option>
+																	<option value="GALAXIA" selected>GALAXIA</option>
+																	<option value="WELCOME">WELCOME</option>
+																</c:when>
 			                                                    <c:otherwise>
 				                                                    <option value="KSNET">KSNET</option>
-																	<option value="GALAXIA" selected>GALAXIA</option>
+																	<option value="GALAXIA">GALAXIA</option>
+																	<option value="WELCOME" selected>WELCOME</option>
 			                                                    </c:otherwise>
 		                                                    </c:choose>
 														</select>
