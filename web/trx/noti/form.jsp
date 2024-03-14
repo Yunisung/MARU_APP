@@ -60,19 +60,26 @@
                                                 </div>
                                             </div>
                                             <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">가맹점ID</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control input-sm" name="mchtId" data-oper="eq" placeholder="가맹점ID">
+                                                </div>
+                                            </div>
+                                            <div class="form-group pg-form-group">
                                                 <label class="control-label col-lg-4">가맹점명</label>
                                                 <div class="col-lg-8">
                                                     <input type="text" class="form-control input-sm" name="name" data-oper="lk" placeholder="가맹점명">
                                                 </div>
                                             </div>
+
+                                        </div>
+                                        <div class="row">
                                             <div class="form-group pg-form-group">
                                                 <label class="control-label col-lg-4">터미널</label>
                                                 <div class="col-lg-8">
                                                     <input type="text" class="form-control input-sm" name="tmnId" data-oper="eq" placeholder="터미널 아이디">
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
                                             <div class="form-group pg-form-group">
                                                 <label class="control-label col-lg-4">주문번호</label>
                                                 <div class="col-lg-8">
@@ -89,6 +96,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="form-group pg-form-group">
                                                 <label class="control-label col-lg-4">상태</label>
                                                 <select class="selectpicker btn-sm col-lg-8 col-xs-12" name="status" data-oper="eq">
