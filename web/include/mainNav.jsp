@@ -103,6 +103,9 @@
                     <li class="nav-item ">
                         <a href="/vact/blackList/form.jsp" class="nav-link ">출금계좌 블랙리스트 조회</a>
                     </li>
+                    <li class="nav-item ">
+                        <a href="/vact/error/form.jsp" class="nav-link ">입금 오류 조회</a>
+                    </li>
                 </c:if>
             </ul>
         </li>
