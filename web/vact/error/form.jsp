@@ -54,8 +54,7 @@
                                 <form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/vact/error/list"
                                       method="post">
                                     <input type="hidden" data-reg="false" name="reason" value="가상계좌 입금 오류 내역">
-                                    <input type="hidden" data-reg="false" name="thead" value="regDate:입금일시,bankNm:가상계좌은행코드,account:가상계좌번호,amount:입금금액,resultMsg:에러사유">
-                                    <input type="hidden" data-reg="false" name="theadDetail" value="bankNm:bankNm,account:account,amount:amount,resultMsg:resultMsg,regDate:regDate">
+                                    <input type="hidden" data-reg="false" name="thead" value="regDate:입금일시,bankNm:가상계좌은행,account:가상계좌번호,name:예금주성명,amount:입금금액,resultMsg:에러사유">
 
                                     <div class="form-body">
                                         <div class="row">
