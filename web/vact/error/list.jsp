@@ -47,7 +47,7 @@
                     <td>${entry.bankNm}</td>
                     <td>${entry.account}</td>
                     <td>${entry.name}</td>
-                    <td>${entry.amount}</td>
+                    <td><fmt:formatNumber type="number" value="${entry.amount}" pattern="#,##0" /></td>
                     <td>${entry.resultMsg}</td>
                     <td class="date">${entry.regDate}</td>
                 </tr>
