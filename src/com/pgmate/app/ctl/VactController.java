@@ -27,6 +27,8 @@ import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.util.lang.CommonUtil;
 import com.pgmate.lib.util.map.SharedMap;
 
+import java.io.UnsupportedEncodingException;
+
 @Controller
 public class VactController {
   private static Logger logger = LoggerFactory.getLogger(com.pgmate.app.ctl.VactController.class);
@@ -385,4 +387,27 @@ public class VactController {
 
         return resMap;
     }
+
+    @RequestMapping(value = "/vact/error/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView errorList(HttpServletRequest request, @RequestBody CPRequest cpRequest) throws UnsupportedEncodingException {
+        SessionUtil.setSearchGrade(request, cpRequest);
+
+        CPDAO cpDAO = new CPDAO();
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+
+        RecordSet rset = vactTrxDAO.errorList(cpRequest.data, cpRequest.page);
+        for(SharedMap<String, Object> data : rset.getRows() ) {
+            String reqData = data.getString("reqData");
+            byte[] reqDataBytes = reqData.getBytes("EUC-KR");
+
+            String name = reqData.substring(58, 68).trim();
+            String amount = CommonUtil.toString(reqDataBytes,78, 13).trim();
+
+            data.put("name", name);
+            data.put("amount", CommonUtil.parseInt(amount));
+        }
+        return new CPRUtil(cpRequest).dataList(rset, vactTrxDAO).setView(request, "/vact/error/list", "");
+    }
+
+
 }

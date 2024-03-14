@@ -275,5 +275,16 @@ public class VactTrxDAO extends DAO {
 		return rset.getRowFirst().getInt("cnt");
 	}
 
+	public RecordSet errorList(List<Data> datas, Page page) {
+		super.setTable("PG_VACT_IO a, PG_CODE b");
+		super.setColumns("bankCd, b.codeName as bankNm, account, reqData, resultCd, resultMsg, regDate");
+		super.setWhere("a.bankCd = b.code and b.alias = 'BANK' AND a.resultCd != '0000'");
+		super.setOrderBy("a.regDate desc");
+
+		page = CPUtil.correctPage(page);
+		CPUtil.setDAO(this, datas);
+		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
+	}
+
 }
 
