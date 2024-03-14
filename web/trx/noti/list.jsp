@@ -25,6 +25,7 @@
                     <th class="ck-th" rowspan="3"><input type="checkbox" class="all-check" id="check_all" class="checkbox-style" /><label for="check_all"></label></th>
                 </c:if>
                 <th>거래번호</th>
+                <th>가맹점ID</th>
                 <th>가맹점</th>
                 <th>터미널</th>
                 <th>거래유형</th>
@@ -50,6 +51,7 @@
                         <input type="checkbox" class="row-check" id="${entry.idx}_check" class="checkbox-style" /><label for="${entry.idx}_check"></label>
                     </td>
                     <td>${entry.trxId}</td>
+                    <td>${entry.mchtId}</td>
                     <td title="${entry.mchtId }">${entry.name}</td>
                     <td>${entry.tmnId}</td>
                     <c:if test="${entry.trxType == 'pay'}">
