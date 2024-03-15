@@ -62,7 +62,7 @@
 												<div class="form-body row">
 													<div class="form-body row">
 														<div class="form-group pg-form-group">
-															<label class="control-label input-sm col-sm-4 req-label">출금은행</label>
+															<label class="control-label input-sm col-sm-4 ">출금은행</label>
 															<select class="selectpicker col-lg-8" name="bankCd" id="bankCd" data-oper="eq">
 																<option value="">-- 전체 -- </option>
 																<option value="004">국민은행</option>
@@ -128,7 +128,7 @@
 															</select>
 														</div>
 														<div class="form-group col-sm-8">
-															<label class="control-label input-sm col-sm-2 req-label">출금계좌번호
+															<label class="control-label input-sm col-sm-2 ">출금계좌번호
 															</label>
 															<div class="col-sm-8">
 																<div class="col-sm-6">
@@ -138,6 +138,26 @@
 																	<a class="btn btn-sm green link_modal" onclick="showModal('/vact/reg/blackList/searchAccountModal')">가상계좌번호로 조회</a>
 																	<a class="btn btn-sm green link_modal" onclick="showModal('/vact/reg/blackList/searchAuthIdModal')">인증ID로 조회</a>
 																</div>
+															</div>
+														</div>
+													</div>
+													<div class="form-body row">
+														<div class="form-group col-sm-4">
+															<label class="control-label input-sm col-sm-4 ">이름</label>
+															<div class="col-sm-8">
+																<input type="text" class="form-control input-sm" id="holderName" name="holderName" placeholder="이름"></input>
+															</div>
+														</div>
+														<div class="form-group col-sm-4">
+															<label class="control-label input-sm col-sm-4 ">생년월일</label>
+															<div class="col-sm-8">
+																<input type="text" class="form-control input-sm" id="identity" name="identity" placeholder="생년월일"></input>
+															</div>
+														</div>
+														<div class="form-group col-sm-4 hidden">
+															<label class="control-label input-sm col-sm-4 ">은행이름</label>
+															<div class="col-sm-8">
+																<input type="text" class="form-control input-sm" id="bankName" name="bankName" ></input>
 															</div>
 														</div>
 													</div>
@@ -176,14 +196,6 @@
 		var error1 = $('.alert-danger', form1);
 		form1.validate({
 			rules : {
-				account : {
-					maxlength : 14,
-					required : true
-				},
-				bankCd : {
-					minlength : 1,
-					required : true
-				},
 				reason : {
 					maxlength : 100,
 					required : true

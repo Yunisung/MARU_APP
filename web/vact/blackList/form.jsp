@@ -55,7 +55,7 @@
 									<form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/vact/reg/blackList/list"
 									 method="post">
 										<input type="hidden" data-reg="false" name="reason" value="출금계좌 블랙리스트">
-										<input type="hidden" data-reg="false" name="thead" value="bankCd:출금은행코드,bankNm:출금은행명,account:츌금계좌번호,reason:등록사유,regDate:등록일시">
+										<input type="hidden" data-reg="false" name="thead" value="bankCd:출금은행코드,bankNm:출금은행명,account:츌금계좌번호,name:이름,identity:생년월일,reason:등록사유,regDate:등록일시">
 										<div class="form-body">
 											<div class="row">
 												<div class="form-group pg-form-group">
@@ -88,9 +88,21 @@
 													</select>
 												</div>
 												<div class="form-group pg-form-group">
-													<label class="control-label col-lg-4">츌금계좌번호</label>
+													<label class="control-label col-lg-4">출금계좌번호</label>
 													<div class="col-lg-8">
 														<input type="text" class="form-control input-sm" name="account" data-oper="eq" placeholder="계좌번호">
+													</div>
+												</div>
+												<div class="form-group pg-form-group">
+													<label class="control-label col-lg-4">이름</label>
+													<div class="col-lg-8">
+														<input type="text" class="form-control input-sm" name="holderName" data-oper="eq" placeholder="이름">
+													</div>
+												</div>
+												<div class="form-group pg-form-group">
+													<label class="control-label col-lg-4">생년월일</label>
+													<div class="col-lg-8">
+														<input type="text" class="form-control input-sm" name="identity" data-oper="eq" placeholder="생년월일">
 													</div>
 												</div>
 											</div>

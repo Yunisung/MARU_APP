@@ -252,12 +252,15 @@ public class VactController {
         String withdrawBankCd = sharedMap.getString("withdrawBankCd");
         String withdrawBankNm = sharedMap.getString("withdrawBankNm");
         String holderName = sharedMap.getString("holderName");
+        String identity = sharedMap.getString("identity");
 
         if (!CommonUtil.isNullOrSpace(withdrawAccountDec)) {
-            resMap.put("msg", "[" + withdrawBankNm + "/" + withdrawAccountDec + "/" + holderName + "]");
+            resMap.put("msg", "[" + withdrawBankNm + "/" + withdrawAccountDec + "/" + holderName + "/" + identity + "]");
             resMap.put("withdrawAccount", withdrawAccountDec);
             resMap.put("withdrawBankCd", withdrawBankCd);
+            resMap.put("withdrawBankNm", withdrawBankNm);
             resMap.put("holderName", holderName);
+            resMap.put("identity", identity);
             resMap.put("result", "OK");
         } else {
             resMap.put("msg", "출금계좌번호가 존재하지 않습니다.");
@@ -276,12 +279,15 @@ public class VactController {
         String withdrawBankCd = sharedMap.getString("withdrawBankCd");
         String withdrawBankNm = sharedMap.getString("withdrawBankNm");
         String holderName = sharedMap.getString("holderName");
+        String identity = sharedMap.getString("identity");
 
         if (!CommonUtil.isNullOrSpace(withdrawAccountDec)) {
-            resMap.put("msg", "[" + withdrawBankNm + "/" + withdrawAccountDec + "/" + holderName + "]");
+            resMap.put("msg", "[" + withdrawBankNm + "/" + withdrawAccountDec + "/" + holderName + "/" + identity + "]");
             resMap.put("withdrawAccount", withdrawAccountDec);
             resMap.put("withdrawBankCd", withdrawBankCd);
+            resMap.put("withdrawBankNm", withdrawBankNm);
             resMap.put("holderName", holderName);
+            resMap.put("identity", identity);
             resMap.put("result", "OK");
         } else {
             resMap.put("msg", "계좌번호가 존재하지 않습니다.");
@@ -292,29 +298,84 @@ public class VactController {
   
   @RequestMapping(value = {"/vact/reg/blackList/add"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
   public @ResponseBody CPResponse blackListInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
-		CPDAO cpDAO = new CPDAO();
+        CPDAO cpDAO = new CPDAO();
 		VactTrxDAO vactTrxDAO = new VactTrxDAO();
 		
 		String account = cpRequest.getValue("account");
 		String bankCd = cpRequest.getValue("bankCd");
+        String bankName = cpRequest.getValue("bankName");
+        String holderName = cpRequest.getValue("holderName");
+        String identity = cpRequest.getValue("identity");
 		String reason = cpRequest.getValue("reason");
-		
-		logger.info("blackListInsert : [{}][{}][{}]", account, bankCd, reason);
+
+        if(CommonUtil.isNullOrSpace(bankName)) {
+            bankName = vactTrxDAO.getBankName(bankCd);
+            cpRequest.setData("bankName", bankName);
+        }
+
+		logger.info("blackListInsert : [{}][{}][{}][{}][{}][{}]", account, bankCd, bankName, holderName, identity, reason);
 		cpRequest.replaceValue("account",cpDAO.getAESEnc(cpRequest.getValue("account")));
-		
-		if(!vactTrxDAO.isBlackList(bankCd, cpRequest.getValue("account"))) {
-			if(cpDAO.insert2("PG_VACT_REG_BLACKLIST", SessionUtil.getUserId(request), cpRequest.data)){
-				return new CPRUtil(cpRequest).resultOK(CPUtil.RESULT_DATA_INSERTED).redirect(cpRequest.redirect).cpResponse();
-			}
-		}else {
-			return new CPRUtil(cpRequest)
-		        	.resultNOK(CPUtil.RESULT_DATA_INFAIL, "이미 등록된 출금계좌 정보입니다.")
-		        	.cpResponse();
-		}
-		
-		return new CPRUtil(cpRequest)
-	        	.resultNOK(CPUtil.RESULT_DATA_INFAIL,cpDAO.getError())
-	        	.cpResponse();
+        cpRequest.replaceValue("identity",cpDAO.getAESEnc(cpRequest.getValue("identity")));
+
+        if(!CommonUtil.isNullOrSpace(holderName) && CommonUtil.isNullOrSpace(identity)) {
+            return new CPRUtil(cpRequest)
+                    .resultNOK(CPUtil.RESULT_DATA_INFAIL, "생년월일을 입력해야 합니다.")
+                    .cpResponse();
+        }
+
+        if(CommonUtil.isNullOrSpace(holderName) && !CommonUtil.isNullOrSpace(identity)) {
+            return new CPRUtil(cpRequest)
+                    .resultNOK(CPUtil.RESULT_DATA_INFAIL, "이름을 입력해야 합니다.")
+                    .cpResponse();
+        }
+
+        if(!CommonUtil.isNullOrSpace(bankCd) && CommonUtil.isNullOrSpace(account)) {
+            return new CPRUtil(cpRequest)
+                    .resultNOK(CPUtil.RESULT_DATA_INFAIL, "출금계좌번호를 입력해야 합니다.")
+                    .cpResponse();
+        }
+
+        if(CommonUtil.isNullOrSpace(bankCd) && !CommonUtil.isNullOrSpace(account)) {
+            return new CPRUtil(cpRequest)
+                    .resultNOK(CPUtil.RESULT_DATA_INFAIL, "출금은행을 입력해야 합니다.")
+                    .cpResponse();
+        }
+
+        boolean isAdd = false;
+
+        if(!CommonUtil.isNullOrSpace(holderName) && !CommonUtil.isNullOrSpace(identity)) {
+            if(vactTrxDAO.isBlackList2(holderName, cpRequest.getValue("identity"))) {
+                return new CPRUtil(cpRequest)
+                        .resultNOK(CPUtil.RESULT_DATA_INFAIL, "이미 등록된 이름과 생년월일 입니다.")
+                        .cpResponse();
+            } else {
+                isAdd = true;
+            }
+        }
+
+        if(!CommonUtil.isNullOrSpace(bankCd) && !CommonUtil.isNullOrSpace(account)) {
+            if(vactTrxDAO.isBlackList(bankCd, cpRequest.getValue("account"))) {
+                return new CPRUtil(cpRequest)
+                        .resultNOK(CPUtil.RESULT_DATA_INFAIL, "이미 등록된 출금계좌 정보 입니다.")
+                        .cpResponse();
+            } else {
+                isAdd = true;
+            }
+        }
+
+        if(isAdd) {
+            if(cpDAO.insert2("PG_VACT_REG_BLACKLIST", SessionUtil.getUserId(request), cpRequest.data)){
+                return new CPRUtil(cpRequest).resultOK(CPUtil.RESULT_DATA_INSERTED).redirect(cpRequest.redirect).cpResponse();
+            } else {
+                return new CPRUtil(cpRequest)
+                        .resultNOK(CPUtil.RESULT_DATA_INFAIL,cpDAO.getError())
+                        .cpResponse();
+            }
+        } else {
+            return new CPRUtil(cpRequest)
+                    .resultNOK(CPUtil.RESULT_DATA_INFAIL,cpDAO.getError())
+                    .cpResponse();
+        }
   }
 
     @RequestMapping(value = "/vact/reg/blackList/searchAccountModal", method = RequestMethod.GET)
@@ -344,6 +405,10 @@ public class VactController {
 				if(data.name.equals("account")) {
 					data.val = cpDAO.getAESEnc(convaerted);
 				}
+
+                if(data.name.equals("identity")) {
+                    data.val = cpDAO.getAESEnc(convaerted);
+                }
 			}
 		}
 	}

@@ -100,7 +100,7 @@ public class VactTrxDAO extends DAO {
 
 	public SharedMap<String,Object> getTotalAuth(String authId) {
 		super.setTable("PG_TOTAL_AUTH a, PG_CODE b");
-		super.setColumns("FN_AES_DEC(bankAccount) AS withdrawAccountDec, bankCd as withdrawBankCd, b.codeName as withdrawBankNm, holderName");
+		super.setColumns("FN_AES_DEC(bankAccount) AS withdrawAccountDec, bankCd as withdrawBankCd, b.codeName as withdrawBankNm, holderName,FN_AES_DEC(identity) as identity");
 		super.addWhere("a.bankCd = b.code and b.alias = 'BANK'");
 		super.addWhere("authId", authId);
 		RecordSet rset = super.search();
@@ -117,7 +117,7 @@ public class VactTrxDAO extends DAO {
 		return rset;
 	}
 
-	public SharedMap<String,Object> getBankName(String bankCd){
+	public String getBankName(String bankCd){
 		super.setTable("PG_CODE");
 		super.setColumns("*");
 		super.addWhere("`alias`","BANK", eq);
@@ -125,7 +125,7 @@ public class VactTrxDAO extends DAO {
 		super.setOrderBy("");
 		RecordSet rset = super.search();
 		super.initRecord();
-		return rset.getRowFirst();
+		return rset.getRowFirst().getString("codeName");
 	}
 
 	public RecordSet getAuthFeeSum(List<Data> datas, String authType, String mchtId) {
@@ -189,9 +189,9 @@ public class VactTrxDAO extends DAO {
 	 * @return
 	 */
 	public RecordSet blackList(List<Data> datas, Page page) {
-		super.setTable("PG_VACT_REG_BLACKLIST a, PG_CODE b");
-		super.setColumns("a.idx, a.bankCd, FN_AES_DEC(a.account) AS account, b.codeName as bankNm, a.reason, a.regDate");
-		super.setWhere("a.bankCd = b.code and b.alias = 'BANK' and a.useYn = 'Y'");
+		super.setTable("PG_VACT_REG_BLACKLIST");
+		super.setColumns("idx, bankCd, FN_AES_DEC(account) AS account, bankName, holderName, FN_AES_DEC(identity) as identity, reason, regDate");
+		super.setWhere("useYn = 'Y'");
 		super.setOrderBy("regDate desc");
 		
 		page = CPUtil.correctPage(page);
@@ -237,6 +237,23 @@ public class VactTrxDAO extends DAO {
 		}
 	}
 
+	public boolean isBlackList2(String holderName, String identity) {
+		this.setTable("PG_VACT_REG_BLACKLIST");
+
+		super.addWhere("holderName", holderName);
+		super.addWhere("identity", identity);
+		super.addWhere("useYn", 'Y');
+
+		RecordSet rset = super.search();
+
+		super.initRecord();
+		if (rset.size() == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	public boolean updateBlackReason(String idx, String reason) {
 		this.setTable("PG_VACT_REG_BLACKLIST");
 		this.setRecord("reason", reason);
@@ -256,7 +273,7 @@ public class VactTrxDAO extends DAO {
 	 */
 	public SharedMap<String, Object> withdrawAccount(String account){
 		super.setTable("HT_VACT_REG a, PG_CODE b");
-		super.setColumns("FN_AES_DEC(withdrawAccount) AS withdrawAccountDec, withdrawBankCd, b.codeName as withdrawBankNm, holderName");
+		super.setColumns("FN_AES_DEC(withdrawAccount) AS withdrawAccountDec, withdrawBankCd, b.codeName as withdrawBankNm, holderName, FN_AES_DEC(identity) as identity");
 		super.addWhere("a.withdrawBankCd = b.code and b.alias = 'BANK'");
 		super.addWhere("account",account);
 		RecordSet rset = super.search();
