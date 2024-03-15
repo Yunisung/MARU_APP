@@ -62,12 +62,16 @@
 					const msg = res.msg;
 					const withdrawAccount = res.withdrawAccount;
 					const withdrawBankCd = res.withdrawBankCd;
+					const withdrawBankNm = res.withdrawBankNm;
 					const holderName = res.holderName;
 					if (res.result == 'OK') {
 						document.getElementById('resultMsg').innerText = "계좌정보: " + msg;
 						bootbox.confirm(msg + " 정보를 등록하시겠습니까?", function(result) {
 							if(result) {
 								document.getElementById('account').value = withdrawAccount;
+								document.getElementById('holderName').value = holderName;
+								document.getElementById('identity').value = identity;
+								document.getElementById('bankName').value = withdrawBankNm;
 								$('#bankCd').val(withdrawBankCd);
 								$('.selectpicker').selectpicker('refresh');
 								$('#pgmate-modal').modal('hide');
