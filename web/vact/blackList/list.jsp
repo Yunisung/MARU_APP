@@ -40,6 +40,8 @@
 					<th>출금은행코드</th>
 					<th>출금은행명</th>
 					<th>출금계좌번호</th>
+					<th>이름</th>
+					<th>생년월일</th>
 					<th>등록사유</th>
 					<th>등록일시</th>
 				</tr>
@@ -57,8 +59,10 @@
 							<input type="checkbox" class="row-check" id="${entry.idx}_check" class="checkbox-style" /><label for="${entry.idx}_check"></label>
 						</td>
 						<td>${entry.bankCd}</td>
-						<td>${entry.bankNm}</td>
+						<td>${entry.bankName}</td>
 						<td>${entry.account}</td>
+						<td>${entry.holderName}</td>
+						<td>${entry.identity}</td>
 						<td>${entry.reason}</td>
 						<td class="date">${entry.regDate}</td>
 					</tr>
