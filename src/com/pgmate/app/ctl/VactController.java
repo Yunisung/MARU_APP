@@ -344,7 +344,7 @@ public class VactController {
         boolean isAdd = false;
 
         if(!CommonUtil.isNullOrSpace(holderName) && !CommonUtil.isNullOrSpace(identity)) {
-            if(vactTrxDAO.isBlackList2(holderName, cpRequest.getValue("identity"))) {
+            if(vactTrxDAO.isBlackListByIdentity(holderName, cpRequest.getValue("identity"))) {
                 return new CPRUtil(cpRequest)
                         .resultNOK(CPUtil.RESULT_DATA_INFAIL, "이미 등록된 이름과 생년월일 입니다.")
                         .cpResponse();
