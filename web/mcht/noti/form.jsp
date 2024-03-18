@@ -47,10 +47,19 @@
                     <!-- BEGIN PAGE CONTENT - MARU - INNER -->
                     <div class="page-content-inner" id="search-container" >
                         <!-- 검색 폼 시작 -->
-                        <div class="portlet light portlet-form" style="display:none;">
+<%--                        <div class="portlet light portlet-form" style="display:none;">--%>
+                        <div class="portlet light portlet-form">
                             <div class="portlet-body form light">
                                 <form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/mcht/noti/list" method="post">
                                     <div class="form-body">
+                                        <div class="row">
+                                            <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">아이디</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control input-sm" name="id" data-oper="eq" placeholder="아이디">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-actions nobg right">
                                         <div class="">
