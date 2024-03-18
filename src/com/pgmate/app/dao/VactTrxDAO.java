@@ -237,7 +237,7 @@ public class VactTrxDAO extends DAO {
 		}
 	}
 
-	public boolean isBlackList2(String holderName, String identity) {
+	public boolean isBlackListByIdentity(String holderName, String identity) {
 		this.setTable("PG_VACT_REG_BLACKLIST");
 
 		super.addWhere("holderName", holderName);
