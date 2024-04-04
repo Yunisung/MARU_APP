@@ -40,6 +40,7 @@
                 <th>결제횟수</th>
                 <th>다음결제일자</th>
                 <th>만료일자</th>
+                <th>해지일자</th>
                 <th>등록일자</th>
             </tr>
             </thead>
@@ -65,6 +66,7 @@
                     <td>${entry.rebillCount}</td>
                     <td class="date">${entry.nextPayDate}</td>
                     <td class="date">${entry.expireDate}</td>
+                    <td class="date">${entry.terminateDate}</td>
                     <td class="date">${entry.regDay}</td>
                 </tr>
             </c:forEach>
