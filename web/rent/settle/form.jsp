@@ -152,6 +152,11 @@
 												<div class="form-actions nobg right">
 													<div class="btn folding-search-btn icon-arrow-down"></div>
 													<div class="">
+														<c:if test="${CP_SESSION.grade eq '본사' }">
+															<button type="button" class="btn btn-sm grey-salsa" id="tax-bill">
+																<i class="fa fa-balance-scale" aria-hidden="true"></i> 세금계산서 발행&nbsp;
+															</button>
+														</c:if>
 														<button type="button" class="btn btn-sm blue-dark" id="SearchClear">
 															<i class="fa fa-eraser" aria-hidden="true"></i> RESET&nbsp;
 														</button>
@@ -188,6 +193,57 @@
 		$('#date-selector').on('change', function() {
 			$('.date-selector-target').attr('name', $(this).val());
 		})
+
+		$('#tax-bill').click(function() {
+			var $modal = $('#pgmate-modal');
+			$modal.addClass('modal-sm');
+			if ($modal.children().length < 1) {
+				$modal.empty();
+			}
+
+			$modal.load('/rent/settle/tax.jsp', '', function(responseTxt, statusTxt, xhr) {
+				if (statusTxt == "success") {
+					$modal.modal();
+					textMask();
+				}
+			});
+		});
+
+		$(document).on('click', '#tax-download',function() {
+			var sendObj = {
+				trxDay: $('input[name="trxDay"]').val().replace(/-/gi, ''),
+				identity: $('input[name="identity"]').val().replace(/-/gi, ''),
+				compName: $('input[name="compName"]').val(),
+				ceoName: $('input[name="ceoName1"]').val(),
+				addr1: $('input[name="addr1"]').val(),
+				addr2: $('input[name="addr2"]').val(),
+				bizCategory: $('input[name="bizCategory"]').val(),
+				bizType: $('input[name="bizType"]').val(),
+				email: $('input[name="email"]').val(),
+				distType: $('input[name="distType"]').is(':checked')
+			}
+			console.log('sendObj', sendObj);
+			sendObj.ceoName == '' ? '이득명' : '';
+			$.ajax({
+				url : "/rent/settle/tax/export",
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader("Content-type", "application/json;charset=utf-8");
+				},
+				type : 'POST',
+				data: JSON.stringify(sendObj),
+				success : function(json, textStatus) {
+					console.log(json);
+					if(!json.file) {
+						bootbox.alert("세금계산서 출력할 내용이 없습니다.");
+					} else {
+						location.href = json.file.link;
+					}
+				},
+				error : function(xhr, status, error) {
+					bootbox.alert("세금계산서 출력에 실패했습니다.");
+				}
+			});
+		});
 
 	</script>
 	<!-- 모달 생성을 위한 베이스 -->
