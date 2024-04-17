@@ -56,7 +56,7 @@
                                             <div class="form-group pg-form-group">
                                                 <label class="control-label col-lg-4">아이디</label>
                                                 <div class="col-lg-8">
-                                                    <input type="text" class="form-control input-sm" name="id" data-oper="eq" placeholder="아이디">
+                                                    <input type="text" class="form-control input-sm" name="id" data-oper="lk" placeholder="아이디">
                                                 </div>
                                             </div>
                                         </div>
