@@ -2204,6 +2204,22 @@
 																				</div>
 																			</div>
 																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">휴대폰 본인인증</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.phoneAuth}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">휴대폰 본인인증 수수료</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${TOTALAUTH_MAP.phoneAuthFee}</p>원
+																				</div>
+																			</div>
+																		</div>
 																	</div>
 																</div>
 																<div class="form-actions">
