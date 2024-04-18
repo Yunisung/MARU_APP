@@ -166,6 +166,26 @@
                                             <script type="text/javascript">
                                                 document.forms.writeFrm.ageCheck.value = '${DATAMAP.ageCheck}'
                                             </script>
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4 req-label">휴대폰 본인인증
+                                                </label>
+                                                <select id="phoneAuth" name="phoneAuth" class="selectpicker col-sm-6">
+                                                    <option value="Y">Y</option>
+                                                    <option value="N">N</option>
+                                                </select>
+                                            </div>
+                                            <script type="text/javascript">
+                                                document.forms.writeFrm.phoneAuth.value = '${DATAMAP.phoneAuth}'
+                                            </script>
+                                            <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4 req-label">휴대폰 본인인증<br>수수료</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control currency phoneAuthFee comma" maxlength="10" data-oper="comma" name="phoneAuthFee" placeholder="" value="${DATAMAP.phoneAuthFee}">
+                                                        <span class="input-group-addon"><i class="fa fa-krw"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="alert alert-danger display-hide"></div>
                                         <div class="form-actions right">

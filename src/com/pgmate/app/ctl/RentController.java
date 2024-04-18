@@ -2,6 +2,7 @@ package com.pgmate.app.ctl;
 
 import com.pgmate.app.dao.*;
 import com.pgmate.app.export.CPDocument;
+import com.pgmate.app.export.TaxExport;
 import com.pgmate.app.export.XlsExport;
 import com.pgmate.app.hook.MemSettleHook;
 import com.pgmate.app.hook.RiskChangeHook;
@@ -355,6 +356,71 @@ public class RentController {
         } else {
             return "NOK:재전송 요청에 실패하였습니다.";
         }
+    }
+
+    @RequestMapping(value = "/rent/settle/tax/export", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView taxExport(HttpServletRequest request,@RequestBody SharedMap<String, Object> requestMap) {
+        CPDAO dao = new CPDAO();
+
+        if(requestMap.getString("distType").equalsIgnoreCase("true")) {
+            dao.setTable("(SELECT MAX(trxDay) as endDay, taxId, mchtId, name, sum(stlAgencyFee+benefit) amt FROM VW_TRX_CAP WHERE distId ='00' and vanStatus = '입금완료' and substr(stlVanDay,1,6) ='"+requestMap.getString("trxDay")+"' group by taxId) A LEFT JOIN PG_MCHT_TAX B ON A.taxId = B.taxId LEFT JOIN PG_MCHT C ON A.mchtId = C.mchtId");
+            dao.setColumns("A.endDay, A.taxId, A.mchtId, A.name, "
+                    + "A.taxId, A.mchtId, A.name, TRUNCATE(A.amt*10/110,0) as stlFeeVat ,(A.amt-TRUNCATE(A.amt*10/110,0)) as stlFee, "
+                    + "FN_AES_DEC(B.identity) as identity, B.ceoName, B.compName, B.addr1, B.addr2, B.email ,C.bizCategory, C.bizType");
+            dao.setOrderBy("A.name");
+        } else {
+            dao.setTable("VW_TRX_CAP A LEFT JOIN PG_MCHT_TAX B ON A.taxId = B.taxId LEFT JOIN PG_MCHT C ON A.mchtId = C.mchtId");
+            dao.setColumns("MAX(trxDay) as endDay, A.taxId, A.mchtId, A.name, SUM(amount) AS amount, SUM(vat) AS vat, "
+                    + "TRUNCATE(SUM(stlFee+stlFeeVat)*10/110,0) AS stlFeeVat, "
+                    + "(SUM(stlFee+stlFeeVat)-TRUNCATE(SUM(stlFee+stlFeeVat)*10/110,0)) AS stlFee, "
+                    + "FN_AES_DEC(B.identity) as identity, B.ceoName, B.compName, B.addr1, B.addr2, B.email ,C.bizCategory, C.bizType");
+
+            dao.setWhere("SUBSTR(A.stlVanDay,1,6) = '" + requestMap.getString("trxDay") + "'");
+            dao.addWhere("A.distId", "00", DAO.ne);
+            dao.addWhere("A.serviceType", "월세앱", DAO.eq);
+            dao.addWhere("vanStatus", "입금완료", DAO.eq);
+            dao.setGroupBy("taxId");
+            dao.setOrderBy("A.name");
+        }
+
+
+        RecordSet rset = dao.search();
+
+        if (rset.size() > 0) {
+            List<SharedMap<String, Object>> targetList = rset.getRows();
+            SharedMap<String, Object> senderMap = new SharedMap<String, Object>();
+            senderMap.put("identity", requestMap.getString("identity"));
+            senderMap.put("compName", requestMap.getString("compName"));
+            senderMap.put("ceoName", requestMap.getString("ceoName"));
+            senderMap.put("addr1", requestMap.getString("addr1"));
+            senderMap.put("addr2", requestMap.getString("addr2"));
+            senderMap.put("bizCategory", requestMap.getString("bizCategory"));
+            senderMap.put("bizType", requestMap.getString("bizType"));
+            senderMap.put("email", requestMap.getString("email"));
+            senderMap.put("distType", requestMap.getString("distType"));
+
+            TaxExport taxExport = new TaxExport();
+
+            String link = "";
+            try {
+                link = taxExport.makeTaxExcel(senderMap, targetList, SessionUtil.getUserId(request));
+            } catch (Exception e) {
+                logger.debug("엑셀 출력 오류 {}", e);
+                SharedMap<String, String> resMap = new SharedMap<String, String>();
+                resMap.put("file", "");
+                resMap.put("msg", "출력할 수 없습니다.");
+                return new ModelAndView("/common/jsonResponse", "message", GsonUtil.toJson(resMap));
+            }
+
+            CPResponse cpResponse = new CPResponse();
+            Files file = new Files();
+            file.link = link;
+            cpResponse.file = file;
+            return new ModelAndView("/common/jsonResponse", "message", GsonUtil.toJson(cpResponse));
+        }
+        SharedMap<String, String> resMap = new SharedMap<String, String>();
+        resMap.put("file", "");
+        return new ModelAndView("/common/jsonResponse", "message", GsonUtil.toJson(resMap));
     }
 
     // 대행사정산
