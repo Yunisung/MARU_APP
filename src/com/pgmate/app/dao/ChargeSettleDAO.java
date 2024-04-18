@@ -273,7 +273,7 @@ public class ChargeSettleDAO extends DAO{
 		PreparedStatement pstmt = null;
 
 		logger.info("delete PG_CHARGE_SETTLE_FIRM_RESERVE batch : {} )", capMap.size());
-		String query = "DELETE FROM PG_CHARGE_SETTLE_FIRM_RESERVE WHERE trxId=?";
+		String query = "DELETE FROM PG_CHARGE_SETTLE_FIRM_RESERVE WHERE refTrxId=?";
 
 		try {
 			int batchSize = 100;
