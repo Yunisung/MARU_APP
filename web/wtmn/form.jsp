@@ -124,7 +124,7 @@
 	</div>
 	<c:import url="/include/javascript.jsp" />
 	<script type="text/javascript" src="https://devapi.bkwinners.kr/js/clientside.js"></script>
-	
+
 	<!-- BEGIN FORM JAVASCRIPT -->
 	<script type="text/javascript">
 		var form1 = $('#writeFrm');
@@ -188,7 +188,7 @@
 	<script type="text/javascript">
 		MARU.debug(false);
 		function eventFnc(data) {
-			location.href="/trx/pay/form.jsp";
+			location.href="/subMcht/trx/form.jsp";
 
     	}
 	</script>
