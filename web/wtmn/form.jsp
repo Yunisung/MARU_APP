@@ -188,7 +188,7 @@
 	<script type="text/javascript">
 		MARU.debug(false);
 		function eventFnc(data) {
-			location.href="/trx/pay/form.jsp";
+			location.href="/subMcht/trx/form.jsp";
 
     	}
 	</script>
