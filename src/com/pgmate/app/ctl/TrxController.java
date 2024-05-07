@@ -99,6 +99,7 @@ public class TrxController {
 
 		TrxCapDAO trxCapDAO = new TrxCapDAO();
 //		cpRequest.setData("capId", "", "", "desc", false);
+		trxCapDAO.addWhere("IFNULL(serviceType, '') != '월세앱'");
 		RecordSet rset = trxCapDAO.list(cpRequest.data,cpRequest.page);
 		return new CPRUtil(cpRequest).dataList(rset,trxCapDAO).setView(request,"/trx/cap/list","");
 	}
@@ -761,6 +762,7 @@ public class TrxController {
 		request.setAttribute("AMOUNT_SUM", new TrxCapDAO().trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
 		TrxCapDAO trxCapDAO = new TrxCapDAO();
 		cpRequest.setData("capId", "", "", "desc", false);
+		trxCapDAO.addWhere("IFNULL(serviceType, '') != '월세앱'");
 		RecordSet rset = trxCapDAO.list(cpRequest.data,cpRequest.page);
 		return new CPRUtil(cpRequest).dataList(rset,trxCapDAO).setView(request,"/trx/capdel/list","");
 	}
