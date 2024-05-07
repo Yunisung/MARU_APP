@@ -264,7 +264,7 @@ public class TrxCapDAO extends DAO{
 
 	public RecordSet trxSum(List<Data> datas,Page page) {
 		super.setColumns("SUM(amount) AS amount");
-		super.setWhere("IFNULL(serviceType, '') != '월세앱'");
+//		super.setWhere("IFNULL(serviceType, '') != '월세앱'");
 		super.setOrderBy("");
 		super.setLimit(0);
 		page = CPUtil.correctPage(page);

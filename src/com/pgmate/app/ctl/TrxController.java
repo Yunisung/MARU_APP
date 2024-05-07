@@ -95,7 +95,10 @@ public class TrxController {
 
 		cpRequest.replaceKeyName("amount", "abs(amount)");
 
-		request.setAttribute("AMOUNT_SUM", new TrxCapDAO().trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
+		TrxCapDAO trxCapDAO1 = new TrxCapDAO();
+		trxCapDAO1.setDebug(true);
+		trxCapDAO1.addWhere("IFNULL(serviceType, '') != '월세앱'");
+		request.setAttribute("AMOUNT_SUM", trxCapDAO1.trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
 
 		TrxCapDAO trxCapDAO = new TrxCapDAO();
 //		cpRequest.setData("capId", "", "", "desc", false);
@@ -759,7 +762,11 @@ public class TrxController {
 	public ModelAndView capDelList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
 		SessionUtil.setSearchGrade(request, cpRequest);
 
-		request.setAttribute("AMOUNT_SUM", new TrxCapDAO().trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
+		TrxCapDAO trxCapDAO1 = new TrxCapDAO();
+		trxCapDAO1.setDebug(true);
+		trxCapDAO1.addWhere("IFNULL(serviceType, '') != '월세앱'");
+		request.setAttribute("AMOUNT_SUM", trxCapDAO1.trxSum(cpRequest.data,null).getRowFirst().getString("amount"));
+
 		TrxCapDAO trxCapDAO = new TrxCapDAO();
 		cpRequest.setData("capId", "", "", "desc", false);
 		trxCapDAO.addWhere("IFNULL(serviceType, '') != '월세앱'");
