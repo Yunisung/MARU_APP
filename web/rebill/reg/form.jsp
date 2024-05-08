@@ -81,6 +81,12 @@
                                                     <option value="해지">해지</option>
                                                 </select>
                                             </div>
+                                            <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">정기결제ID</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control input-sm" name="rebillId" data-oper="lk" placeholder="정기결제 아이디">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-actions nobg right">
