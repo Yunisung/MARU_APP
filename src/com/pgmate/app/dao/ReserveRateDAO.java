@@ -20,7 +20,9 @@ import com.pgmate.lib.util.map.SharedMap;
 public class ReserveRateDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.ReserveRateDAO.class );
 	private static final String TABLE = "VW_RESERVE_RATE";
-	private static final String COLUMNS = "idx, member, title, parentId, grade, rate, loanRate, distRate, agencyRate, beforeRate, beforeDistRate, beforeAgencyRate, beforeLoanRate, pubDay, status, regId, regDay, regDate";
+	private static final String COLUMNS = "idx, member, title, parentId, grade, rate, loanRate, distRate, agencyRate, beforeRate, beforeDistRate, beforeAgencyRate, beforeLoanRate, pubDay, status, regId, regDay, regDate, " +
+			"diff0DistRate, diff1DistRate, diff2DistRate, diff3DistRate, diff0CheckDistRate, diff1CheckDistRate, diff2CheckDistRate, diff3CheckDistRate, diff0AgencyRate, diff1AgencyRate, diff2AgencyRate, diff3AgencyRate, " +
+			"diff0CheckAgencyRate, diff1CheckAgencyRate, diff2CheckAgencyRate, diff3CheckAgencyRate, diff0SalesRate, diff1SalesRate, diff2SalesRate, diff3SalesRate, diff0CheckSalesRate, diff1CheckSalesRate, diff2CheckSalesRate, diff3CheckSalesRate";
 	
 	public ReserveRateDAO() {
 		super(TABLE,CPUtil.CP_DEBUG);
