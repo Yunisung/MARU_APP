@@ -55,6 +55,12 @@
 												<div class="form-body">
 													<div class="row">
 														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">아이디</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm agencyId" name="agencyId" data-oper="eq" placeholder="아이디">
+															</div>
+														</div>
+														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">에이전시명</label>
 															<div class="col-lg-8">
 																<input type="text" class="form-control input-sm name" name="name" data-oper="lk" placeholder="이름">
