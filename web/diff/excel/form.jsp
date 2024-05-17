@@ -309,7 +309,8 @@
          valid = false;
          return;
        } else if(reqRow.collectId && reqRow.collectDay && reqRow.collectTime && reqRow.collectAmount) {
-         if($.isNumeric(reqRow.collectDay) && $.isNumeric(reqRow.collectTime) && $.isNumeric(reqRow.collectAmount) && reqRow.collectAmount >= 0) {
+         // if($.isNumeric(reqRow.collectDay) && $.isNumeric(reqRow.collectTime) && $.isNumeric(reqRow.collectAmount) && reqRow.collectAmount >= 0) {
+         if($.isNumeric(reqRow.collectDay) && $.isNumeric(reqRow.collectTime) && $.isNumeric(reqRow.collectAmount)) {
            valid = true;
            resultArray.push(reqRow);
          } else {
@@ -325,7 +326,7 @@
      }
    });
    if(valid) {
-     //console.log('resultArray:',resultArray);
+     console.log('resultArray:',resultArray);
      
      bootbox.confirm('선택된 항목들을 업로드 하시겠습니까?', function(result) {
        if (result) {
