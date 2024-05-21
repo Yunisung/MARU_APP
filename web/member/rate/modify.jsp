@@ -124,45 +124,6 @@
 														</div>
 													</div>
 													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4 req-label">대행사 중소1 가맹점(신용)</label>
-														<div class="col-sm-6">
-															<c:if test="${!empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff1DistRate2" data-reg="false" maxlength="9" name="diff1DistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff1DistRate" maxlength="7" name="diff1DistRate" value="${DATAMAP.diff1DistRate}">
-															</c:if>
-															<c:if test="${empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff1DistRate2" data-reg="false" maxlength="9" name="diff1DistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff1DistRate" maxlength="7" name="diff1DistRate" value="">
-															</c:if>
-														</div>
-													</div>
-													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4 req-label">대행사 중소2 가맹점(신용)</label>
-														<div class="col-sm-6">
-															<c:if test="${!empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff2DistRate2" data-reg="false" maxlength="9" name="diff2DistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff2DistRate" maxlength="7" name="diff2DistRate" value="${DATAMAP.diff2DistRate}">
-															</c:if>
-															<c:if test="${empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff2DistRate2" data-reg="false" maxlength="9" name="diff2DistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff2DistRate" maxlength="7" name="diff2DistRate" value="">
-															</c:if>
-														</div>
-													</div>
-													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4 req-label">대행사 중소3 가맹점(신용)</label>
-														<div class="col-sm-6">
-															<c:if test="${!empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff3DistRate2" data-reg="false" maxlength="9" name="diff3DistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff3DistRate" maxlength="7" name="diff3DistRate" value="${DATAMAP.diff3DistRate}">
-															</c:if>
-															<c:if test="${empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff3DistRate2" data-reg="false" maxlength="9" name="diff3DistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff3DistRate" maxlength="7" name="diff3DistRate" value="">
-															</c:if>
-														</div>
-													</div>
-													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">대행사 영세 가맹점(체크)</label>
 														<div class="col-sm-6">
 															<c:if test="${!empty DATAMAP }">
@@ -172,6 +133,19 @@
 															<c:if test="${empty DATAMAP }">
 																<input type="text" class="form-control input-sm diff0CheckDistRate2" data-reg="false" maxlength="9" name="diff0CheckDistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
 																<input type="hidden" class="form-control input-sm diff0CheckDistRate" maxlength="7" name="diff0CheckDistRate" value="">
+															</c:if>
+														</div>
+													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">대행사 중소1 가맹점(신용)</label>
+														<div class="col-sm-6">
+															<c:if test="${!empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff1DistRate2" data-reg="false" maxlength="9" name="diff1DistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff1DistRate" maxlength="7" name="diff1DistRate" value="${DATAMAP.diff1DistRate}">
+															</c:if>
+															<c:if test="${empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff1DistRate2" data-reg="false" maxlength="9" name="diff1DistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff1DistRate" maxlength="7" name="diff1DistRate" value="">
 															</c:if>
 														</div>
 													</div>
@@ -189,6 +163,19 @@
 														</div>
 													</div>
 													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">대행사 중소2 가맹점(신용)</label>
+														<div class="col-sm-6">
+															<c:if test="${!empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff2DistRate2" data-reg="false" maxlength="9" name="diff2DistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff2DistRate" maxlength="7" name="diff2DistRate" value="${DATAMAP.diff2DistRate}">
+															</c:if>
+															<c:if test="${empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff2DistRate2" data-reg="false" maxlength="9" name="diff2DistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff2DistRate" maxlength="7" name="diff2DistRate" value="">
+															</c:if>
+														</div>
+													</div>
+													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">대행사 중소2 가맹점(체크)</label>
 														<div class="col-sm-6">
 															<c:if test="${!empty DATAMAP }">
@@ -198,6 +185,19 @@
 															<c:if test="${empty DATAMAP }">
 																<input type="text" class="form-control input-sm diff2CheckDistRate2" data-reg="false" maxlength="9" name="diff2CheckDistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
 																<input type="hidden" class="form-control input-sm diff2CheckDistRate" maxlength="7" name="diff2CheckDistRate" value="">
+															</c:if>
+														</div>
+													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">대행사 중소3 가맹점(신용)</label>
+														<div class="col-sm-6">
+															<c:if test="${!empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff3DistRate2" data-reg="false" maxlength="9" name="diff3DistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff3DistRate" maxlength="7" name="diff3DistRate" value="${DATAMAP.diff3DistRate}">
+															</c:if>
+															<c:if test="${empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff3DistRate2" data-reg="false" maxlength="9" name="diff3DistRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff3DistRate" maxlength="7" name="diff3DistRate" value="">
 															</c:if>
 														</div>
 													</div>
@@ -228,45 +228,6 @@
 														</div>
 													</div>
 													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4 req-label">에이전시 중소1 가맹점(신용)</label>
-														<div class="col-sm-6">
-															<c:if test="${!empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff1AgencyRate2" data-reg="false" maxlength="9" name="diff1AgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff1AgencyRate" maxlength="7" name="diff1AgencyRate" value="${DATAMAP.diff1AgencyRate}">
-															</c:if>
-															<c:if test="${empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff1AgencyRate2" data-reg="false" maxlength="9" name="diff1AgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff1AgencyRate" maxlength="7" name="diff1AgencyRate" value="">
-															</c:if>
-														</div>
-													</div>
-													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4 req-label">에이전시 중소2 가맹점(신용)</label>
-														<div class="col-sm-6">
-															<c:if test="${!empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff2AgencyRate2" data-reg="false" maxlength="9" name="diff2AgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff2AgencyRate" maxlength="7" name="diff2AgencyRate" value="${DATAMAP.diff2AgencyRate}">
-															</c:if>
-															<c:if test="${empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff2AgencyRate2" data-reg="false" maxlength="9" name="diff2AgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff2AgencyRate" maxlength="7" name="diff2AgencyRate" value="">
-															</c:if>
-														</div>
-													</div>
-													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4 req-label">에이전시 중소3 가맹점(신용)</label>
-														<div class="col-sm-6">
-															<c:if test="${!empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff3AgencyRate2" data-reg="false" maxlength="9" name="diff3AgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff3AgencyRate" maxlength="7" name="diff3AgencyRate" value="${DATAMAP.diff3AgencyRate}">
-															</c:if>
-															<c:if test="${empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff3AgencyRate2" data-reg="false" maxlength="9" name="diff3AgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff3AgencyRate" maxlength="7" name="diff3AgencyRate" value="">
-															</c:if>
-														</div>
-													</div>
-													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">에이전시 영세 가맹점(체크)</label>
 														<div class="col-sm-6">
 															<c:if test="${!empty DATAMAP }">
@@ -276,6 +237,19 @@
 															<c:if test="${empty DATAMAP }">
 																<input type="text" class="form-control input-sm diff0CheckAgencyRate2" data-reg="false" maxlength="9" name="diff0CheckAgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
 																<input type="hidden" class="form-control input-sm diff0CheckAgencyRate" maxlength="7" name="diff0CheckAgencyRate" value="">
+															</c:if>
+														</div>
+													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">에이전시 중소1 가맹점(신용)</label>
+														<div class="col-sm-6">
+															<c:if test="${!empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff1AgencyRate2" data-reg="false" maxlength="9" name="diff1AgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff1AgencyRate" maxlength="7" name="diff1AgencyRate" value="${DATAMAP.diff1AgencyRate}">
+															</c:if>
+															<c:if test="${empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff1AgencyRate2" data-reg="false" maxlength="9" name="diff1AgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff1AgencyRate" maxlength="7" name="diff1AgencyRate" value="">
 															</c:if>
 														</div>
 													</div>
@@ -293,6 +267,19 @@
 														</div>
 													</div>
 													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">에이전시 중소2 가맹점(신용)</label>
+														<div class="col-sm-6">
+															<c:if test="${!empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff2AgencyRate2" data-reg="false" maxlength="9" name="diff2AgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff2AgencyRate" maxlength="7" name="diff2AgencyRate" value="${DATAMAP.diff2AgencyRate}">
+															</c:if>
+															<c:if test="${empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff2AgencyRate2" data-reg="false" maxlength="9" name="diff2AgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff2AgencyRate" maxlength="7" name="diff2AgencyRate" value="">
+															</c:if>
+														</div>
+													</div>
+													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">에이전시 중소2 가맹점(체크)</label>
 														<div class="col-sm-6">
 															<c:if test="${!empty DATAMAP }">
@@ -302,6 +289,19 @@
 															<c:if test="${empty DATAMAP }">
 																<input type="text" class="form-control input-sm diff2CheckAgencyRate2" data-reg="false" maxlength="9" name="diff2CheckAgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
 																<input type="hidden" class="form-control input-sm diff2CheckAgencyRate" maxlength="7" name="diff2CheckAgencyRate" value="">
+															</c:if>
+														</div>
+													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">에이전시 중소3 가맹점(신용)</label>
+														<div class="col-sm-6">
+															<c:if test="${!empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff3AgencyRate2" data-reg="false" maxlength="9" name="diff3AgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff3AgencyRate" maxlength="7" name="diff3AgencyRate" value="${DATAMAP.diff3AgencyRate}">
+															</c:if>
+															<c:if test="${empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff3AgencyRate2" data-reg="false" maxlength="9" name="diff3AgencyRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff3AgencyRate" maxlength="7" name="diff3AgencyRate" value="">
 															</c:if>
 														</div>
 													</div>
@@ -332,45 +332,6 @@
 														</div>
 													</div>
 													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4 req-label">지사 중소1 가맹점(신용)</label>
-														<div class="col-sm-6">
-															<c:if test="${!empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff1SalesRate2" data-reg="false" maxlength="9" name="diff1SalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff1SalesRate" maxlength="7" name="diff1SalesRate" value="${DATAMAP.diff1SalesRate}">
-															</c:if>
-															<c:if test="${empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff1SalesRate2" data-reg="false" maxlength="9" name="diff1SalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff1SalesRate" maxlength="7" name="diff1SalesRate" value="">
-															</c:if>
-														</div>
-													</div>
-													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4 req-label">지사 중소2 가맹점(신용)</label>
-														<div class="col-sm-6">
-															<c:if test="${!empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff2SalesRate2" data-reg="false" maxlength="9" name="diff2SalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff2SalesRate" maxlength="7" name="diff2SalesRate" value="${DATAMAP.diff2SalesRate}">
-															</c:if>
-															<c:if test="${empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff2SalesRate2" data-reg="false" maxlength="9" name="diff2SalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff2SalesRate" maxlength="7" name="diff2SalesRate" value="">
-															</c:if>
-														</div>
-													</div>
-													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4 req-label">지사 중소3 가맹점(신용)</label>
-														<div class="col-sm-6">
-															<c:if test="${!empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff3SalesRate2" data-reg="false" maxlength="9" name="diff3SalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff3SalesRate" maxlength="7" name="diff3SalesRate" value="${DATAMAP.diff3SalesRate}">
-															</c:if>
-															<c:if test="${empty DATAMAP }">
-																<input type="text" class="form-control input-sm diff3SalesRate2" data-reg="false" maxlength="9" name="diff3SalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
-																<input type="hidden" class="form-control input-sm diff3SalesRate" maxlength="7" name="diff3SalesRate" value="">
-															</c:if>
-														</div>
-													</div>
-													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">지사 영세 가맹점(체크)</label>
 														<div class="col-sm-6">
 															<c:if test="${!empty DATAMAP }">
@@ -380,6 +341,19 @@
 															<c:if test="${empty DATAMAP }">
 																<input type="text" class="form-control input-sm diff0CheckSalesRate2" data-reg="false" maxlength="9" name="diff0CheckSalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
 																<input type="hidden" class="form-control input-sm diff0CheckSalesRate" maxlength="7" name="diff0CheckSalesRate" value="">
+															</c:if>
+														</div>
+													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">지사 중소1 가맹점(신용)</label>
+														<div class="col-sm-6">
+															<c:if test="${!empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff1SalesRate2" data-reg="false" maxlength="9" name="diff1SalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff1SalesRate" maxlength="7" name="diff1SalesRate" value="${DATAMAP.diff1SalesRate}">
+															</c:if>
+															<c:if test="${empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff1SalesRate2" data-reg="false" maxlength="9" name="diff1SalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff1SalesRate" maxlength="7" name="diff1SalesRate" value="">
 															</c:if>
 														</div>
 													</div>
@@ -397,6 +371,19 @@
 														</div>
 													</div>
 													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">지사 중소2 가맹점(신용)</label>
+														<div class="col-sm-6">
+															<c:if test="${!empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff2SalesRate2" data-reg="false" maxlength="9" name="diff2SalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff2SalesRate" maxlength="7" name="diff2SalesRate" value="${DATAMAP.diff2SalesRate}">
+															</c:if>
+															<c:if test="${empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff2SalesRate2" data-reg="false" maxlength="9" name="diff2SalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff2SalesRate" maxlength="7" name="diff2SalesRate" value="">
+															</c:if>
+														</div>
+													</div>
+													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">지사 중소2 가맹점(체크)</label>
 														<div class="col-sm-6">
 															<c:if test="${!empty DATAMAP }">
@@ -406,6 +393,19 @@
 															<c:if test="${empty DATAMAP }">
 																<input type="text" class="form-control input-sm diff2CheckSalesRate2" data-reg="false" maxlength="9" name="diff2CheckSalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
 																<input type="hidden" class="form-control input-sm diff2CheckSalesRate" maxlength="7" name="diff2CheckSalesRate" value="">
+															</c:if>
+														</div>
+													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">지사 중소3 가맹점(신용)</label>
+														<div class="col-sm-6">
+															<c:if test="${!empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff3SalesRate2" data-reg="false" maxlength="9" name="diff3SalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff3SalesRate" maxlength="7" name="diff3SalesRate" value="${DATAMAP.diff3SalesRate}">
+															</c:if>
+															<c:if test="${empty DATAMAP }">
+																<input type="text" class="form-control input-sm diff3SalesRate2" data-reg="false" maxlength="9" name="diff3SalesRate2" placeholder="% 단위로 입력하세요. (10% = 0.1)" value="">
+																<input type="hidden" class="form-control input-sm diff3SalesRate" maxlength="7" name="diff3SalesRate" value="">
 															</c:if>
 														</div>
 													</div>
