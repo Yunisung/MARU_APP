@@ -1099,9 +1099,9 @@
 						url: "/trx/cap/iqr/${DATAMAP.capId}",
 						data: $("#iqrForm").serialize(),
 						success: function (json, textStatus) {
-							if (json == "OK") {
-								$('#edit-list').prepend('<tr><td>now</td><td>일반</td><td>' + $("textarea[name='summary']").val() +
-									'</td><td>' + $("input[name='telNo']").val() + '</td><td>${CP_SESSION.name}</td></tr>');
+							if(json.indexOf('OK') > -1) {
+								$('#edit-list').prepend('<tr><td>now</td><td>일반</td><td>' + json.substring(3) +
+										'</td><td>' + $("input[name='telNo']").val() + '</td><td>${CP_SESSION.name}</td></tr>');
 							} else {
 								bootbox.alert("등록실패");
 							}
