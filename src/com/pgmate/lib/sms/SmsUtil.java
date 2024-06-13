@@ -77,7 +77,7 @@ public class SmsUtil {
 			
 			if(con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				BufferedReader br = new BufferedReader(
-						new InputStreamReader(con.getInputStream(), "utf-8"));
+						new InputStreamReader(con.getInputStream(), "EUC-KR"));
 				String line;
 				while ((line = br.readLine()) != null) {
 					sb2.append(line).append("\n");

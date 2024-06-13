@@ -63,6 +63,7 @@ public class TrxIqrDAO extends DAO{
 	
 	public boolean insertNormal(String capId,String summary,String telNo,String regId){
 		super.setTable("PG_TRX_IQR");
+		super.setXssChange(true);
 		super.setRecord("capId", capId);
 		super.setRecord("iqrType", "일반");
 		super.setRecord("telNo", telNo);

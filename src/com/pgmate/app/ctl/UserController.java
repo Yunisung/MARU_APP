@@ -380,6 +380,14 @@ public class UserController {
 
 		String passKey = CommonUtil.nToB(request.getParameter("pw"));
 
+		if(passKey.indexOf(" ") > -1){
+			return GsonUtil.toJson("비밀번호에는 공백이 포함 될 수 없습니다.");
+		}
+
+		if(passKey.length() < 5 || passKey.length() > 20) {
+			return GsonUtil.toJson("비밀번호는 5~20자리만 설정 가능 합니다.");
+		}
+
 		CPRequest cpRequest = new CPRequest();
 		cpRequest.setData("id", userid, "eq", "", true);
 

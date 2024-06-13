@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.pgmate.app.dao.*;
 import com.pgmate.app.hook.RiskChangeHook;
+import com.pgmate.app.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -33,15 +34,6 @@ import com.pgmate.app.interceptor.SessionExclude;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.Data;
 import com.pgmate.app.session.CPSession;
-import com.pgmate.app.util.AllatUtil;
-import com.pgmate.app.util.CPRUtil;
-import com.pgmate.app.util.ControllerUtil;
-import com.pgmate.app.util.DanalUtil;
-import com.pgmate.app.util.EncryptUtil;
-import com.pgmate.app.util.FirstPayUtil;
-import com.pgmate.app.util.RefundUtil;
-import com.pgmate.app.util.RiskUtil;
-import com.pgmate.app.util.SessionUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.key.CPKEY;
@@ -742,8 +734,10 @@ public class TrxController {
 		
 		TrxIqrDAO iqrDAO = new TrxIqrDAO();
 
+		String xss = SQLInjectionUtil.xssChange(summary);
+
 		if(iqrDAO.insertNormal(capId, summary, telNo, SessionUtil.getUserId(request))){
-			return "OK";
+			return "OK:"+xss;
 		}else{
 			return "NOK";
 		}
@@ -1109,7 +1103,7 @@ public class TrxController {
 			  }
 
 			  try {
-
+				  
 				  SharedMap<String, Object> rfd = new TrxCapDAO().getByTrxIdRfd(trxId).getRow(0);
 				  // 취소 원짱의 trxId가 입력될 경우 원거래 번호를 담는다.
 				  if(rfd != null) {
