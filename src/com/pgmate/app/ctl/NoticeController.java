@@ -14,6 +14,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
+import com.pgmate.app.model.ajax.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -122,6 +123,17 @@ public class NoticeController {
 			"/system/notice/update" }, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody CPResponse update(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
+
+		String idx = cpRequest.getKeyValue("idx");
+
+		SharedMap<String, Object> map = new NoticeDAO().getById(idx).getRowFirst();
+		String regId = map.getString("regId");
+
+		String reqId = SessionUtil.getUserId(request);
+
+		if(!reqId.equals(regId)) {
+			return new CPRUtil(cpRequest).resultNOK("작성자가 아닙니다.", cpDAO.getError()).cpResponse();
+		}
 
 		if (cpDAO.update("PG_NOTICE", SessionUtil.getUserId(request), cpRequest.data)) {
 			return new CPRUtil(cpRequest).resultOK("공지사항 정보가 변경되었습니다.").cpResponse();
