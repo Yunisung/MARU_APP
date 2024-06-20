@@ -49,17 +49,19 @@
 			</script>
 		</c:when>
 
-		<c:when test = "${fn:endsWith(DATAMAP.van, 'WELCOME')}">
-			<script>
-				document.location="https://wbiz.paywelcome.co.kr/mCmReceipt_head.jsp?noTid=${DATAMAP.vanTrxId}&noMethod=1";
-			</script>
-		</c:when>
-
-		<c:when test = "${fn:endsWith(DATAMAP.van, 'WELCOMESUB')}">
-			<script>
-				document.location="https://payapi.welcomepayments.co.kr/api/receipt/print?tid=${DATAMAP.vanTrxId}&hash_value=${DATAMAP.hash_value}";
-
-			</script>
+		<c:when test="${fn:startsWith(DATAMAP.van, 'WELCOME')}">
+			<c:choose>
+				<c:when test="${(DATAMAP.van eq 'WELCOME') || (DATAMAP.van eq 'WELCOME영중소')}">
+					<script>
+						document.location="https://wbiz.paywelcome.co.kr/mCmReceipt_head.jsp?noTid=${DATAMAP.vanTrxId}&noMethod=1";
+					</script>
+				</c:when>
+				<c:when test="${DATAMAP.van eq 'WELCOMESUB'}">
+					<script>
+						document.location="https://payapi.welcomepayments.co.kr/api/receipt/print?tid=${DATAMAP.vanTrxId}&hash_value=${DATAMAP.hash_value}";
+					</script>
+				</c:when>
+			</c:choose>
 		</c:when>
 
 		
