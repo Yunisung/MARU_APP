@@ -52,8 +52,12 @@
 										<div class="portlet-body form light">
 											<form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/trx/err/list" method="post">
 												<input type="hidden" data-reg="false" name="reason" value="승인실패내역">
-												<input type="hidden" data-reg="false" name="thead" value="trxId:거래번호,trxType:거래구분,mchtId:가맹점ID,tmnId:터미널ID,trackId:거래추적번호,payerName:구매자,payerEmail:구매자Email,payerTel:구매자전화번호,amount:금액,issuer:매입사,last4:카드 뒷자리4,reqDay:거래요청일,reqTime:거래요청시간,resultCd:결과코드,resultMsg:결과메시지,van:VAN,vanId:VANID,vanTrxId:VAN거래번호,vanResultCd:VAN결과코드,vanResultMsg:VAN결과메시지">
-												
+												<c:if test="${CP_SESSION.grade eq '본사'}">
+													<input type="hidden" data-reg="false" name="thead" value="trxId:거래번호,trxType:거래구분,mchtId:가맹점ID,tmnId:터미널ID,trackId:거래추적번호,payerName:구매자,payerEmail:구매자Email,payerTel:구매자전화번호,amount:금액,issuer:매입사,last4:카드 뒷자리4,reqDay:거래요청일,reqTime:거래요청시간,resultCd:결과코드,resultMsg:결과메시지,van:VAN,vanId:VANID,vanTrxId:VAN거래번호,vanResultCd:VAN결과코드,vanResultMsg:VAN결과메시지">
+												</c:if>
+												<c:if test="${CP_SESSION.grade ne '본사'}">
+													<input type="hidden" data-reg="false" name="thead" value="trxId:거래번호,trxType:거래구분,mchtId:가맹점ID,tmnId:터미널ID,trackId:거래추적번호,payerName:구매자,payerEmail:구매자Email,payerTel:구매자전화번호,amount:금액,issuer:매입사,last4:카드 뒷자리4,reqDay:거래요청일,reqTime:거래요청시간,resultCd:결과코드,resultMsg:결과메시지">
+												</c:if>
 												<div class="form-body">
 													<div class="row">
 														<div class="form-group pg-form-group">
