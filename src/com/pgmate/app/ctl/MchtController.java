@@ -1120,7 +1120,7 @@ public class MchtController {
 	public ModelAndView tmnDtlModify(HttpServletRequest request, @PathVariable String tmnId) {
 		SharedMap<String,Object> result = new MchtTmnDAO().getById(tmnId).getRowFirst();
 		
-		result.put("dtlRate", String.format("%.3f",result.getDouble("dtlRate")*100));
+//		result.put("dtlRate", String.format("%.3f",result.getDouble("dtlRate")*100));
 		
 		request.setAttribute("MCHTMAP", new MchtDAO().getById(result.getString("mchtId")).getRowFirst());
 		request.setAttribute("TAXMAP", new MchtTaxDAO().getById(result.getString("taxId")).getRowFirst());
