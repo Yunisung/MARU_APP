@@ -167,6 +167,15 @@
                                                 document.forms.writeFrm.ageCheck.value = '${DATAMAP.ageCheck}'
                                             </script>
                                             <div class="form-group col-sm-6">
+                                                <label class="control-label col-sm-4 req-label">KYC 수수료</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group input-group-sm">
+                                                        <input type="text" class="form-control currency kycFee comma" maxlength="10" data-oper="comma" name="kycFee" placeholder="" value="${DATAMAP.kycFee}">
+                                                        <span class="input-group-addon"><i class="fa fa-krw"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-6">
                                                 <label class="control-label col-sm-4 req-label">휴대폰 본인인증
                                                 </label>
                                                 <select id="phoneAuth" name="phoneAuth" class="selectpicker col-sm-6">

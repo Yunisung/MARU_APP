@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.pgmate.app.dao.*;
 import com.pgmate.app.hook.RiskChangeHook;
+import com.pgmate.app.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -33,15 +34,6 @@ import com.pgmate.app.interceptor.SessionExclude;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.Data;
 import com.pgmate.app.session.CPSession;
-import com.pgmate.app.util.AllatUtil;
-import com.pgmate.app.util.CPRUtil;
-import com.pgmate.app.util.ControllerUtil;
-import com.pgmate.app.util.DanalUtil;
-import com.pgmate.app.util.EncryptUtil;
-import com.pgmate.app.util.FirstPayUtil;
-import com.pgmate.app.util.RefundUtil;
-import com.pgmate.app.util.RiskUtil;
-import com.pgmate.app.util.SessionUtil;
 import com.pgmate.lib.dao.DAO;
 import com.pgmate.lib.dao.RecordSet;
 import com.pgmate.lib.key.CPKEY;
@@ -742,8 +734,10 @@ public class TrxController {
 		
 		TrxIqrDAO iqrDAO = new TrxIqrDAO();
 
+		String xss = SQLInjectionUtil.xssChange(summary);
+
 		if(iqrDAO.insertNormal(capId, summary, telNo, SessionUtil.getUserId(request))){
-			return "OK";
+			return "OK:"+xss;
 		}else{
 			return "NOK";
 		}
@@ -1109,7 +1103,6 @@ public class TrxController {
 			  }
 
 			  try {
-
 				  SharedMap<String, Object> rfd = new TrxCapDAO().getByTrxIdRfd(trxId).getRow(0);
 				  // 취소 원짱의 trxId가 입력될 경우 원거래 번호를 담는다.
 				  if(rfd != null) {
@@ -1133,6 +1126,59 @@ public class TrxController {
 					  }
 
 				  }
+
+				  //웰컴 서브 영수증 조회용
+				  if(res.startsWith("van", "WELCOMESUB")){
+					  SharedMap<String, Object> van  = new TrxCapDAO().getByVanId(res.getString("vanId")).getRow(0);
+
+					  try {
+						  res.put("hash_value", EncryptUtil.sha256(res.getString("vanTrxId") + van.getString("cryptoKey")));
+					  } catch (Exception e) {
+						  e.printStackTrace();
+					  }
+
+
+					  //온라인거래일때만, 거래정보 조회해서 영수증 ID 받기
+					  if(van.getString("vanId").equals("welcome306")) {
+						  String search_uri = "https://payapi.welcomepayments.co.kr/api/search/order";
+
+						  String mid = van.getString("vanId");
+						  String order_no = res.getString("trxId");
+
+						  String api_key = "59a30bd3e66d9a87c71b5d39e26ed42a";
+
+						  SharedMap<String, Object> reqMap = new SharedMap<>();
+						  reqMap.put("mid", mid);
+						  reqMap.put("order_no", order_no);
+
+						  String hash_value = "";
+						  try {
+							  hash_value = EncryptUtil.sha256(mid + order_no + api_key);
+							  reqMap.put("hash_value", hash_value);
+						  } catch (Exception e) {
+							  logger.error("WELCOME 영수증 조회 오류 : {}", e.getMessage());
+						  }
+
+						  SharedMap<String, Object> responseMap = new SharedMap<>();
+
+						  //통신
+						  responseMap = searchRequest(search_uri, reqMap.toJson());
+
+						  //결과값 처리
+						  if(responseMap.getString("result_code").equals("0000")) {
+							  String transaction_no = responseMap.getString("transaction_no");
+							  res.put("vanTrxId", transaction_no);
+
+							  try {
+								  res.put("hash_value", EncryptUtil.sha256(res.getString("vanTrxId") + api_key));
+							  } catch (Exception e) {
+								  e.printStackTrace();
+							  }
+
+						  }
+					  }
+				  }
+
 				  request.setAttribute("DATAMAP", res);
 
 			  } catch (NullPointerException e) {

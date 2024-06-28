@@ -107,6 +107,7 @@ public class FileController {
 				logger.info("file upload error"+e.getMessage());
 				e.printStackTrace();
 			}
+			fileMeta.setFileUrl("");
 			files.add(fileMeta);
 			logger.info("upload file : {}",copyFile[1]);
 		}

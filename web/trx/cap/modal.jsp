@@ -1099,9 +1099,9 @@
 						url: "/trx/cap/iqr/${DATAMAP.capId}",
 						data: $("#iqrForm").serialize(),
 						success: function (json, textStatus) {
-							if (json == "OK") {
-								$('#edit-list').prepend('<tr><td>now</td><td>일반</td><td>' + $("textarea[name='summary']").val() +
-									'</td><td>' + $("input[name='telNo']").val() + '</td><td>${CP_SESSION.name}</td></tr>');
+							if(json.indexOf('OK') > -1) {
+								$('#edit-list').prepend('<tr><td>now</td><td>일반</td><td>' + json.substring(3) +
+										'</td><td>' + $("input[name='telNo']").val() + '</td><td>${CP_SESSION.name}</td></tr>');
 							} else {
 								bootbox.alert("등록실패");
 							}
@@ -1259,15 +1259,19 @@
 						Billgate 영수증 조회
 			</button>
 		</c:if>
-		<c:if test = "${fn:endsWith(DATAMAP.van, 'WELCOME')}">
-			<button class="btn btn-sm btn-default" onClick="window.open('https://wbiz.paywelcome.co.kr/mCmReceipt_head.jsp?noTid=${DATAMAP.vanTrxId}&noMethod=1','popupIssue','width=520,height=700');">
+		<c:if test="${fn:startsWith(DATAMAP.van, 'WELCOME')}">
+			<c:choose>
+				<c:when test="${(DATAMAP.van eq 'WELCOME') || (DATAMAP.van eq 'WELCOME영중소')}">
+					<button class="btn btn-sm btn-default" onClick="window.open('https://wbiz.paywelcome.co.kr/mCmReceipt_head.jsp?noTid=${DATAMAP.vanTrxId}&noMethod=1','popupIssue','width=520,height=700');">
 						웰컴페이먼츠 영수증 조회
-			</button>
-		</c:if>
-		<c:if test = "${fn:endsWith(DATAMAP.van, 'WELCOMESUB')}">
-			<button class="btn btn-sm btn-default" onClick="window.open('https://payapi.welcomepayments.co.kr/api/receipt/print?tid=${DATAMAP.vanTrxId}&hash_value=${DATAMAP.hash_value}','popupIssue','width=603,height=884');">
+					</button>
+				</c:when>
+				<c:when test="${DATAMAP.van eq 'WELCOMESUB'}">
+					<button class="btn btn-sm btn-default" onClick="window.open('https://payapi.welcomepayments.co.kr/api/receipt/print?tid=${DATAMAP.vanTrxId}&hash_value=${DATAMAP.hash_value}','popupIssue','width=603,height=884');">
 						웰컴페이먼츠 영수증 조회
-			</button>
+					</button>
+				</c:when>
+			</c:choose>
 		</c:if>
 		<button type="button" data-dismiss="modal" class="btn btn-sm">Close</button>
 	</div>
