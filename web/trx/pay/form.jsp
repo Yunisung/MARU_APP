@@ -56,7 +56,7 @@
 												<input type="hidden" data-reg="false" name="thead" value="trxId:거래번호,mchtId:가맹점ID,name:가맹점,tmnId:터미널ID,trackId:거래추적번호,payerName:구매자,payerEmail:구매자Email,payerTel:구매자전화번호,amount:금액,bin:BIN,last4:카드뒷자리4,status:거래상태,issuer:매입사,installment:할부,reqDay:요청일,reqTime:요청시간,authCd:승인번호,resultCd:결과코드,resultMsg:결과메시지,van:VAN,vanId:VANID,vanTrxId:VAN추적번호,prodName:상품명,qty:수량,description:상품설명/배달주소">
 												</c:if>
 												<c:if test="${CP_SESSION.grade ne '본사'}">
-												<input type="hidden" data-reg="false" name="thead" value="trxId:거래번호,mchtId:가맹점ID,name:가맹점,tmnId:터미널ID,trackId:거래추적번호,payerName:구매자,payerEmail:구매자Email,payerTel:구매자전화번호,amount:금액,bin:BIN,last4:카드뒷자리4,status:거래상태,issuer:매입사,installment:할부,reqDay:요청일,reqTime:요청시간,authCd:승인번호,resultCd:결과코드,resultMsg:결과메시지,van:VAN,vanId:VANID,vanTrxId:VAN추적번호,prodName:상품명">
+												<input type="hidden" data-reg="false" name="thead" value="trxId:거래번호,mchtId:가맹점ID,name:가맹점,tmnId:터미널ID,trackId:거래추적번호,payerName:구매자,payerEmail:구매자Email,payerTel:구매자전화번호,amount:금액,bin:BIN,last4:카드뒷자리4,status:거래상태,issuer:매입사,installment:할부,reqDay:요청일,reqTime:요청시간,authCd:승인번호,resultCd:결과코드,resultMsg:결과메시지,prodName:상품명">
 												</c:if>
 												<div class="form-body">
 													<div class="row">
