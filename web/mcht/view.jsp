@@ -2270,6 +2270,7 @@
 																				<c:if test="${VACT_MAP.vactBankCd == '039'}">경남은행</c:if>
 																				<c:if test="${VACT_MAP.vactBankCd == '034'}">광주은행</c:if>
 																				<c:if test="${VACT_MAP.vactBankCd == '007'}">수협은행</c:if>
+																				<c:if test="${VACT_MAP.vactBankCd == '048'}">신협은행</c:if>
 																		</div>
 																	</div>
 																</div>
