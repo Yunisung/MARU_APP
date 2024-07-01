@@ -75,6 +75,19 @@
 														</div>
 													</div>
 													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">정산유형</label>
+														<select name="settleType" class="selectpicker col-sm-6 settleType">
+															<option value="D+1">1일 후 정산</option>
+															<option value="D+2">2일 후 정산</option>
+															<option value="D+3">3일 후 정산</option>
+															<option value="D+4">4일 후 정산</option>
+															<option value="D+5">5일 후 정산</option>
+															<option value="D+6">6일 후 정산</option>
+															<option value="D+7">7일 후 정산</option>
+														</select>
+														<script type="text/javascript"> document.forms.writeFrm.settleType.value = '${DATAMAP.settleType}' </script>
+													</div>
+													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">수수료</label>
 														<div class="col-sm-6">
 															<div class="input-group input-group-sm">
@@ -282,7 +295,6 @@
 	<script src="https://spi.maps.daum.net/imap/map_js_init/postcode.v2.js"></script><!-- BEGIN FORM JAVASCRIPT -->
 	<!-- BEGIN FORM JAVASCRIPT -->
 	<script type="text/javascript">
-	
 		//은행 선택 셀렉트박스 크기 조절
 		$(document).ready(function() {
 			$('.dropdown-toggle').click(function() {
