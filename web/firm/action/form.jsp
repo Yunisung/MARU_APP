@@ -73,6 +73,7 @@
 																<option value="0398003344291839">경남은행(8003344291839)</option>
                                                                 <option value="0341107021617114">광주은행(1107021617114)</option>
 																<option value="007101024656079">수협은행(101024656079)</option>
+																<option value="048131019267928">신협은행(131019267928)</option>
 															</select>
 														</div>  
  														<div class="form-group pg-form-group">
@@ -139,7 +140,9 @@
 	 				bootbox.alert("케이뱅크는 해당기능을 지원하지않습니다.");   
 	 			}else if(bankCd == "007" && action != "0600300") {
 	 				bootbox.alert("수협은행은 해당기능을 지원하지않습니다.");   
-	 			}else {
+	 			}else if(bankCd == "048" && action != "0600300") {
+					bootbox.alert("신협은행은 해당기능을 지원하지않습니다.");
+				}else {
 	 				$("#viewBox").hide();  
 					$.ajax({
 						type: "post",
