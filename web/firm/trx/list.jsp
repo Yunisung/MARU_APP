@@ -73,6 +73,9 @@
 									<c:when test="${entry.bankCd=='007'}">
 										수협은행
 									</c:when>
+									<c:when test="${entry.bankCd=='048'}">
+										신협은행
+									</c:when>
 								</c:choose>
 
 							</td>
