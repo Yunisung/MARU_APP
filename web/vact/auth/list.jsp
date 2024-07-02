@@ -12,7 +12,8 @@
 			인증 금액 합계: <fmt:formatNumber type="number" value="${TOTAL_COUNT }" pattern="#,##0" /> 건(<fmt:formatNumber type="number" value="${TOTAL_SUM }" pattern="#,##0" />원),
             실명인증 : <fmt:formatNumber type="number" value="${OWNER_COUNT }" pattern="#,##0" /> 건(<fmt:formatNumber type="number" value="${OWNER_SUM }" pattern="#,##0" />원),
             1원인증 : <fmt:formatNumber type="number" value="${ACCOUNT_COUNT }" pattern="#,##0" /> 건(<fmt:formatNumber type="number" value="${ACCOUNT_SUM }" pattern="#,##0" />원),
-            ARS인증 : <fmt:formatNumber type="number" value="${ARS_COUNT }" pattern="#,##0" /> 건(<fmt:formatNumber type="number" value="${ARS_SUM }" pattern="#,##0" />원)
+            ARS인증 : <fmt:formatNumber type="number" value="${ARS_COUNT }" pattern="#,##0" /> 건(<fmt:formatNumber type="number" value="${ARS_SUM }" pattern="#,##0" />원),
+            KYC인증 : <fmt:formatNumber type="number" value="${KYC_COUNT }" pattern="#,##0" /> 건(<fmt:formatNumber type="number" value="${KYC_SUM }" pattern="#,##0" />원)
 		</span>
     </div>
     <div class="actions">
