@@ -129,6 +129,9 @@ public class VactController {
             String accountFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "1원인증", "").getRowFirst().getString("authFeeSum");
             String arsCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ARS인증", "").getRowFirst().getString("count");
             String arsFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ARS인증", "").getRowFirst().getString("authFeeSum");
+            String kycCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "KYC인증", "").getRowFirst().getString("count");
+            String kycFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "KYC인증", "").getRowFirst().getString("authFeeSum");
+
             String totalCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "", "").getRowFirst().getString("count");
             String totalFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "", "").getRowFirst().getString("authFeeSum");
 
@@ -138,6 +141,8 @@ public class VactController {
             request.setAttribute("ACCOUNT_SUM", accountFeeSum);
             request.setAttribute("ARS_COUNT", arsCount);
             request.setAttribute("ARS_SUM", arsFeeSum);
+            request.setAttribute("KYC_COUNT", kycCount);
+            request.setAttribute("KYC_SUM", kycFeeSum);
             request.setAttribute("TOTAL_COUNT", totalCount);
             request.setAttribute("TOTAL_SUM", totalFeeSum);
         } else if(cpSession.getGrade().equals("가맹점")) {
@@ -148,6 +153,9 @@ public class VactController {
             String accountFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "1원인증", mchtId).getRowFirst().getString("authFeeSum");
             String arsCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ARS인증", mchtId).getRowFirst().getString("count");
             String arsFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "ARS인증", mchtId).getRowFirst().getString("authFeeSum");
+            String kycCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "KYC인증", "").getRowFirst().getString("count");
+            String kycFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "KYC인증", "").getRowFirst().getString("authFeeSum");
+
             String totalCount = vactTrxDAO.getAuthFeeSum(cpRequest.data, "", mchtId).getRowFirst().getString("count");
             String totalFeeSum = vactTrxDAO.getAuthFeeSum(cpRequest.data, "", mchtId).getRowFirst().getString("authFeeSum");
 
@@ -157,6 +165,8 @@ public class VactController {
             request.setAttribute("ACCOUNT_SUM", accountFeeSum);
             request.setAttribute("ARS_COUNT", arsCount);
             request.setAttribute("ARS_SUM", arsFeeSum);
+            request.setAttribute("KYC_COUNT", kycCount);
+            request.setAttribute("KYC_SUM", kycFeeSum);
             request.setAttribute("TOTAL_COUNT", totalCount);
             request.setAttribute("TOTAL_SUM", totalFeeSum);
         }
