@@ -36,8 +36,8 @@
 					<th data-sort="string">대출정산</th>
 					</c:if>
 					<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '대행사'}"><th data-sort="string">대행사</th></c:if>
-					<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '에이전시'}"><th data-sort="string">에이전시</th></c:if>
-					<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '에이전시'|| CP_SESSION.grade eq '지사'}"><th data-sort="string">지사</th></c:if>
+					<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '대행사' || CP_SESSION.grade eq '에이전시'}"><th data-sort="string">에이전시</th></c:if>
+					<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '대행사' || CP_SESSION.grade eq '에이전시'|| CP_SESSION.grade eq '지사'}"><th data-sort="string">지사</th></c:if>
 					<th data-sort="string">예수금</th>
 					<th data-sort="string">정산주기</th>
 					<th data-sort="string">수수료</th>
@@ -69,8 +69,8 @@
 						<td>${entry.loanSettleStatus}</td>
 						</c:if>
 						<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '대행사'}"><td>${entry.distName}</td></c:if>
-						<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '에이전시'}"><td>${entry.agencyName}</td></c:if>
-						<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '에이전시'|| CP_SESSION.grade eq '지사'}"><td>${entry.salesName}</td></c:if>
+						<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '대행사' || CP_SESSION.grade eq '에이전시'}"><td>${entry.agencyName}</td></c:if>
+						<c:if test="${CP_SESSION.grade eq '본사' || CP_SESSION.grade eq '대행사' || CP_SESSION.grade eq '에이전시'|| CP_SESSION.grade eq '지사'}"><td>${entry.salesName}</td></c:if>
 						<td class="digits link" data-url="/deposit/form/${entry.mchtId}">${entry.deposit}</td>
 						<td>${entry.settleType}</td>
 						<c:if test="${CP_SESSION.grade == '본사'}">
