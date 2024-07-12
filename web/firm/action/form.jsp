@@ -73,7 +73,7 @@
 																<option value="0398003344299939">경남은행(8003344299939)</option>
                                                                 <option value="034019107542861">광주은행(019107542861)</option>
 																<option value="007101024656079">수협은행(101024656079)</option>
-																<option value="048131019267928">신협은행(131019267928)</option>
+																<option value="048131022424175">신협은행(131022424175)</option>
 															</select>
 														</div>  
  														<div class="form-group pg-form-group">
