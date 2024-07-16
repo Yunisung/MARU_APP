@@ -29,6 +29,8 @@
                 <th>No</th>
                 <th>가상계좌은행</th>
                 <th>가상계좌번호</th>
+                <th>가맹점 아이디</th>
+                <th>가맹점</th>
                 <th>입금자성명</th>
                 <th>입금금액</th>
                 <th>에러사유</th>
@@ -46,6 +48,8 @@
                     <td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
                     <td>${entry.bankNm}</td>
                     <td>${entry.account}</td>
+                    <td>${entry.mchtId}</td>
+                    <td>${entry.mchtName}</td>
                     <td>${entry.name}</td>
                     <td><fmt:formatNumber type="number" value="${entry.amount}" pattern="#,##0" /></td>
                     <td>${entry.resultMsg}</td>
