@@ -293,10 +293,12 @@ public class VactTrxDAO extends DAO {
 	}
 
 	public RecordSet errorList(List<Data> datas, Page page) {
-		super.setTable("PG_VACT_IO a, PG_CODE b");
-		super.setColumns("bankCd, b.codeName as bankNm, account, reqData, resultCd, resultMsg, regDate");
-		super.setWhere("a.bankCd = b.code and b.alias = 'BANK' AND a.resultCd != '0000'");
-		super.setOrderBy("a.regDate desc");
+		super.setDebug(true);
+//		super.setTable("PG_VACT_IO a, PG_CODE b");
+		super.setTable("(SELECT bankCd, b.codeName as bankNm, account, reqData, resultCd, resultMsg, regDate FROM PG_VACT_IO a, PG_CODE b WHERE  a.bankCd = b.code and b.alias = 'BANK' AND a.resultCd != '0000' )A LEFT OUTER JOIN VW_VACT_DTL B ON A.account = B.account");
+		super.setColumns("A.*, B.mchtId, B.mchtName");
+//		super.setWhere("a.bankCd = b.code and b.alias = 'BANK' AND a.resultCd != '0000'");
+		super.setOrderBy("A.regDate desc");
 
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);
