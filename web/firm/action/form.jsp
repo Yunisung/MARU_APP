@@ -157,7 +157,7 @@
 							if(response.resultCd == '0000'){
 								if(action == '0600300'){
 									msg+="</br>잔액: &nbsp;"+response.data.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-									msg+="</br>출금가능금액: &nbsp;"+response.data.payable_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+									//msg+="</br>출금가능금액: &nbsp;"+response.data.payable_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 								}else if(action == '0700100'){
 									msg+="</br>당행요청건수 : &nbsp;"+response.data.reqCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 									msg+="</br>당행요청금액 : &nbsp;"+response.data.reqAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
