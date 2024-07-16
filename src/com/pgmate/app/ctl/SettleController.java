@@ -1951,6 +1951,42 @@ public class SettleController {
 		}
 		return resultMap;
 	}
+
+	@RequestMapping(value = "/settle/aggregator/save", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody SharedMap<String, Object> subDecide(HttpServletRequest request,@RequestBody List<SharedMap<String, String>> requestList) {
+		SharedMap<String, Object> resultMap = new SharedMap<String, Object>();
+		String regId = SessionUtil.getUserId(request);
+		String regDay = CommonUtil.getCurrentDate("yyyyMMdd");
+		DAO dao = new DAO();
+
+		for(SharedMap<String, String> eachMap : requestList) {
+
+			logger.debug("SETTLE SAVE = stlId: {}", eachMap.getString("stlId"));
+			dao.setDebug(true);
+			dao.setTable("PG_SETTLE_SUB");
+			dao.setRecord("payOutAmt",eachMap.getLong("payOutAmt"));
+			dao.setRecord("summary",eachMap.getString("summary"));
+			dao.setRecord("regId",regId);
+			dao.setRecord("regDay",regDay);
+			dao.addWhere("stlId", eachMap.getString("stlId"));
+			if(!dao.update()) {
+				resultMap.put("result", "NOK");
+				resultMap.put("msg", eachMap.getString("stlId") + " DB 업데이트에 실패했습니다.");
+				break;
+			}
+
+			dao.initRecord();
+		}
+		if(!resultMap.getString("result").equals("NOK")) {
+			resultMap.put("result", "OK");
+		}else {
+			resultMap.put("result", "NOK");
+			if(resultMap.getString("msg").length() < 1) {
+				resultMap.put("msg", "수정에 실패했습니다.");
+			}
+		}
+		return resultMap;
+	}
 	
 	@RequestMapping(value = "/settle/phone/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView settlePhoneList(HttpServletRequest request,@RequestBody CPRequest cpRequest) {
