@@ -28,6 +28,25 @@
 	<div class="actions">
 		<div class="btn-group">
 			<a class="btn btn-circle btn-default " href="javascript:;" data-toggle="dropdown" aria-expanded="false">
+				<i class="fa fa-bank"></i> 지급 데이터 생성 <i class="fa fa-angle-down"></i>
+			</a>
+			<ul class="dropdown-menu pull-right">
+				<li><a href="javascript:;" class="settle-pay-out-make" data-bank="020">
+					<i class="fa fa-check-square-o"></i> 우리은행
+				</a>
+				</li>
+				<li><a href="javascript:;" class="settle-pay-out-make" data-bank="004">
+					<i class="fa fa-check-square-o"></i> 국민은행
+				</a>
+				</li>
+				<li><a href="javascript:;" class="settle-pay-out-make" data-bank="081">
+					<i class="fa fa-check-square-o"></i> 하나은행
+				</a>
+				</li>
+			</ul>
+		</div>
+		<div class="btn-group">
+			<a class="btn btn-circle btn-default " href="javascript:;" data-toggle="dropdown" aria-expanded="false">
 				<i class="fa fa-bank"></i> 정산 기능 <i class="fa fa-angle-down"></i>
 				
 			</a>
