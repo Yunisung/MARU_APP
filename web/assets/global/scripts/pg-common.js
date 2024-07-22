@@ -85,12 +85,17 @@ function settlePayStatusUpdate(status, stlId, isSub) {
 // 정산 지급 데이터 EXPORT
 function settlePayOutExport(bankCd, stlId, isSub, grade) {
 	console.log("GRADE ==== ", grade);
-	$('body').append('<form action="/settle/export" method="POST" id="excel_export_form"></form>');
+
+	if(isSub) {
+		$('body').append('<form action="/settle/sub/export" method="POST" id="excel_export_form"></form>');
+	} else {
+		$('body').append('<form action="/settle/export" method="POST" id="excel_export_form"></form>');
+	}
 	$('#excel_export_form').append('<input type="hidden" name="stlId" value="'+stlId+'">');
 	$('#excel_export_form').append('<input type="hidden" name="bankCd" value="'+bankCd+'">');
 	$('#excel_export_form').append('<input type="hidden" name="grade" value="'+grade+'">');
 	$('#excel_export_form').submit();
-	
+
 	$.ajax({
 		url : '/settle' + (isSub ? '/sub/export' : '/export'),
 		type : 'POST',

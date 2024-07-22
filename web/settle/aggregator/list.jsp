@@ -31,15 +31,15 @@
 				<i class="fa fa-bank"></i> 지급 데이터 생성 <i class="fa fa-angle-down"></i>
 			</a>
 			<ul class="dropdown-menu pull-right">
-				<li><a href="javascript:;" class="settle-pay-out-make" data-bank="020">
+				<li><a href="javascript:;" class="settle-pay-out-make is-sub" data-bank="020">
 					<i class="fa fa-check-square-o"></i> 우리은행
 				</a>
 				</li>
-				<li><a href="javascript:;" class="settle-pay-out-make" data-bank="004">
+				<li><a href="javascript:;" class="settle-pay-out-make is-sub" data-bank="004">
 					<i class="fa fa-check-square-o"></i> 국민은행
 				</a>
 				</li>
-				<li><a href="javascript:;" class="settle-pay-out-make" data-bank="081">
+				<li><a href="javascript:;" class="settle-pay-out-make is-sub" data-bank="081">
 					<i class="fa fa-check-square-o"></i> 하나은행
 				</a>
 				</li>
@@ -90,10 +90,10 @@
 					<th>승인금액</th>
 					<th>취소금액</th>
 					<th>합계금액</th>
+					<th>정산금액</th>
 					<c:if test="${(CP_SESSION.grade == '본사') || (CP_SESSION.aggregator == 'Y')}">
 						<th>실지급액</th>
 					</c:if>
-					<th>정산금액</th>
 					<c:if test="${(CP_SESSION.grade == '본사') || (CP_SESSION.aggregator == 'Y')}">
 						<th>비고</th>
 					</c:if>
@@ -134,10 +134,10 @@
 						<td class="text-right digits">${entry.payAmt}</td>
 						<td class="text-right digits">${entry.rfdAmt}</td>
 						<td class="text-right digits">${entry.payAmt + entry.rfdAmt}</td>
+						<td class="text-right digits">${entry.stlAmt}</td>
 						<c:if test="${(CP_SESSION.grade == '본사') || (CP_SESSION.aggregator == 'Y')}">
 							<td class="text-right"><input type="text" name="payOutAmt" value="${entry.payOutAmt }" class="collect-input payOutAmt${entry.stlId}"/></td>
 						</c:if>
-						<td class="text-right digits">${entry.stlAmt}</td>
 						<c:if test="${(CP_SESSION.grade == '본사') || (CP_SESSION.aggregator == 'Y')}">
 							<td class="text-right"><input type="text" name="summary" value="${entry.summary }" class="summary"/></td>
 						</c:if>
