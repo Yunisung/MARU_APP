@@ -28,6 +28,25 @@
 	<div class="actions">
 		<div class="btn-group">
 			<a class="btn btn-circle btn-default " href="javascript:;" data-toggle="dropdown" aria-expanded="false">
+				<i class="fa fa-bank"></i> 지급 데이터 생성 <i class="fa fa-angle-down"></i>
+			</a>
+			<ul class="dropdown-menu pull-right">
+				<li><a href="javascript:;" class="settle-pay-out-make is-sub" data-bank="020">
+					<i class="fa fa-check-square-o"></i> 우리은행
+				</a>
+				</li>
+				<li><a href="javascript:;" class="settle-pay-out-make is-sub" data-bank="004">
+					<i class="fa fa-check-square-o"></i> 국민은행
+				</a>
+				</li>
+				<li><a href="javascript:;" class="settle-pay-out-make is-sub" data-bank="081">
+					<i class="fa fa-check-square-o"></i> 하나은행
+				</a>
+				</li>
+			</ul>
+		</div>
+		<div class="btn-group">
+			<a class="btn btn-circle btn-default " href="javascript:;" data-toggle="dropdown" aria-expanded="false">
 				<i class="fa fa-bank"></i> 정산 기능 <i class="fa fa-angle-down"></i>
 				
 			</a>
@@ -70,11 +89,25 @@
 					<th>대상거래 기간</th>
 					<th>승인금액</th>
 					<th>취소금액</th>
+					<th>합계금액</th>
 					<th>정산금액</th>
+					<c:if test="${(CP_SESSION.grade == '본사') || (CP_SESSION.aggregator == 'Y')}">
+						<th>실지급액</th>
+					</c:if>
+					<c:if test="${(CP_SESSION.grade == '본사') || (CP_SESSION.aggregator == 'Y')}">
+						<th>비고</th>
+					</c:if>
 					<th>지급일</th>
 					<th>대상거래</th>
-					<th>확인</th>
-				</tr>
+					<c:choose>
+						<c:when test="${ ((CP_SESSION.grade eq '본사') && CP_SESSION.role != '일반') || (CP_SESSION.aggregator == 'Y')}">
+							<th style="min-width:170px;">확인<br><a class="btn btn-sm purple-plum" href="javascript:saveSettle('')">전체저장</a></th>
+						</c:when>
+						<c:otherwise>
+							<th>확인</th>
+						</c:otherwise>
+					</c:choose>
+</tr>
 			</thead>
 			<tbody id="list">
 				<c:if test="${CPR.result.code != 200}">
@@ -91,7 +124,7 @@
 						<td class="btn-td">
 							<input type="checkbox" class="row-check is-sub" id="${entry.stlId}_check" class="checkbox-style" /><label for="${entry.stlId}_check"></label>
 						</td>
-						<td class="link_modal" data-url="/settle/modal/sub/${entry.stlId}">${entry.stlId}</td>
+						<td class="link_modal out-col-stlId" data-url="/settle/modal/sub/${entry.stlId}">${entry.stlId}</td>
 						<td class="date">${entry.stlDay}</td>
 						<td>${entry.tmnId}</td>
 						<td>${entry.dtlName}</td>
@@ -100,10 +133,20 @@
 						<td><span class="date">${entry.startDay}</span> ~<br><span class="date">${entry.endDay}</span></td>
 						<td class="text-right digits">${entry.payAmt}</td>
 						<td class="text-right digits">${entry.rfdAmt}</td>
+						<td class="text-right digits">${entry.payAmt + entry.rfdAmt}</td>
 						<td class="text-right digits">${entry.stlAmt}</td>
+						<c:if test="${(CP_SESSION.grade == '본사') || (CP_SESSION.aggregator == 'Y')}">
+							<td class="text-right"><input type="text" name="payOutAmt" value="${entry.payOutAmt }" class="collect-input payOutAmt${entry.stlId}"/></td>
+						</c:if>
+						<c:if test="${(CP_SESSION.grade == '본사') || (CP_SESSION.aggregator == 'Y')}">
+							<td class="text-right"><input type="text" name="summary" value="${entry.summary }" class="summary"/></td>
+						</c:if>
 						<td class="date">${entry.payOutDay}</td>
 						<td><a class="btn green btn-sm settle-detail is-sub" data-grade="stlId">엑셀 다운로드</a></td>
 						<td class="btn-td">
+							<c:if test="${(CP_SESSION.grade == '본사') || (CP_SESSION.aggregator == 'Y')}">
+								<a class="btn btn-sm purple-plum" href="javascript:saveSettle('${entry.stlId}')">저장</a>
+							</c:if>
 							<c:if test="${CP_SESSION.grade == '가맹점'}">
 								<c:if test="${entry.status == '대기'}">
 									<a class="btn green btn-sm settle-pay-out is-sub">확정</a>
@@ -115,9 +158,9 @@
 								<c:if test="${entry.status == '확정' && entry.payStatus == '대기'}">
 									<a class="btn blue-soft btn-sm settle-pay-cancel is-sub">확정 취소</a>
 								</c:if>
-								<c:if test="${entry.payStatus == '지급완료'}">
-									지급완료
-								</c:if>
+<%--								<c:if test="${entry.payStatus == '지급완료'}">--%>
+<%--									지급완료--%>
+<%--								</c:if>--%>
 							</c:if>
 						</td>
 					</tr>

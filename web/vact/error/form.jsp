@@ -72,6 +72,18 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">가맹점 아이디</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control input-sm" name="mchtId" data-oper="lk" placeholder="가맹점 아이디">
+                                                </div>
+                                            </div>
+                                            <div class="form-group pg-form-group">
+                                                <label class="control-label col-lg-4">가맹점</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" class="form-control input-sm" name="mchtName" data-oper="lk" placeholder="가맹점">
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="row">
 

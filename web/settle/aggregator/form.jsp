@@ -140,6 +140,54 @@
 		gradeSelector('searchForm', '${CP_SESSION.grade}');
 		setTimeout(function(){ searchForList(); }, 100); //검색 실행
 		$('#nav-settle-mcht').addClass('active');
+
+		function saveSettle(stlId){
+			var outColList = [];
+
+			$('#searchResult tr').each(function() {
+				if($(this).find('.out-col-stlId').text() == '') {
+					// EMPTY ROW
+				} else if(stlId == '' || $(this).find('.out-col-stlId').text() == stlId) {
+					var outColObj = {};
+					outColObj.stlId = $(this).find('.out-col-stlId').text();
+					outColObj.payOutAmt = String($(this).find('.collect-input').val()).replace(/,/g, '');
+					outColObj.summary = $(this).find('.summary').val();
+					outColList.push(outColObj);
+					return;
+				}
+			});
+			console.log(outColList);
+			var msg = (stlId == '' ? '전체 항목을 저장 하시겠습니까?' : '해당 항목을 저장 하시겠습니까?');
+
+			bootbox.confirm(msg, function(result) {
+				if (result) {
+					$.ajax({
+						url: '/settle/aggregator/save',
+						dataType : "text",
+						beforeSend : function(xhr) {
+							xhr.setRequestHeader("Content-type",
+									"application/json;charset=utf-8");
+						},
+						method:'post',
+						data: JSON.stringify(outColList),
+						success: function(res, stat) {
+							res = JSON.parse(res);
+							if(res.result == 'OK') {
+								bootbox.alert("수정이 완료되었습니다.",function(){
+									// location.reload();
+								});
+
+							} else {
+								bootbox.alert("수정에 실패하였습니다.\n" + res.msg);
+							}
+						},
+						error : function(xhr, status, error) {
+							bootbox.alert("수정에 실패하였습니다.");
+						}
+					});
+				}
+			});
+		}
 	</script>
 	<!-- 모달 생성을 위한 베이스 -->
 	<div id="pgmate-modal" class="modal fade container" data-backdrop="static" data-keyboard="false" tabindex="-1"></div>
