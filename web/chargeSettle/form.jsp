@@ -53,7 +53,7 @@
 											<form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/chargeSettle/list" method="post">
 												<input type="hidden" data-reg="false" name="reason" value="충전정산 거래내역">
 												<c:if test="${CP_SESSION.grade == '본사'}">
-													<input type="hidden" data-reg="false" name="thead" value="trxDay:거래일자,trxTime:거래시간,name:가맹점명,mchtId:가맹점아이디,trxType:거래구분,trxUnit:거래유형,amount:입출금원금,fee:수수료,feeVat:수수료부가세,bankFee:은행수수료,netAmount:계정실출금액,balance:거래후잔액,trackId:주문번호,refId:참조번호,vactBankName:가상계좌은행,bankCd:은행코드,bankName:은행이름,decAccount:계좌번호,decHolder:받는계좌예금주명,recordInfo:적요,summary:기재내용,regId:등록자">
+													<input type="hidden" data-reg="false" name="thead" value="trxDay:거래일자,trxTime:거래시간,name:가맹점명,mchtId:가맹점아이디,trxType:거래구분,trxUnit:거래유형,amount:입출금원금,fee:수수료,feeVat:수수료부가세,bankFee:은행수수료,netAmount:계정실출금액,balance:거래후잔액,trackId:주문번호,refId:참조번호,vactBankName:가상계좌은행,vactAccount:가상계좌번호,bankCd:은행코드,bankName:은행이름,decAccount:계좌번호,decHolder:받는계좌예금주명,recordInfo:적요,summary:기재내용,regId:등록자">
 												</c:if>
 												<c:if test="${CP_SESSION.grade == '가맹점'}">
 													<input type="hidden" data-reg="false" name="thead" value="trxDay:거래일자,trxTime:거래시간,name:가맹점명,mchtId:가맹점아이디,trxType:거래구분,trxUnit:거래유형,amount:입출금원금,fee:수수료,feeVat:수수료부가세,netAmount:계정실출금액,trackId:주문번호,refId:참조번호,vactBankName:가상계좌은행,bankCd:은행코드,bankName:은행이름,account:계좌번호,holder:받는계좌예금주명,recordInfo:적요,summary:기재내용,regId:등록자">
