@@ -55,6 +55,20 @@ public class VactTrxDAO extends DAO {
 		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
 	}
 
+	public RecordSet listWithDecAccount(List<Data> datas, Page page){
+		page = CPUtil.correctPage(page);
+
+		super.setTable("(SELECT A.*, FN_AES_DEC(withdrawAccount) as decWithdrawAccount, FN_AES_DEC(holder) as decHolder " +
+				"FROM (SELECT V.*, W.withdrawBankName, W.holder, W.withdrawAccount " +
+				"FROM VW_VACT_TRX V LEFT JOIN PG_VACT_TRX_WITHDRAW W ON V.vactId = W.vactId ) A) B");
+		super.setColumns("B.*");
+		super.setOrderBy("regDate DESC");
+
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
+
+	}
+
 	/*public RecordSet listWithDecAccount(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 
