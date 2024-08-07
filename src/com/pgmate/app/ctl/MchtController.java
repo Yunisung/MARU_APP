@@ -274,9 +274,8 @@ public class MchtController {
 		Calendar cal = Calendar.getInstance();
 		cal.add(cal.DATE, -1);
 		String yesterDay = new SimpleDateFormat("yyyyMMdd").format(cal.getTime());
-		int chargeAmt = new MchtChargeSettleDAO().getTrxNetAmount(mchtId, yesterDay);
-		int trxAmt = new MchtChargeSettleDAO().getTrxAmount(mchtId, yesterDay);
-		request.setAttribute("YESTERDAYAMOUNT", chargeAmt + trxAmt);
+		long trxAmt = new MchtChargeSettleDAO().getTrxAmount(mchtId, yesterDay);
+		request.setAttribute("YESTERDAYAMOUNT", trxAmt);
 		
 		//가맹점 간편 결제 설정 
 //		request.setAttribute("DATASIMPLEMAP", new SimpleDAO().getByMchtId(mchtId));
