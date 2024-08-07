@@ -4,10 +4,8 @@ import java.io.BufferedReader;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
@@ -312,6 +310,13 @@ public class MchtController {
 		// 가맹점 충전정산 설정 정보
 		request.setAttribute("DATACHARGEMAP", new MchtChargeSettleDAO().getById(mchtId).getRowFirst());
 		request.setAttribute("DATABALMAP", new MchtChargeSettleDAO().getBalance(mchtId));
+
+		Calendar cal = Calendar.getInstance();
+		cal.add(cal.DATE, -1);
+		String yesterDay = new SimpleDateFormat("yyyyMMdd").format(cal.getTime());
+		int chargeAmt = new MchtChargeSettleDAO().getTrxNetAmount(mchtId, yesterDay);
+		int trxAmt = new MchtChargeSettleDAO().getTrxAmount(mchtId, yesterDay);
+		request.setAttribute("YESTERDAYAMOUNT", chargeAmt + trxAmt);
 		
 		//가맹점 간편 결제 설정 
 //		request.setAttribute("DATASIMPLEMAP", new SimpleDAO().getByMchtId(mchtId));
