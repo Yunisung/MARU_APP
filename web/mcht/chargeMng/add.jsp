@@ -105,6 +105,15 @@
 															</div>
 														</div>
 													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">보류금액(비율)</label>
+														<div class="col-sm-8">
+															<div class="input-group input-group-sm">
+																<input type="text"
+																	   class="form-control currency transferLimitPercent" name="transferLimitPercent" value="0.0"> <span class="input-group-addon"> % </span>
+															</div>
+														</div>
+													</div>
 												</div>
 												<div class="alert alert-danger display-hide"></div>
 												<div class="form-actions right">
