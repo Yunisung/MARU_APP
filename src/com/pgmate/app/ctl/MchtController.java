@@ -308,13 +308,15 @@ public class MchtController {
 		request.setAttribute("DATADIFFLIST", new MchtDiffDAO().getDiffDownload(mchtId).getRows());
 		
 		// 가맹점 충전정산 설정 정보
-		request.setAttribute("DATACHARGEMAP", new MchtChargeSettleDAO().getById(mchtId).getRowFirst());
+		SharedMap<String, Object> chargeMngMap = new MchtChargeSettleDAO().getById(mchtId).getRowFirst();
+		request.setAttribute("DATACHARGEMAP", chargeMngMap);
 		request.setAttribute("DATABALMAP", new MchtChargeSettleDAO().getBalance(mchtId));
 
 		Calendar cal = Calendar.getInstance();
 		cal.add(cal.DATE, -1);
 		String yesterDay = new SimpleDateFormat("yyyyMMdd").format(cal.getTime());
-		long trxAmt = new MchtChargeSettleDAO().getTrxAmount(mchtId, yesterDay);
+		long yesterdayAmt = new MchtChargeSettleDAO().getTrxAmount(mchtId, yesterDay);
+		long trxAmt = (long) (yesterdayAmt * chargeMngMap.getDouble("transferLimitPercent"));
 		request.setAttribute("YESTERDAYAMOUNT", trxAmt);
 		
 		//가맹점 간편 결제 설정 

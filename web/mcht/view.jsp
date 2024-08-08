@@ -3587,17 +3587,25 @@
 																		</div>
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
-																				<label class="control-label col-md-3">보류금액</label>
+																				<label class="control-label col-md-3">유보금(비율)</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static digits">${DATACHARGEMAP.transferLimit}</p>
+																					<p class="form-control-static digits">${DATACHARGEMAP.transferLimitPercent * 100} %</p>
 																				</div>
 																			</div>
 																		</div>
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
-																				<label class="control-label col-md-3">보류금액(비율)</label>
+																				<label class="control-label col-md-3">유보금 금액</label>
 																				<div class="col-md-9">
-																					<p class="form-control-static digits">${DATACHARGEMAP.transferLimitPercent * 100} % (${YESTERDAYAMOUNT * DATACHARGEMAP.transferLimitPercent})</p>
+																					<p class="form-control-static digits">${YESTERDAYAMOUNT}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">보류금액</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${DATACHARGEMAP.transferLimit}</p>
 																				</div>
 																			</div>
 																		</div>
