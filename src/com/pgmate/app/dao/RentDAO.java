@@ -361,7 +361,8 @@ public class RentDAO extends DAO {
 
     public int getAmount(String trxId) {
         super.setTable("PG_CHARGE_SETTLE_FIRM_RESERVE");
-        super.setColumns("amount");
+        super.setColumns("netAmount as amount");
+        super.addWhere("trxId", trxId);
         RecordSet rset = super.search();
         super.initRecord();
         return rset.getRow(0).getInt("amount");
