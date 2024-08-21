@@ -13,7 +13,7 @@
 <body>
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		<h4>분납이체</h4>
+		<h4>이체 재시도</h4>
 	</div>
 	<div class="modal-body">
 		<ul class="nav nav-tabs">
@@ -50,7 +50,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label">금액</label>
 						<div class="col-md-4">
-							<input type="text" name="amount" class="form-control" id="amount" value="${AMOUNT}" data-oper="comma" maxlength="10" value="0"> </div>
+							<input type="text" name="amount" class="form-control" id="amount" value="${AMOUNT}" data-oper="comma" maxlength="10"> </div>
 					</div>
 
 					<div class="form-group">
