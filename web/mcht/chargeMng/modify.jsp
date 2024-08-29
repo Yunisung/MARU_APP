@@ -97,7 +97,7 @@
 														</div>
 													</div>--%>
 													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4 req-label">보류금액</label>
+														<label class="control-label col-sm-4 req-label">유보금 금액</label>
 														<div class="col-sm-6">
 															<div class="input-group input-group-sm">
 																<input type="text"
@@ -106,7 +106,7 @@
 														</div>
 													</div>
 													<div class="form-group col-sm-6">
-														<label class="control-label col-sm-4 req-label">보류금액(비율)</label>
+														<label class="control-label col-sm-4 req-label">유보금(비율)</label>
 														<div class="col-sm-8">
 															<div class="input-group input-group-sm">
 																<input type="text"
