@@ -100,6 +100,7 @@
 																	<option value="가상계좌정산">가상계좌정산</option>
 																	<option value="펌뱅킹">펌뱅킹</option>
 																	<option value="인증수수료">인증수수료</option>
+																	<option value="수기등록">수기등록</option>
 															</select>
 														</div>
 														<div class="form-group pg-form-group">
