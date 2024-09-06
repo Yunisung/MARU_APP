@@ -2286,6 +2286,14 @@
 																</div>
 																<div class="col-md-6">
 																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3">모계좌번호</label>
+																		<div class="col-md-9">
+																			<p class="form-control-static">${VACT_MAP.mAccount}</p>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
 																		<label class="control-label col-md-3">발행유형</label>
 																		<div class="col-md-9">
 																			<p class="form-control-static">${VACT_MAP.issueType}</p>

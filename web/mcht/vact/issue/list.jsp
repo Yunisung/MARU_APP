@@ -22,6 +22,14 @@
 					</select>
 				</div>
 				<div class="form-group">
+					<select id="cnt-ex-mAccount" style="width:160px;">
+						<option value="all">전체</option>
+						<c:forEach var="entry" items="${UNUSED_MACCNT_MAP}">
+							<option value="${entry.mAccount}">${entry.mAccount}</option>
+						</c:forEach>
+					</select>
+				</div>
+				<div class="form-group">
 					<input type="text" class="form-control input-sm" style="width:180px;" value="${MCHT_MAP.name}" id="cnt-ex-holder">
 				</div>
 				<div class="form-group">
@@ -33,7 +41,10 @@
 		<div class="col-md-3" style="font-size:15px">
 			추가 발급 가능 가상계좌
 			<c:forEach var="entry" items="${UNUSED_ACCNT_MAP}" varStatus="status">
-				<div>${entry.issuerBank} : <span class="font-blue digits">${entry.cnt}</span></div>
+				<div>${entry.issuerBank} (전체) : <span class="font-blue digits">${entry.cnt}</span></div>
+			</c:forEach>
+			<c:forEach var="entry" items="${UNUSED_MACCNT_MAP}" varStatus="status">
+				<div>${entry.issuerBank} (${entry.mAccount}) : <span class="font-blue digits">${entry.cnt}</span></div>
 			</c:forEach>
 		</div>
 		<div class="col-md-3" style="font-size:15px">
@@ -70,6 +81,7 @@
 					<th>발행번호</th>
 					<th>은행명</th>
 					<th>계좌번호</th>
+					<th>모계좌번호</th>
 					<th>예금주명</th>
 					<th>거래추적번호</th>
 					<th>사용자 정의1</th>
@@ -92,7 +104,7 @@
 						<td>${entry.issueId}</td>
 						<td>${entry.issuerBank}</td>
 						<td>${entry.account}</td>
-
+						<td>${entry.mAccount}</td>
 						<td>${entry.holderName}</td>
 						<td><input type="text" name="trackId" value="${entry.trackId}"></td>
 						<td><input type="text" name="udf1" value="${entry.udf1}"></td>
@@ -171,6 +183,7 @@
 <script>
 $('#btn-ex-accnt').click(function () {
 	var bankCd = $('#cnt-ex-bank').val();
+	var mAccount = $('#cnt-ex-mAccount').val();
 	var holderName = $('#cnt-ex-holder').val();
 	var bankName = $(document).find('[data-id="cnt-ex-bank"]').text();
 	var cnt = Number($('#cnt-ex-accnt').val());
@@ -183,7 +196,7 @@ $('#btn-ex-accnt').click(function () {
 			if (res) {
 				$.ajax({
 					type: "get",
-					url: "/mcht/vact/exissue/${MCHT_MAP.mchtId}/" + bankCd + "/" + holderName + "/" + cnt,
+					url: "/mcht/vact/exissue/${MCHT_MAP.mchtId}/" + bankCd + "/" + mAccount + "/" + holderName + "/" + cnt,
 					success: function (res) {
 						console.log(res);
 						if (res.result == 'OK') {

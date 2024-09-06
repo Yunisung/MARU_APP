@@ -82,6 +82,9 @@
 												</select>
 											</div>
 											<div class="form-group col-sm-6">
+												<div style="padding-top:45px; border-left:none;"></div>
+											</div>
+											<div class="form-group col-sm-6">
 												<label class="control-label input-sm col-sm-4 req-label">가상계좌 은행</label>
 												<select name="vactBankCd" class="selectpicker col-sm-6">
 													<option value="089" selected>케이뱅크</option>
@@ -89,6 +92,12 @@
 													<option value="034">광주은행</option>
 													<option value="007">수협은행</option>
 													<option value="048">신협은행</option>
+												</select>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label input-sm col-sm-4 req-label">모계좌번호</label>
+												<select id="mAccount" name="mAccount" class="selectpicker col-sm-6">
+													<option value="">은행을 선택해주세요</option>
 												</select>
 											</div>
 											<div class="form-group col-sm-6">
@@ -834,7 +843,25 @@
 				$('#authBankCdDiv').show();
 			}
 		});
-		
+
+		$('select[name="vactBankCd"]').on('change', function() {
+			var selected = $(this).find("option:selected").val();
+
+			$.ajax({
+				url:'/mcht/vact/getMotherAccount/'+selected,
+				method: 'GET',
+				dataType: 'json',
+				success: function(data){
+					$('#mAccount').empty();
+					if(data.resultCd == "0000") {
+						$('#mAccount').append(data.mAccountList);
+					}
+					$('#mAccount').selectpicker('refresh');
+				}
+
+			});
+		});
+
 		$(document).ready(function(){
 
 			var date = new Date();

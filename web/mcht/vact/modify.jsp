@@ -83,6 +83,9 @@
 												</script>
 											</div>
 											<div class="form-group col-sm-6">
+												<div style="padding-top:45px; border-left:none;"></div>
+											</div>
+											<div class="form-group col-sm-6">
 												<label class="control-label input-sm col-sm-4 req-label">가상계좌 은행</label>
 												<select name="vactBankCd" class="selectpicker col-sm-6">
 													<option value="089" selected>케이뱅크</option>
@@ -93,6 +96,17 @@
 												</select>
 												<script type="text/javascript">
 													document.forms.writeFrm.vactBankCd.value = '${DATAMAP.vactBankCd}'
+												</script>
+											</div>
+											<div class="form-group col-sm-6">
+												<label class="control-label input-sm col-sm-4 req-label">모계좌번호</label>
+												<select id="mAccount" name="mAccount" class="selectpicker col-sm-6">
+													<c:forEach var="entry" items="${UNUSED_MACCNT_MAP}">
+														<option value="${entry.mAccount}">${entry.mAccount}</option>
+													</c:forEach>
+												</select>
+												<script type="text/javascript">
+													document.forms.writeFrm.mAccount.value = '${DATAMAP.mAccount}'
 												</script>
 											</div>
 											<div class="form-group col-sm-6">
@@ -882,6 +896,24 @@
 				$('#stateInitCntDiv').show();
 				$('#authBankCdDiv').show();
 			}
+		});
+
+		$('select[name="vactBankCd"]').on('change', function() {
+			var selected = $(this).find("option:selected").val();
+
+			$.ajax({
+				url:'/mcht/vact/getMotherAccount/'+selected,
+				method: 'GET',
+				dataType: 'json',
+				success: function(data){
+					$('#mAccount').empty();
+					if(data.resultCd == "0000") {
+						$('#mAccount').append(data.mAccountList);
+					}
+					$('#mAccount').selectpicker('refresh');
+				}
+
+			});
 		});
 		
 		$(document).ready(function(){
