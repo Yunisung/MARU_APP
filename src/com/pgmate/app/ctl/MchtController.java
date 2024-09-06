@@ -15,6 +15,7 @@ import com.pgmate.app.dao.*;
 import com.pgmate.app.security.filter.CustomWebAuthenticationDetails;
 import com.pgmate.app.util.*;
 import com.pgmate.lib.sms.SmsUtil;
+import io.vertx.core.shareddata.SharedData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -1566,6 +1567,9 @@ public class MchtController {
     	sharedMap.put("distRate", String.format("%.5f",sharedMap.getDouble("distRate")));
     	sharedMap.put("agencyRate", String.format("%.5f",sharedMap.getDouble("agencyRate")));
     	sharedMap.put("salesRate", String.format("%.5f",sharedMap.getDouble("salesRate")));
+
+		List<SharedMap<String, Object>> mAccountMap = new VactTrxDAO().getUnUsedMAccount(sharedMap.getString("vactBankCd"));
+		request.setAttribute("UNUSED_MACCNT_MAP", mAccountMap);
     	
 		SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
 		request.setAttribute("MCHT_MAP", new MchtDAO().getById(mchtId).getRowFirst());
@@ -1645,7 +1649,7 @@ public class MchtController {
 		RecordSet rset = vactDtlDAO.list(cpRequest.data,cpRequest.page);
 		CPDAO dao = new CPDAO();
 		dao.setTable("VW_VACT_UNUSED");
-		dao.setColumns("issuerBank, bankCd, COUNT(*) as cnt");
+		dao.setColumns("issuerBank, bankCd, mAccount, COUNT(*) as cnt");
 		dao.setGroupBy("bankCd");
 		dao.setOrderBy("bankCd");
 		String vactBankCd = new MchtVactDAO().getByMchtId(cpRequest.getKeyValue("mchtId")).getString("vactBankCd");
@@ -1657,6 +1661,10 @@ public class MchtController {
 		VactTrxDAO vactTrxDAO = new VactTrxDAO();
 		int notiFailCount = vactTrxDAO.countVactStatusNotiFail(cpRequest.getKeyValue("mchtId"));
 		request.setAttribute("VACT_STATUS_NOTI_FAIL_CNT", notiFailCount);
+
+		//모계좌 정보
+		List<SharedMap<String, Object>> mAccountMap = vactTrxDAO.getUnUsedMAccount(vactBankCd);
+		request.setAttribute("UNUSED_MACCNT_MAP", mAccountMap);
 
 		return new CPRUtil(cpRequest).dataList(rset,vactDtlDAO).setView(request,"/mcht/vact/issue/list","");
 	}
@@ -1686,9 +1694,9 @@ public class MchtController {
 		return resMap;
 	}
 
-	@RequestMapping(value = "/mcht/vact/exissue/{mchtId}/{bankCd}/{holderName}/{cnt}", method = RequestMethod.GET)
+	@RequestMapping(value = "/mcht/vact/exissue/{mchtId}/{bankCd}/{mAccount}/{holderName}/{cnt}", method = RequestMethod.GET)
 	public @ResponseBody SharedMap<String, Object> vactExIssue(HttpServletRequest request, @PathVariable String mchtId,
-		@PathVariable String bankCd, @PathVariable String holderName, @PathVariable long cnt) {
+		@PathVariable String bankCd, @PathVariable String mAccount, @PathVariable String holderName, @PathVariable long cnt) {
 		SharedMap<String, Object> resMap = new SharedMap<String, Object>();
 		boolean flag = true;
 		resMap.put("result", "NOK");
@@ -1698,8 +1706,13 @@ public class MchtController {
 		dao.setTable("VW_VACT_UNUSED");
 		dao.setColumns("COUNT(*) as cnt");
 		dao.addWhere("bankCd", bankCd, DAO.eq);
+
+		if(!mAccount.equals("all")) {
+			dao.addWhere("mAccount", mAccount, DAO.eq);
+		}
+
 		long orgCnt = dao.search().getRow(0).getLong("cnt");
-		logger.debug("{} UNUSED VACT CNT: {}, {}", bankCd, orgCnt, cnt);
+		logger.debug("{} [{}] UNUSED VACT CNT: {}, {}", bankCd, mAccount, orgCnt, cnt);
 		if (cnt > orgCnt) {
 			resMap.put("msg", "보유 계좌가 요청 계좌보다 적습니다.");
 			flag = false;
@@ -1707,7 +1720,7 @@ public class MchtController {
 		if(flag) {
 			List<String> issueIdList;
 			//insert 된 issueId 리스트 반환
-			issueIdList = vactDtlDAO.insert(mchtId, bankCd, cnt, holderName, SessionUtil.getUserId(request));
+			issueIdList = vactDtlDAO.insert(mchtId, bankCd, mAccount, cnt, holderName, SessionUtil.getUserId(request));
 
 			if(issueIdList.size() < 1) {
 				resMap.put("msg", "DB 작업에 실패했습니다.관리자에게 문의해주세요.");

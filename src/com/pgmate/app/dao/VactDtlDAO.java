@@ -53,10 +53,15 @@ public class VactDtlDAO extends DAO {
 		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
 	}
 
-	public List<String> insert(String mchtId, String bankCd, long cnt, String holderName, String userId) {
+	public List<String> insert(String mchtId, String bankCd, String mAccount, long cnt, String holderName, String userId) {
 		super.setTable("VW_VACT_UNUSED");
 		super.setColumns("*");
 		super.addWhere("bankCd", bankCd);
+
+		if(!mAccount.equals("all")) {
+			super.addWhere("mAccount", mAccount);
+		}
+
 		super.setLimit(cnt);
 
 		List<SharedMap<String, Object>> targetList = super.search().getRows();
