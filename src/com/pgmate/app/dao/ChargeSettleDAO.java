@@ -202,7 +202,6 @@ public class ChargeSettleDAO extends DAO{
 	}
 
 	public RecordSet depositSum(List<Data> datas) {
-		super.setDebug(true);
 		super.setColumns("SUM(if(trxType='출금',amount,0)) AS depositAmt, SUM(if(trxType='입금',amount,0)) AS withdrawAmt");
 		super.addWhere("trxUnit", "월세앱정산", ne);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION
