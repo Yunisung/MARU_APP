@@ -62,11 +62,10 @@ public class MchtDAO extends DAO{
 	}*/
 	public RecordSet nonTranList(List<Data> datas,Page page){
 		super.setDebug(true);
-		super.setTable("PG_TOT_CAP_CAPDAY A LEFT JOIN VW_MCHT_NOT_DEPOSIT B ON A.mchtId = B.mchtId");
-		super.setColumns(" MAX(A.capDay) as lastCapDay, TO_DAYS(now()) - TO_DAYS(MAX(A.capDay)) AS period, B.*, FN_AES_DEC(B.identity) AS decIdentity");
-		super.setWhere("A.payCnt > 0 AND A.capDay < DATE_FORMAT(date_add(now(), interval -1 month), '%Y%m%d')");
-		super.setGroupBy("A.mchtId");
-		super.setOrderBy("MAX(A.capDay) asc");
+		super.setTable("(SELECT MAX(capDay) AS lastCapDay, mchtId FROM PG_TOT_CAP_CAPDAY WHERE payCnt > 0 GROUP BY mchtId) A LEFT JOIN VW_MCHT_NOT_DEPOSIT B ON A.mchtId = B.mchtId");
+		super.setColumns(" A.lastCapDay, TO_DAYS(now()) - TO_DAYS(A.lastCapDay) AS period, B.*, FN_AES_DEC(B.identity) AS decIdentity ");
+		super.setWhere("A.lastCapDay < DATE_FORMAT(date_add(now(), interval -1 month), '%Y%m%d') ");
+		super.setOrderBy("A.lastCapDay asc");
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
