@@ -73,7 +73,7 @@ public class ChargeSettleDAO extends DAO{
 
 	public RecordSet listWithDecAccount(List<Data> datas, Page page){
 		page = CPUtil.correctPage(page);
-
+		super.setDebug(true);
 		super.setTable("(SELECT D.*, FN_AES_DEC(account) as decAccount, FN_AES_DEC(holder) as decHolder," +
 				"(SELECT codeName FROM PG_CODE WHERE alias='BANK' AND code=D.vactBankCd) AS vactBankName " +
 				"FROM (SELECT A.*, CASE WHEN A.trxType = '입금' THEN B.bankCd WHEN A.trxType = '출금' THEN C.bankCd END AS vactBankCd, B.account as vactAccount " +
@@ -202,8 +202,9 @@ public class ChargeSettleDAO extends DAO{
 
 	public RecordSet depositSum(List<Data> datas) {
 		super.setColumns("SUM(if(trxType='출금',amount,0)) AS depositAmt, SUM(if(trxType='입금',amount,0)) AS withdrawAmt");
-		super.setTable("(SELECT * FROM VW_CHARGE_SETTLE WHERE NOT EXISTS (SELECT 1 FROM PG_TRX_CAP WHERE serviceType = '월세앱' AND VW_CHARGE_SETTLE.trxId=PG_TRX_CAP.trxId)) A");
-		super.addWhere("trxUnit", "월세앱정산", ne);
+//		super.setTable("(SELECT * FROM VW_CHARGE_SETTLE WHERE NOT EXISTS (SELECT 1 FROM PG_TRX_CAP WHERE serviceType = '월세앱' AND VW_CHARGE_SETTLE.trxId=PG_TRX_CAP.trxId)) A");
+		super.setTable("(SELECT D.*, FN_AES_DEC(account) as decAccount, FN_AES_DEC(holder) as decHolder,(SELECT codeName FROM PG_CODE WHERE alias='BANK' AND code=D.vactBankCd) AS vactBankName FROM (SELECT A.*, CASE WHEN A.trxType = '입금' THEN B.bankCd WHEN A.trxType = '출금' THEN C.bankCd END AS vactBankCd, B.account as vactAccount FROM VW_CHARGE_SETTLE A LEFT OUTER JOIN PG_VACT_TRX B ON A.trxId = B.vactId AND A.mchtId = B.mchtId AND A.trxType = '입금' AND A.trxUnit = '가상계좌정산' LEFT OUTER JOIN PG_FIRM_TRX C ON A.refId = C.idx AND A.trxType = '출금' AND A.trxUnit = '펌뱅킹' LEFT OUTER JOIN VW_TRX_CAP_LIST F ON A.trxId=F.trxId WHERE IFNULL(F.serviceType, '') != '월세앱' AND A.trxUnit != '월세앱정산') D) E");
+//		super.addWhere("trxUnit", "월세앱정산", ne);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION
 		RecordSet rset = super.search();
 		super.initRecord();
