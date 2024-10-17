@@ -129,7 +129,7 @@
                                         <div class="row">
                                             <div class="form-group pg-form-group">
                                                 <label class="control-label col-lg-4">상태</label>
-                                                <select class="selectpicker btn-sm col-lg-8 col-xs-12" name="status" data-oper="eq">
+                                                <select class="selectpicker btn-sm col-lg-8 col-xs-12" name="hookStatus" data-oper="eq">
                                                     <option value="">상태</option>
                                                     <option value="대기">대기</option>
                                                     <option value="전송완료">전송완료</option>
