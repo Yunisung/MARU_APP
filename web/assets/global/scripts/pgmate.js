@@ -410,8 +410,27 @@ var PGmate = function() {
 			}
 
 		});
-		
-		
+
+		//가상계좌 노티 재전송
+		$(document).on('click', '.vact-noti-retry', function () {
+			var notiList = '';
+			$('table.pg-table>tbody>tr').each(function(i, e) {
+				if ($(e).find('input[type="checkbox"]').is(':checked')) {
+					notiList += "'" + $(e).attr('data-notiIndex') + "',";
+				}
+			});
+
+			console.log(notiList);
+
+			if (notiList.length < 1) {
+				bootbox.alert("대상을 체크하세요.");
+			} else {
+				notiList = notiList.substring(0, notiList.length - 1);
+				vactNotiRetry(notiList);
+			}
+
+		});
+
     };
     
     var handleSessionAlive = function () {

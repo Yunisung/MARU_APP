@@ -174,6 +174,36 @@ public class VactController {
         return new CPRUtil(cpRequest).dataList(rset, vactTrxDAO).setView(request, "/vact/auth/list", "");
     }
 
+//  거래관리 - 가상계좌관리 - 노티내역 조회
+    @RequestMapping(value = "/vact/noti/list", method = RequestMethod.POST)
+    public ModelAndView notiList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+        RecordSet rset = vactTrxDAO.getVactNotiList(cpRequest.data,cpRequest.page);
+
+        return new CPRUtil(cpRequest).dataList(rset,vactTrxDAO).setView(request,"/vact/noti/list","");
+    }
+
+    @RequestMapping(value = {"/vact/noti/retry/{vactId}"}, method = RequestMethod.POST)
+    public @ResponseBody SharedMap<String, Object> notiRetry(HttpServletRequest request, @PathVariable String vactId) {
+        SharedMap<String, Object> resultMap = new SharedMap<>();
+        logger.info("noti retry vactId : {}", vactId);
+        logger.info("noti retry session UserId : {}", SessionUtil.getUserId(request));
+        CPDAO dao = new CPDAO();
+        dao.setTable("PG_VACT_TRX");
+        dao.setRecord("hookRetry", 1);
+        dao.setRecord("hookStatus", "전송장애");
+        dao.addWhere("vactId", vactId, DAO.in);
+
+        if(dao.update()) {
+            resultMap.put("result", "OK");
+        } else {
+            resultMap.put("result", "NOK");
+            resultMap.put("msg", "재전송 실패했습니다.");
+        }
+
+        return resultMap;
+    }
+
     @RequestMapping(value = "/vact/auth/changeStlDayUpdate", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody Object changeAuthStlDay(HttpServletRequest request, @RequestBody SharedMap<String, Object> reqMap) {
         SharedMap<String, Object> resMap = new SharedMap<String, Object>();

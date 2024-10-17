@@ -33,10 +33,13 @@
                         <a href="/vact/dtl/form.jsp" class="nav-link ">발행내역 조회</a>
                     </li>
                     <li class="nav-item ">
-                        <a href="/vact/trx/form.jsp" class="nav-link ">거래내역조회</a>
+                        <a href="/vact/trx/form.jsp" class="nav-link ">거래내역 조회</a>
                     </li>
 					<li class="nav-item ">
-						<a href="/vact/auth/form.jsp" class="nav-link ">인증수수료조회</a>
+						<a href="/vact/auth/form.jsp" class="nav-link ">인증수수료 조회</a>
+					</li>
+					<li class="nav-item ">
+						<a href="/vact/noti/form.jsp" class="nav-link ">노티내역 조회</a>
 					</li>
                 </ul>
 		</li>
