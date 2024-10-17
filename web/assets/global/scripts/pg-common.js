@@ -623,5 +623,38 @@ function trxNotiRetry(idx) {
 		}
 	});
 }
+// 가상계좌 노티 재전송
+function vactNotiRetry(idx) {
+	console.log('vactNotiRetry:', idx);
+
+	bootbox.confirm('선택된 항목을 재전송 하시겠습니까?', function(result) {
+		if (result) {
+			$.ajax({
+				url : '/vact/noti/retry/'+ idx,
+				type : 'POST',
+				dataType : "text",
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader("Content-type",
+						"application/json;charset=utf-8");
+				},
+				data : idx,
+				success : function(json, textStatus) {
+					json = JSON.parse(json);
+					if (json.result == 'OK') {
+						bootbox.alert("재전송 완료했습니다.");
+					} else {
+						bootbox.alert(json.msg);
+					}
+				},
+				error : function(xhr, status, error) {
+					bootbox.alert("재전송 실패했습니다.");
+				},
+				complete : function(data) {
+					searchForList();
+				}
+			});
+		}
+	});
+}
 
 
