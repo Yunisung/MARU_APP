@@ -319,5 +319,24 @@ public class VactTrxDAO extends DAO {
 		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
 	}
 
+	public List<SharedMap<String, Object>> getUnUsedMAccount(String bankCd) {
+		super.setTable("VW_VACT_UNUSED");
+		super.setColumns("issuerBank, bankCd, mAccount, COUNT(*) AS cnt");
+		super.addWhere("mAccount IN (SELECT DISTINCT(mAccount) FROM PG_VACT WHERE bankCd = '"+ bankCd + "')");
+		super.setGroupBy("mAccount");
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRows();
+	}
+
+	public RecordSet getVactNotiList(List<Data> datas, Page page) {
+		super.setTable("VW_VACT_TRX");
+		super.setColumns("*");
+		super.setOrderBy("regDate desc");
+
+		page = CPUtil.correctPage(page);
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		return super.searchList(page.current, page.size,page.hash);
+	}
 }
 
