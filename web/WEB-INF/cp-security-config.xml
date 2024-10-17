@@ -58,6 +58,7 @@
 		<intercept-url pattern="/vact/blackList/add.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/vact/blackList/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/vact/error/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/vact/noti/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT')"/>
 		<intercept-url pattern="/trx/pisp/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT')"/>
 		<intercept-url pattern="/trx/pisp/fcs/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_MCHT')"/>
 		<intercept-url pattern="/trx/status/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
