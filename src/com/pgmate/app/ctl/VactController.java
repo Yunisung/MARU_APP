@@ -178,6 +178,7 @@ public class VactController {
     @RequestMapping(value = "/vact/noti/list", method = RequestMethod.POST)
     public ModelAndView notiList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
         VactTrxDAO vactTrxDAO = new VactTrxDAO();
+        SessionUtil.setSearchGrade(request, cpRequest);
         RecordSet rset = vactTrxDAO.getVactNotiList(cpRequest.data,cpRequest.page);
 
         return new CPRUtil(cpRequest).dataList(rset,vactTrxDAO).setView(request,"/vact/noti/list","");
