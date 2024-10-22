@@ -92,7 +92,7 @@
 						<td>${entry.decHolder}</td>
 						<td>${entry.bankName}</td>
 						<c:choose>
-							<c:when test="${entry.status eq '실패' && entry.rootTrxId eq ''}">
+							<c:when test="${entry.status ne '완료' && entry.rootTrxId eq ''}">
 								<td class="btn-td"><a class="btn green btn-sm" href="javascript:retryPayOut('${entry.trxId}')">이체</a></td>
 							</c:when>
 							<c:otherwise>
