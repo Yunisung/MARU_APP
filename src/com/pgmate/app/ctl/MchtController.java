@@ -3244,4 +3244,92 @@ public class MchtController {
 					.cpResponse();
 		}
 	}
+
+	@RequestMapping(value = "/mcht/vact/getMotherAccount/{bankCd}", method = RequestMethod.GET)
+	public @ResponseBody SharedMap<String, Object> getMotherAccount(HttpServletRequest request, @PathVariable String bankCd) {
+		SharedMap<String,Object> resultMap = new SharedMap<String,Object>();
+		List<SharedMap<String, Object>> mAccountList = new VactTrxDAO().getUnUsedMAccount(bankCd);
+		if(mAccountList.size() == 0) {
+			resultMap.put("resultCd", "9999");
+			return resultMap;
+		}
+		StringBuffer sb= new StringBuffer();
+		for(SharedMap<String, Object> data : mAccountList) {
+			sb.append("<option value=\""+data.getString("mAccount")+"\">"+data.getString("mAccount")+"</option>");
+		}
+		resultMap.put("resultCd", "0000");
+		resultMap.put("mAccountList", sb.toString());
+		return resultMap;
+	}
+
+	@RequestMapping(value="/mcht/smsPay")
+	public @ResponseBody Object smsPay(HttpServletRequest request) {
+		SharedMap<String, Object> smsPayMap = new SharedMap<String, Object>();
+
+		SmsDAO smsDAO = new SmsDAO();
+
+		smsPayMap.put("payKey", CommonUtil.nToB(request.getParameter("payKey")));
+		smsPayMap.put("name", CommonUtil.nToB(smsDAO.getMchtName(request.getParameter("payKey"))));
+		smsPayMap.put("amount", CommonUtil.nToB(request.getParameter("amount")));
+		smsPayMap.put("products", CommonUtil.nToB(request.getParameter("products")));
+		smsPayMap.put("mchtId", CommonUtil.nToB(request.getParameter("mchtId")));
+		smsPayMap.put("payerName", CommonUtil.nToB(request.getParameter("payerName")));
+		smsPayMap.put("payerEmail", CommonUtil.nToB(request.getParameter("payerEmail")));
+		smsPayMap.put("payerTel", smsDAO.getAESEnc(CommonUtil.nToB(request.getParameter("payerTel"))));
+
+		String smsKey = "";
+		int count = 0;
+		do {
+			smsKey = makePayUri(smsPayMap.getString("payKey"));
+			count = smsDAO.checkSmsKey(smsKey);
+		}while(count > 0);
+
+		smsPayMap.put("smsKey", smsKey);
+
+		HashMap<String, String> map = new HashMap<String, String>();
+		if(smsDAO.insertSMSPay(smsPayMap)) {
+			map.put("result", "Y");
+			map.put("smsKey", smsKey);
+		}else {
+			map.put("result", "N");
+		}
+
+		return map;
+	}
+
+	public String makePayUri(String payKey){
+
+		// 현재시간을 이용한 임의의 문자 생성
+		Random rnd = new Random();
+		rnd.setSeed(System.currentTimeMillis());
+		StringBuffer sb = new StringBuffer();
+		for(int i=0;i<=14;i++){
+			if(rnd.nextBoolean()){
+				sb.append((char)((int)(rnd.nextInt(26))+97));
+			}else{
+				sb.append((rnd.nextInt(10)));
+			}
+		}
+		return sb.toString();
+	}
+
+	@RequestMapping(value="/mcht/smsSend")
+	public @ResponseBody Object smsSend(HttpServletRequest request) {
+
+		SmsDAO smsDAO = new SmsDAO();
+
+		String name = CommonUtil.nToB(request.getParameter("payerName"));
+		String phone = CommonUtil.nToB(request.getParameter("payerTel"));
+		String nick = CommonUtil.nToB(smsDAO.getMchtName(request.getParameter("payKey")));
+		String contents = CommonUtil.nToB(request.getParameter("contents"));
+		String preContents = nick + "\nSMS 안심결제안내\n\n" + "상호 : " + nick + "\n고객명 : " + name +"\n";
+
+		SmsUtil smsUtil = new SmsUtil();
+		smsUtil.sendSms(smsUtil.LMS_URL, phone.replaceAll("\\[^0-9]+", ""), preContents + contents);
+
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("result", "Y");
+
+		return map;
+	}
 }
