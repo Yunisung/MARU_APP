@@ -34,7 +34,7 @@
 			<li class="active">
 				<a href="#tab1" data-toggle="tab">매입 정보</a>
 			</li>
-			<c:if test="${(CP_SESSION.grade == '본사' || CP_SESSION.grade == '대행사') && empty DATAREFMAP && DATAMAP.capType eq '매입'}">
+			<c:if test="${(CP_SESSION.grade == '본사' || CP_SESSION.grade == '대행사' || CP_SESSION.mchtWebPay == '사용') && empty DATAREFMAP && DATAMAP.capType eq '매입'}">
 				<li>
 					<a href="#tab2" data-toggle="tab">취소 요청</a>
 				</li>
