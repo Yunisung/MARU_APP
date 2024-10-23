@@ -62,7 +62,9 @@
 															<div class="input-group">
 																<span class="input-group-addon"><i class="fa fa-barcode"></i></span>
 																<input type="text" name="product" id="product" class="form-control" placeholder="구매 상품명 상세 입력" >
-																<input type="hidden" name="publicKey" id="publicKey" value="${CP_SESSION.webPay}">
+																<input type="hidden" name="payKey" id="payKey" value="${CP_SESSION.webPay}">
+																<input type="hidden" id="products" name="products"/>
+																<input type="hidden" id="contents" name="contents"/>
 															</div>
 														</div>
 													</div>
@@ -106,8 +108,11 @@
 												<div class="alert alert-danger display-hide"></div>
 												<div class="form-actions right">
 													<div class="">
-														<button type="submit" class="btn green btn-sm loading-btn" data-loading-text="Loading...">
+														<button class="btn green btn-sm loading-btn" data-loading-text="Loading..." onclick="javascript:fn_pay();">
 															<i class="fa fa-search"></i>&nbsp;결제하기
+														</button>
+														<button class="btn green btn-sm loading-btn" data-loading-text="Loading..." onclick="javascrit:fn_sms();">
+															<i class="fa fa-search"></i>&nbsp;SMS 결제하기
 														</button>
 													</div>
 												</div>
@@ -148,49 +153,193 @@
 					minlength : 8
 				}
 			},
-			invalidHandler: function (event, validator) { //display error alert on form submit              
+			invalidHandler: function (event, validator) { //display error alert on form submit
                	var error1Str = '<button class="close" data-close="alert"></button>';
                 error1Str += "결제 중  잘못된 입력값이 있습니다. 위의 입력 값을 다시 확인하여 주시기 바랍니다.";
                	error1.html(error1Str);
 				error1.show();
                 App.scrollTo(error1, -200);
             },
-            submitHandler: function (form) {
-                error1.hide();
-				
-				var products = [];
-			      var product = new Object();
-			      product.name=$('#product').val();
-			      product.price=$('#amount').val();
-			      product.qty =1;
-			      product.desc ='WEBPAY';
-			      
-			      products.push(product);
-			      MARU.pay({
-			        amount: $('#amount').val(),
-			        publicKey: $('#publicKey').val(),
-			        products: products,
-			        responseFunction: eventFnc,
-			        redirectUrl: '',
-			        webhookUrl: '',
-			        udf1: '',
-			        udf2: '',
-			        payerName: $('#payerName').val(),
-			        payerEmail: $('#payerEmail').val(),
-			        payerTel: $('#payerTel').val(),
-			        mode: 'layer'
-			      });
-			
-			}
+            // submitHandler: function (form) {
+            //     error1.hide();
+			//
+			// 	var products = [];
+			//       var product = new Object();
+			//       product.name=$('#product').val();
+			//       product.price=$('#amount').val();
+			//       product.qty =1;
+			//       product.desc ='WEBPAY';
+			//
+			//       products.push(product);
+			//       MARU.pay({
+			//         amount: $('#amount').val(),
+			//         publicKey: $('#publicKey').val(),
+			//         products: products,
+			//         responseFunction: eventFnc,
+			//         redirectUrl: '',
+			//         webhookUrl: '',
+			//         udf1: '',
+			//         udf2: '',
+			//         payerName: $('#payerName').val(),
+			//         payerEmail: $('#payerEmail').val(),
+			//         payerTel: $('#payerTel').val(),
+			//         mode: 'layer'
+			//       });
+			//
+			// }
 		});
 		$('#nav-mcht').addClass('active');
 	</script>
 	<script type="text/javascript">
 		MARU.debug(false);
+
+		function fn_valid(){
+			if(!$.trim($('#product').val())){
+				bootbox.alert({
+					message: "구매상품명을 입력하세요.",
+					callback:function(){
+						setTimeout(function (){
+							$('#product').focus();
+						},10);
+					}
+				});
+				return false;
+			}
+			if(!$.trim($('#amount').val())){
+				bootbox.alert({
+					message: "결제금액을 입력하세요.",
+					callback:function(){
+						setTimeout(function (){
+							$('#amount').focus();
+						},10);
+					}
+				});
+				return false;
+			}
+
+			if(!$.trim($('#payerName').val())){
+				bootbox.alert({
+					message: "고객 이름 입력은 필수입니다.",
+					callback:function(){
+						setTimeout(function (){
+							$('#payerName').focus();
+						},10);
+					}
+				});
+				return false;
+			}
+
+			if(!$.trim($('#payerTel').val())){
+				bootbox.alert({
+					message: "고객 전화번호 입력은 필수입니다.",
+					callback:function(){
+						setTimeout(function (){
+							$('#name').focus();
+						},10);
+					}
+				});
+				return false;
+			}
+			return true;
+		}
+
 		function eventFnc(data) {
 			location.href="/subMcht/trx/form.jsp";
 
     	}
+
+		function fn_pay() {
+			error1.hide();
+			if(!fn_valid()) {
+				return false;
+			}
+
+			var products = [];
+			var product = new Object();
+			product.name=$('#product').val();
+			product.price=$('#amount').val();
+			product.qty =1;
+			product.desc ='WEBPAY';
+
+			products.push(product);
+			MARU.pay({
+				amount: $('#amount').val(),
+				publicKey: $('#payKey').val(),
+				products: products,
+				responseFunction: eventFnc,
+				redirectUrl: '',
+				webhookUrl: '',
+				udf1: '',
+				udf2: '',
+				payerName: $('#payerName').val(),
+				payerEmail: $('#payerEmail').val(),
+				payerTel: $('#payerTel').val(),
+				mode: 'layer'
+			});
+		}
+
+		function fn_sms() {
+			error1.hide();
+			if(!fn_valid()) {
+				return false;
+			}
+
+			var products = [];
+			var product = new Object();
+			product.name=$('#product').val();
+			product.price=$('#amount').val();
+			product.qty =1;
+			product.desc ='WEBPAY';
+			products.push(product);
+
+			$('#products').val(JSON.stringify(products));
+
+			$.ajax({
+				url: "<c:url value='/mcht/smsPay'/>",
+				type: "POST",
+				data: $('#writeFrm').serialize(),
+				dataType: "json",
+				success: function (data) {
+					fn_sendSms(data.smsKey);
+				},
+				error: function () {
+
+				}
+			});
+		}
+
+		function fn_sendSms(smsKey){
+			var payerTel = $('#payerTel').val();
+			if(confirm(payerTel+"번호로 결제 URL을 전송하겠습니까?")){
+				var baseUrl = 'https://sugi.bkwinners.kr/sms/';
+				var url = baseUrl+smsKey+'/pay';
+				var content = "상품명 : "+$('#product').val()+"\n결제금액 : "+numberWithCommas($.trim($('#amount').val()))+"원\n\n아래 URL을 누르시면, 결제창으로 연결됩니다.\n\n"+url + "\n\n 결제서비스제공사 : 부국위너스 ";
+				//console.log(content);
+				// if(navigator.userAgent.match(/Android/i) != null){
+				// 	location.href = 'sms:'+payerTel+'?body='+content;
+				// }else if(navigator.userAgent.match(/iPhone|iPad|iPod/i) != null){
+				// 	location.href = 'sms:'+payerTel+'&body='+content;
+				// }
+
+				$('#contents').val(content);
+				$.ajax({
+					url: "<c:url value='/mcht/smsSend'/>",
+					type: "POST",
+					data: $('#writeFrm').serialize(),
+					dataType: "json",
+					success: function (data) {
+						alert("문자전송을 완료했습니다.");
+					},
+					error: function () {
+
+					}
+				});
+			}
+		}
+
+		function numberWithCommas(x) {
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
 	</script>
 </body>
 
