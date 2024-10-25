@@ -6,7 +6,9 @@
     <a href="javascript:redirectToMain();" class="nav-link nav-toggle"><i class="icon-home"></i>
                 <span class="title">Dashboard</span></a>
 </li>
-<c:if test="${CP_SESSION.webPay != ''}">
+
+<%--가맹점 웹결제 사용시에만 웹결제 메뉴 선택 가능하게--%>
+<c:if test="${CP_SESSION.webPay != '' && CP_SESSION.mchtWebPay == '사용'}">
 
 <li class="nav-item start" id="nav-board">
  	<a href="/wtmn/form.jsp" class="nav-link nav-toggle"><i class="icon-home"></i>

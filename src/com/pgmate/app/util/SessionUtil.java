@@ -8,14 +8,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.pgmate.app.dao.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.pgmate.app.dao.MchtTmnDAO;
-import com.pgmate.app.dao.NoticeDAO;
-import com.pgmate.app.dao.OrgFeeDAO;
-import com.pgmate.app.dao.TrxCapDAO;
-import com.pgmate.app.dao.UserDAO;
 import com.pgmate.app.model.ajax.CPRequest;
 import com.pgmate.app.model.ajax.Data;
 import com.pgmate.app.session.CPSession;
@@ -183,6 +179,7 @@ public class SessionUtil {
 			cpSession.setParentName(memberMap.getString("name"));
 			cpSession.setAggregator(new DAO().query("SELECT aggregator FROM PG_MCHT WHERE mchtId ='"+cpSession.getParentId()+"'").getRow(0).getString("aggregator"));
 			cpSession.setWebPay(new MchtTmnDAO().getWebPay(cpSession.getParentId()));
+			cpSession.setMchtWebPay(new MchtSvcDAO().getMchtWebPay(cpSession.getParentId()));
 			logger.debug("aggregator: {}", cpSession.getAggregator());
 		}
 		

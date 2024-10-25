@@ -158,6 +158,14 @@
 														</select>
 														<script type="text/javascript"> document.forms.writeFrm.rent.value = '${DATAMAP.rent}'</script>
 													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label input-sm col-sm-4 req-label">가맹점웹결제</label>
+														<select name="mchtWebPay" class="selectpicker col-sm-6 col-xs-12">
+															<option value="사용">사용</option>
+															<option value="미사용">미사용</option>
+														</select>
+														<script type="text/javascript"> document.forms.writeFrm.mchtWebPay.value = '${DATAMAP.mchtWebPay}'</script>
+													</div>
 												</div>
 												<div class="alert alert-danger display-hide"></div>
 												<div class="form-actions right">
