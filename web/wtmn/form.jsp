@@ -300,10 +300,15 @@
 				data: $('#writeFrm').serialize(),
 				dataType: "json",
 				success: function (data) {
-					fn_sendSms(data.smsKey);
+					if(data.result === 'Y') {
+						fn_sendSms(data.smsKey);
+					} else {
+						alert("결제키 생성을 실패했습니다.");
+					}
+
 				},
 				error: function () {
-
+					alert("처리중 오류가 발생했습니다.");
 				}
 			});
 		}
@@ -328,10 +333,15 @@
 					data: $('#writeFrm').serialize(),
 					dataType: "json",
 					success: function (data) {
-						alert("문자전송을 완료했습니다.");
+						if(data.result === 'Y') {
+							alert("문자전송을 완료했습니다.");
+						} else {
+							alert("문자전송을 실패했습니다.");
+						}
+
 					},
 					error: function () {
-
+						alert("처리중 오류가 발생했습니다.");
 					}
 				});
 			}
