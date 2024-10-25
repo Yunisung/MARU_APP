@@ -32,6 +32,7 @@ public class CPSession implements java.io.Serializable{
 	private String showOthTrns 	= "N";
 	private String eformStatus 	= "N";
 	private String loanSettleStatus 	= "N";
+	private String mchtWebPay = "";
 
 
 	private List<SharedMap<String,Object>> childList = null;
@@ -310,4 +311,10 @@ public class CPSession implements java.io.Serializable{
 	public void setLoanSettleStatus(String loanSettleStatus) {
 		this.loanSettleStatus = loanSettleStatus;
 	}
+
+	public String getMchtWebPay() {
+		return mchtWebPay;
+	}
+
+	public void setMchtWebPay(String mchtWebPay) { this.mchtWebPay = mchtWebPay; }
 }
