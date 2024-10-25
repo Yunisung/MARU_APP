@@ -45,4 +45,10 @@ public class MchtSvcDAO extends DAO {
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
 
+
+	public String getMchtWebPay(String mchtId) {
+		addWhere("lower(mchtId)",mchtId.toLowerCase(),eq);
+		setColumns("mchtWebPay");
+		return super.search().getRowFirst().getString("mchtWebPay");
+	}
 }

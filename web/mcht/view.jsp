@@ -1910,6 +1910,15 @@
 																		</div>
 																	</div>
 																</div>
+																<!--/span-->
+																<div class="col-md-6">
+																	<div class="form-group pg-view-group">
+																		<label class="control-label col-md-3">가맹점웹결제</label>
+																		<div class="col-md-9">
+																			<p class="form-control-static">${DATASVCMAP.mchtWebPay}</p>
+																		</div>
+																	</div>
+																</div>
 															</div>
 															<div class="form-actions">
 																<div class="row">
