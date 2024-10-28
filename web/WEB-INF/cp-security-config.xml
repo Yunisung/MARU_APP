@@ -199,6 +199,9 @@
 		<intercept-url pattern="/subMcht/settle/form.jsp" access="hasAnyRole('ROLE_TMN')"/>
 		<intercept-url pattern="/subMcht/myprofile/*" access="hasAnyRole('ROLE_TMN')"/>
 
+		<!-- 웹 결제-->
+		<intercept-url pattern="/wtmn/form.jsp" access="hasAnyRole('ROLE_MCHT', 'ROLE_TMN')"/>
+
 	</http>
 
 	<authentication-manager alias="customAuthenticationManager">
