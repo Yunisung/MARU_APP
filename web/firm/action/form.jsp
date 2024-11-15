@@ -67,13 +67,11 @@
 															<label class="control-label col-lg-3">은행선택</label>
 															<select id="select" class="selectpicker col-lg-8" name="mAccnt" data-oper="eq">
 																<option value="">-----&nbsp;</option>  
-																<option value="08970022000000008" selected="selected">케이뱅크(70022000000008)</option>
-																<%--<option value="0392070158564301">경남은행(2070158564301)</option>--%>
-<%--																<option value="0392070158563707">경남은행(2070158563707)</option>--%>
-																<option value="0398003344299939">경남은행(8003344299939)</option>
-                                                                <option value="034019107542861">광주은행(019107542861)</option>
-																<option value="007101024656079">수협은행(101024656079)</option>
-																<option value="048131022424175">신협은행(131022424175)</option>
+																<option value="08970022000000008" selected="selected">케이뱅크(700****08)</option>
+																<option value="0398003344299939">경남은행(800****39)</option>
+                                                                <option value="034019107542861">광주은행(019****61)</option>
+																<option value="007101024656079">수협은행(101****79)</option>
+																<option value="048131022424175">신협은행(131****75)</option>
 															</select>
 														</div>  
  														<div class="form-group pg-form-group">

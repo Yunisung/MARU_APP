@@ -47,6 +47,7 @@
 		<intercept-url pattern="/mcht/nontran/form" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES')"/>
 		<intercept-url pattern="/mcht/accntSearch/form" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/mcht/noti/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/mcht/vact/**" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 
 		<!-- 거래관리 -->
 		<intercept-url pattern="/trx/cap/form.jsp" access="hasAnyRole('ROLE_COMP', 'ROLE_DIST', 'ROLE_AGENCY', 'ROLE_SALES', 'ROLE_MCHT')"/>
@@ -179,6 +180,7 @@
 		<intercept-url pattern="/firm/master/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/firm/err/form" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 		<intercept-url pattern="/firm/action/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
+		<intercept-url pattern="/firm/transfer/form.jsp" access="hasAnyRole('ROLE_COMP_ADMIN')"/>
 
 		<!-- TMS -->
 		<intercept-url pattern="/tms/io/form.jsp" access="hasAnyRole('ROLE_COMP')"/>
