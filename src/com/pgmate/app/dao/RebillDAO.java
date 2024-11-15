@@ -12,7 +12,7 @@ public class RebillDAO extends DAO {
 
 
     public RecordSet regList(List<Data> datas, Page page) {
-        super.setTable("(SELECT A.*, B.nick FROM PG_REBILL_REG A LEFT OUTER JOIN PG_MCHT B ON A.mchtId=B.mchtId) C");
+        super.setTable("(SELECT A.*, B.nick, B.distId FROM PG_REBILL_REG A LEFT OUTER JOIN VW_MCHT B ON A.mchtId=B.mchtId) C");
 
         page = CPUtil.correctPage(page);
         CPUtil.setDAO(this, datas); //DATA to CONDITION
@@ -20,7 +20,7 @@ public class RebillDAO extends DAO {
     }
 
     public RecordSet trxList(List<Data> datas, Page page) {
-        super.setTable("PG_REBILL_PAY");
+        super.setTable("(SELECT A.*, B.distId FROM PG_REBILL_PAY A LEFT OUTER JOIN VW_MCHT B ON A.mchtId=B.mchtId) C");
 
         page = CPUtil.correctPage(page);
         CPUtil.setDAO(this, datas);
@@ -29,6 +29,7 @@ public class RebillDAO extends DAO {
 
     public RecordSet trxSum(List<Data> datas,Page page) {
         //KJM : 금액의 합계를 amount 컬럼명으로 받겠다
+        super.setTable("(SELECT A.*, B.distId FROM PG_REBILL_PAY A LEFT OUTER JOIN VW_MCHT B ON A.mchtId=B.mchtId) C");
         super.setColumns("SUM(amount) AS amount");
         page = CPUtil.correctPage(page);
         CPUtil.setDAO(this, datas);				//DATA to CONDITION
@@ -47,7 +48,7 @@ public class RebillDAO extends DAO {
     }
 
     public RecordSet errList(List<Data> datas, Page page) {
-        super.setTable("PG_REBILL_ERR");
+        super.setTable("(SELECT A.*, B.distId FROM PG_REBILL_ERR A LEFT OUTER JOIN VW_MCHT B ON A.mchtId=B.mchtId) C");
 
         page = CPUtil.correctPage(page);
         CPUtil.setDAO(this, datas);
