@@ -92,8 +92,17 @@ public class FirmController {
 	public @ResponseBody FirmBean action(HttpServletRequest request,@RequestBody SharedMap<String, Object> reqMap) {
 		
 		String action = reqMap.getString("action");
-		String mAccnt = reqMap.getString("mAccnt");
+		String mAccnt = "";
 		String bankCd = reqMap.getString("bankCd");
+
+		//모계좌 세팅
+		switch (bankCd) {
+			case "089": mAccnt = "70022000000008";break;
+			case "039": mAccnt = "8003344291839";break;
+			case "034": mAccnt = "1107021617114";break;
+			case "007": mAccnt = "101024656079";break;
+			case "048": mAccnt = "131022424175";break;
+		}
 		
 		logger.debug("Action: {}, bankCd: {} , mAccnt: {}", action, bankCd, mAccnt);
 
@@ -116,8 +125,8 @@ public class FirmController {
 		//모계좌 세팅
 		switch (sendBankCd) {
 			case "089": sendAccnt = "70022000000008";break;
-			case "039": sendAccnt = "8003344299939";break;
-			case "034": sendAccnt = "019107542861";break;
+			case "039": sendAccnt = "8003344291839";break;
+			case "034": sendAccnt = "1107021617114";break;
 			case "007": sendAccnt = "101024656079";break;
 			case "048": sendAccnt = "131022424175";break;
 		}
