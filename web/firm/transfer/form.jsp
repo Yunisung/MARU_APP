@@ -58,7 +58,7 @@
 															<select id="select" class="selectpicker col-lg-8" name="sendAccnt" data-oper="eq">
 																<option value="089" selected="selected">케이뱅크(700****08)</option>
 																<option value="039">경남은행(800****39)</option>
-																<option value="034">광주은행(019****61)</option>
+																<option value="034">광주은행(019****14)</option>
 																<option value="007">수협은행(101****79)</option>
 																<option value="048">신협은행(131****75)</option>
 
