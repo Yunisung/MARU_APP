@@ -56,11 +56,11 @@
 														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-3">송신계좌</label>
 															<select id="select" class="selectpicker col-lg-8" name="sendAccnt" data-oper="eq">
-																<option value="08970022000000008" selected="selected">케이뱅크(700****08)</option>
-																<option value="0398003344299939">경남은행(800****39)</option>
-																<option value="034019107542861">광주은행(019****61)</option>
-																<option value="007101024656079">수협은행(101****79)</option>
-																<option value="048131022424175">신협은행(131****75)</option>
+																<option value="089" selected="selected">케이뱅크(700****08)</option>
+																<option value="039">경남은행(800****39)</option>
+																<option value="034">광주은행(019****61)</option>
+																<option value="007">수협은행(101****79)</option>
+																<option value="048">신협은행(131****75)</option>
 
 																</select>
 														</div>  
@@ -171,7 +171,7 @@
 			if(action == "0100100" && amount == "0"){
 				bootbox.alert("이체금액을 입력해주세요");   
 			}else {
-				if(sendAccnt == ""){       
+				if(sendBankCd == ""){
 			   		bootbox.alert("송신계좌를 선택해주세요");   
 				}else{
 		 			console.log('action:', action, 'sendBankCd:', sendBankCd, 'sendAccnt:', sendAccnt, 'recvBankCd:', recvBankCd, 'recvAccnt:', recvAccnt, 'amount:', amount);

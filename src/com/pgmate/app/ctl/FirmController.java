@@ -111,7 +111,16 @@ public class FirmController {
 		String action = reqMap.getString("action");
 		
 		String sendBankCd = reqMap.getString("sendBankCd");
-		String sendAccnt = reqMap.getString("sendAccnt");
+		String sendAccnt = "";
+
+		//모계좌 세팅
+		switch (sendBankCd) {
+			case "089": sendAccnt = "70022000000008";break;
+			case "039": sendAccnt = "8003344299939";break;
+			case "034": sendAccnt = "019107542861";break;
+			case "007": sendAccnt = "101024656079";break;
+			case "048": sendAccnt = "131022424175";break;
+		}
 		
 		String recvBankCd = reqMap.getString("recvBankCd");
 		String recvAccnt = reqMap.getString("recvAccnt");
