@@ -56,13 +56,11 @@
 														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-3">송신계좌</label>
 															<select id="select" class="selectpicker col-lg-8" name="sendAccnt" data-oper="eq">
-																<option value="08970022000000008" selected="selected">케이뱅크(70022000000008)</option>
-																<%--<option value="0392070158564301">경남은행(2070158564301)</option>--%>
-<%--																<option value="0392070158563707">경남은행(2070158563707)</option>--%>
-																<option value="0398003344291839">경남은행(8003344291839)</option>
-																<option value="0341107021617114">광주은행(1107021617114)</option>
-																<option value="007101024656079">수협은행(101024656079)</option>
-																<option value="048131022424175">신협은행(131022424175)</option>
+																<option value="08970022000000008" selected="selected">케이뱅크(700****08)</option>
+																<option value="0398003344299939">경남은행(800****39)</option>
+																<option value="034019107542861">광주은행(019****61)</option>
+																<option value="007101024656079">수협은행(101****79)</option>
+																<option value="048131022424175">신협은행(131****75)</option>
 
 																</select>
 														</div>  
@@ -85,9 +83,6 @@
 															<select id="select" class="selectpicker col-lg-8" name="recvAccnt" data-oper="eq">
 																<option value="088100035873256" selected="selected">신한은행(100-035-873256)(매출)</option>
 																<option value="088100035873605">신한은행(100-035-873605)(운영)</option>
-<%--																<option value="0201005103757834">우리은행(1005103757834)</option>--%>
-<%--																<option value="0201005004107798">우리은행(1005004107798)</option>--%>
-<%--																<option value="0392070131351802">경남은행(2070131351802)</option>--%>
 															</select>
 														</div>  
 														<div class="form-group pg-form-group">
