@@ -114,6 +114,14 @@
 															</div>
 														</div>
 													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label input-sm col-sm-4 req-label">보류금액 비교 대상</label>
+														<select name="transferOper" class="selectpicker col-sm-6 col-xs-12" >
+															<option value="합계">합계</option>
+															<option value="최대값">최대값</option>
+														</select>
+														<script type="text/javascript"> document.forms.writeFrm.transferOper.value = '${DATAMAP.transferOper}'</script>
+													</div>
 												</div>
 												<div class="alert alert-danger display-hide"></div>
 												<div class="form-actions right">
