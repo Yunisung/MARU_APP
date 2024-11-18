@@ -3628,6 +3628,14 @@
 																		</div>
 																		<div class="col-md-6">
 																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">보류금액 비교대상</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static digits">${DATACHARGEMAP.transferOper}</p>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
 																				<label class="control-label col-md-3">대행사 지급</label>
 																				<div class="col-md-9">
 																					<p class="form-control-static digits">${DATACHARGEMAP.distPayInFee}</p>
