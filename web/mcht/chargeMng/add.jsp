@@ -67,7 +67,6 @@
 															<option value="사용">사용</option>
 															<option value="중지">중지</option>
 														</select>
-														
 													</div>
 													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4">출금고객적요(미사용시 공란)</label>
@@ -107,12 +106,19 @@
 													</div>
 													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4 req-label">보류금액(비율)</label>
-														<div class="col-sm-8">
+														<div class="col-sm-6">
 															<div class="input-group input-group-sm">
 																<input type="text"
 																	   class="form-control currency transferLimitPercent" name="transferLimitPercent" value="0.0"> <span class="input-group-addon"> % </span>
 															</div>
 														</div>
+													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label input-sm col-sm-4 req-label">보류금액 비교 대상</label>
+														<select name="transferOper" class="selectpicker col-sm-6 col-xs-12" >
+															<option value="합계">합계</option>
+															<option value="최대값" selected>최대값</option>
+														</select>
 													</div>
 												</div>
 												<div class="alert alert-danger display-hide"></div>
