@@ -39,6 +39,7 @@
 					<th>주문번호</th>
 					<th>참조번호</th>
 					<th>가상계좌발행은행</th>
+					<th>예금주</th>
 					<th>입출금원금</th>
 					<th>수수료</th>
 					<th>수수료부가세</th>
@@ -70,6 +71,7 @@
 						<td>${entry.trackId}</td>
 						<td>${entry.refId}</td>
 						<td>${entry.vactBankName}</td>
+						<td>${entry.decHolder}</td>
 						<td><fmt:formatNumber type="number" value="${entry.amount}" pattern="#,##0" /></td>
 						<td><fmt:formatNumber type="number" value="${entry.fee}" pattern="#,##0" /></td>
 						<td><fmt:formatNumber type="number" value="${entry.feeVat}" pattern="#,##0" /></td>
