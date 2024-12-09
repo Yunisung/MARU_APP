@@ -65,6 +65,7 @@
 																<input type="hidden" name="payKey" id="payKey" value="${CP_SESSION.webPay}">
 																<input type="hidden" id="products" name="products"/>
 																<input type="hidden" id="contents" name="contents"/>
+																<input type="hidden" id="grade" name="grade" value="${CP_SESSION.grade}">
 															</div>
 														</div>
 													</div>
@@ -193,6 +194,8 @@
 	<script type="text/javascript">
 		MARU.debug(false);
 
+		var grade = $('#grade').val();
+
 		function fn_valid(){
 			if(!$.trim($('#product').val())){
 				bootbox.alert({
@@ -244,8 +247,11 @@
 		}
 
 		function eventFnc(data) {
-			location.href="/subMcht/trx/form.jsp";
-
+			if(grade == '하위가맹점') {
+				location.href="/subMcht/trx/form.jsp";
+			} else {
+				location.href="/trx/cap/form.jsp"
+			}
     	}
 
 		function fn_pay() {
@@ -253,6 +259,7 @@
 			if(!fn_valid()) {
 				return false;
 			}
+
 
 			var products = [];
 			var product = new Object();
