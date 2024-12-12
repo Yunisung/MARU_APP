@@ -735,6 +735,7 @@ public class TrxController {
 		TrxIqrDAO iqrDAO = new TrxIqrDAO();
 
 		String xss = SQLInjectionUtil.xssChange(summary);
+		telNo = SQLInjectionUtil.xssChange(telNo);
 
 		if(iqrDAO.insertNormal(capId, summary, telNo, SessionUtil.getUserId(request))){
 			return "OK:"+xss;
