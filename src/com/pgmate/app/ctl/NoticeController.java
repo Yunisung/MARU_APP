@@ -78,6 +78,12 @@ public class NoticeController {
 	public ModelAndView view(HttpServletRequest request, @PathVariable String idx) {
 		SharedMap<String, Object> map = new NoticeDAO().getById(idx).getRowFirst();
 		map.put("summary", CommonUtil.unescapeHtml(map.getString("summary")));
+
+		CPSession cpSession =  SessionUtil.get(request);
+		if(map.getString("status").equals("미개시") && !cpSession.getGrade().equals("본사")) {
+			map.clear();
+		}
+
 		request.setAttribute("DATAMAP", map);
 		return new ModelAndView("/system/notice/view");
 	}

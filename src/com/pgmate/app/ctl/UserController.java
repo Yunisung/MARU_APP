@@ -406,14 +406,6 @@ public class UserController {
 		if(cpDAO.search().size() > 0)
 			return "예전에 사용한 비밀번호 입니다.";
 
-		WebCache wc = new WebCache();
-		String number = String.format("%1$" + 6 + "s", ((int) (Math.random() * 999999) + 1)).replace(' ', '0');
-		wc.setSMSKey(userid, number);
-
-		String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
-		SmsUtil smsUtil = new SmsUtil();
-		smsUtil.sendSms(smsUtil.SMS_URL, result.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
-
 		return "OK";
 	}
 
@@ -424,56 +416,12 @@ public class UserController {
 			return "잘못된 요청입니다.";
 		}
 
-		UserDAO userDAO = new UserDAO();
-		SharedMap<String, Object> result = userDAO.getById(userid).getRowFirst();
-
-		String oldPassWord = CommonUtil.nToB(request.getParameter("check"));
-
-		String pwCheck =  new CPDAO().getPassword(oldPassWord);
-		if(result.getString("pw").equalsIgnoreCase(pwCheck)){
-			return "기존 비밀번호가 틀립니다";
-		}
-
 		String smsNumber = CommonUtil.nToB(request.getParameter("smsNumber"));
 
 		WebCache wc = new WebCache();
 		String saveNumber = wc.getSMSKey(userid);
 
 		if(saveNumber.equals(smsNumber)) {
-			String passKey = CommonUtil.nToB(request.getParameter("pw"));
-
-			CPDAO cpDAO = new CPDAO();
-
-			CPRequest cpRequest = new CPRequest();
-			cpRequest.setData("id", userid, "eq", "", true);
-
-			String hashed =  new CPDAO().getPassword(passKey);
-			cpRequest.setData("pw", hashed);
-
-			if(cpDAO.update("PG_USER", SessionUtil.getUserId(request), cpRequest.data)){
-
-				//히스토리 테이블에 변경 전 비밀번호 저장
-				cpDAO.insert("HT_USER_PW", cpRequest.data);
-
-				cpDAO = new CPDAO();
-				//유저 비밀번호 정보 수정할 데이터 세팅
-				CPRequest cpRequestPW = new CPRequest();
-				cpRequestPW.setData("id", userid, "eq", "", true);
-				cpRequestPW.setData("pwStatus", "사용");
-				cpRequestPW.setData("pwYn", "예");	//비밀번호 변경 여부
-				cpRequestPW.setData("pwRetry", 0);	//재시도 횟수
-				cpRequestPW.setData("pwDate", CommonUtil.getCurrentTimestamp());	//최근 갱신일
-
-				//유저 비밀번호 정보 정상 수정 시
-				if(cpDAO.update("PG_USER_PW", cpRequestPW.data)){
-					//KJM : 현재 로그인 중인 계정의 세션정보의 비밀번호 변경 여부도 "예" 바꿔주기
-					SessionUtil.setPwYes(request);
-
-					//"OK" 반환
-					return "OK";
-				}
-			}
-
 			return "OK";
 		} else {
 			return "인증번호가 틀립니다";
@@ -499,6 +447,14 @@ public class UserController {
 		}
 
     	String passKey = CommonUtil.nToB(request.getParameter("pw"));
+
+		if(passKey.indexOf(" ") > -1){
+			return GsonUtil.toJson("비밀번호에는 공백이 포함 될 수 없습니다.");
+		}
+
+		if(passKey.length() < 5 || passKey.length() > 20) {
+			return GsonUtil.toJson("비밀번호는 5~20자리만 설정 가능 합니다.");
+		}
     	
     	CPRequest cpRequest = new CPRequest();
     	cpRequest.setData("id", userid, "eq", "", true);
@@ -588,4 +544,25 @@ public class UserController {
     	resMap.put("msg", "비밀번호 변경이 실패하였습니다.");
     	return resMap;
     }
+
+	@RequestMapping(value = {"/member/user/smsSend/{userid}"}, method = RequestMethod.POST)
+	public @ResponseBody String smsSend(HttpServletRequest request, @PathVariable String userid) {
+		String sessionId = SessionUtil.getUserId(request);
+		if(!sessionId.equals(userid)) {
+			return "잘못된 요청입니다.";
+		}
+
+		UserDAO userDAO = new UserDAO();
+		SharedMap<String, Object> result = userDAO.getById(userid).getRowFirst();
+
+		WebCache wc = new WebCache();
+		String number = String.format("%1$" + 6 + "s", ((int) (Math.random() * 999999) + 1)).replace(' ', '0');
+		wc.setSMSKey(userid, number);
+
+		String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
+		SmsUtil smsUtil = new SmsUtil();
+		smsUtil.sendSms(smsUtil.SMS_URL, result.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+
+		return "OK";
+	}
 }
