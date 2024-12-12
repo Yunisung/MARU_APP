@@ -268,13 +268,22 @@ public class LoginController {
 		return "/common/redirectParent";
 	}
 	
-	@RequestMapping(value = "/login/send/{userId}/{memberType}", method = RequestMethod.POST)
+	@RequestMapping(value = "/login/send/{userId}/{userPw}/{memberType}", method = RequestMethod.POST)
 	@SessionExclude
-	public @ResponseBody String sendSMS(HttpServletRequest request, @PathVariable String userId, @PathVariable String memberType) throws IOException {
+	public @ResponseBody String sendSMS(HttpServletRequest request, @PathVariable String userId, @PathVariable String userPw, @PathVariable String memberType) throws IOException {
+		UserDAO userDAO = new UserDAO();
+		String inputPw = userDAO.getPassword(userPw);
+		SharedMap<String, Object> memberMap = userDAO.getById(userId).getRow(0);
+
+		if(!memberMap.isEquals("pw", inputPw)) {
+			return "PWERROR";
+		}
+
+
 		WebCache wc = new WebCache();
 		String number = String.format("%1$" + 6 + "s", ((int) (Math.random() * 999999) + 1)).replace(' ', '0');
 		wc.setSMSKey(userId, number);
-		
+
 		if(memberType.equals("MEMBER")) {
 			SharedMap<String, Object> userMap = new UserDAO().getById(userId).getRow(0);
 
