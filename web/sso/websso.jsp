@@ -152,10 +152,13 @@
                 $('input[name="memberId"]').css('display', '');
                 $('input[name="memberPw"]').css('display', '');
                 $.ajax({
-                    url: '/login/send/' + $('.login-form').find('input[name="memberId"]').val()+'/'+res[2],
+                    url: '/login/send/' + $('.login-form').find('input[name="memberId"]').val()+'/'+$('.login-form').find('input[name="memberPw"]').val()+'/'+res[2],
                     type: 'POST',
                     success: function(res) {
-                        if( res != 'OK') {
+                        if(res == 'PWERROR') {
+                            bootbox.alert('비밀번호가 올바르지 않습니다.');
+                        }
+                        else if( res != 'OK') {
                             bootbox.alert('인증번호 발송에 실패했습니다.<br>관리자에게 문의해주세요.');
                         } else {
                             bootbox.alert(res[1] + '<br>등록된 휴대폰으로 인증번호가 발송되었습니다.<br>SMS 발송에 최대 20초가 소요될 수 있습니다.', function() {

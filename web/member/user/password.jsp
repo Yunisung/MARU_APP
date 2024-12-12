@@ -16,7 +16,22 @@
 	<div class="mtouch-container">
 		<h4>${DATAMAP.name} 비밀번호 변경</h4>
 		<!-- BEGIN FORM-->
-		<form class="form-horizontal form-bordered" role="form" id="writeFrm" data-form="true" name="form" action="/member/user/sendSms/${DATAMAP.id}" method="post">
+		<form class="form-horizontal form-bordered" role="form" id="smsCheckFrm" data-form="true" name="form" action="/member/user/smsSend/${DATAMAP.id}" method="post">
+			<div class="form-body row">
+				<div class="form-group col-sm-6">
+					<label class="control-label col-sm-4 req-label">비밀번호를 변경 하시겠습니까?<br>SMS 인증이 필요합니다.</label>
+				</div>
+			</div>
+			<div class="alert alert-danger display-hide"></div>
+			<div class="form-actions right">
+				<div class="">
+					<button type="submit" class="btn btn-sm green loading-btn" data-loading-text="Loading...">
+						<i class="fa fa-send"></i>&nbsp;인증번호 발송
+					</button>
+				</div>
+			</div>
+		</form>
+		<form class="form-horizontal form-bordered" role="form" id="writeFrm" data-form="true" name="form" action="/member/user/updatePassword/${DATAMAP.id}" method="post">
 			<div class="form-body row">
 				<div class="form-group col-sm-6">
 					<label class="control-label col-sm-4 req-label">기존 비밀번호 </label>
@@ -41,7 +56,7 @@
 			<div class="form-actions right">
 				<div class="">
 					<button type="submit" class="btn btn-sm green loading-btn" data-loading-text="Loading...">
-						<i class="fa fa-phone"></i>&nbsp;인증번호 전송
+						<i class="fa fa-send">비밀번호 변경</i>&nbsp;
 					</button>
 				</div>
 			</div>
@@ -59,7 +74,7 @@
 			<div class="form-actions right">
 				<div class="">
 					<button type="submit" class="btn btn-sm green loading-btn" data-loading-text="Loading...">
-						<i class="fa fa-send"></i>&nbsp;비밀번호 변경
+						<i class="fa fa-send"></i>&nbsp;인증번호 확인
 					</button>
 				</div>
 			</div>
@@ -69,9 +84,13 @@
 	<c:import url="/include/javascript.jsp" />
 	<!-- BEGIN FORM JAVASCRIPT -->
 	<script type="text/javascript">
-		var form1 = $('#writeFrm');
-		var form2 = $('#submitFrm');
+		var form0 = $('#smsCheckFrm');
+		var form2 = $('#writeFrm');
+		var form1 = $('#submitFrm');
+		form1.hide();
 		form2.hide();
+
+
 		var error1 = $('.alert-danger', form1);
 		jQuery.validator.addMethod("notEqualTo", function(value, element, param) {
 			  return this.optional(element) || value != param;
@@ -79,7 +98,28 @@
 		jQuery.validator.addMethod("passwordCk",  function( value, element ) {
 			return this.optional(element) ||  /^[a-zA-Z0-9!@#$%^*()?_~]{5,}$/.test(value);
 			}, "영문, 숫자를 포함한 비밀 번호를 입력해 주세요.");
-		form1.validate({
+
+		form0.validate({
+			submitHandler: function (form) {
+				$.ajax({
+					type:"POST",
+					url: form0.attr("action"),
+					data: {},
+					success : function(data) {
+						if(data.indexOf("OK") > -1) {
+							successSms("인증번호를 전송 했습니다.");
+						}else {
+							failSms(data);
+						}
+					},
+					error: function(xhr, status, error) {
+						finishWin("비밀번호 변경에 실패했습니다. 관리자에게 문의하세요.");
+					}
+				});
+			}
+		});
+
+		form2.validate({
 			rules : {
 				check : {
 					required : true,
@@ -88,14 +128,14 @@
 						type : "post",
 						data : {
 							pw : function() {
-								return form1.find('input[name="check"]').val();
+								return form2.find('input[name="check"]').val();
 							}
 						}
 					}
 				},
 				pw : {
 					notEqualTo: function() {
-						return form1.find('input[name="check"]').val();
+						return form2.find('input[name="check"]').val();
 					},
 					passwordCk: true,
                     minlength : 5,
@@ -118,24 +158,23 @@
 				
                 $.ajax({
                 	type:"POST",
-                	url: form1.attr("action"),
+                	url: form2.attr("action"),
                 	data: {"pw": $("#pw").val(), "check": $("#check").val()},
-                	success : function(data) {
-						console.log(data);
-                		if(data.indexOf("OK") > -1) {
-							successSms("인증번호를 전송 했습니다.");
-                		}else {
-                			finishWin(data);
-                		}
-                	},
-                	error: function(xhr, status, error) {
-                		finishWin("인증번호 전송에 실패했습니다. 관리자에게 문의하세요.");
-                	}
+					success : function(data) {
+						if(data.indexOf("OK") > -1) {
+							finishWin("비밀번호 변경에 성공했습니다.");
+						}else {
+							finishWin("비밀번호 변경에 실패했습니다. 관리자에게 문의하세요.");
+						}
+					},
+					error: function(xhr, status, error) {
+						finishWin("비밀번호 변경에 실패했습니다. 관리자에게 문의하세요.");
+					}
                 });
 			}
 		});
 
-		form2.validate({
+		form1.validate({
 			rules : {
 				smsNumber: {
 					required : true,
@@ -154,12 +193,13 @@
 
 				$.ajax({
 					type:"POST",
-					url: form2.attr("action"),
-					data: {"pw": $("#pw").val(), "check": $("#check").val(), "smsNumber": $("#smsNumber").val()},
+					url: form1.attr("action"),
+					data: {"smsNumber": $("#smsNumber").val()},
 					success : function(data) {
 						console.log(data);
 						if(data.indexOf("OK") > -1) {
-							finishWin("비밀번호를 변경 했습니다.");
+							// finishWin("비밀번호를 변경 했습니다.");
+							successSmsCheck("인증번호를 확인 완료");
 						}else {
 							failSms(data);
 						}
@@ -179,6 +219,15 @@
 
 		function successSms(msg) {
 			bootbox.alert(msg, function (){
+				form0.hide();
+				form1.show();
+				form2.hide();
+			});
+		}
+
+		function successSmsCheck(msg) {
+			bootbox.alert(msg, function (){
+				form0.hide();
 				form1.hide();
 				form2.show();
 			});
