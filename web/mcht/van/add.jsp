@@ -110,6 +110,20 @@
 															<option value="1">수납정산</option>
 														</select>
 													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">외부 API 서비스</label>
+														<select name="apiService" class="selectpicker col-sm-6">
+															<option value="미사용">미사용</option>
+															<option value="fitcollabo">핏콜라보</option>
+														</select>
+													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4 req-label">차액정산 사용여부</label>
+														<select name="diffSettle" class="selectpicker col-sm-6">
+															<option value="미사용">미사용</option>
+															<option value="사용">사용</option>
+														</select>
+													</div>
 												</div>
 												<div class="alert alert-danger display-hide"></div>
 												<div class="form-actions right">
