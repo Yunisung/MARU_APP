@@ -32,6 +32,7 @@
 					<th>No</th>
 					<th>거래번호</th>
 					<th>원거래정보</th>
+					<th>승인번호</th>
 					<th>가맹점</th>
 					<th>가맹점대표</th>
 					<th>VAN 거래번호</th>
@@ -58,6 +59,7 @@
 						<c:if test="${entry.vanResultCd ne '0000'}">
 							<td>${entry.orgTrxId}</td>
 						</c:if>
+						<td>${entry.authCd}</td>
 						<td title="${entry.mchtId }">${entry.name}</td>
 						<td>${entry.ceoName}</td>
 						<td>${entry.vanTrxId}</td>
