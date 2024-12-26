@@ -86,7 +86,7 @@
 														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">금액 ( - 필수)</label>
 															<div class="col-lg-8">
-																<input type="text" class="form-control input-sm" name="rfdAmount" data-oper="eq" placeholder="취소금액">
+																<input type="text" class="form-control input-sm" name="amount" data-oper="eq" placeholder="취소금액">
 															</div>
 														</div>
 														<div class="form-group pg-form-group">
@@ -111,29 +111,29 @@
 															</select>
 															<input id="pgOrFactoring" type="hidden" name="distId" data-oper="eq" data-reg="false" value="00">
 														</div>
-													</div>
-													</c:if>
-													<div class="row search-opt">
-														<div class="form-group pg-form-group">
-															<label class="control-label col-lg-4">매입 구분</label>
-															<select class="selectpicker btn-sm col-lg-8 col-xs-12" name="rfdType" data-oper="eq">
-																<option value="">상태</option>
-																<option value="매입취소">매입취소</option>
-																<option value="정산취소">정산취소</option>
-															</select>
-														</div>
-														<div class="form-group pg-form-group">
-															<label class="control-label col-lg-4">전화번호</label>
-															<div class="col-lg-8">
-																<input type="text" class="form-control input-sm" name="payerTel" data-oper="lk" placeholder="전화번호">
-															</div>
-														</div>
 														<div class="form-group pg-form-group">
 															<label class="control-label col-lg-4">PG 거래번호</label>
 															<div class="col-lg-8">
 																<input type="text" class="form-control input-sm" name="vanTrxId" data-oper="lk" placeholder="PG 거래번호">
 															</div>
 														</div>
+													</div>
+													</c:if>
+													<div class="row search-opt">
+<%--														<div class="form-group pg-form-group">--%>
+<%--															<label class="control-label col-lg-4">매입 구분</label>--%>
+<%--															<select class="selectpicker btn-sm col-lg-8 col-xs-12" name="rfdType" data-oper="eq">--%>
+<%--																<option value="">상태</option>--%>
+<%--																<option value="매입취소">매입취소</option>--%>
+<%--																<option value="정산취소">정산취소</option>--%>
+<%--															</select>--%>
+<%--														</div>--%>
+<%--														<div class="form-group pg-form-group">--%>
+<%--															<label class="control-label col-lg-4">전화번호</label>--%>
+<%--															<div class="col-lg-8">--%>
+<%--																<input type="text" class="form-control input-sm" name="payerTel" data-oper="lk" placeholder="전화번호">--%>
+<%--															</div>--%>
+<%--														</div>--%>
 														<c:import url="/common/selectGrade.jsp" />
 														<input type="hidden" id="grade_search" name="parentId" data-oper="eq" value=""/>
 													</div>
