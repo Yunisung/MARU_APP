@@ -31,6 +31,9 @@
 					<th data-sort="string">이름</th>
 					<th data-sort="string">상태</th>
 					<th data-sort="string">휴대폰 정산타입</th>
+					<th data-sort="string">외부 api서비스</th>
+					<th data-sort="string">차액정산 사용여부</th>
+					<th data-sort="string">AID</th>
 					<th data-sort="string">등록자</th>
 					<th data-sort="string">등록일시</th>
 				</tr>
@@ -51,7 +54,16 @@
 						<td>
 							<c:if test="${entry.settleType == null}"></c:if>
 							<c:if test="${entry.settleType == '0'}">주정산</c:if>
-							<c:if test="${entry.settleType == '1'}">수납정산</c:if></td>
+							<c:if test="${entry.settleType == '1'}">수납정산</c:if>
+						</td>
+						<td>
+							<c:choose>
+								<c:when test="${entry.apiService == 'fitcollabo'}">핏콜라보</c:when>
+								<c:otherwise>${entry.apiService}</c:otherwise>
+							</c:choose>
+						</td>
+						<td>${entry.diffSettle}</td>
+						<td>${entry.aid}</td>
 						<td>${entry.regId}</td>
 						<td class="date">${entry.regDate}</td>
 					</tr>
