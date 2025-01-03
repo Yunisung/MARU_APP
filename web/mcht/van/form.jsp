@@ -93,6 +93,28 @@
 																<option value="1">수납정산</option>
 															</select>
 														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">외부 api서비스</label>
+															<select class="selectpicker btn-sm col-lg-8 col-xs-12" name="apiService" data-oper="eq">
+																<option value="">--선택--</option>
+																<option value="미사용">미사용</option>
+																<option value="fitcollabo">핏콜라보</option>
+															</select>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">차액정산 사용여부</label>
+															<select class="selectpicker btn-sm col-lg-8 col-xs-12" name="diffSettle" data-oper="eq">
+																<option value="">--선택--</option>
+																<option value="미사용">미사용</option>
+																<option value="사용">사용</option>
+															</select>
+														</div>
+														<div class="form-group pg-form-group">
+															<label class="control-label col-lg-4">AID</label>
+															<div class="col-lg-8">
+																<input type="text" class="form-control input-sm aid" name="aid" data-oper="eq" placeholder="AID">
+															</div>
+														</div>
 													</div>
 												</div>
 												<div class="form-actions nobg right">

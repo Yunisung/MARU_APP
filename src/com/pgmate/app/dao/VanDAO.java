@@ -20,7 +20,7 @@ import com.pgmate.lib.key.GenKey;
 public class VanDAO extends DAO{
 	private static Logger logger = LoggerFactory.getLogger( com.pgmate.app.dao.VanDAO.class );
 	private static final String TABLE = "PG_VAN";
-	private static final String COLUMNS = "idx, status, name, van, vanid, cryptokey, secondkey, settleType, regId, regDay, regDate";
+	private static final String COLUMNS = "idx, status, name, van, vanid, cryptokey, secondkey, settleType, apiService, diffSettle, aid, regId, regDay, regDate";
 	
 	public VanDAO() {
 		super(TABLE,CPUtil.CP_DEBUG);

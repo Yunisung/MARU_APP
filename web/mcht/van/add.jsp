@@ -124,6 +124,12 @@
 															<option value="사용">사용</option>
 														</select>
 													</div>
+													<div class="form-group col-sm-6">
+														<label class="control-label col-sm-4">AID</label>
+														<div class="col-sm-6">
+															<input type="text" class="form-control input-sm aid" name="aid" placeholder="AID를 입력하세요." value="">
+														</div>
+													</div>
 												</div>
 												<div class="alert alert-danger display-hide"></div>
 												<div class="form-actions right">
