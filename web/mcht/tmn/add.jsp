@@ -57,6 +57,7 @@
 										<div class="portlet-body form">
 											<form class="form-horizontal form-bordered" role="form" data-form="true" id="writeFrm" name="form" action="/mcht/tmn/" method="post">
 												<input type="hidden" name="action_type" value="insert" data-reg="false" />
+												<input type="hidden" name="blockCard" id="blockCard" value=""/>
 												<div class="form-body row">
 													<div class="form-group col-sm-12 form-subtitle">
 														<label><i class="fa fa-reorder"></i> 기본 정보 입력</label>
@@ -213,6 +214,95 @@
 														</div>
 													</div>
 													<c:if test="${CP_SESSION.grade eq '본사'}">
+													<div class="form-group col-sm-12">
+														<label class="control-label col-sm-2">수기결제 제한 카드</label>
+														<div class="col-sm-8">
+															<table>
+																<tr>
+																	<td>
+																		<input type="checkbox" id="card_km" value="국민"/><label for="card_km" value="국민"></label>
+																	</td>
+																	<td>
+																		국민
+																	</td>
+																	<td>
+																		<input type="checkbox" id="card_bc" value="비씨"/><label for="card_bc"></label>
+																	</td>
+																	<td>
+																		비씨
+																	</td>
+																	<td>
+																		<input type="checkbox" id="card_lt" value="롯데"/><label for="card_lt"></label>
+																	</td>
+																	<td>
+																		롯데
+																	</td>
+																	<td>
+																		<input type="checkbox" id="card_ss" value="삼성"/><label for="card_ss"></label>
+																	</td>
+																	<td>
+																		삼성
+																	</td>
+																	<td>
+																		<input type="checkbox" id="card_sh" value="신한"/><label for="card_sh"></label>
+																	</td>
+																	<td>
+																		신한
+																	</td>
+																	<td>
+																		<input type="checkbox" id="card_wr" value="우리"/><label for="card_wr"></label>
+																	</td>
+																	<td>
+																		우리
+																	</td>
+																	<td>
+																		<input type="checkbox" id="card_hn" value="하나"/><label for="card_hn"></label>
+																	</td>
+																	<td>
+																		하나
+																	</td>
+																	<td>
+																		<input type="checkbox" id="card_hd" value="현대"/><label for="card_hd"></label>
+																	</td>
+																	<td>
+																		현대
+																	</td>
+																</tr>
+																<tr>
+																	<td>
+																		<input type="checkbox" id="bank_gj" value="광주"/><label for="bank_gj"></label>
+																	</td>
+																	<td>
+																		광주
+																	</td>
+																	<td>
+																		<input type="checkbox" id="bank_nh" value="농협"/><label for="bank_nh"></label>
+																	</td>
+																	<td>
+																		농협
+																	</td>
+																	<td>
+																		<input type="checkbox" id="bank_sh" value="수협"/><label for="bank_sh"></label>
+																	</td>
+																	<td>
+																		수협
+																	</td>
+																	<td>
+																		<input type="checkbox" id="bank_jb" value="전북"/><label for="bank_jb"></label>
+																	</td>
+																	<td>
+																		전북
+																	</td>
+																	<td>
+																		<input type="checkbox" id="bank_jj" value="제주"/><label for="bank_jj"></label>
+																	</td>
+																	<td>
+																		제주
+																	</td>
+																</tr>
+															</table>
+														</div>
+													</div>
 													<div class="form-group col-sm-6">
 														<label class="control-label col-sm-4">VAN</label>
 														<select name="van" class="selectpicker col-sm-6 van">
@@ -252,6 +342,48 @@
 	<c:import url="/include/javascript.jsp" />
 	<!-- BEGIN FORM JAVASCRIPT -->
 	<script type="text/javascript">
+
+		var selectBank = "";
+		const hiddenInput = document.getElementById('blockCard');
+
+		function handleCheckboxChange(event) {
+			const checkbox = event.target; // 이벤트가 발생한 체크박스
+			const value = checkbox.value;
+
+			if (checkbox.checked) {
+				// 체크박스를 선택했을 때의 동작
+				selectBank += checkbox.value;
+			} else {
+				// 체크박스를 해제했을 때의 동작
+				selectBank = selectBank.replace(value, '');
+			}
+
+			// console.log(selectBank);
+			hiddenInput.value = selectBank;
+			console.log('Updated Value : ', hiddenInput.value);
+		}
+
+		window.onload = function() {
+			const blockCard = '${DATAMAP.blockCard}';
+			const blockCardList = splitIntoChunks(blockCard, 2);
+			const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+			checkboxes.forEach(checkbox => {
+				if(blockCardList.includes(checkbox.value)) {
+					checkbox.checked = true;
+					selectBank += checkbox.value;
+				}
+
+				checkbox.addEventListener('change', handleCheckboxChange);
+			});
+		};
+
+		function splitIntoChunks(inputString, chunkSize) {
+			const result = [];
+			for (let i = 0; i < inputString.length; i += chunkSize) {
+				result.push(inputString.substring(i, i + chunkSize));
+			}
+			return result;
+		}
 
 		$(function(){
 			$("#limitStartTime").timepicker({
