@@ -56,7 +56,7 @@
 										<div class="portlet-body form">
 											<form class="form-horizontal form-bordered" role="form" data-form="true" id="writeFrm" name="form" action="/mcht/tmn/" method="post">
 												<input type="hidden" name="action_type" value="update" data-reg="false" />
-												<input type="hidden" name="blockCard" id="blockCard" value=""/>
+												<input type="hidden" name="blockCard" id="blockCard" value="" dataformatas="strin"/>
 												<div class="form-body row">
 													<div class="form-group col-sm-12 form-subtitle">
 														<label><i class="fa fa-reorder"></i> 기본 정보 입력</label>
@@ -248,52 +248,52 @@
 															<table>
 																<tr>
 																	<td>
-																		<input type="checkbox" id="card_km" value="국민"/><label for="card_km" value="국민"></label>
+																		<input type="checkbox" id="card_km" value="국민"/><label for="card_km"></label>
 																	</td>
 																	<td>
-																		국민
+																		<label for="card_km">국민</label>
 																	</td>
 																	<td>
 																		<input type="checkbox" id="card_bc" value="비씨"/><label for="card_bc"></label>
 																	</td>
 																	<td>
-																		비씨
+																		<label for="card_bc">비씨</label>
 																	</td>
 																	<td>
 																		<input type="checkbox" id="card_lt" value="롯데"/><label for="card_lt"></label>
 																	</td>
 																	<td>
-																		롯데
+																		<label for="card_lt">롯데</label>
 																	</td>
 																	<td>
 																		<input type="checkbox" id="card_ss" value="삼성"/><label for="card_ss"></label>
 																	</td>
 																	<td>
-																		삼성
+																		<label for="card_ss">삼성</label>
 																	</td>
 																	<td>
 																		<input type="checkbox" id="card_sh" value="신한"/><label for="card_sh"></label>
 																	</td>
 																	<td>
-																		신한
+																		<label for="card_sh">신한</label>
 																	</td>
 																	<td>
 																		<input type="checkbox" id="card_wr" value="우리"/><label for="card_wr"></label>
 																	</td>
 																	<td>
-																		우리
+																		<label for="card_wr">우리</label>
 																	</td>
 																	<td>
 																		<input type="checkbox" id="card_hn" value="하나"/><label for="card_hn"></label>
 																	</td>
 																	<td>
-																		하나
+																		<label for="card_hn">하나</label>
 																	</td>
 																	<td>
 																		<input type="checkbox" id="card_hd" value="현대"/><label for="card_hd"></label>
 																	</td>
 																	<td>
-																		현대
+																		<label for="card_hd">현대</label>
 																	</td>
 																</tr>
 																<tr>
@@ -301,31 +301,31 @@
 																		<input type="checkbox" id="bank_gj" value="광주"/><label for="bank_gj"></label>
 																	</td>
 																	<td>
-																		광주
+																		<label for="bank_gj">광주</label>
 																	</td>
 																	<td>
 																		<input type="checkbox" id="bank_nh" value="농협"/><label for="bank_nh"></label>
 																	</td>
 																	<td>
-																		농협
+																		<label for="bank_nh">농협</label>
 																	</td>
 																	<td>
 																		<input type="checkbox" id="bank_sh" value="수협"/><label for="bank_sh"></label>
 																	</td>
 																	<td>
-																		수협
+																		<label for="bank_sh">수협</label>
 																	</td>
 																	<td>
 																		<input type="checkbox" id="bank_jb" value="전북"/><label for="bank_jb"></label>
 																	</td>
 																	<td>
-																		전북
+																		<label for="bank_jb">전북</label>
 																	</td>
 																	<td>
 																		<input type="checkbox" id="bank_jj" value="제주"/><label for="bank_jj"></label>
 																	</td>
 																	<td>
-																		제주
+																		<label for="bank_jj">제주</label>
 																	</td>
 																</tr>
 															</table>
