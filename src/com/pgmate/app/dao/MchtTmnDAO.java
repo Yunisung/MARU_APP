@@ -98,7 +98,7 @@ public class MchtTmnDAO extends DAO{
 				"SELECT '' AS idx, tmnId, mchtId, taxId, status, serial, payKey, activeDate, apiMaxInstall" +
 				", webPay, appDirect, semiAuth" +
 				", refundType, van, vanIdx, ccType, description, minAmount, payLimit, limitAmount, limitStartTime" +
-				", limitEndTime, regId, regDay, regDate, '' as summary " +
+				", limitEndTime, blockCard, regId, regDay, regDate, '' as summary " +
 				"FROM PG_MCHT_TMN WHERE mchtId ='" + mchtId + "') AS HT_TMN " +
 				"LEFT OUTER JOIN PG_MCHT_TMN ON HT_TMN.tmnId = PG_MCHT_TMN.tmnId ");
 		super.setColumns("HT_TMN.*, PG_MCHT_TMN.tmnId AS originId, PG_MCHT_TMN.regDate AS activeDate ");
