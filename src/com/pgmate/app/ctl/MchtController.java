@@ -1065,7 +1065,13 @@ public class MchtController {
 				}
 			}
 		}
-		
+
+		//결제제한 미입력시 공백으로
+		if(CommonUtil.isNullOrSpace(cpRequest.getValue("blockCard"))) {
+			cpRequest.setData("blockCard", "");
+		}
+
+
 		
 		
 		if(cpDAO.updateAndBackByOper("PG_MCHT_TMN", SessionUtil.getUserId(request), cpRequest.data)){
