@@ -106,6 +106,14 @@
 														<script type="text/javascript"> document.forms.writeFrm.diffType.value = '${DATAMAP.diffType}' </script>
 													</div>
 													<div class="form-group col-sm-6">
+														<label class="control-label input-sm col-sm-4 req-label">영업라인차액정산여부</label>
+														<select name="memDiffSettleStatus" class="selectpicker col-sm-6">
+															<option value="미사용" selected>미사용</option>
+															<option value="사용">사용</option>
+														</select>
+														<script type="text/javascript"> document.forms.writeFrm.memDiffSettleStatus.value = '${DATAMAP.memDiffSettleStatus}' </script>
+													</div>
+													<div class="form-group col-sm-6">
 														<label class="control-label input-sm col-sm-4 req-label ">정산유형</label>
 														<select name="settleType" class="selectpicker col-sm-6 settleType">
 															<c:if test="${DATASVCMAP.settle == '일반'}">

@@ -708,6 +708,14 @@
 																		 --%>
 																		<!--/span-->
 																		</c:if>
+																		<div class="col-md-6">
+																			<div class="form-group pg-view-group">
+																				<label class="control-label col-md-3">영업라인차액정산여부</label>
+																				<div class="col-md-9">
+																					<p class="form-control-static">${DATAMNGMAP.memDiffSettleStatus}</p>
+																				</div>
+																			</div>
+																		</div>
 																	</div>
 																	<c:if test="${(CP_SESSION.grade == '본사' || CP_SESSION.grade == '대행사') && DATAMAP.distId ne '00' }">
 																		<div class="row">
