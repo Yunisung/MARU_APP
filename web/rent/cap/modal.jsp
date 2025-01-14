@@ -1186,93 +1186,102 @@
         });
 </script>
 <div class="modal-footer">
-    <c:if test = "${fn:startsWith(DATAMAP.van, 'DAOU')}">
-        <c:choose>
-            <c:when test="${DATAMAP.vanId eq 'CSF27016'}">
-                <c:if test = "${DATAMAP.capType eq '매입'}">
-                    <button class="btn btn-sm btn-default" onClick="window.open('https://agent.daoupay.com/common/PayInfoPrintCreditCard.jsp?DAOUTRX=${DATAMAP.vanTrxId}&INSTATUS=11','KSPAY','width=450,height=750');">
-                        다우페이 영수증 조회
-                    </button>
-                </c:if>
-                <c:if test = "${DATAMAP.capType eq '매입취소'}">
-                    <button class="btn btn-sm btn-default" onClick="window.open('https://agent.daoupay.com/common/PayInfoPrintCreditCard.jsp?DAOUTRX=${DATAMAP.vanTrxId}&INSTATUS=12','KSPAY','width=450,height=750');">
-                        다우페이 취소 영수증 조회
-                    </button>
-                </c:if>
-            </c:when>
-            <c:otherwise>
-                <c:if test = "${DATAMAP.capType eq '매입'}">
-                    <button class="btn btn-sm btn-default" onClick="window.open('https://agent.daoupay.com/common/PayInfoPrintDirectCard.jsp?DAOUTRX=${DATAMAP.vanTrxId}&STATUS=11','KSPAY','width=420,height=720');">
-                        다우페이 영수증 조회
-                    </button>
-                </c:if>
-                <c:if test = "${DATAMAP.capType eq '매입취소'}">
-                    <button class="btn btn-sm btn-default" onClick="window.open('https://agent.daoupay.com/common/PayInfoPrintDirectCard.jsp?DAOUTRX=${DATAMAP.vanTrxId}&STATUS=12','KSPAY','width=450,height=750');">
-                        다우페이 취소 영수증 조회
-                    </button>
-                </c:if>
-            </c:otherwise>
-        </c:choose>
-    </c:if>
-    <c:if test = "${fn:startsWith(DATAMAP.van, 'KSPAY')}">
-        <c:if test = "${!fn:startsWith(DATAMAP.vanTrxId, 'TX')}">
-            <button class="btn btn-sm btn-default" onClick="window.open('https://pgims.ksnet.co.kr/pg_infoc/src/bill/new_credit_view.jsp?tr_no=${DATAMAP.vanTrxId}','KSPAY','width=460,height=750');">
-                KSPAY 영수증 조회
+    <c:choose>
+        <c:when test="${fn:startsWith(DATAMAP.customReceipt, '사용')}">
+            <button class="btn btn-sm btn-default" onClick="window.open('https://admin.bkwinners.kr/customReceipt?trxId=${DATAMAP.trxId}','popupIssue','width=500,height=825');">
+                영수증 조회
             </button>
-        </c:if>
-    </c:if>
-    <c:if test = "${fn:startsWith(DATAMAP.van, 'DANAL')}">
-        <button class="btn btn-sm btn-default" onClick="window.open('https://www.danalpay.com/receipt/creditcard/view.aspx?dataType=cp&param=${DATAMAP.danalParam}','KSPAY','width=460,height=750');">
-            DANAL 영수증 조회
-        </button>
-    </c:if>
-    <c:if test = "${fn:startsWith(DATAMAP.van, 'ALLAT')}">
-        <button class="btn btn-sm btn-default" onClick="window.open('http://www.allatpay.com/servlet/AllatBizPop/member/pop_card_receipt.jsp?${DATAMAP.allatParam}','app','width=410,height=650');">
-            ALLAT 영수증 조회
-        </button>
-    </c:if>
-    <c:if test = "${fn:startsWith(DATAMAP.van, 'NICE')}">
-        <button class="btn btn-sm btn-default" onClick="window.open('https://pg.nicepay.co.kr/issue/IssueLoader.jsp?TID=${DATAMAP.vanTrxId}&type=0','popupIssue','width=420,height=540');">
-            나이스페이 영수증 조회
-        </button>
-    </c:if>
-    <c:if test = "${fn:startsWith(DATAMAP.van, 'WELCOMEO')}">
-        <button class="btn btn-sm btn-default" onClick="window.open('https://payapi.welcomepayments.co.kr/api/receipt/print?tid=${DATAMAP.vanTrxId}&hash_value=${DATAMAP.hash_value}','popupIssue','width=603,height=884');">
-            웰컴페이먼츠 영수증 조회
-        </button>
-    </c:if>
-    <c:if test = "${fn:startsWith(DATAMAP.van, 'KICC')}">
-        <form name="rec" id="rec" method="post">
-            <input type="hidden" name="controlNo" value="${DATAMAP.vanTrxId}">
-        </form>
-        <button class="btn btn-sm btn-default" onClick="kiccReceipt();">
-            KICC 영수증 조회
-        </button>
-    </c:if>
-    <c:if test = "${fn:startsWith(DATAMAP.van, 'SPC')}">
-        <button class="btn btn-sm btn-default" onClick="window.open('https://cp.mainpay.co.kr/card/cardReceipt_popup.do?ref_no=${DATAMAP.vanTrxId}&tran_date=${fn:substring(DATAMAP.trxDay,2,8) }','popupIssue','width=603,height=884');">
-            SPC 영수증 조회
-        </button>
-    </c:if>
-    <c:if test = "${fn:startsWith(DATAMAP.van, 'GALAXIA')}">
-        <button class="btn btn-sm btn-default" onClick="window.open('https://cpadmin.billgate.net/billgate/common/authCardReceipt.jsp?mid=${DATAMAP.GalaxiaMID}&transNm=${DATAMAP.vanTrxId}&currTp=0000','popupIssue','width=440,height=790');">
-            Billgate 영수증 조회
-        </button>
-    </c:if>
-    <c:if test="${fn:startsWith(DATAMAP.van, 'WELCOME')}">
-        <c:choose>
-            <c:when test="${(DATAMAP.van eq 'WELCOME') || (DATAMAP.van eq 'WELCOME영중소')}">
-                <button class="btn btn-sm btn-default" onClick="window.open('https://wbiz.paywelcome.co.kr/mCmReceipt_head.jsp?noTid=${DATAMAP.vanTrxId}&noMethod=1','popupIssue','width=520,height=700');">
-                    웰컴페이먼츠 영수증 조회
+        </c:when>
+        <c:otherwise>
+            <c:if test = "${fn:startsWith(DATAMAP.van, 'DAOU')}">
+                <c:choose>
+                    <c:when test="${DATAMAP.vanId eq 'CSF27016'}">
+                        <c:if test = "${DATAMAP.capType eq '매입'}">
+                            <button class="btn btn-sm btn-default" onClick="window.open('https://agent.daoupay.com/common/PayInfoPrintCreditCard.jsp?DAOUTRX=${DATAMAP.vanTrxId}&INSTATUS=11','KSPAY','width=450,height=750');">
+                                다우페이 영수증 조회
+                            </button>
+                        </c:if>
+                        <c:if test = "${DATAMAP.capType eq '매입취소'}">
+                            <button class="btn btn-sm btn-default" onClick="window.open('https://agent.daoupay.com/common/PayInfoPrintCreditCard.jsp?DAOUTRX=${DATAMAP.vanTrxId}&INSTATUS=12','KSPAY','width=450,height=750');">
+                                다우페이 취소 영수증 조회
+                            </button>
+                        </c:if>
+                    </c:when>
+                    <c:otherwise>
+                        <c:if test = "${DATAMAP.capType eq '매입'}">
+                            <button class="btn btn-sm btn-default" onClick="window.open('https://agent.daoupay.com/common/PayInfoPrintDirectCard.jsp?DAOUTRX=${DATAMAP.vanTrxId}&STATUS=11','KSPAY','width=420,height=720');">
+                                다우페이 영수증 조회
+                            </button>
+                        </c:if>
+                        <c:if test = "${DATAMAP.capType eq '매입취소'}">
+                            <button class="btn btn-sm btn-default" onClick="window.open('https://agent.daoupay.com/common/PayInfoPrintDirectCard.jsp?DAOUTRX=${DATAMAP.vanTrxId}&STATUS=12','KSPAY','width=450,height=750');">
+                                다우페이 취소 영수증 조회
+                            </button>
+                        </c:if>
+                    </c:otherwise>
+                </c:choose>
+            </c:if>
+            <c:if test = "${fn:startsWith(DATAMAP.van, 'KSPAY')}">
+                <c:if test = "${!fn:startsWith(DATAMAP.vanTrxId, 'TX')}">
+                    <button class="btn btn-sm btn-default" onClick="window.open('https://pgims.ksnet.co.kr/pg_infoc/src/bill/new_credit_view.jsp?tr_no=${DATAMAP.vanTrxId}','KSPAY','width=460,height=750');">
+                        KSPAY 영수증 조회
+                    </button>
+                </c:if>
+            </c:if>
+            <c:if test = "${fn:startsWith(DATAMAP.van, 'DANAL')}">
+                <button class="btn btn-sm btn-default" onClick="window.open('https://www.danalpay.com/receipt/creditcard/view.aspx?dataType=cp&param=${DATAMAP.danalParam}','KSPAY','width=460,height=750');">
+                    DANAL 영수증 조회
                 </button>
-            </c:when>
-            <c:when test="${DATAMAP.van eq 'WELCOMESUB'}">
+            </c:if>
+            <c:if test = "${fn:startsWith(DATAMAP.van, 'ALLAT')}">
+                <button class="btn btn-sm btn-default" onClick="window.open('http://www.allatpay.com/servlet/AllatBizPop/member/pop_card_receipt.jsp?${DATAMAP.allatParam}','app','width=410,height=650');">
+                    ALLAT 영수증 조회
+                </button>
+            </c:if>
+            <c:if test = "${fn:startsWith(DATAMAP.van, 'NICE')}">
+                <button class="btn btn-sm btn-default" onClick="window.open('https://pg.nicepay.co.kr/issue/IssueLoader.jsp?TID=${DATAMAP.vanTrxId}&type=0','popupIssue','width=420,height=540');">
+                    나이스페이 영수증 조회
+                </button>
+            </c:if>
+            <c:if test = "${fn:startsWith(DATAMAP.van, 'WELCOMEO')}">
                 <button class="btn btn-sm btn-default" onClick="window.open('https://payapi.welcomepayments.co.kr/api/receipt/print?tid=${DATAMAP.vanTrxId}&hash_value=${DATAMAP.hash_value}','popupIssue','width=603,height=884');">
                     웰컴페이먼츠 영수증 조회
                 </button>
-            </c:when>
-        </c:choose>
-    </c:if>
+            </c:if>
+            <c:if test = "${fn:startsWith(DATAMAP.van, 'KICC')}">
+                <form name="rec" id="rec" method="post">
+                    <input type="hidden" name="controlNo" value="${DATAMAP.vanTrxId}">
+                </form>
+                <button class="btn btn-sm btn-default" onClick="kiccReceipt();">
+                    KICC 영수증 조회
+                </button>
+            </c:if>
+            <c:if test = "${fn:startsWith(DATAMAP.van, 'SPC')}">
+                <button class="btn btn-sm btn-default" onClick="window.open('https://cp.mainpay.co.kr/card/cardReceipt_popup.do?ref_no=${DATAMAP.vanTrxId}&tran_date=${fn:substring(DATAMAP.trxDay,2,8) }','popupIssue','width=603,height=884');">
+                    SPC 영수증 조회
+                </button>
+            </c:if>
+            <c:if test = "${fn:startsWith(DATAMAP.van, 'GALAXIA')}">
+                <button class="btn btn-sm btn-default" onClick="window.open('https://cpadmin.billgate.net/billgate/common/authCardReceipt.jsp?mid=${DATAMAP.GalaxiaMID}&transNm=${DATAMAP.vanTrxId}&currTp=0000','popupIssue','width=440,height=790');">
+                    Billgate 영수증 조회
+                </button>
+            </c:if>
+            <c:if test="${fn:startsWith(DATAMAP.van, 'WELCOME')}">
+                <c:choose>
+                    <c:when test="${(DATAMAP.van eq 'WELCOME') || (DATAMAP.van eq 'WELCOME영중소')}">
+                        <button class="btn btn-sm btn-default" onClick="window.open('https://wbiz.paywelcome.co.kr/mCmReceipt_head.jsp?noTid=${DATAMAP.vanTrxId}&noMethod=1','popupIssue','width=520,height=700');">
+                            웰컴페이먼츠 영수증 조회
+                        </button>
+                    </c:when>
+                    <c:when test="${DATAMAP.van eq 'WELCOMESUB'}">
+                        <button class="btn btn-sm btn-default" onClick="window.open('https://payapi.welcomepayments.co.kr/api/receipt/print?tid=${DATAMAP.vanTrxId}&hash_value=${DATAMAP.hash_value}','popupIssue','width=603,height=884');">
+                            웰컴페이먼츠 영수증 조회
+                        </button>
+                    </c:when>
+                </c:choose>
+            </c:if>
+        </c:otherwise>
+    </c:choose>
     <button type="button" data-dismiss="modal" class="btn btn-sm">Close</button>
 </div>
 </body>
