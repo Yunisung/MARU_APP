@@ -63,4 +63,10 @@ public class TrxPayDAO extends DAO{
 		return rset;	//LIST PAGING 검색 
 	}
 
+	public RecordSet getProductByTrxId(String trxId) {
+		super.setTable("VW_TRX_PAY_PRD");
+		super.addWhere("trxId",trxId,eq);
+		return search();
+	}
+
 }
