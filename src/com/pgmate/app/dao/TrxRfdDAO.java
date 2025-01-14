@@ -55,4 +55,10 @@ public class TrxRfdDAO extends DAO{
 		super.initRecord();
 		return rset;	//LIST PAGING 검색 
 	}
+
+	public RecordSet getByRootTrxId(String trxId) {
+		super.setTable("PG_TRX_RFD");
+		addWhere("rootTrxId", trxId);
+		return super.search();
+	}
 }
