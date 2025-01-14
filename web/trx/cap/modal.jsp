@@ -1188,7 +1188,7 @@
 	<div class="modal-footer">
 		<c:choose>
 			<c:when test="${fn:startsWith(DATAMAP.customReceipt, '사용')}">
-				<button class="btn btn-sm btn-default" onClick="window.open('http://127.0.0.1:10001/customReceipt?trxId=${DATAMAP.trxId}','popupIssue','width=500,height=825');">
+				<button class="btn btn-sm btn-default" onClick="window.open('https://admin.bkwinners.kr/customReceipt?trxId=${DATAMAP.trxId}','popupIssue','width=500,height=825');">
 					영수증 조회
 				</button>
 			</c:when>
