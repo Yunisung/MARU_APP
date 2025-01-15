@@ -42,37 +42,37 @@
                 <ul class="top">
                     <li>
                         <div class="info_title">거래일시</div>
-                        <div class="time blue" id="regDate">2024.11.08 11:24:56</div>
+                        <div class="time blue" id="regDate"></div>
                     </li>
                     <li>
                         <div class="info_title">상품명</div>
-                        <div class="p_name" id="p_name">중국비자비</div>
+                        <div class="p_name" id="p_name"></div>
                     </li>
                     <section class="price_wrap">
                         <li>
                             <div class="info_title">공급금액</div>
-                            <div class="price_detail" id="supply_amount">225,000
+                            <div class="price_detail" id="supply_amount">
                                 <span>원</span>
                             </div>
                         </li>
                         <li>
                             <div class="info_title">부가세</div>
-                            <div class="price_detail" id="vat">22,500<span>원</span></div>
+                            <div class="price_detail" id="vat"><span>원</span></div>
                         </li>
                         <li class="price_sum">
                             <div class="info_title">합계금액</div>
-                            <div class="price" id="amount">247,500<span>원</span></div>
+                            <div class="price" id="amount"><span>원</span></div>
                         </li>
                     </section>
                 </ul>
                 <ul class="body">
                     <li>
                         <div class="info_title">카드종류</div>
-                        <div id="issuer">비씨</div>
+                        <div id="issuer"></div>
                     </li>
                     <li>
                         <div class="info_title">카드번호</div>
-                        <div id="card_number">414003******6910</div>
+                        <div id="card_number"></div>
                     </li>
                     <li>
                         <div class="info_title">유효기간</div>
@@ -80,7 +80,7 @@
                     </li>
                     <li>
                         <div class="info_title">거래유형</div>
-                        <div id="status">승인</div>
+                        <div id="status"></div>
                     </li>
                     <li>
                         <div class="info_title">취소일자</div>
@@ -89,16 +89,16 @@
                     <li>
                         <div class="info_title">할부</div>
                         <div id="installment">
-                            일시불
+
                         </div>
                     </li>
                     <li>
                         <div class="info_title">구매자명</div>
-                        <div id="buyer">김태진</div>
+                        <div id="buyer"></div>
                     </li>
                     <li>
                         <div class="info_title">승인번호</div>
-                        <div id="auth_code">68753852</div>
+                        <div id="auth_code"></div>
                     </li>
 
 
@@ -108,24 +108,24 @@
                     <h3>이용상점 정보</h3>
                     <li class="f_width">
                         <div class="info_title">상호명</div>
-                        <div id="mcht_name">마이비자</div>
+                        <div id="mcht_name"></div>
                     </li>
                     <li>
                         <div class="info_title">대표자명</div>
-                        <div id="mcht_ceo">김은신</div>
+                        <div id="mcht_ceo"></div>
                     </li>
                     <li>
                         <div class="info_title">사업자번호</div>
-                        <div id="mcht_number">610-36-95604
+                        <div id="mcht_number">
                         </div>
                     </li>
                     <li>
                         <div class="info_title">연락처</div>
-                        <div id="mcht_tel">051-464-1050</div>
+                        <div id="mcht_tel"></div>
                     </li>
                     <li class="f_width">
                         <div class="info_title">주소</div>
-                        <div id="mcht_address">부산 동구 중앙대로214번길 7-8 아스티오피스텔 305호</div>
+                        <div id="mcht_address"></div>
                     </li>
                 </ul>
 
@@ -200,16 +200,11 @@
         return onlyNumbers.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
     }
 
-    var supplyAmount = ${DATAMAP.amount} / 1.1;
-    supplyAmount = Math.round(supplyAmount);
-    var vat = supplyAmount * 0.1;
-    vat = Math.round(vat);
-
     document.getElementById("regDate").textContent = '${DATAMAP.regDate}'.slice(0,19);
     document.getElementById("p_name").textContent = '${DATAMAP.prodName}';
-    document.getElementById("supply_amount").textContent = formatCurrency(supplyAmount);
-    document.getElementById("vat").textContent = formatCurrency(vat);
-    document.getElementById("amount").textContent = formatCurrency(supplyAmount+vat);
+    document.getElementById("supply_amount").textContent = formatCurrency(${DATAMAP.supplyAmount});
+    document.getElementById("vat").textContent = formatCurrency(${DATAMAP.vat});
+    document.getElementById("amount").textContent = formatCurrency(${DATAMAP.amount});
     document.getElementById("issuer").textContent = '${DATAMAP.issuer}';
     document.getElementById("card_number").textContent = '${DATAMAP.bin}' + '******' + '${DATAMAP.last4}';
     document.getElementById("status").textContent = '${DATAMAP.status}';
