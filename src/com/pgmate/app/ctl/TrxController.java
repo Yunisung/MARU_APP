@@ -1243,39 +1243,44 @@ public class TrxController {
 	@RequestMapping(value = "/customReceipt", method = RequestMethod.GET)
 	@SessionExclude
 	public ModelAndView customReceipt(HttpServletRequest request,
-								@RequestParam(value="trxId", required=false, defaultValue="0") String trxId)
-	{
-		try {
-			String rfdDate = "";
+								@RequestParam(value="trxId", required=false, defaultValue="0") String trxId) {
+			try {
+				String rfdDate = "";
 
-			SharedMap<String, Object> rootTrx = new TrxRfdDAO().getByRootTrxId(trxId).getRow(0);
-			//취소된 거래건일때
-			if(rootTrx != null) {
-				trxId = rootTrx.getString("trxId");
+				SharedMap<String, Object> rootTrx = new TrxRfdDAO().getByRootTrxId(trxId).getRow(0);
+				//취소된 거래건일때
+				if(rootTrx != null) {
+					trxId = rootTrx.getString("trxId");
+				}
+
+				SharedMap<String, Object> rfd = new TrxCapDAO().getByTrxIdRfd(trxId).getRow(0);
+
+				// 취소 원장의 trxId가 입력될 경우 원거래 번호를 담는다.
+				if(rfd != null) {
+					trxId = rfd.getString("rootTrxId");
+					rfdDate = rfd.getString("regDate");
+				}
+
+				SharedMap<String, Object> res = new TrxPayDAO().getProductByTrxId(trxId).getRow(0);
+
+				if(!CommonUtil.isNullOrSpace(rfdDate)) {
+					res.put("rfdDate", rfdDate);
+				}
+
+				long amount = res.getLong("amount");
+				long vat = new Double(amount * 10 / 110).longValue();
+				long supplyAmount = amount - vat;
+
+				res.put("supplyAmount", supplyAmount);
+				res.put("vat", vat);
+				request.setAttribute("DATAMAP", res);
+
+			} catch (NullPointerException e) {
+				throw e;
+			} finally {
+				return new ModelAndView("/trx/cap/customReceipt");
 			}
-
-			SharedMap<String, Object> rfd = new TrxCapDAO().getByTrxIdRfd(trxId).getRow(0);
-
-			// 취소 원장의 trxId가 입력될 경우 원거래 번호를 담는다.
-			if(rfd != null) {
-				trxId = rfd.getString("rootTrxId");
-				rfdDate = rfd.getString("regDate");
-			}
-
-			SharedMap<String, Object> res = new TrxPayDAO().getProductByTrxId(trxId).getRow(0);
-
-			if(!CommonUtil.isNullOrSpace(rfdDate)) {
-				res.put("rfdDate", rfdDate);
-			}
-
-			request.setAttribute("DATAMAP", res);
-
-		} catch (NullPointerException e) {
-			throw e;
-		} finally {
-			return new ModelAndView("/trx/cap/customReceipt");
 		}
-	}
 
 	  @RequestMapping(value = "/trx/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	  public ModelAndView search(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
