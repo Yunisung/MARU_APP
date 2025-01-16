@@ -46,15 +46,9 @@ public class FitcollaboUtil {
 
         if(Integer.parseInt(trxMap.getString("amount")) == Integer.parseInt(amount)) {
             type = "0";
-            trxMap.put("rfdAll", "전액");
         } else {
             type = "1";
-            trxMap.put("rfdAll", "부분");
         }
-
-        TrxRfdDAO trxRfdDAO = new TrxRfdDAO();
-        String rfdTrxId = trxRfdDAO.getTrxId();
-        trxRfdDAO.insertTrxRfd(trxMap, amount, rfdTrxId);
 
         SharedMap<String, Object> parameters = new SharedMap<>();
         parameters.put("tid", loadMap.getString("tid"));
@@ -103,13 +97,6 @@ public class FitcollaboUtil {
                     response.result = result;
                 }
                 res = GsonUtil.toJson(response);
-                if(resp.resultData != null){
-                    if(!CommonUtil.isNullOrSpace(resp.resultData.tid)){
-                        trxRfdDAO.updateTrxRfd(trxMap, resp, rfdTrxId);
-                        String q = "INSERT INTO PG_TRX_ADMIN_RFD SELECT NULL,rootTrxId,vanTrxId,vanId,vanResultCd,vanResultMsg,rfdAmount,resultCd,trxId,'"+regId+"', '" + CommonUtil.getCurrentDate("yyyyMMdd") + "', regDate FROM PG_TRX_RFD WHERE trxId = '" + rfdTrxId + "'";
-                        new DAO().update(q);
-                    }
-                }
             }catch(Exception e){}
         }
 
