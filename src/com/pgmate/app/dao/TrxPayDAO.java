@@ -45,9 +45,7 @@ public class TrxPayDAO extends DAO{
 		CPUtil.setDAO(this, datas);			//DATA to CONDITION 
 		return super.search();				//단일 검색
 	}
-	
-	
-	
+
 	public RecordSet list(List<Data> datas,Page page){
 		page = CPUtil.correctPage(page);
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
@@ -67,6 +65,17 @@ public class TrxPayDAO extends DAO{
 		super.setTable("VW_TRX_PAY_PRD");
 		super.addWhere("trxId",trxId,eq);
 		return search();
+	}
+
+	public RecordSet getLoadMap(String vanTrxId) {
+		DAO dao = new DAO();
+		dao.setDebug(true);
+		dao.setTable("PG_TRX_LOAD_KSNET_ONLINE");
+		dao.setColumns("*");
+		dao.addWhere("transactionNo", vanTrxId, eq);
+		RecordSet rset = dao.search();
+		dao.initRecord();
+		return rset;
 	}
 
 }
