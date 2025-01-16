@@ -391,8 +391,16 @@ public class TrxController {
     @RequestMapping(value = "/trx/cap/cancel2/{trxId}/{amount}", method = RequestMethod.GET)
     public @ResponseBody String cancelCap2(HttpServletRequest request, @PathVariable String trxId, @PathVariable String amount) {
     	CPSession session = SessionUtil.get(request);
-     	return new RefundUtil().execute(new TrxPayDAO().getByTrxId(trxId).getRow(0), amount,SessionUtil.getUserId(request), session.getGrade());
-    }
+		SharedMap<String, Object> trxMap = new TrxPayDAO().getByTrxId(trxId).getRow(0);
+		SharedMap<String,Object> vanMap = new VanDAO().getByVanId(trxMap.getString("vanId")).getRow(0);
+		String apiService = vanMap.getString("apiService");
+		if(apiService.equals("fitcollabo")) {
+			SharedMap<String, Object> loadMap = new TrxPayDAO().getLoadMap(trxMap.getString("vanTrxId")).getRow(0);
+			return new FitcollaboUtil().refund(trxMap, loadMap, amount, SessionUtil.getUserId(request), session.getGrade());
+		} else {
+			return new RefundUtil().execute(trxMap, amount,SessionUtil.getUserId(request), session.getGrade());
+		}
+	}
     
     @RequestMapping(value = "/trx/wh/retry/{trxId}", method = RequestMethod.GET)
     public @ResponseBody String whForm(HttpServletRequest request, @PathVariable String trxId) {
