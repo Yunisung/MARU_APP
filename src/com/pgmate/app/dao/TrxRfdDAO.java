@@ -78,7 +78,7 @@ public class TrxRfdDAO extends DAO{
 		super.setRecord("vanResultCd", resp.resultCode);
 		super.setRecord("vanResultMsg", resp.resultMessage);
 		super.setRecord("amount", -Long.parseLong(trxMap.getString("amount")));
-		super.setRecord("restulCd", resp.resultCode);
+		super.setRecord("resultCd", resp.resultCode);
 		super.setRecord("trxId", "");
 		super.setRecord("regId", regId);
 		super.setRecord("regDay", CommonUtil.getCurrentDate("yyyyMMdd"));
