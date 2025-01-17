@@ -99,7 +99,7 @@ public class FitcollaboUtil {
 
                 if(resp.resultData != null) {
                     TrxRfdDAO trxRfdDAO = new TrxRfdDAO();
-                    if(!trxRfdDAO.insertTrxRfd(trxMap,resp,regId)) {
+                    if(!trxRfdDAO.insertTrxAdminRfd(trxMap,resp,regId)) {
                         logger.info("===== PG_TRX_ADMIN_RFD INSERT FAILD =====");
                     }
                 }

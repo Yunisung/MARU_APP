@@ -70,7 +70,7 @@ public class TrxRfdDAO extends DAO{
 		return super.search();
 	}
 
-	public boolean insertTrxRfd(SharedMap<String, Object> trxMap, FitcollaboResult resp, String regId) {
+	public boolean insertTrxAdminRfd(SharedMap<String, Object> trxMap, FitcollaboResult resp, String regId) {
 		super.setTable("PG_TRX_ADMIN_RFD");
 		super.setRecord("orgTrxId", trxMap.getString("trxId"));
 		super.setRecord("vanTrxId", trxMap.getString("vanTrxId"));
