@@ -96,6 +96,13 @@ public class FitcollaboUtil {
                     result.resultMsg= resp.resultMessage;
                     response.result = result;
                 }
+
+                if(resp.resultData != null) {
+                    TrxRfdDAO trxRfdDAO = new TrxRfdDAO();
+                    if(!trxRfdDAO.insertTrxRfd(trxMap,resp,regId)) {
+                        logger.info("===== PG_TRX_ADMIN_RFD INSERT FAILD =====");
+                    }
+                }
                 res = GsonUtil.toJson(response);
             }catch(Exception e){}
         }
