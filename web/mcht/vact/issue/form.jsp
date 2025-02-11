@@ -53,7 +53,7 @@
 												<div class="form-body">
 													<div class="row">
 														<input type="hidden" data-reg="false" name="reason" value="가상계좌리스트">
-														<input type="hidden" data-reg="false" name="thead" value="issueId:발행번호,issuerBank:은행명,account:계좌번호,mAccount:모계좌번호,holderName:예금주명,trackId:거래추적번호,udf1:사용자정의1,udf2:사용자정의2,status:상태,regDate:최종일자">
+														<input type="hidden" data-reg="false" name="thead" value="issueId:발행번호,issuerBank:은행명,account:계좌번호,holderName:예금주명,trackId:거래추적번호,udf1:사용자정의1,udf2:사용자정의2,status:상태,regDate:최종일자">
 														<input type="hidden" name="mchtId" data-oper="eq" value="${mchtId }">
 														
 														<div class="form-group pg-form-group">

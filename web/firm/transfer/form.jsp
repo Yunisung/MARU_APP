@@ -60,8 +60,8 @@
 																<option value="039">경남은행(800****39)</option>
 																<option value="034">광주은행(019****14)</option>
 																<option value="007">수협은행(101****79)</option>
-																<option value="048">신협은행(131****75)</option>
-
+																<option value="048-1">신협은행(131****75)</option>
+																<option value="048-2">신협은행(131****99)</option>
 															</select>
 														</div>  
 														
