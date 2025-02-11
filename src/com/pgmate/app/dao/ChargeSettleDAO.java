@@ -211,6 +211,75 @@ public class ChargeSettleDAO extends DAO{
 		return rset;
 	}
 
+	public long getVactAfterSum(String trxDay, String trxTime, String mchtId){
+		long sumAmt = 0;
+
+		String query = "SELECT SUM(amount) as sumAmt"
+				+ "  FROM PG_VACT_TRX "
+//                + " WHERE regDate >= ? and trxType = '입금' AND mchtId = ?";
+				+ " WHERE trxDay = ? and trxTime >= ? and trxType = '입금' AND mchtId = ?";
+
+		DBManager db 			= null;
+		PreparedStatement pstmt	= null;
+		Connection conn			= null;
+		ResultSet rset			= null;
+
+		try{
+			db 		= DBFactory.getInstance();
+			conn	= db.getConnection();
+			pstmt	= conn.prepareStatement(query);
+			pstmt.setString(1,trxDay);
+			pstmt.setString(2,trxTime);
+			pstmt.setString(3,mchtId);
+			rset 	= pstmt.executeQuery();
+
+			while(rset.next()){
+				sumAmt = rset.getLong("sumAmt");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("getVactOneHourSum ERROR : {}, query : {}", e.getMessage(), query);
+		}finally{
+			db.close(conn,pstmt,rset);
+		}
+
+		return sumAmt;
+	}
+
+	public long getVactBetweenSum(String trxDay, String mchtId) {
+		long sumAmt = 0;
+
+		String query = "SELECT SUM(amount) as sumAmt"
+				+ "  FROM PG_VACT_TRX "
+//                + " WHERE regDate >= ? and trxType = '입금' AND mchtId = ?";
+				+ " WHERE trxDay = ? and trxTime BETWEEN '000000' AND '235959' and trxType = '입금' AND mchtId = ?";
+
+		DBManager db 			= null;
+		PreparedStatement pstmt	= null;
+		Connection conn			= null;
+		ResultSet rset			= null;
+
+		try{
+			db 		= DBFactory.getInstance();
+			conn	= db.getConnection();
+			pstmt	= conn.prepareStatement(query);
+			pstmt.setString(1,trxDay);
+			pstmt.setString(2,mchtId);
+			rset 	= pstmt.executeQuery();
+
+			while(rset.next()){
+				sumAmt = rset.getLong("sumAmt");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("getVactBetweenSum ERROR : {}, query : {}", e.getMessage(), query);
+		}finally{
+			db.close(conn,pstmt,rset);
+		}
+
+		return sumAmt;
+	}
+
 	public int insertChargeSettleFirm(SharedMap<String,Object> insertChargeSettleFirm){
 		int inserted = 0;
 		String query = "insert into PG_CHARGE_SETTLE_FIRM_RESERVE (trxId, transferType, mchtId, trackId, pubDay, pubTime, status, retry, trxDay, trxTime, amount, fee, feeVat, bankFee, netAmount, balance, resultCd, resultMsg, refId, rootTrxId, account, bankCd, bankName, holder, recordInfo, regId, regDay)  values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -302,4 +371,13 @@ public class ChargeSettleDAO extends DAO{
 		return deleted;
 	}
 
+	public String getMaccount(String mchtId) {
+		super.setTable("PG_MCHT_MNG_VACT");
+		super.setColumns("mAccount");
+		super.addWhere("mchtId", mchtId, eq);
+
+		RecordSet rset = super.search();
+		super.initRecord();
+		return rset.getRowFirst().getString("mAccount");
+	}
 }
