@@ -10,7 +10,8 @@
 		<span class="caption-helper"><span id="page-total">${CPR.page.total}</span> 건</span>
 		<span class="caption-helper amount_sum" style="color:#00a2ff;font-weight:600;">
 			출금 금액 합계: <fmt:formatNumber type="number" value="${SUMMAP.depositAmt }" pattern="#,##0" /> 원 /
-			입금 금액 합계: <fmt:formatNumber type="number" value="${SUMMAP.withdrawAmt }" pattern="#,##0" /> 원
+			입금 금액 합계: <fmt:formatNumber type="number" value="${SUMMAP.withdrawAmt }" pattern="#,##0" /> 원 /
+			미수금 금액 합계: <fmt:formatNumber type="number" value="${OUTSANDINGSUMMAP.outsandingAmt }" pattern="#,##0" /> 원
 		</span>
 	</div>
 	<div class="actions">
