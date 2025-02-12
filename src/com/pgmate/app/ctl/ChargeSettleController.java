@@ -57,19 +57,20 @@ public class ChargeSettleController {
 					startTrxTime = prevHourDate.substring(8, 10) + "0000";
 				}
 
-				request.setAttribute("OUTSANDINGSUMMAP", dao.getVactAfterSum(startTrxDay, startTrxTime, cpRequest.getKeyValue("mchtId")));
-			}
-			if(mAccount.equals("131022424199")) {
+				request.setAttribute("outsandingAmt", dao.getVactAfterSum(startTrxDay, startTrxTime, cpRequest.getKeyValue("mchtId")));
+			} else if(mAccount.equals("131022424199")) {
 				if(Integer.parseInt(hour) < 7) {
 					String prevDayDate = getPrevDayDate(trxDate);
 					startTrxDay = prevDayDate.substring(0, 8);
 
-					request.setAttribute("OUTSANDINGSUMMAP", dao.getVactBetweenSum(startTrxDay, cpRequest.getKeyValue("mchtId")));
+					request.setAttribute("outsandingAmt", dao.getVactBetweenSum(startTrxDay, cpRequest.getKeyValue("mchtId")));
 				} else {
 					startTrxDay = trxDay;
 					startTrxTime = "000000";
-					request.setAttribute("OUTSANDINGSUMMAP", dao.getVactAfterSum(startTrxDay, startTrxTime, cpRequest.getKeyValue("mchtId")));
+					request.setAttribute("outsandingAmt", dao.getVactAfterSum(startTrxDay, startTrxTime, cpRequest.getKeyValue("mchtId")));
 				}
+			} else {
+				request.setAttribute("outsandingAmt", 0L);
 			}
 		}
 
