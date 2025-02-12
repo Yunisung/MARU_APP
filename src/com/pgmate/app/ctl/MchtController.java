@@ -244,6 +244,15 @@ public class MchtController {
 				request.setAttribute("VACTAGENCYMAP", new AgencyMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("agencyId")).getRowFirst());
 				request.setAttribute("VACTSALESMAP", new MemberSalesMngDAO().getById(mchtDAO.getById(mchtId).getRowFirst().getString("salesId")).getRowFirst());
 				request.setAttribute("ORGFEEMAP", new CodeDAO().getOrgFee("ORGFEE").getRows());
+
+				SharedMap<String, Object> vactMap = (SharedMap<String, Object>) request.getAttribute("VACT_MAP");
+				String mAccount = vactMap.getString("mAccount");
+				if(CommonUtil.isNullOrSpace(mAccount)) {
+					request.setAttribute("MACCOUNT", "");
+				} else {
+					request.setAttribute("MACCOUNT", mAccount.substring(0,3)+"****"+mAccount.substring(mAccount.length()-2));
+				}
+
 			}
 		}
 		//230619 PG_MCHT_MNG_PISP(지급대행) 테이블 미존재로 주석처리
@@ -1535,6 +1544,21 @@ public class MchtController {
 	@RequestMapping(value = {"/mcht/vact/insert"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody CPResponse vactInsert(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
+
+		//숨긴 모계좌에서 진짜 모계좌 찾기
+		String vactBankCd = (String) cpRequest.getData("vactBankCd").val;
+		String mAccount = (String) cpRequest.getData("mAccount").val;
+		List<SharedMap<String, Object>> mAccountMap = new VactTrxDAO().getUnUsedMAccount(vactBankCd);
+		for(SharedMap<String, Object> data : mAccountMap) {
+			String account = data.getString("mAccount");
+			String secretAccount = account.substring(0,3) + "****" + account.substring(account.length()-2);
+
+			if(mAccount.equals(secretAccount)) {
+				cpRequest.setData("mAccount", account);
+			}
+		}
+
+
 		if (cpDAO.insertByOper("PG_MCHT_MNG_VACT", SessionUtil.getUserId(request), cpRequest.data)) {
 			return new CPRUtil(cpRequest).resultOK("가맹점 가상계좌 정보가 등록되었습니다.").cpResponse();
 		} else {
@@ -1569,6 +1593,11 @@ public class MchtController {
     	sharedMap.put("salesRate", String.format("%.5f",sharedMap.getDouble("salesRate")));
 
 		List<SharedMap<String, Object>> mAccountMap = new VactTrxDAO().getUnUsedMAccount(sharedMap.getString("vactBankCd"));
+		for(SharedMap<String, Object> map : mAccountMap) {
+			String mAccount = map.getString("mAccount");
+			map.put("mAccount", mAccount.substring(0,3) + "****" + mAccount.substring(mAccount.length()-2));
+		}
+
 		request.setAttribute("UNUSED_MACCNT_MAP", mAccountMap);
     	
 		SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
@@ -1586,6 +1615,21 @@ public class MchtController {
 	@RequestMapping(value = {"/mcht/vact/update"}, method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody CPResponse vactUpdate(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
 		CPDAO cpDAO = new CPDAO();
+
+		//숨긴 모계좌에서 진짜 모계좌 찾기
+		String vactBankCd = (String) cpRequest.getData("vactBankCd").val;
+		String mAccount = (String) cpRequest.getData("mAccount").val;
+
+		List<SharedMap<String, Object>> mAccountMap = new VactTrxDAO().getUnUsedMAccount(vactBankCd);
+		for(SharedMap<String, Object> data : mAccountMap) {
+			String account = data.getString("mAccount");
+			String secretAccount = account.substring(0,3) + "****" + account.substring(account.length()-2);
+
+			if(mAccount.equals(secretAccount)) {
+				cpRequest.setData("mAccount", account);
+			}
+		}
+
 		//identity 입력시 암호화하여 넣어야함.
 		if (cpDAO.updateAndBack("PG_MCHT_MNG_VACT", SessionUtil.getUserId(request), cpRequest.data)) {
 			
@@ -1664,7 +1708,19 @@ public class MchtController {
 
 		//모계좌 정보
 		List<SharedMap<String, Object>> mAccountMap = vactTrxDAO.getUnUsedMAccount(vactBankCd);
+		for(SharedMap<String, Object> data : mAccountMap) {
+			String mAccount = data.getString("mAccount");
+			String display = mAccount.substring(0,3) + "****" + mAccount.substring(mAccount.length() - 2);
+			data.put("mAccount", display);
+		}
 		request.setAttribute("UNUSED_MACCNT_MAP", mAccountMap);
+
+		List<SharedMap<String, Object>> dataList = rset.getRows();
+		for(SharedMap<String, Object> data : dataList) {
+			String mAccount = data.getString("mAccount");
+			String display = mAccount.substring(0,3) + "****" + mAccount.substring(mAccount.length() - 2);
+			data.put("mAccount", display);
+		}
 
 		return new CPRUtil(cpRequest).dataList(rset,vactDtlDAO).setView(request,"/mcht/vact/issue/list","");
 	}
@@ -1708,6 +1764,17 @@ public class MchtController {
 		dao.addWhere("bankCd", bankCd, DAO.eq);
 
 		if(!mAccount.equals("all")) {
+			//숨긴 모계좌에서 진짜 모계좌 찾기
+			List<SharedMap<String, Object>> mAccountMap = new VactTrxDAO().getUnUsedMAccount(bankCd);
+			for(SharedMap<String, Object> data : mAccountMap) {
+				String account = data.getString("mAccount");
+				String secretAccount = account.substring(0,3) + "****" + account.substring(account.length()-2);
+
+				if(mAccount.equals(secretAccount)) {
+					mAccount = account;
+				}
+			}
+
 			dao.addWhere("mAccount", mAccount, DAO.eq);
 		}
 
@@ -3274,7 +3341,9 @@ public class MchtController {
 		}
 		StringBuffer sb= new StringBuffer();
 		for(SharedMap<String, Object> data : mAccountList) {
-			sb.append("<option value=\""+data.getString("mAccount")+"\">"+data.getString("mAccount")+"</option>");
+			String mAccount = data.getString("mAccount");
+			String display = mAccount.substring(0,3) + "****" + mAccount.substring(mAccount.length()-2);
+			sb.append("<option value=\""+display+"\">"+display +"</option>");
 		}
 		resultMap.put("resultCd", "0000");
 		resultMap.put("mAccountList", sb.toString());
