@@ -76,12 +76,6 @@
 																<option value="발행">발행</option>
 															</select>
 														</div>
-														<div class="form-group pg-form-group">
-															<label class="control-label col-lg-4">모계좌번호</label>
-															<div class="col-lg-8">
-																<input type="text" class="form-control input-sm mAccount" name="mAccount" data-oper="lk" placeholder="모계좌번호">
-															</div>
-														</div>
 													</div>
 													
 												</div>
