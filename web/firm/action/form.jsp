@@ -71,8 +71,8 @@
 																<option value="039">경남은행(800****39)</option>
                                                                 <option value="034">광주은행(019****14)</option>
 																<option value="007">수협은행(101****79)</option>
-																<option value="048-1">신협은행(131****75)</option>
-																<option value="048-2">신협은행(131****99)</option>
+																<option value="048">신협은행(131****75)</option>
+																<option value="049">신협은행(131****99)</option>
 															</select>
 														</div>  
  														<div class="form-group pg-form-group">
@@ -140,6 +140,8 @@
 	 			}else if(bankCd == "007" && action != "0600300") {
 	 				bootbox.alert("수협은행은 해당기능을 지원하지않습니다.");   
 	 			}else if(bankCd == "048" && action != "0600300") {
+					bootbox.alert("신협은행은 해당기능을 지원하지않습니다.");
+				}else if(bankCd == "049" && action != "0600300") {
 					bootbox.alert("신협은행은 해당기능을 지원하지않습니다.");
 				}else {
 	 				$("#viewBox").hide();  

@@ -2313,7 +2313,7 @@
 																	<div class="form-group pg-view-group">
 																		<label class="control-label col-md-3">모계좌번호</label>
 																		<div class="col-md-9">
-																			<p class="form-control-static">${VACT_MAP.mAccount}</p>
+																			<p class="form-control-static">${MACCOUNT}</p>
 																		</div>
 																	</div>
 																</div>
