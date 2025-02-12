@@ -1585,18 +1585,21 @@ public class MchtController {
 		CPDAO cpDAO = new CPDAO();
 
 		//숨긴 모계좌에서 진짜 모계좌 찾기
-		String vactBankCd = (String) cpRequest.getData("vactBankCd").val;
-		String mAccount = (String) cpRequest.getData("mAccount").val;
-		List<SharedMap<String, Object>> mAccountMap = new VactTrxDAO().getUnUsedMAccount(vactBankCd);
-		for(SharedMap<String, Object> data : mAccountMap) {
-			String account = data.getString("mAccount");
-			String secretAccount = account.substring(0,3) + "****" + account.substring(account.length()-2);
+		if(cpRequest.getData("mAccount") != null) {
+			String vactBankCd = CommonUtil.toString(cpRequest.getData("vactBankCd").val);
+			String mAccount = CommonUtil.toString(cpRequest.getData("mAccount").val);
+			List<SharedMap<String, Object>> mAccountMap = new VactTrxDAO().getUnUsedMAccount(vactBankCd);
+			for(SharedMap<String, Object> data : mAccountMap) {
+				String account = data.getString("mAccount");
+				String secretAccount = account.substring(0,3) + "****" + account.substring(account.length()-2);
 
-			if(mAccount.equals(secretAccount)) {
-				cpRequest.setData("mAccount", account);
+				if(mAccount.equals(secretAccount)) {
+					cpRequest.setData("mAccount", account);
+				}
 			}
+		} else {
+			cpRequest.setData("mAccount", "");
 		}
-
 
 		if (cpDAO.insertByOper("PG_MCHT_MNG_VACT", SessionUtil.getUserId(request), cpRequest.data)) {
 			return new CPRUtil(cpRequest).resultOK("가맹점 가상계좌 정보가 등록되었습니다.").cpResponse();
@@ -1656,17 +1659,21 @@ public class MchtController {
 		CPDAO cpDAO = new CPDAO();
 
 		//숨긴 모계좌에서 진짜 모계좌 찾기
-		String vactBankCd = (String) cpRequest.getData("vactBankCd").val;
-		String mAccount = (String) cpRequest.getData("mAccount").val;
+		if(cpRequest.getData("mAccount") != null) {
+			String vactBankCd = CommonUtil.toString(cpRequest.getData("vactBankCd").val);
+			String mAccount = CommonUtil.toString(cpRequest.getData("mAccount").val);
 
-		List<SharedMap<String, Object>> mAccountMap = new VactTrxDAO().getUnUsedMAccount(vactBankCd);
-		for(SharedMap<String, Object> data : mAccountMap) {
-			String account = data.getString("mAccount");
-			String secretAccount = account.substring(0,3) + "****" + account.substring(account.length()-2);
+			List<SharedMap<String, Object>> mAccountMap = new VactTrxDAO().getUnUsedMAccount(vactBankCd);
+			for(SharedMap<String, Object> data : mAccountMap) {
+				String account = data.getString("mAccount");
+				String secretAccount = account.substring(0,3) + "****" + account.substring(account.length()-2);
 
-			if(mAccount.equals(secretAccount)) {
-				cpRequest.setData("mAccount", account);
+				if(mAccount.equals(secretAccount)) {
+					cpRequest.setData("mAccount", account);
+				}
 			}
+		} else {
+			cpRequest.setData("mAccount", "");
 		}
 
 		//identity 입력시 암호화하여 넣어야함.
