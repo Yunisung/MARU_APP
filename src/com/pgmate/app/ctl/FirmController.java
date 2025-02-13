@@ -102,7 +102,7 @@ public class FirmController {
 			case "034": mAccnt = "1107021617114";break;
 			case "007": mAccnt = "101024656079";break;
 			case "048": mAccnt = "131022424175";break;
-			case "049": mAccnt = "131022424199";break;
+			case "049": mAccnt = "131022424199";bankCd="048";break;
 		}
 		
 		logger.debug("Action: {}, bankCd: {} , mAccnt: {}", action, bankCd, mAccnt);
@@ -130,7 +130,7 @@ public class FirmController {
 			case "034": sendAccnt = "1107021617114";break;
 			case "007": sendAccnt = "101024656079";break;
 			case "048": sendAccnt = "131022424175";break;
-			case "049": sendAccnt = "131022424199";break;
+			case "049": sendAccnt = "131022424199"; sendBankCd = "048";break;
 		}
 		
 		String recvBankCd = reqMap.getString("recvBankCd");
