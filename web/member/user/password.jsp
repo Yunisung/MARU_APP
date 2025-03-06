@@ -36,7 +36,7 @@
 				<div class="form-group col-sm-6">
 					<label class="control-label col-sm-4 req-label">기존 비밀번호 </label>
 					<div class="col-sm-6">
-						<input type="password" class="form-control input-sm" maxlength="50" name="check" value="">
+						<input type="password" class="form-control input-sm" maxlength="50" name="check" id="check" value="">
 					</div>
 				</div>
 				<div class="form-group col-sm-6">
@@ -163,12 +163,15 @@
 					success : function(data) {
 						if(data.indexOf("OK") > -1) {
 							finishWin("비밀번호 변경에 성공했습니다.");
-						}else {
-							finishWin("비밀번호 변경에 실패했습니다. 관리자에게 문의하세요.");
+						}else if(data.indexOf("ERR1") > -1) {
+							failSms("예전에 사용한 비밀번호 입니다.");
+						}
+						else {
+							failSms("비밀번호 변경에 실패했습니다. 관리자에게 문의하세요.");
 						}
 					},
 					error: function(xhr, status, error) {
-						finishWin("비밀번호 변경에 실패했습니다. 관리자에게 문의하세요.");
+						failSms("비밀번호 변경에 실패했습니다. 관리자에게 문의하세요.");
 					}
                 });
 			}
