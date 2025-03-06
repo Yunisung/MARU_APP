@@ -442,7 +442,8 @@ public class UserController {
 		String oldPassWord = CommonUtil.nToB(request.getParameter("check"));
 
 		String pwCheck =  new CPDAO().getPassword(oldPassWord);
-		if(result.getString("pw").equalsIgnoreCase(pwCheck)){
+
+		if(!result.getString("pw").equalsIgnoreCase(pwCheck)){
 			return "기존 비밀번호가 틀립니다";
 		}
 
@@ -497,7 +498,9 @@ public class UserController {
 	    			return "OK";
 	    		}
 	    	}
-    	}
+    	} else {
+			return "ERR1";
+		}
     	
     	//수정 실패 시 "NOK" 반환
     	//22.06.28 NOK 반환 시 충돌 문제로 인해 NOK 삭제
