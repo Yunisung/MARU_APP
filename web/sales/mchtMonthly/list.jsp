@@ -38,12 +38,15 @@
 						</c:when>
 						<c:when test="${CP_SESSION.grade eq '대행사' }">
 							<th rowspan="2">대행사<br>수익</th>
+							<th rowspan="2">대행사<br>차액수익</th>
 						</c:when>
 						<c:when test="${CP_SESSION.grade eq '에이전시' }">
 							<th rowspan="2">에이전시<br>수익</th>
+							<th rowspan="2">에이전시<br>차액수익</th>
 						</c:when>
                         <c:when test="${CP_SESSION.grade eq '지사' }">
 							<th rowspan="2">지사<br>수익</th>
+							<th rowspan="2">지사<br>차액수익</th>
 						</c:when>
 						<c:otherwise></c:otherwise>
 					</c:choose>
@@ -83,12 +86,15 @@
                             </c:when>
                             <c:when test="${CP_SESSION.grade eq '대행사' }">
                                 <td><fmt:formatNumber type="number" value="${SUMMAP.stlDistFee}" pattern="#,##0" /></td>
+                                <td><fmt:formatNumber type="number" value="${SUMMAP.stlDiffDistFee}" pattern="#,##0" /></td>
                             </c:when>
                             <c:when test="${CP_SESSION.grade eq '에이전시' }">
                                 <td><fmt:formatNumber type="number" value="${SUMMAP.stlAgencyFee}" pattern="#,##0" /></td>
+                                <td><fmt:formatNumber type="number" value="${SUMMAP.stlDiffAgencyFee}" pattern="#,##0" /></td>
                             </c:when>
                             <c:when test="${CP_SESSION.grade eq '지사' }">
                                 <td><fmt:formatNumber type="number" value="${SUMMAP.stlSalesFee}" pattern="#,##0" /></td>
+                                <td><fmt:formatNumber type="number" value="${SUMMAP.stlDiffSalesFee}" pattern="#,##0" /></td>
                             </c:when>
                             <c:otherwise></c:otherwise>
                         </c:choose>
@@ -113,12 +119,15 @@
                             </c:when>
                             <c:when test="${CP_SESSION.grade eq '대행사' }">
                                 <td><fmt:formatNumber type="number" value="${entry.stlDistFee}" pattern="#,##0" /></td>
+                                <td><fmt:formatNumber type="number" value="${entry.stlDiffDistFee}" pattern="#,##0" /></td>
                             </c:when>
                             <c:when test="${CP_SESSION.grade eq '에이전시' }">
                                 <td><fmt:formatNumber type="number" value="${entry.stlAgencyFee}" pattern="#,##0" /></td>
+                                <td><fmt:formatNumber type="number" value="${entry.stlDiffAgencyFee}" pattern="#,##0" /></td>
                             </c:when>
                             <c:when test="${CP_SESSION.grade eq '지사' }">
                                 <td><fmt:formatNumber type="number" value="${entry.stlSalesFee}" pattern="#,##0" /></td>
+                                <td><fmt:formatNumber type="number" value="${entry.stlDiffSalesFee}" pattern="#,##0" /></td>
                             </c:when>
                             <c:otherwise></c:otherwise>
                         </c:choose>

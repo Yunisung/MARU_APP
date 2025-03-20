@@ -20,7 +20,7 @@ public class TotCapMonthlyDAO extends DAO{
 	private static final String TABLE = "VW_TOT_CAP_MONTHLY";
 	private static final String COLUMNS = "*";
 	private static final String SUM_COLUMNS = "capMonth,SUM(payAmt) as payAmt,SUM(payCnt) as payCnt,SUM(rfdAmt) as rfdAmt,SUM(rfdCnt) as rfdCnt,SUM(totalAmt) as totalAmt,SUM(totalCnt) as totalCnt,SUM(stlAmt) as stlAmt,SUM(stlFee) as stlFee,"
-			+ "SUM(stlDistFee) as stlDistFee,SUM(stlAgencyFee) as stlAgencyFee,SUM(stlSalesFee) as stlSalesFee,SUM(benefit) as benefit";
+			+ "SUM(stlDistFee) as stlDistFee,SUM(stlDiffDistFee) as stlDiffDistFee,SUM(stlAgencyFee) as stlAgencyFee,SUM(stlDiffAgencyFee) as stlDiffAgencyFee,SUM(stlSalesFee) as stlSalesFee,SUM(stlDiffSalesFee) as stlDiffSalesFee,SUM(benefit) as benefit";
 												
 
 	public TotCapMonthlyDAO() {

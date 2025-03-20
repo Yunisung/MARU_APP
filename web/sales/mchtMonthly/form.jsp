@@ -56,13 +56,13 @@
 														<input type="hidden" data-reg="false" name="thead" value="capMonth:매입월,mchtName:가맹점,payAmt:매입 금액,payCnt:매입 건수,rfdAmt:매입취소 금액,rfdCnt:매입취소 건수,totalAmt:합계금액,totalCnt:합계건수,stlAmt:정산금액,stlFee:가맹점수수료,benefit:수익">
 													</c:when>
 													<c:when test="${CP_SESSION.grade eq '대행사' }">
-														<input type="hidden" data-reg="false" name="thead" value="capMonth:매입월,mchtName:가맹점,payAmt:매입 금액,payCnt:매입 건수,rfdAmt:매입취소 금액,rfdCnt:매입취소 건수,totalAmt:합계금액,totalCnt:합계건수,stlAmt:정산금액,stlFee:가맹점수수료,stlDistFee:대행사수익">
+														<input type="hidden" data-reg="false" name="thead" value="capMonth:매입월,mchtName:가맹점,payAmt:매입 금액,payCnt:매입 건수,rfdAmt:매입취소 금액,rfdCnt:매입취소 건수,totalAmt:합계금액,totalCnt:합계건수,stlAmt:정산금액,stlFee:가맹점수수료,stlDistFee:대행사수익,stlDiffDistFee:대행사차액수익">
 													</c:when>
 													<c:when test="${CP_SESSION.grade eq '에이전시' }">
-														<input type="hidden" data-reg="false" name="thead" value="capMonth:매입월,mchtName:가맹점,payAmt:매입 금액,payCnt:매입 건수,rfdAmt:매입취소 금액,rfdCnt:매입취소 건수,totalAmt:합계금액,totalCnt:합계건수,stlAmt:정산금액,stlFee:가맹점수수료,stlAgencyFee:에이전시수익">
+														<input type="hidden" data-reg="false" name="thead" value="capMonth:매입월,mchtName:가맹점,payAmt:매입 금액,payCnt:매입 건수,rfdAmt:매입취소 금액,rfdCnt:매입취소 건수,totalAmt:합계금액,totalCnt:합계건수,stlAmt:정산금액,stlFee:가맹점수수료,stlAgencyFee:에이전시수익,stlDiffAgencyFee:에이전시차액수익">
 													</c:when>
 							                        <c:when test="${CP_SESSION.grade eq '지사' }">
-														<input type="hidden" data-reg="false" name="thead" value="capMonth:매입월,mchtName:가맹점,payAmt:매입 금액,payCnt:매입 건수,rfdAmt:매입취소 금액,rfdCnt:매입취소 건수,totalAmt:합계금액,totalCnt:합계건수,stlAmt:정산금액,stlFee:가맹점수수료,stlSalesFee:지사수익">
+														<input type="hidden" data-reg="false" name="thead" value="capMonth:매입월,mchtName:가맹점,payAmt:매입 금액,payCnt:매입 건수,rfdAmt:매입취소 금액,rfdCnt:매입취소 건수,totalAmt:합계금액,totalCnt:합계건수,stlAmt:정산금액,stlFee:가맹점수수료,stlSalesFee:지사수익,stlDiffSalesFee:지사차액수익">
 													</c:when>
 													<c:otherwise></c:otherwise>
 												</c:choose>
