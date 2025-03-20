@@ -1602,6 +1602,8 @@ public class MchtController {
 		}
 
 		request.setAttribute("UNUSED_MACCNT_MAP", mAccountMap);
+		String mAccount = sharedMap.getString("mAccount");
+		sharedMap.put("mAccount", mAccount.substring(0,3) + "****" + mAccount.substring(mAccount.length()-2));
     	
 		SharedMap<String,Object> result = new MchtDAO().getById(mchtId).getRowFirst();
 		request.setAttribute("MCHT_MAP", new MchtDAO().getById(mchtId).getRowFirst());
