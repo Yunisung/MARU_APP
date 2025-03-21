@@ -49,7 +49,12 @@
 					<tr>
 						<td>${CPR.page.total-((CPR.page.current-1)*CPR.page.size)-status.count+1}</td>
 						<td class="link" data-url="/member/user/view/${entry.id}">${entry.id}</td>
-						<td>${entry.name}</td>
+						<td>
+							<c:if test="${entry.grade ne '본사'}">
+								<div style="font-weight: bold; color: blue;">${entry.distName}</div>
+							</c:if>
+								${entry.name}
+						</td>
 						<td>${entry.grade}</td>
 						<td>${entry.role}</td>
 						<c:if test="${entry.showOthTrns eq 'Y'}">
