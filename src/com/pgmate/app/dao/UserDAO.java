@@ -51,9 +51,13 @@ public class UserDAO extends DAO{
 	
 	
 	public RecordSet list(List<Data> datas,Page page){
+		setDebug(true);
 		page = CPUtil.correctPage(page);
-		this.setTable("VW_USER");
-		this.setColumns("distId, agencyId, id, pw, `name`, grade, role,showOthTrns, loanSettleStatus, parentId, `status`, phone, regId, regDay, regDate");
+//		this.setTable("VW_USER");
+//		this.setColumns("distId, agencyId, id, pw, `name`, grade, role,showOthTrns, loanSettleStatus, parentId, `status`, phone, regId, regDay, regDate");
+		this.setTable("(SELECT B.name AS distName, A.distId, A.agencyId, A.id, A.pw, A.`name`, A.grade, A.role,A.showOthTrns, A.loanSettleStatus, A.parentId, A.`status`, A.phone, A.regId, A.regDay, A.regDate " +
+				"FROM VW_USER A LEFT OUTER JOIN PG_MAM_DIST B ON A.distId=B.distId) C");
+		this.setColumns("*");
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION 
 		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색 
 	}
