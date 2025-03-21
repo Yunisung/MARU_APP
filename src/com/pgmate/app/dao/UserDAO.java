@@ -51,7 +51,6 @@ public class UserDAO extends DAO{
 	
 	
 	public RecordSet list(List<Data> datas,Page page){
-		setDebug(true);
 		page = CPUtil.correctPage(page);
 //		this.setTable("VW_USER");
 //		this.setColumns("distId, agencyId, id, pw, `name`, grade, role,showOthTrns, loanSettleStatus, parentId, `status`, phone, regId, regDay, regDate");
