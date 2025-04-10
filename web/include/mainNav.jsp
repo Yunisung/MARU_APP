@@ -109,6 +109,20 @@
                     <li class="nav-item ">
                         <a href="/vact/noti/form.jsp" class="nav-link ">노티내역 조회</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="javascript:;" class="nav-link nav-toggle">
+                            <span class="title">리스크 관리</span>
+                            <span class="arrow"></span>
+                        </a>
+                        <ul class="sub-menu" style="display: none;">
+                            <li class="nav-item ">
+                                <a href="/vact/risk/trx/form.jsp" class="nav-link ">거래내역 조회</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="/vact/risk/reg/form.jsp" class="nav-link ">발행내역 조회</a>
+                            </li>
+                        </ul>
+                    </li>
                 </c:if>
             </ul>
         </li>

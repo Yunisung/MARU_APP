@@ -338,5 +338,52 @@ public class VactTrxDAO extends DAO {
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION
 		return super.searchList(page.current, page.size,page.hash);
 	}
+
+	public RecordSet riskTrxSum(List<Data> datas,Page page) {
+		super.setTable("PG_VACT_TRX_RISK");
+		super.setColumns("SUM(amount) AS amount");
+		page = CPUtil.correctPage(page);
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		return super.search();	//LIST PAGING 검색
+	}
+
+	public RecordSet riskTrxList(List<Data> datas, Page page){
+		page = CPUtil.correctPage(page);
+		super.setDebug(true);
+		super.setTable("(SELECT B.codeName, C.name as mchtName, FN_AES_DEC(withdrawAccount) AS decWithdrawAccount, A.* FROM PG_VACT_TRX_RISK A LEFT OUTER JOIN PG_CODE B ON A.bankCd=B.code AND B.alias='BANK' " +
+				"LEFT OUTER JOIN PG_MCHT C ON A.mchtId=C.mchtId " +
+				") D");
+		super.setColumns("D.*");
+		super.setOrderBy("vactId DESC");
+
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
+
+	}
+
+	public RecordSet riskRegList(List<Data> datas, Page page){
+		page = CPUtil.correctPage(page);
+		super.setDebug(true);
+		super.setTable("(SELECT A.*, FN_AES_DEC(withdrawAccount) AS decWithdrawAccount, (SELECT codeName FROM PG_CODE B WHERE A.bankCd=B.code) AS bankName, " +
+				"(SELECT codeName FROM PG_CODE B WHERE A.withdrawBankCd=B.code) AS withdrawBankName FROM PG_VACT_REG_RISK A) C");
+		super.setColumns("C.*");
+		super.setOrderBy("regDate DESC");
+
+		CPUtil.setDAO(this, datas);				//DATA to CONDITION
+		return super.searchList(page.current, page.size,page.hash);	//LIST PAGING 검색
+
+	}
+
+	public String getAESEnc(String value){
+		super.setDebug(true);
+		String query = "SELECT FN_AES_ENC('"+value+"') withdrawAccount";
+		RecordSet rset = query(query);
+		if(rset.size() ==0) {
+			return "";
+		} else {
+			rset.next();
+			return rset.getString("withdrawAccount");
+		}
+	}
 }
 

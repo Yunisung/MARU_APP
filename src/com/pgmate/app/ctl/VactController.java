@@ -515,5 +515,33 @@ public class VactController {
         return new CPRUtil(cpRequest).dataList(rset, vactTrxDAO).setView(request, "/vact/error/list", "");
     }
 
+    @RequestMapping(value = "/vact/risk/trx/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView riskTrxList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+
+        logger.info("withdrawAccount : {}", cpRequest.getKeyValue("withdrawAccount"));
+        if(!CommonUtil.isNullOrSpace(cpRequest.getKeyValue("withdrawAccount"))) {
+            cpRequest.replaceKeyValue("withdrawAccount",vactTrxDAO.getAESEnc(cpRequest.getKeyValue("withdrawAccount")));
+        }
+
+        request.setAttribute("AMOUNT_SUM", new VactTrxDAO().riskTrxSum(cpRequest.data,null).getRowFirst().getString("amount"));
+//    RecordSet rset = vactTrxDAO.list(cpRequest.data, cpRequest.page);
+        RecordSet rset = vactTrxDAO.riskTrxList(cpRequest.data, cpRequest.page);
+        return new CPRUtil(cpRequest).dataList(rset, vactTrxDAO).setView(request, "/vact/risk/trx/list", "");
+    }
+
+    @RequestMapping(value = "/vact/risk/reg/list", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView riskRegList(HttpServletRequest request, @RequestBody CPRequest cpRequest) {
+        VactTrxDAO vactTrxDAO = new VactTrxDAO();
+//    RecordSet rset = vactTrxDAO.list(cpRequest.data, cpRequest.page);
+
+        logger.info("withdrawAccount : {}", cpRequest.getKeyValue("withdrawAccount"));
+        if(!CommonUtil.isNullOrSpace(cpRequest.getKeyValue("withdrawAccount"))) {
+            cpRequest.replaceKeyValue("withdrawAccount",vactTrxDAO.getAESEnc(cpRequest.getKeyValue("withdrawAccount")));
+        }
+
+        RecordSet rset = vactTrxDAO.riskRegList(cpRequest.data, cpRequest.page);
+        return new CPRUtil(cpRequest).dataList(rset, vactTrxDAO).setView(request, "/vact/risk/reg/list", "");
+    }
 
 }
