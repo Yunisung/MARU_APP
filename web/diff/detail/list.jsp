@@ -24,7 +24,7 @@
 		<table class="pg-table table table-bordered table-hover flip-content" id="sortTable">
 			<!-- table-bordered -->
 			<thead>
-				<tr>						
+				<tr>
 					<th rowspan="2">No</th>
 					<th rowspan="2">거래내역</th>
 					<th rowspan="2">입금일</th>

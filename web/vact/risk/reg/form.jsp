@@ -55,7 +55,7 @@
 									<form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/vact/risk/reg/list"
 									 method="post">
 										<input type="hidden" data-reg="false" name="reason" value="가상계좌 리스크 발행내역">
-										<input type="hidden" data-reg="false" name="thead" value="issueId:발행번호,mchtId:가맹점ID,mchtName:가맹점,account:가상계좌번호,bankName:가상계좌은행,withdrawAccount:출금계좌번호,withdrawBankName:출금계좌은행,trackId:거래추적번호,regDate:거래일시">
+										<input type="hidden" data-reg="false" name="thead" value="issueId:발행번호,mchtId:가맹점ID,mchtName:가맹점,account:가상계좌번호,bankName:가상계좌은행,decWithdrawAccount:출금계좌번호,withdrawBankName:출금계좌은행,trackId:거래추적번호,regDate:거래일시">
 										<div class="form-body">
 											<div class="row">
 												<div class="form-group pg-form-group">

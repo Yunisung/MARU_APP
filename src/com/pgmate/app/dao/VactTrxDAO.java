@@ -349,7 +349,6 @@ public class VactTrxDAO extends DAO {
 
 	public RecordSet riskTrxList(List<Data> datas, Page page){
 		page = CPUtil.correctPage(page);
-		super.setDebug(true);
 		super.setTable("(SELECT B.codeName, C.name as mchtName, FN_AES_DEC(withdrawAccount) AS decWithdrawAccount, A.* FROM PG_VACT_TRX_RISK A LEFT OUTER JOIN PG_CODE B ON A.bankCd=B.code AND B.alias='BANK' " +
 				"LEFT OUTER JOIN PG_MCHT C ON A.mchtId=C.mchtId " +
 				") D");
@@ -363,7 +362,6 @@ public class VactTrxDAO extends DAO {
 
 	public RecordSet riskRegList(List<Data> datas, Page page){
 		page = CPUtil.correctPage(page);
-		super.setDebug(true);
 		super.setTable("(SELECT A.*, FN_AES_DEC(withdrawAccount) AS decWithdrawAccount, (SELECT codeName FROM PG_CODE B WHERE A.bankCd=B.code) AS bankName, " +
 				"(SELECT codeName FROM PG_CODE B WHERE A.withdrawBankCd=B.code) AS withdrawBankName FROM PG_VACT_REG_RISK A) C");
 		super.setColumns("C.*");
@@ -375,7 +373,6 @@ public class VactTrxDAO extends DAO {
 	}
 
 	public String getAESEnc(String value){
-		super.setDebug(true);
 		String query = "SELECT FN_AES_ENC('"+value+"') withdrawAccount";
 		RecordSet rset = query(query);
 		if(rset.size() ==0) {
