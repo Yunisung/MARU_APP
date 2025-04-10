@@ -535,7 +535,6 @@ public class VactController {
         VactTrxDAO vactTrxDAO = new VactTrxDAO();
 //    RecordSet rset = vactTrxDAO.list(cpRequest.data, cpRequest.page);
 
-        logger.info("withdrawAccount : {}", cpRequest.getKeyValue("withdrawAccount"));
         if(!CommonUtil.isNullOrSpace(cpRequest.getKeyValue("withdrawAccount"))) {
             cpRequest.replaceKeyValue("withdrawAccount",vactTrxDAO.getAESEnc(cpRequest.getKeyValue("withdrawAccount")));
         }
