@@ -161,7 +161,8 @@ public class TrxController {
 
 
 			//온라인거래일때만, 거래정보 조회해서 영수증 ID 받기
-			if(van.getString("vanId").equals("welcome306")) {
+			if(van.getString("vanId").equals("welcome306") ||
+					van.getString("vanId").equals("wel001132m") ) {
 				String search_uri = "https://payapi.welcomepayments.co.kr/api/search/order";
 
 				String mid = van.getString("vanId");
@@ -173,7 +174,13 @@ public class TrxController {
 					order_no = orgMap.getString("trxId");
 				}
 
-				String api_key = "59a30bd3e66d9a87c71b5d39e26ed42a";
+				String api_key = "";
+
+				if(van.getString("vanId").equals("welcome306")) {
+					api_key = "59a30bd3e66d9a87c71b5d39e26ed42a";
+				} else if(van.getString("vanId").equals("wel001132m")) {
+					api_key = "49c553cf08e86db0bd47d836d1761951";
+				}
 
 				SharedMap<String, Object> reqMap = new SharedMap<>();
 				reqMap.put("mid", mid);
@@ -204,7 +211,7 @@ public class TrxController {
 					}
 
 				}
-			}
+			} 
 		}
 		
 		//PYS : 갤럭시아 영수증 조회용
@@ -1148,13 +1155,21 @@ public class TrxController {
 
 
 					  //온라인거래일때만, 거래정보 조회해서 영수증 ID 받기
-					  if(van.getString("vanId").equals("welcome306")) {
+					  if(van.getString("vanId").equals("welcome306") ||
+							  van.getString("vanId").equals("wel001132m")) {
+
 						  String search_uri = "https://payapi.welcomepayments.co.kr/api/search/order";
 
 						  String mid = van.getString("vanId");
 						  String order_no = res.getString("trxId");
 
-						  String api_key = "59a30bd3e66d9a87c71b5d39e26ed42a";
+						  String api_key = "";
+
+						  if(van.getString("vanId").equals("welcome306")) {
+							  api_key = "59a30bd3e66d9a87c71b5d39e26ed42a";
+						  } else if(van.getString("vanId").equals("wel001132m")) {
+							  api_key = "49c553cf08e86db0bd47d836d1761951";
+						  }
 
 						  SharedMap<String, Object> reqMap = new SharedMap<>();
 						  reqMap.put("mid", mid);
