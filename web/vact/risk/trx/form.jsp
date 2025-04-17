@@ -57,7 +57,7 @@
 									 method="post">
 										<input type="hidden" data-reg="false" name="reason" value="가상계좌 거래내역">
 										<c:if test="${CP_SESSION.grade eq '본사'}">
-											<input type="hidden" data-reg="false" name="thead" value="vactId:거래번호,mchtId:가맹점ID,mchtName:가맹점,amount:금액,codeName:가상계좌발행은행,account:가상계좌번호,sender:보낸사람,trxType:거래타입,trxDay:거래일자,trxTime:거래시간,withdrawBankName:은행이름,decWithdrawAccount:계좌번호,sender:예금주명">
+											<input type="hidden" data-reg="false" name="thead" value="vactId:거래번호,mchtId:가맹점ID,mchtName:가맹점,amount:금액,codeName:가상계좌발행은행,account:가상계좌번호,holderName:보낸사람,trxType:거래타입,trxDay:거래일자,trxTime:거래시간,withdrawBankName:은행이름,decWithdrawAccount:계좌번호,holderName:예금주명">
 										</c:if>
 										<div class="form-body">
 											<div class="row">
@@ -135,7 +135,7 @@
 												<div class="form-group pg-form-group">
 													<label class="control-label col-lg-4">보낸사람</label>
 													<div class="col-lg-8">
-														<input type="text" class="form-control input-sm" name="sender" data-oper="lk" placeholder="보낸사람">
+														<input type="text" class="form-control input-sm" name="holderName" data-oper="lk" placeholder="보낸사람">
 													</div>
 												</div>
 												<div class="form-group pg-form-group">
