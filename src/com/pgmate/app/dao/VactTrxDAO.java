@@ -349,10 +349,9 @@ public class VactTrxDAO extends DAO {
 
 	public RecordSet riskTrxList(List<Data> datas, Page page){
 		page = CPUtil.correctPage(page);
-		super.setTable("(SELECT B.codeName, C.name as mchtName, FN_AES_DEC(withdrawAccount) AS decWithdrawAccount, A.* FROM PG_VACT_TRX_RISK A LEFT OUTER JOIN PG_CODE B ON A.bankCd=B.code AND B.alias='BANK' " +
-				"LEFT OUTER JOIN PG_MCHT C ON A.mchtId=C.mchtId " +
-				") D");
-		super.setColumns("D.*");
+		super.setTable("(SELECT B.codeName, FN_AES_DEC(withdrawAccount) AS decWithdrawAccount, A.* " +
+				"FROM PG_VACT_TRX_RISK A LEFT OUTER JOIN PG_CODE B ON A.bankCd=B.code AND B.alias='BANK' ) C");
+		super.setColumns("C.*");
 		super.setOrderBy("vactId DESC");
 
 		CPUtil.setDAO(this, datas);				//DATA to CONDITION

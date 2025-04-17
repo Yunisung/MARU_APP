@@ -61,7 +61,7 @@
 						<td>${entry.decWithdrawAccount}</td>
 						<td>${entry.codeName}</td>
 						<td>${entry.account}</td>
-						<td>${entry.sender}</td>
+						<td>${entry.holderName}</td>
 						<td>${entry.trxType}</td>
 						<td>${entry.trxDay}</td>
 						<td class="time">${entry.trxTime}</td>
