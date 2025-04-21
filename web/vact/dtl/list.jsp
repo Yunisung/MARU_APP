@@ -38,8 +38,6 @@
 					<th>금액기준</th>
 					<th>거래추적번호</th>
 					<th>만료일시</th>
-					<th>Reason</th>
-					<th>지급대행</th>
 					<th>거래일시</th>
 				</tr>
 			</thead>
@@ -63,8 +61,6 @@
 						<td class="digits">${entry.amount}</td>
 						<td>${entry.trackId}</td>
 						<td class="date">${entry.expireAt}</td>
-						<td>${entry.reason}</td>
-						<td><c:if test="${entry.udf1 eq 'pisp'}">지급대행</c:if></td>
 						<td class="date">${entry.regDate}</td>
 					</tr>
 				</c:forEach>
