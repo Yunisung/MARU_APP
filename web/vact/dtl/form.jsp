@@ -54,7 +54,7 @@
 									<form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/vact/dtl/list"
 									 method="post">
 										<input type="hidden" data-reg="false" name="reason" value="가상계좌 발행내역">
-										<input type="hidden" data-reg="false" name="thead" value="issueId:발행번호,issuerBank:은행,account:계좌번호,vactType:발행유형,status:상태,mchtId:가맹점ID,mchtName:가맹점,holderName:예금주명,amount:금액기준,trackId:거래추적번호,expireAt:만료일시,udf1:사용자 지정1,udf2:사용자 지정2,reason:Reason,regDate:거래일시">
+										<input type="hidden" data-reg="false" name="thead" value="issueId:발행번호,issuerBank:은행,account:계좌번호,vactType:발행유형,status:상태,mchtId:가맹점ID,mchtName:가맹점,holderName:예금주명,amount:금액기준,trackId:거래추적번호,expireAt:만료일시,udf1:사용자 지정1,udf2:사용자 지정2,regDate:거래일시">
 										<div class="form-body">
 											<div class="row">
 												<div class="form-group pg-form-group">
@@ -84,6 +84,20 @@
 													</div>
 												</div>
 												<div class="form-group pg-form-group">
+													<div class="col-lg-4" style="padding:0;">
+														<select class="selectpicker col-lg-12" name="" id="date-selector" data-reg="false">
+															<option value="regDay" selected>발행일자</option>
+														</select>
+													</div>
+													<div class="col-lg-8">
+														<div class="input-group input-group-sm input-daterange" data-date-format="yyyy-mm-dd">
+															<input type="text" class="form-control now-date date-selector-target" name="regDay" value="" data-oper="ge">
+															<span class="input-group-addon">~</span>
+															<input type="text" class="form-control now-date date-selector-target" name="regDay" value="" data-oper="le">
+														</div>
+													</div>
+												</div>
+												<div class="form-group pg-form-group">
 													<label class="control-label col-lg-4">거래추적번호</label>
 													<div class="col-lg-8">
 														<input type="text" class="form-control input-sm" name="trackId" data-oper="lk" placeholder="거래추적번호">
@@ -95,13 +109,6 @@
 														<option value="">-- 전체 -- </option>
 														<option value="임시">임시</option>
 														<option value="영구">영구</option>
-													</select>
-												</div>
-												<div class="form-group pg-form-group">
-													<label class="control-label col-lg-4">지급대행</label>
-													<select class="selectpicker col-lg-8" name="udf1" data-oper="eq">
-														<option value="">-- 전체 -- </option>
-														<option value="pisp">지급대행</option>
 													</select>
 												</div>
 												<div class="form-group pg-form-group">
