@@ -113,13 +113,21 @@
 														<input type="text" class="form-control input-sm" name="holderName" data-oper="lk" placeholder="예금주명">
 													</div>
 												</div>
-											</div>
-											<c:if test="${CP_SESSION.grade eq '본사'}">
-												<div class="row search-opt">
-													<c:import url="/common/selectGrade.jsp" />
-													<input type="hidden" id="grade_search" name="parentId" data-oper="eq" value="" />
+												<div class="form-group pg-form-group">
+													<div class="col-lg-4" style="padding:0;">
+														<select class="selectpicker col-lg-12" name="" id="date-selector" data-reg="false">
+															<option value="regDay" selected>발행일자</option>
+														</select>
+													</div>
+													<div class="col-lg-8">
+														<div class="input-group input-group-sm input-daterange" data-date-format="yyyy-mm-dd">
+															<input type="text" class="form-control now-date date-selector-target" name="regDay" value="" data-oper="ge">
+															<span class="input-group-addon">~</span>
+															<input type="text" class="form-control now-date date-selector-target" name="regDay" value="" data-oper="le">
+														</div>
+													</div>
 												</div>
-											</c:if>
+											</div>
 										</div>
 										<div class="form-actions nobg right">
 											<div class="btn folding-search-btn icon-arrow-down"></div>
