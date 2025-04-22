@@ -47,7 +47,7 @@ public class VactController {
 	}
 	
     VactDtlDAO vactDtlDAO = new VactDtlDAO();
-    RecordSet rset = vactDtlDAO.list(cpRequest.data, cpRequest.page);
+    RecordSet rset = vactDtlDAO.getReglist(cpRequest.data, cpRequest.page);
     return new CPRUtil(cpRequest).dataList(rset, vactDtlDAO).setView(request, "/vact/dtl/list", "");
   }
   

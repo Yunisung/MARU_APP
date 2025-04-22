@@ -37,7 +37,8 @@
 					<th>수식</th>
 					<th>금액기준</th>
 					<th>거래추적번호</th>
-					<th>만료일시</th>
+					<th>만료일자</th>
+					<th>발행일자</th>
 					<th>거래일시</th>
 				</tr>
 			</thead>
@@ -61,6 +62,7 @@
 						<td class="digits">${entry.amount}</td>
 						<td>${entry.trackId}</td>
 						<td class="date">${entry.expireAt}</td>
+						<td class="date">${entry.vactRegDay}</td>
 						<td class="date">${entry.regDate}</td>
 					</tr>
 				</c:forEach>
