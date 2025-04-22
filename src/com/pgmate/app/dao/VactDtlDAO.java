@@ -53,6 +53,15 @@ public class VactDtlDAO extends DAO {
 		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
 	}
 
+	public RecordSet getReglist(List<Data> datas, Page page) {
+		page = CPUtil.correctPage(page);
+
+		super.setTable("(SELECT B.regDay as vactRegDay,A.* FROM VW_VACT_DTL A LEFT OUTER JOIN PG_VACT_REG B ON A.account=B.account) C");
+
+		CPUtil.setDAO(this, datas); //DATA to CONDITION
+		return super.searchList(page.current, page.size, page.hash); //LIST PAGING
+	}
+
 	public List<String> insert(String mchtId, String bankCd, String mAccount, long cnt, String holderName, String userId) {
 		super.setTable("VW_VACT_UNUSED");
 		super.setColumns("*");

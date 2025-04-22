@@ -54,7 +54,7 @@
 									<form class="form-horizontal" role="form" data-form="true" id="searchForm" name="searchForm" action="/vact/dtl/list"
 									 method="post">
 										<input type="hidden" data-reg="false" name="reason" value="가상계좌 발행내역">
-										<input type="hidden" data-reg="false" name="thead" value="issueId:발행번호,issuerBank:은행,account:계좌번호,vactType:발행유형,status:상태,mchtId:가맹점ID,mchtName:가맹점,holderName:예금주명,amount:금액기준,trackId:거래추적번호,expireAt:만료일시,udf1:사용자 지정1,udf2:사용자 지정2,regDate:거래일시">
+										<input type="hidden" data-reg="false" name="thead" value="issueId:발행번호,issuerBank:은행,account:계좌번호,vactType:발행유형,status:상태,mchtId:가맹점ID,mchtName:가맹점,holderName:예금주명,amount:금액기준,trackId:거래추적번호,expireAt:만료일자,udf1:사용자 지정1,udf2:사용자 지정2,vactRegDay:발행일자,regDate:거래일시">
 										<div class="form-body">
 											<div class="row">
 												<div class="form-group pg-form-group">
@@ -86,7 +86,8 @@
 												<div class="form-group pg-form-group">
 													<div class="col-lg-4" style="padding:0;">
 														<select class="selectpicker col-lg-12" name="" id="date-selector" data-reg="false">
-															<option value="regDay" selected>발행일자</option>
+															<option value="regDay" selected>거래일자</option>
+															<option value="vactRegDay">발행일자</option>
 														</select>
 													</div>
 													<div class="col-lg-8">
@@ -180,6 +181,10 @@
 			searchForList();
 		}, 100); //검색 실행
 		$('#nav-trx').addClass('active');
+
+		$('#date-selector').on('change', function() {
+			$('.date-selector-target').attr('name', $(this).val());
+		})
 	</script>
 	<!-- 모달 생성을 위한 베이스 -->
 	<div id="pgmate-modal" class="modal fade container" data-backdrop="static" data-keyboard="false" tabindex="-1"></div>
