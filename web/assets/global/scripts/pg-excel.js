@@ -36,6 +36,31 @@ function getCollectId(date, no) {
 
 function handleFile(e) {
   var files = e.target.files;
+
+  // 허용할 엑셀 확장자 및 MIME 타입
+  const allowedExtensions = ['xls', 'xlsx'];
+  const allowedMimeTypes = [
+    'application/vnd.ms-excel',                        // .xls
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' // .xlsx
+  ];
+
+  if(files.length > 1) {
+    bootbox.alert("1개의 파일만 업로드할 수 있습니다.");
+    return;
+  }
+
+  const file = files[0];
+  if(!file) return;
+
+  const fileName = file.name.toLowerCase();
+  const fileExtension = fileName.split('.').pop();
+  const fileType = file.type;
+
+  if (!allowedExtensions.includes(fileExtension) || !allowedMimeTypes.includes(fileType)) {
+    bootbox.alert("엑셀 파일(.xls, .xlsx)만 업로드할 수 있습니다.");
+    return;
+  }
+
   var i, f;
   for (i = 0; i != files.length; ++i) {
     f = files[i];
