@@ -259,7 +259,8 @@ public class LoginController {
 			String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
 			//infoBankSMS.sendSms(InfoBankSMS.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
 			SmsUtil smsUtil = new SmsUtil();
-			smsUtil.sendSms(smsUtil.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+			smsUtil.smsProcess(userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+//			smsUtil.sendSms(smsUtil.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
 		}else {
 			SharedMap<String, Object> userMap = new MchtTmnDAO().getById(userId).getRow(0);
 
@@ -267,7 +268,8 @@ public class LoginController {
 			String msgBody = "[CREDITOP] 본인인증번호는 [" + number + "] 입니다. 정확히 입력해주세요.";
 			//infoBankSMS.sendSms(InfoBankSMS.SMS_URL, userMap.getString("ceoPhone").replaceAll("\\[^0-9]+", ""), msgBody);
 			SmsUtil smsUtil = new SmsUtil();
-			smsUtil.sendSms(smsUtil.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+			smsUtil.smsProcess(userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
+//			smsUtil.sendSms(smsUtil.SMS_URL, userMap.getString("phone").replaceAll("\\[^0-9]+", ""), msgBody);
 		}
 		
 		return "OK";
