@@ -30,16 +30,18 @@ public class SmsUtil {
 		
 	}
 
-	public static void smsProcess(String phone, String msg) {
-		//알리고에 잔액 있는지 확인후 기존에 쓰던거 사용
+	public static void aligoProcess(String phone, String msg) {
+		//알리고에 잔액 있는지 확인후 전송
 		SharedMap<String, Object> check = checkSms();
 		if(check.getInt("SMS_CNT") > 1) {
 			SharedMap<String, Object> send = sendAligoSms(phone, msg);
 			if(!send.getString("result_code").equals("1")) {
-				sendSms(SMS_URL, phone, msg);
+				logger.error("SMS 전송실패 : {}", send.getString("message"));
+//				sendSms(SMS_URL, phone, msg);
 			}
 		} else {
-			sendSms(SMS_URL, phone, msg);
+			logger.error("알리고 잔액부족 : {}", check.getString("message"));
+//			sendSms(SMS_URL, phone, msg);
 		}
 	}
 
