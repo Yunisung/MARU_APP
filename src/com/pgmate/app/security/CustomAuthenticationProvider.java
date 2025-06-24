@@ -107,6 +107,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 throw new BadCredentialsException("INVALIDKEY||인증번호가 올바르지 않습니다.||MEMBER");
             }
         } else {
+            //여기서 SMS문자 세팅
+            WebCache wc = new WebCache();
+            String number = String.format("%1$" + 6 + "s", ((int) (Math.random() * 999999) + 1)).replace(' ', '0');
+            wc.setSMSKey(memberId, number);
 
             //PYS : 중복로그인금지
             if(!loginMap.containsKey(memberId)) {

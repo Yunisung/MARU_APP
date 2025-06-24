@@ -90,6 +90,10 @@ public class NoticeController {
 			map.clear();
 		}
 
+		if(map.getString("status").equals("미개시") && !cpSession.getUserId().equals(map.getString("regId"))) {
+			map.clear();
+		}
+
 		request.setAttribute("DATAMAP", map);
 		return new ModelAndView("/system/notice/view");
 	}
