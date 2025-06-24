@@ -246,10 +246,11 @@ public class LoginController {
 			return "PWERROR";
 		}
 
-
 		WebCache wc = new WebCache();
-		String number = String.format("%1$" + 6 + "s", ((int) (Math.random() * 999999) + 1)).replace(' ', '0');
-		wc.setSMSKey(userId, number);
+		String number = wc.getSMSKey(userId);
+		if(number.equals("")) {
+			return "SMSERROR";
+		}
 
 		if(memberType.equals("MEMBER")) {
 			SharedMap<String, Object> userMap = new UserDAO().getById(userId).getRow(0);

@@ -157,6 +157,8 @@
                     success: function(res) {
                         if(res == 'PWERROR') {
                             bootbox.alert('비밀번호가 올바르지 않습니다.');
+                        } else if( res == "SMSERROR") {
+                            bootbox.alert('잘못된 요청입니다.');
                         }
                         else if( res != 'OK') {
                             bootbox.alert('인증번호 발송에 실패했습니다.<br>관리자에게 문의해주세요.');
