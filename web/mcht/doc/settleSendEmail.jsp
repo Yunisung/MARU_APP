@@ -45,7 +45,7 @@
 											</tr>
 											<tr>
 												<td style="font-family: 맑은고딕, Malgun Gothic; font-size: 14px; color: #666666; letter-spacing: -0.07em; line-height: 20px;">
-													(주)부국위너스 서비스를 이용해 주셔서 감사드립니다.</td>
+													(주)건흥페이먼츠 서비스를 이용해 주셔서 감사드립니다.</td>
 											</tr>
 											<tr>
 												<td style="height: 20px;">&nbsp;</td>
@@ -220,7 +220,7 @@
 											<tr>
 												<td style="vertical-align: top;"><img
 													src="https://admin.bkwinners.kr/assets/global/img/emailDot.gif"></td>
-												<td>(주)부국위너스는 앞으로도 더 나은 서비스 제공을 위해 최선을 다하겠습니다.</td>
+												<td>(주)건흥페이먼츠는 앞으로도 더 나은 서비스 제공을 위해 최선을 다하겠습니다.</td>
 											</tr>
 										</tbody>
 									</table>
