@@ -27,7 +27,7 @@
 <section class="receipt_wrap">
 
     <header class="gnb">
-        <h1 class="logo"><img src="/assets/global/img/login/mtouch.png" alt="부국위너스 전자결제서비스 logo"></h1>
+        <h1 class="logo"><img src="/assets/global/img/login/mtouch.png" alt="건흥페이먼츠 전자결제서비스 logo"></h1>
         <div class="kind">
 
             <span>신용카드 매출전표</span>
@@ -133,7 +133,7 @@
                     <h3>서비스 제공사 정보</h3>
                     <li>
                         <div class="info_title">서비스 제공사</div>
-                        <div>부국위너스(주)</div>
+                        <div>건흥페이먼츠(주)</div>
                     </li>
                     <li>
                         <div class="info_title">사업자번호</div>

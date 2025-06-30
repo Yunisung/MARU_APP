@@ -325,7 +325,7 @@
 			if(confirm(payerTel+"번호로 결제 URL을 전송하겠습니까?")){
 				var baseUrl = 'https://sugi.bkwinners.kr/sms/';
 				var url = baseUrl+smsKey+'/pay';
-				var content = "상품명 : "+$('#product').val()+"\n결제금액 : "+numberWithCommas($.trim($('#amount').val()))+"원\n\n아래 URL을 누르시면, 결제창으로 연결됩니다.\n\n"+url + "\n\n 결제서비스제공사 : 부국위너스 ";
+				var content = "상품명 : "+$('#product').val()+"\n결제금액 : "+numberWithCommas($.trim($('#amount').val()))+"원\n\n아래 URL을 누르시면, 결제창으로 연결됩니다.\n\n"+url + "\n\n 결제서비스제공사 : 건흥페이먼츠 ";
 				//console.log(content);
 				// if(navigator.userAgent.match(/Android/i) != null){
 				// 	location.href = 'sms:'+payerTel+'?body='+content;

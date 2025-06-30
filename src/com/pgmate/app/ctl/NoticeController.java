@@ -340,7 +340,7 @@ public class NoticeController {
 		wc.setSMSKey(setTel, number);
 
 		InfoBankSMS infoBankSMS = new InfoBankSMS();
-		String msgBody = "[(주)부국위너스] " + msg + "";
+		String msgBody = "[(주)건흥페이먼츠] " + msg + "";
 
 		try {
 			//infoBankSMS.sendSms(InfoBankSMS.LMS_URL, setTel.replaceAll("\\[^0-9]+", ""), msgBody);
@@ -366,9 +366,9 @@ public class NoticeController {
 
 		String fromId = "bukook@bkwinners.com"; // 발신자
 		String fromPw = "bk2763!@#"; // 발신자 비밀번호
-		String fromName = "[(주)부국위너스]"; // 발신자 정보
+		String fromName = "[(주)건흥페이먼츠]"; // 발신자 정보
 		String to = setEmail; // 수신자
-		String subject = "[(주)부국위너스]공지사항 안내"; // 이메일 제목
+		String subject = "[(주)건흥페이먼츠]공지사항 안내"; // 이메일 제목
 
 		try {
 			Properties props = System.getProperties();

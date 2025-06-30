@@ -3003,7 +3003,7 @@ public class MchtController {
 		String number = String.format("%1$" + 6 + "s", ((int) (Math.random() * 999999) + 1)).replace(' ', '0');
 		wc.setSMSKey(setTel, number);
 
-		String msgBody = "[(주)부국위너스] " + msg + "";
+		String msgBody = "[(주)건흥페이먼츠] " + msg + "";
 		try {
 			SmsUtil.sendSms(SmsUtil.LMS_URL, setTel.replaceAll("\\[^0-9]+", ""), msgBody);
 			logger.debug("NoticeSend SMS SEND");

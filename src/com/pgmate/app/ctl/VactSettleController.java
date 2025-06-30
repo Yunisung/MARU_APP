@@ -675,8 +675,8 @@ public class VactSettleController {
 			List<SharedMap<String, Object>> targetList = rset.getRows();
 			SharedMap<String, Object> senderMap = new SharedMap<String, Object>();
 			senderMap.put("identity", "6758600152");
-			senderMap.put("compName", "㈜부국위너스");
-			senderMap.put("ceoName", "권규미");
+			senderMap.put("compName", "㈜건흥페이먼츠");
+			senderMap.put("ceoName", "이득명");
 			senderMap.put("addr1", "부산광역시 해운대구 센텀중앙로97");
 			senderMap.put("addr2", "A동 2510호");
 			senderMap.put("bizCategory", "서비스");
