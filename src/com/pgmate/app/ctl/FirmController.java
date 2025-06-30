@@ -138,7 +138,7 @@ public class FirmController {
 		
 		Long amount = reqMap.getLong("amount");
 	
-		String sender = "㈜부국위너스";
+		String sender = "㈜건흥페이먼츠";
 		
 		logger.info("balanceTransfer: {}, sendBankCd: {} , sendAccnt: {}, recvBankCd: {} , recvAccnt: {}, amount: {}, sender: {}", 
 				action, sendBankCd, sendAccnt, recvBankCd, recvAccnt, amount, sender);
