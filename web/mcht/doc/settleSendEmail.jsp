@@ -176,7 +176,7 @@
 											<tr>
 												<td style="vertical-align: top;">*</td>
 												<td>해당 일자별 상세내역은 <a target="_blank" style="color: red; text-decoration: underline;"
-													href="https://admin.bkwinners.kr/" >매입현황조회</a>를 이용해 주시면 빠른 확인 가능합니다.
+													href="https://admin.ghpayments.kr/" >매입현황조회</a>를 이용해 주시면 빠른 확인 가능합니다.
 												</td>
 											</tr>
 											<tr>
@@ -205,21 +205,21 @@
 										<tbody>
 											<tr>
 												<td style="vertical-align: top;"><img
-													src="https://admin.bkwinners.kr/assets/global/img/emailDot.gif"></td>
+													src="https://admin.ghpayments.kr/assets/global/img/emailDot.gif"></td>
 												<td>메일 수신을 원하지 않으시면, <a target="_blank"
-													href="https://admin.bkwinners.kr/emailStatus?mchtId=${DATAMCHT.mchtId}"
+													href="https://admin.ghpayments.kr/emailStatus?mchtId=${DATAMCHT.mchtId}"
 													style="color: #555; text-decoration: underline; font-weight: bold;">
 													이메일 수신거부</a>를 클릭해 주시기 바랍니다.
 												</td>
 											</tr>
 											<tr>
 												<td style="vertical-align: top;"><img
-													src="https://admin.bkwinners.kr/assets/global/img/emailDot.gif"></td>
+													src="https://admin.ghpayments.kr/assets/global/img/emailDot.gif"></td>
 												<td>기타 문의가 있으신 분은 ☎ 1855-1838로 문의주시기 바랍니다.</td>
 											</tr>
 											<tr>
 												<td style="vertical-align: top;"><img
-													src="https://admin.bkwinners.kr/assets/global/img/emailDot.gif"></td>
+													src="https://admin.ghpayments.kr/assets/global/img/emailDot.gif"></td>
 												<td>(주)건흥페이먼츠는 앞으로도 더 나은 서비스 제공을 위해 최선을 다하겠습니다.</td>
 											</tr>
 										</tbody>
@@ -236,7 +236,7 @@
 			<tr>
 				<td>
 					<img style="border: 0px currentColor; border-image: none; width: 780px; vertical-align: top; object-fit:cover;"
-					src="https://admin.bkwinners.kr/assets/global/img/emailBottom.jpg">
+					src="https://admin.ghpayments.kr/assets/global/img/emailBottom.jpg">
 				</td>
 			</tr>
 		</tbody>

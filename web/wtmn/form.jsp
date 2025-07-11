@@ -129,7 +129,7 @@
 		<c:import url="/include/footer.jsp" />
 	</div>
 	<c:import url="/include/javascript.jsp" />
-	<script type="text/javascript" src="https://devapi.bkwinners.kr/js/clientside.js"></script>
+	<script type="text/javascript" src="https://devapi.ghpayments.kr/js/clientside.js"></script>
 
 	<!-- BEGIN FORM JAVASCRIPT -->
 	<script type="text/javascript">
@@ -323,7 +323,7 @@
 		function fn_sendSms(smsKey){
 			var payerTel = $('#payerTel').val();
 			if(confirm(payerTel+"번호로 결제 URL을 전송하겠습니까?")){
-				var baseUrl = 'https://sugi.bkwinners.kr/sms/';
+				var baseUrl = 'https://sugi.ghpayments.kr/sms/';
 				var url = baseUrl+smsKey+'/pay';
 				var content = "상품명 : "+$('#product').val()+"\n결제금액 : "+numberWithCommas($.trim($('#amount').val()))+"원\n\n아래 URL을 누르시면, 결제창으로 연결됩니다.\n\n"+url + "\n\n 결제서비스제공사 : 건흥페이먼츠 ";
 				//console.log(content);

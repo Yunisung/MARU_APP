@@ -681,7 +681,7 @@ public class VactSettleController {
 			senderMap.put("addr2", "A동 2510호");
 			senderMap.put("bizCategory", "서비스");
 			senderMap.put("bizType", "전자금융업외");
-			senderMap.put("email", "bukook@bkwinners.com");
+			senderMap.put("email", "bukook@ghpayments.co.kr");
 
 			TaxExport taxExport = new TaxExport();
 
