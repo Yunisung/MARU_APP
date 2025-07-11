@@ -5,7 +5,7 @@
     
 		<!-- END PRE-FOOTER -->
 		<div class="page-footer-inner">© 2022 Copyright GHPayments,Inc.
-        <a target="_blank" href="http://www.bkwinners.com">GHPayments</a>
+        <a target="_blank" href="http://www.ghpayments.co.kr">GHPayments</a>
     </div>
     <div class="scroll-to-top">
         <i class="icon-arrow-up"></i>
