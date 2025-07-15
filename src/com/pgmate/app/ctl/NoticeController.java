@@ -364,7 +364,7 @@ public class NoticeController {
 		String host = "smtp.gmail.com";
 		String port = "465";
 
-		String fromId = "bukook@ghpayments.co.kr"; // 발신자
+		String fromId = "ghpay@ghpayments.co.kr"; // 발신자
 		String fromPw = "bk2763!@#"; // 발신자 비밀번호
 		String fromName = "[(주)건흥페이먼츠]"; // 발신자 정보
 		String to = setEmail; // 수신자
