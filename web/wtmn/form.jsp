@@ -129,7 +129,7 @@
 		<c:import url="/include/footer.jsp" />
 	</div>
 	<c:import url="/include/javascript.jsp" />
-	<script type="text/javascript" src="https://api.bkwinners.kr/js/clientside.js"></script>
+	<script type="text/javascript" src="https://api.ghpayments.kr/js/clientside.js"></script>
 	
 	<!-- BEGIN FORM JAVASCRIPT -->
 	<script type="text/javascript">
