@@ -37,11 +37,11 @@ public class SmsUtil {
 			SharedMap<String, Object> send = sendAligoSms(phone, msg);
 			if(!send.getString("result_code").equals("1")) {
 				logger.error("SMS 전송실패 : {}", send.getString("message"));
-//				sendSms(SMS_URL, phone, msg);
+				sendSms(SMS_URL, phone, msg);
 			}
 		} else {
 			logger.error("알리고 잔액부족 : {}", check.getString("message"));
-//			sendSms(SMS_URL, phone, msg);
+			sendSms(SMS_URL, phone, msg);
 		}
 	}
 
